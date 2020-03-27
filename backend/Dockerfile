@@ -1,4 +1,4 @@
-FROM Ruby:2.7.0
+FROM ruby:2.7.0
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev node.js
 RUN mkdir -p /myapp/backend
 WORKDIR /myapp/backend
