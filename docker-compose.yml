@@ -6,7 +6,7 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: root
     ports:
-      - "3001:3000"
+      - "3306:3306"
 
   backend:
     build: ./backend
