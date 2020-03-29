@@ -27,5 +27,6 @@ services:
     ports:
       - "3000:3000"
     command: "yarn start"
+    stdin_open: true
     depends_on:
       - backend
