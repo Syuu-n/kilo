@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_24_135003) do
+ActiveRecord::Schema.define(version: 2020_04_25_080418) do
 
   create_table "lesson_classes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
@@ -35,13 +35,21 @@ ActiveRecord::Schema.define(version: 2020_04_24_135003) do
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
     t.string "name_kana"
-    t.string "email"
-    t.string "password_digest"
     t.integer "age"
     t.string "school_grade"
     t.integer "phone_number"
     t.bigint "plan_id"
+    t.string "access_token"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["plan_id"], name: "index_users_on_plan_id"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
 end

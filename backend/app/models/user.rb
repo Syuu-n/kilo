@@ -1,12 +1,15 @@
 class User < ApplicationRecord
-  belongs_to :plan
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
 
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  after_create :update_access_token!
 
-  validations :name, presence: true, uniqueness: true
-  validations :name_kana, presence: true
-  validations :email, presence: true, uniqueness: true, format: { with: VALID_EMAIL_REGEX }
-  validations :password_digest, presence: true
-  validations :age, presence: true
-  validations :phone_number, presence: true
+  validates :email, presence: true
+
+  def update_access_token!
+    self.access_token = "#{self.id}:#{Devise.friendly_token}"
+    save
+  end
 end
