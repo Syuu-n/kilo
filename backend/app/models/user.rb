@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   belongs_to :plan
+  belongs_to :role
 
   after_create :update_access_token!
 
@@ -19,5 +20,9 @@ class User < ApplicationRecord
   def update_access_token!
     self.access_token = "#{self.id}:#{Devise.friendly_token}"
     save
+  end
+
+  def is_admin?
+    self.role.admin?
   end
 end
