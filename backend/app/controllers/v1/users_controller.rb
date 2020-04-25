@@ -1,5 +1,6 @@
 module V1
   class UsersController < ApplicationController
+    # 認証が必要ないメソッドは skip_before_action に追加する
     skip_before_action :authenticate_user_from_token!, only: [:create]
 
     def index
