@@ -33,5 +33,14 @@ module Backend
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # rails g した際の作成するテストファイルを指定する
+    config.generators do |g|
+      g.test_framework :spec,
+                       view_specs: false,
+                       helper_specs: false,
+                       controller_specs: false,
+                       routing_specs: false
+    end
   end
 end
