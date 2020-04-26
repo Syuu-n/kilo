@@ -19,8 +19,11 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # Use Authenticate
 gem 'devise'
 
-# User create json
+# Use create json
 gem 'active_model_serializers'
+
+# Use create seed data
+gem 'seed-fu'
 
 group :development, :test do
   # Use for debug

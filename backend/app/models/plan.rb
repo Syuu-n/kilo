@@ -5,6 +5,6 @@ class Plan < ApplicationRecord
   validates :price, presence: true
 
   def self.default_plan
-    self.first.id
+    self.first
   end
 end

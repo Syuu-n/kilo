@@ -8,14 +8,14 @@ class Role < ApplicationRecord
   end
 
   def self.admin
-    self.find_by(name: 'admin').id
+    self.find_by(name: 'admin')
   end
 
   def self.normal
-    self.find_by(name: 'normal').id
+    self.find_by(name: 'normal')
   end
 
   def self.trial
-    self.find_by(name: 'trial').id
+    self.find_by(name: 'trial')
   end
 end
