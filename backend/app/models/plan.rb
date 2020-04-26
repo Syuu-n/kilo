@@ -3,4 +3,8 @@ class Plan < ApplicationRecord
 
   validates :name, presence: true
   validates :price, presence: true
+
+  def self.default_plan
+    self.first.id
+  end
 end

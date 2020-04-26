@@ -65,3 +65,6 @@ RSpec.configure do |config|
   # テストコード内で FactoryBot メソッドを使用する際のの記述を省略する
   config.include FactoryBot::Syntax::Methods
 end
+
+# faker を日本語化
+Faker::Config.locale = 'ja'
