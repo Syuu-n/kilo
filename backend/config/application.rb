@@ -37,10 +37,12 @@ module Backend
     # rails g した際の作成するテストファイルを指定する
     config.generators do |g|
       g.test_framework :spec,
+                       fixtures: true,
                        view_specs: false,
                        helper_specs: false,
+                       routing_specs: false,
                        controller_specs: false,
-                       routing_specs: false
+                       request_specs: false
     end
 
     config.time_zone = 'Tokyo'
