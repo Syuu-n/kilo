@@ -16,8 +16,8 @@ module V1
     # ユーザ作成
     def create
       @user = User.new(user_params)
-      @user.plan_id = Plan.first.id
-      @user.role_id = Role.second.id
+      @user.plan_id = Plan.default_plan
+      @user.role_id = Role.normal
 
       if @user.save
         render json: @user, serializer: V1::SessionSerializer, root: nil
