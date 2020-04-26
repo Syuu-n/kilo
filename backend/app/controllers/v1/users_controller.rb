@@ -5,7 +5,7 @@ module V1
 
     def index
       unless current_user.is_admin?
-        render json: { error: t('not permitted'), status: :bad_request }
+        render json: { error: 'not_permitted', status: :bad_request }
         return
       end
 
@@ -22,7 +22,7 @@ module V1
       if @user.save
         render json: @user, serializer: V1::SessionSerializer, root: nil
       else
-        render json: { error: t('user_create_error'), status: :unprocessable_entity }
+        render json: { error: 'user_create_error', status: :unprocessable_entity }
       end
     end
 

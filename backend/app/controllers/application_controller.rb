@@ -38,6 +38,6 @@ class ApplicationController < ActionController::API
   # 認証失敗
   # ステータスコード 401 を返す
   def authenticate_error
-    render json: { error: t('devise.failure.unauthenticated') }, status: 401
+    render json: { error: 'devise.failure.unauthenticated' }, status: 401
   end
 end
