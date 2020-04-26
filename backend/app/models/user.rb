@@ -11,10 +11,12 @@ class User < ApplicationRecord
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-  validates :name, presence: true, uniqueness: true
-  validates :name_kana, presence: true
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :first_name_kana, presence: true
+  validates :last_name_kana, presence: true
   validates :email, presence: true, uniqueness: true, format: { with: VALID_EMAIL_REGEX }
-  validates :age, presence: true
+  validates :birthday, presence: true
   validates :phone_number, presence: true
 
   def update_access_token!
