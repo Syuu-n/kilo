@@ -25,8 +25,7 @@ describe 'Sessions API', type: :request do
 
         expect(response.status).to eq 400
         json = JSON.parse response.body
-        expect(json['message']).to eq 'invalid_email'
-        expect(json['code']).to eq 400
+        expect(json['code']).to eq 'invalid_email_or_password'
       end
     end
 
@@ -38,8 +37,7 @@ describe 'Sessions API', type: :request do
 
         expect(response.status).to eq 400
         json = JSON.parse response.body
-        expect(json['message']).to eq 'invalid_password'
-        expect(json['code']).to eq 400
+        expect(json['code']).to eq 'invalid_email_or_password'
       end
     end
   end

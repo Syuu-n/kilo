@@ -36,6 +36,12 @@ class ApplicationController < ActionController::API
   # 認証失敗
   # ステータスコード 401 を返す
   def authenticate_error
-    render json: { error: 'unauthenticated' }, status: 401
+    render json: { code: 'unauthenticated' }, status: :unauthorized
+  end
+
+  def permission_check
+    unless current_user.is_admin?
+      render json: { code: 'not_permitted' }, status: :forbidden and return
+    end
   end
 end

@@ -5,26 +5,20 @@ module V1
     # POST /v1/login
     def create
       @user = User.find_for_database_authentication(email: params[:email])
-      return invalid_email unless @user
+      return invalid_email_or_email unless @user
 
       if @user.valid_password?(params[:password])
         sign_in :user, @user
         render json: @user, serializer: SessionSerializer
       else
-        invalid_password
+        invalid_email_or_email
       end
     end
 
     private
 
-    def invalid_email
-      warden.custom_failure!
-      render json: { message: 'invalid_email', code: 400 }, status: 400
-    end
-
-    def invalid_password
-      warden.custom_failure!
-      render json: { message: 'invalid_password', code: 400 }, status: 400
+    def invalid_email_or_email
+      render json: { code: 'invalid_email_or_password' }, status: :bad_request
     end
   end
 end
