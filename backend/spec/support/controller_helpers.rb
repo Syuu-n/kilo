@@ -1,9 +1,9 @@
-module ControllerHelper
+module ControllerHelpers
   def find_admin_user
     User.find_by(role: Role.admin)
   end
 
-  def find_normal_user
+  def find_user
     User.find_by(role: Role.normal)
   end
 

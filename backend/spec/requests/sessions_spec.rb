@@ -13,8 +13,6 @@ describe 'Sessions API', type: :request do
         expect(response.status).to eq 200
         json = JSON.parse response.body
         expect(json['email']).to eq email
-        expect(json['token_type']).to eq 'Bearer'
-        expect(json['user_id']).to eq admin_user.id
         expect(json['access_token']).to eq admin_user.access_token
       end
     end

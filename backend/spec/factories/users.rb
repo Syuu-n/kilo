@@ -12,7 +12,7 @@ FactoryBot.define do
     role { Role.normal }
   end
 
-  factory :admin_user do
+  factory :admin, class: User do
     email { Faker::Internet.email }
     password { 'password' }
     first_name { Faker::Name.first_name }

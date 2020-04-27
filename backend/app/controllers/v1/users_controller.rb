@@ -16,20 +16,20 @@ module V1
     # ユーザ作成
     def create
       @user = User.new(user_params)
-      @user.plan_id = Plan.default_plan
-      @user.role_id = Role.normal
+      @user.plan = Plan.default_plan
+      @user.role = Role.normal
 
       if @user.save
-        render json: @user, serializer: V1::SessionSerializer, root: nil
+        render json: @user, serializer: V1::SessionSerializer
       else
-        render json: { error: 'user_create_error', status: :unprocessable_entity }
+        render json: { message: 'user_create_error', code: 422 }, status: :unprocessable_entity
       end
     end
 
     private
 
     def user_params
-      params.require(:user).permit(:name, :name_kana, :email, :age, :phone_number, :password)
+      params.require(:user).permit(:email, :password, :first_name, :last_name, :first_name_kana, :last_name_kana, :birthday, :phone_number)
     end
   end
 end
