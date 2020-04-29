@@ -16,10 +16,10 @@ describe 'Users API', type: :request do
     context '管理者はユーザを作成できる' do
       login_admin
       let(:access_token){ admin.access_token }
-      it '200 OK を返す' do
+      it '201 Created を返す' do
         subject
 
-        expect(response.status).to eq 200
+        expect(response.status).to eq 201
         json = JSON.parse response.body
         new_user = User.last
         expect(json['email']).to eq new_user.email
