@@ -2,7 +2,7 @@ module V1
   class UsersController < ApplicationController
     before_action :authenticate_user_from_token!
     before_action :permission_check, only: [:index, :create, :destroy]
-    before_action :setup_user, only: [:update, :show, :destroy, :my_lessons]
+    before_action :setup_user, only: [:update, :show, :destroy, :my_lessons, :my_plan]
 
     # GET /users
     def index
@@ -48,6 +48,11 @@ module V1
     # GET /users/:id/lessons
     def my_lessons
       render json: @user.lessons, status: :ok
+    end
+
+    # GET /users/:id/plan
+    def my_plan
+      render json: @user.plan, status: :ok
     end
 
     private
