@@ -7,7 +7,7 @@ module V1
 
     # GET /users
     def index
-      render json: User.all, each_serializer: V1::UserSerializer
+      render json: User.all, each_serializer: UserSerializer
     end
 
     # POST /users
@@ -50,10 +50,12 @@ module V1
 
     def setup_user
       @user = User.find_by(id: params[:id])
-      render json: { code: 'bad_request' }, status: :bad_request unless @user
+      unless @user
+        render json: { code: 'user_not_found' }, status: :not_found and return
+      end
 
       if @user != current_user && !current_user.is_admin?
-        render json: { code: 'not_permitted' }, status: :forbidden
+        render json: { code: 'not_permitted' }, status: :forbidden and return
       end
     end
 
