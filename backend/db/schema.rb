@@ -10,12 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_29_080316) do
+ActiveRecord::Schema.define(version: 2020_04_29_144702) do
 
   create_table "lesson_classes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.string "lesson_rule"
+  end
+
+  create_table "lesson_rules", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.integer "dotw"
+    t.time "start_at"
+    t.time "end_at"
+    t.bigint "lesson_class_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lesson_class_id"], name: "index_lesson_rules_on_lesson_class_id"
   end
 
   create_table "lessons", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -67,6 +76,7 @@ ActiveRecord::Schema.define(version: 2020_04_29_080316) do
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
+  add_foreign_key "lesson_rules", "lesson_classes"
   add_foreign_key "user_lessons", "lessons"
   add_foreign_key "user_lessons", "users"
   add_foreign_key "users", "roles"

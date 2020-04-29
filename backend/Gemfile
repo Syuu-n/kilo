@@ -25,6 +25,9 @@ gem 'active_model_serializers'
 # Use create seed data
 gem 'seed-fu'
 
+# USer for localize
+gem 'rails-i18n'
+
 group :development, :test do
   # Use for debug
   gem 'pry-rails'
