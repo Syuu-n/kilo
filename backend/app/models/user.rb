@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
   belongs_to :plan
   belongs_to :role
+  has_many :user_lessons, dependent: :destroy
+  has_many :lessons, through: :user_lessons
 
   after_create :update_access_token!
 

@@ -1,9 +1,8 @@
 module V1
   class UsersController < ApplicationController
-    # 認証が必要ないメソッドは skip_before_action に追加する
-    skip_before_action :authenticate_user_from_token!, only: []
+    before_action :authenticate_user_from_token!
     before_action :permission_check, only: [:index, :create, :destroy]
-    before_action :setup_user, only: [:update, :show, :destroy]
+    before_action :setup_user, only: [:update, :show, :destroy, :my_lessons]
 
     # GET /users
     def index
@@ -44,6 +43,11 @@ module V1
       else
         render json: { code: 'user_delete_error' }, status: :bad_request
       end
+    end
+
+    # GET /users/:id/lessons
+    def my_lessons
+      render json: @user.lessons, status: :ok
     end
 
     private

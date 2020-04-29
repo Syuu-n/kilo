@@ -1,7 +1,6 @@
 module V1
   class PlansController < ApplicationController
-    # 認証が必要ないメソッドは skip_before_action に追加する
-    skip_before_action :authenticate_user_from_token!, only: []
+    before_action :authenticate_user_from_token!
     before_action :permission_check, only: [:index, :create, :update, :destroy]
     before_action :setup_plan, only: [:update, :show, :destroy]
 

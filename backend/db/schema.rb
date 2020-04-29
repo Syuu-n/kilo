@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_29_062350) do
+ActiveRecord::Schema.define(version: 2020_04_29_080316) do
 
   create_table "lesson_classes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
@@ -22,9 +22,7 @@ ActiveRecord::Schema.define(version: 2020_04_29_062350) do
     t.bigint "lesson_class_id"
     t.datetime "start_at"
     t.datetime "end_at"
-    t.bigint "user_id"
     t.index ["lesson_class_id"], name: "index_lessons_on_lesson_class_id"
-    t.index ["user_id"], name: "index_lessons_on_user_id"
   end
 
   create_table "plans", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -36,6 +34,13 @@ ActiveRecord::Schema.define(version: 2020_04_29_062350) do
 
   create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
+  end
+
+  create_table "user_lessons", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "lesson_id"
+    t.index ["lesson_id"], name: "index_user_lessons_on_lesson_id"
+    t.index ["user_id"], name: "index_user_lessons_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -62,5 +67,7 @@ ActiveRecord::Schema.define(version: 2020_04_29_062350) do
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
+  add_foreign_key "user_lessons", "lessons"
+  add_foreign_key "user_lessons", "users"
   add_foreign_key "users", "roles"
 end

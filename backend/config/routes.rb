@@ -4,7 +4,21 @@ Rails.application.routes.draw do
 
   namespace :v1, defaults: { format: :json } do
     resource :login, only: [:create], controller: :sessions
-    resources :users
-    resources :plans
+
+    resources :users, except: [:new, :edit] do
+      member do
+        get 'lessons' => 'users#my_lessons'
+      end
+    end
+
+    resources :plans, except: [:new, :edit]
+
+    resources :lessons, except: [:new, :edit] do
+      member do
+        post 'join' => 'lessons#user_join'
+        delete 'leave' => 'lessons#user_leave'
+      end
+    end
+
   end
 end
