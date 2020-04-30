@@ -26,8 +26,12 @@ class ApplicationController < ActionController::API
     user = User.find_by(id: user_id)
 
     if user && Devise.secure_compare(user.access_token, auth_token)
-      #  ユーザ認証成功
-      sign_in user, store: false
+      if user.access_token_expired?
+        access_token_expired_error
+      else
+        #  ユーザ認証成功
+        sign_in user, store: false
+      end
     else
       authenticate_error
     end
@@ -37,6 +41,11 @@ class ApplicationController < ActionController::API
   # ステータスコード 401 を返す
   def authenticate_error
     render json: { code: 'unauthenticated' }, status: :unauthorized
+  end
+
+  # access_token の有効期限切れ
+  def access_token_expired_error
+    render json: { code: 'access_token_expired' }, status: :forbidden
   end
 
   def permission_check

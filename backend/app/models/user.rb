@@ -22,8 +22,14 @@ class User < ApplicationRecord
   validates :phone_number, presence: true
 
   def update_access_token!
+    # 有効期限 14 日の access_token 作成
     self.access_token = "#{self.id}:#{Devise.friendly_token}"
+    self.access_token_expire = Time.current.since(14.days)
     save
+  end
+
+  def access_token_expired?
+    self.access_token_expire < Time.current
   end
 
   def is_admin?

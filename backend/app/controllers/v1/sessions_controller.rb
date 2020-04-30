@@ -8,6 +8,9 @@ module V1
       return invalid_email_or_email unless @user
 
       if @user.valid_password?(params[:password])
+        if @user.access_token_expired?
+          @user.update_access_token!
+        end
         sign_in :user, @user
         render json: @user, serializer: SessionSerializer
       else
