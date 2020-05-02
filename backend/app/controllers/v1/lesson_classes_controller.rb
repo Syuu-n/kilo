@@ -5,8 +5,6 @@ module V1
     before_action :permission_check, only: [:create, :update, :destroy]
     before_action :setup_lesson_class, only: [:update, :show, :destroy]
 
-    attr_reader :lesson_rules_attributes
-
     # GET /lesson_classes
     def index
       render json: LessonClass.all, each_serializer: LessonClassSerializer
