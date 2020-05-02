@@ -1,6 +1,5 @@
 module V1
   class LessonsController < ApplicationController
-    before_action :authenticate_user_from_token!
     before_action :permission_check, only: [:index, :create, :update, :show, :destroy]
     before_action :setup_lesson, only: [:update, :show, :destroy, :user_join, :user_leave]
 

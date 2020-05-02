@@ -1,6 +1,5 @@
 module V1
   class PlansController < ApplicationController
-    before_action :authenticate_user_from_token!
     before_action :permission_check, only: [:index, :create, :update, :destroy]
     before_action :setup_plan, only: [:update, :show, :destroy]
 

@@ -21,7 +21,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :lesson_classes, expect: [:new, :edit]
-
+    resources :lesson_classes, except: [:new, :edit]
   end
 end

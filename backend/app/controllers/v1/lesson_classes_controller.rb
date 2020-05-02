@@ -1,8 +1,11 @@
 module V1
   class LessonClassesController < ApplicationController
-    before_action :authenticate_user_from_token!
+    class NoLessonRuleError < StandardError; end
+    class LessonRuleInvalidError < StandardError; end
     before_action :permission_check, only: [:create, :update, :destroy]
     before_action :setup_lesson_class, only: [:update, :show, :destroy]
+
+    attr_reader :lesson_rules_attributes
 
     # GET /lesson_classes
     def index
@@ -11,22 +14,64 @@ module V1
 
     # POST /lesson_classes
     def create
-      @lesson_class = LessonClass.new(create_params)
+      begin
+        unless lesson_rule_params[:lesson_rules].present?
+          raise NoLessonRuleError
+        end
 
-      if @lesson_class.save
-        render json: @lesson_class, status: :created
-      else
-        render json: { code: 'lesson_class_create_error' }, status: :unprocessable_entity
+        ActiveRecord::Base.transaction do
+          @lesson_class = LessonClass.create!(lesson_class_params)
+          lesson_rule_params[:lesson_rules].each do |lesson_rule|
+            lr = LessonRule.new(lesson_rule.merge(lesson_class: @lesson_class))
+            unless lr.save
+              raise LessonRuleInvalidError
+            end
+          end
+        end
+      rescue => e
+        case e
+        when NoLessonRuleError
+          render json: { code: 'no_lesson_rule_error' }, status: :unprocessable_entity
+          return
+        when LessonRuleInvalidError
+          render json: { code: 'lesson_rule_invalid_error' }, status: :unprocessable_entity
+          return
+        end
       end
+      render json: @lesson_class, status: :created
     end
 
     # PATCH /lesson_classes/:id
     def update
-      if @lesson_class.update(update_params)
-        render json: @lesson_class, status: :ok
-      else
-        render json: { code: 'lesson_class_update_error' }, status: :unprocessable_entity
+      begin
+        unless lesson_rule_params[:lesson_rules].present?
+          raise NoLessonRuleError
+        end
+
+        ActiveRecord::Base.transaction do
+          @lesson_class.lesson_rules.each do |lr|
+            lr.destroy!
+          end
+
+          lesson_rule_params[:lesson_rules].each do |lesson_rule|
+            lr = LessonRule.new(lesson_rule.merge(lesson_class: @lesson_class))
+            unless lr.save
+              raise LessonRuleInvalidError
+            end
+          end
+        end
+      rescue => e
+        case e
+        when NoLessonRuleError
+          render json: { code: 'no_lesson_rule_error' }, status: :unprocessable_entity
+          return
+        when LessonRuleInvalidError
+          render json: { code: 'lesson_rule_invalid_error' }, status: :unprocessable_entity
+          return
+        end
       end
+      @lesson_class.reload
+      render json: @lesson_class, status: :ok
     end
 
     # GET /lesson_classes/:id
@@ -37,7 +82,7 @@ module V1
     # DELETE /lesson_classes/:id
     def destroy
       if @lesson_class.destroy
-        render json: { message: 'Lesson Class deleted' }, status: :ok
+        render json: { message: 'Lesson Class deleted.' }, status: :ok
       else
         render json: { code: 'lesson_class_delete_error' }, status: :bad_request
       end
@@ -52,15 +97,13 @@ module V1
       end
     end
 
-    def create_params
-      params.require(:lesson_class).permit(:name, :description,
-                                           { lesson_rules_attributes: [:dotw, :start_at, :end_at]}
-      )
+    def lesson_class_params
+      params.require(:lesson_class).permit(:name, :description)
     end
 
-    def update_params
+    def lesson_rule_params
       params.require(:lesson_class).permit(:name, :description,
-                                           { lesson_rules_attributes: [:id, :dotw, :start_at, :end_at]}
+                                           { lesson_rules: [:dotw, :start_at, :end_at]}
       )
     end
   end
