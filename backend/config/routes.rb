@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       member do
         get 'lessons' => 'users#my_lessons'
         get 'plan' => 'users#my_plan'
+        post 'trial_request'
       end
     end
 

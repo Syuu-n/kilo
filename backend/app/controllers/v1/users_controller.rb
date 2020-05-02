@@ -15,6 +15,7 @@ module V1
       @user.plan = Plan.default_plan
       @user.role = Role.normal
 
+      @user.skip_confirmation!
       if @user.save
         render json: @user, status: :created
       else
@@ -53,6 +54,19 @@ module V1
     # GET /users/:id/plan
     def my_plan
       render json: @user.plan, status: :ok
+    end
+
+    # POST /users/trial_request
+    def trial_request
+      @user = User.new(create_params)
+      @user.plan = Plan.default_plan
+      @user.role = Role.trial
+      @user.send_confirmation_instructions
+      if @user.save
+        render json: @user, status: :ok
+      else
+        render json: { code: 'trial_request_create_error' }, status: :unprocessable_entity
+      end
     end
 
     private

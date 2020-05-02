@@ -11,7 +11,7 @@ module V1
         if @user.access_token_expired?
           @user.update_access_token!
         end
-        sign_in :user, @user
+        sign_in @user, store: false
         render json: @user, serializer: SessionSerializer
       else
         invalid_email_or_email
