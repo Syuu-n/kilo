@@ -13,6 +13,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resource :passwords, only: [:create, :update]
+
     resources :plans, except: [:new, :edit]
 
     resources :lessons, except: [:new, :edit] do
