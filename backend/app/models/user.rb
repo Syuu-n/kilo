@@ -23,7 +23,7 @@ class User < ApplicationRecord
 
   def update_access_token!
     # 有効期限 14 日の access_token 作成
-    self.access_token = "#{self.id}:#{Devise.friendly_token}"
+    self.access_token = "#{id}:#{Devise.friendly_token}"
     self.access_token_expire = Time.current.since(14.days)
     save
   end

@@ -2,7 +2,6 @@ class ApplicationController < ActionController::API
   before_action :authenticate_user_from_token!
 
   respond_to :json
-  protect_from_forgery with: :null_session
 
   # user 認証 OAuth2 を使用
   def authenticate_user_from_token!
