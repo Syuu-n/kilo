@@ -12,4 +12,11 @@ module AuthenticationHelpers
       sign_in user
     end
   end
+
+  def login_trial_user
+    let(:trial_user){ create(:trial) }
+    before do
+      sign_in trial_user
+    end
+  end
 end

@@ -73,6 +73,9 @@ RSpec.configure do |config|
   config.extend AuthenticationHelpers, type: :request
 
   config.include ControllerHelpers, type: :request
+
+  # RSpec で travel_to を利用可能にする
+  config.include ActiveSupport::Testing::TimeHelpers
 end
 
 # faker を日本語化

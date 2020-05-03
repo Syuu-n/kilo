@@ -32,7 +32,20 @@ class User < ApplicationRecord
     self.access_token_expire < Time.current
   end
 
+  def name
+    last_name + " " + first_name
+  end
+
+  def name_kana
+    last_name_kana + " " + first_name_kana
+  end
+
+
   def is_admin?
     self.role.admin?
+  end
+
+  def is_trial?
+    self.role.trial?
   end
 end

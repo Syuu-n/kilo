@@ -4,7 +4,11 @@ class Role < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   def admin?
-    self.name == 'admin'
+    name == 'admin'
+  end
+
+  def trial?
+    name == 'trial'
   end
 
   def self.admin

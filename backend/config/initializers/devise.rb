@@ -18,7 +18,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = Settings[:gmail][:user_name]
+  config.mailer_sender = Rails.application.credentials.gmail[:user_name]
 
   # Configure the class responsible to send e-mails.
   config.mailer = 'Users::Mailer'
