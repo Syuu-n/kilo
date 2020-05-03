@@ -1,6 +1,6 @@
 module V1
   class UsersController < ApplicationController
-    before_action :authenticate_user_from_token!
+    skip_before_action :authenticate_user_from_token!, only: []
     before_action :permission_check, only: [:index, :create, :destroy]
     before_action :setup_user, only: [:update, :show, :destroy, :my_lessons, :my_plan]
 
@@ -25,6 +25,7 @@ module V1
 
     # PATCH /users/:id
     def update
+      @user.skip_reconfirmation!
       if @user.update(update_params)
         render json: @user, status: :ok
       else
@@ -54,19 +55,6 @@ module V1
     # GET /users/:id/plan
     def my_plan
       render json: @user.plan, status: :ok
-    end
-
-    # POST /users/trial_request
-    def trial_request
-      @user = User.new(create_params)
-      @user.plan = Plan.default_plan
-      @user.role = Role.trial
-      @user.send_confirmation_instructions
-      if @user.save
-        render json: @user, status: :ok
-      else
-        render json: { code: 'trial_request_create_error' }, status: :unprocessable_entity
-      end
     end
 
     private

@@ -11,7 +11,6 @@ module V1
 
     def update
       user = User.reset_password_by_token(update_params)
-      puts user.attributes
       if user.id
         render json: user, status: :ok
       else
