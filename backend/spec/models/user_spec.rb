@@ -57,7 +57,7 @@ describe User, type: :model do
     let(:user){ create(:user) }
     let(:trial){ create(:trial) }
     context '正常系' do
-      context 'update_access_token!' do
+      context '#update_access_token!' do
         let!(:before_access_token){ user.access_token }
         let!(:before_access_token_expire){ user.access_token_expire }
         subject { user.update_access_token! }
@@ -70,7 +70,7 @@ describe User, type: :model do
         end
       end
 
-      context 'access_token_expired?' do
+      context '#access_token_expired?' do
         subject { user.access_token_expired? }
         it 'アクセストークンの期間が切れていないかを確認できる' do
           expect(user.access_token_expired?).to eq false
@@ -81,21 +81,21 @@ describe User, type: :model do
         end
       end
 
-      context 'name' do
+      context '#name' do
         subject { user.name }
         it 'フルネームを取得できる' do
           expect(subject).to eq user.last_name + " " + user.first_name
         end
       end
 
-      context 'name_kana' do
+      context '#name_kana' do
         subject { user.name_kana }
         it 'カタカナのフルネームを取得できる' do
           expect(subject).to eq user.last_name_kana + " " + user.first_name_kana
         end
       end
 
-      context 'is_admin?' do
+      context '#is_admin?' do
         it 'ユーザが管理者か確認できる' do
           expect(admin.is_admin?).to eq true
           expect(user.is_admin?).to eq false
@@ -103,7 +103,7 @@ describe User, type: :model do
         end
       end
 
-      context 'is_trial?' do
+      context '#is_trial?' do
         it 'ユーザが体験中か確認できる' do
           expect(admin.is_trial?).to eq false
           expect(user.is_trial?).to eq false

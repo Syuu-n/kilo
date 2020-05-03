@@ -39,7 +39,7 @@ describe Lesson, type: :model do
       end
       let(:user){ create(:user) }
       let(:lesson){ Lesson.first }
-      context 'joined?' do
+      context '#joined?' do
         before do
           lesson.join(user)
         end
@@ -48,7 +48,7 @@ describe Lesson, type: :model do
         end
       end
 
-      context 'join' do
+      context '#join' do
         it '指定したレッスンに参加できる' do
           lesson.join(user)
 
@@ -56,7 +56,7 @@ describe Lesson, type: :model do
         end
       end
 
-      context 'leave' do
+      context '#leave' do
         before do
           lesson.join(user)
         end
