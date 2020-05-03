@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
 
   # Standard のエラーハンドリング
   def render_error(exception)
-    status_code = ActionDispatch::ExceptionWrapper.new(env, exception).status_code
+    status_code = ActionDispatch::ExceptionWrapper.new(Rails.env, exception).status_code
     render json: { message: exception.message }, status: status_code
   end
 

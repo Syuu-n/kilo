@@ -27,6 +27,8 @@ gem 'seed-fu'
 
 # Use for localize
 gem 'rails-i18n'
+gem 'devise-i18n'
+gem 'devise-i18n-views'
 
 # Use manage config data
 gem 'config'
