@@ -3,7 +3,16 @@ class ApplicationController < ActionController::API
 
   respond_to :json
 
-  # user 認証 OAuth2 を使用
+  rescue_from StandardError,
+              with: lambda { |e| render_error(e) }
+
+  # Standard のエラーハンドリング
+  def render_error(exception)
+    status_code = ActionDispatch::ExceptionWrapper.new(env, exception).status_code
+    render json: { message: exception.message }, status: status_code
+  end
+
+  # user 認証
   def authenticate_user_from_token!
     auth_token = request.headers['Authorization']
 
