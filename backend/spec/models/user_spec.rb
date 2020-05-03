@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe User, type: :model do
-  let(:user){ build(:user) }
   describe 'バリデーション' do
+    let(:user){ build(:user) }
     context '正常系' do
       it '全てのバリデーションが正しい' do
         expect(user.valid?).to eq true
