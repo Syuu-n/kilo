@@ -95,6 +95,13 @@ describe User, type: :model do
         end
       end
 
+      context '#plan_name' do
+        subject { user.plan_name }
+        it 'プランの名前を取得できる' do
+          expect(subject).to eq user.plan.name
+        end
+      end
+
       context '#is_admin?' do
         it 'ユーザが管理者か確認できる' do
           expect(admin.is_admin?).to eq true

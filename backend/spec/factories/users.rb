@@ -10,6 +10,7 @@ FactoryBot.define do
     phone_number { Faker::PhoneNumber.cell_phone }
     plan { Plan.default_plan }
     role { Role.admin }
+    confirmed_at { Time.current }
   end
 
   factory :user do
@@ -23,6 +24,7 @@ FactoryBot.define do
     phone_number { Faker::PhoneNumber.cell_phone }
     plan { Plan.default_plan }
     role { Role.normal }
+    confirmed_at { Time.current }
   end
 
   factory :trial, class: User do
@@ -36,5 +38,6 @@ FactoryBot.define do
     phone_number { Faker::PhoneNumber.cell_phone }
     plan { Plan.default_plan }
     role { Role.trial }
+    confirmed_at { Time.current }
   end
 end
