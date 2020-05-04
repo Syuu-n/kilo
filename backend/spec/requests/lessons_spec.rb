@@ -184,8 +184,7 @@ describe 'Lessons API', type: :request do
       let(:access_token){ admin.access_token }
       let(:lesson_id){ Lesson.last.id }
       it '200 OK を返す' do
-        subject
-
+        expect{subject}.to change{Lesson.count}.by(-1)
         expect(response.status).to eq 200
         expect(json['message']).to eq 'Lesson deleted.'
       end
@@ -196,8 +195,7 @@ describe 'Lessons API', type: :request do
       let(:access_token){ user.access_token }
       let(:lesson_id){ Lesson.last.id }
       it '403 Forbidden を返す' do
-        subject
-
+        expect{subject}.to change{Lesson.count}.by(0)
         expect(response.status).to eq 403
         expect(json['code']).to eq 'not_permitted'
       end
@@ -208,8 +206,7 @@ describe 'Lessons API', type: :request do
       let(:access_token){ admin.access_token }
       let(:lesson_id){ Lesson.last.id + 1 }
       it '404 Not Found を返す' do
-        subject
-
+        expect{subject}.to change{Lesson.count}.by(0)
         expect(response.status).to eq 404
         expect(json['code']).to eq 'lesson_not_found'
       end

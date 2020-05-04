@@ -247,8 +247,7 @@ describe 'Users API', type: :request do
       let(:access_token){ user.access_token }
       let(:target_user_id){ user.id }
       it '403 Forbidden を返す' do
-        subject
-
+        expect{subject}.to change{User.count}.by(0)
         expect(response.status).to eq 403
         expect(json['code']).to eq 'not_permitted'
       end
@@ -259,8 +258,7 @@ describe 'Users API', type: :request do
       let(:access_token){ admin.access_token }
       let(:target_user_id){ User.last.id + 1 }
       it '404 NotFound を返す' do
-        subject
-
+        expect{subject}.to change{User.count}.by(0)
         expect(response.status).to eq 404
         expect(json['code']).to eq 'user_not_found'
       end

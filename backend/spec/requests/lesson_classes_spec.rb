@@ -137,7 +137,7 @@ describe 'LessonClasses API', type: :request do
     end
   end
 
-  describe 'POST /v1/lesson_classes/:id' do
+  describe 'PATCH /v1/lesson_classes/:id' do
     subject { patch "/v1/lesson_classes/#{lesson_class_id}", params: { lesson_class: lesson_class_params },
                    headers: { Authorization: access_token } }
     let(:lesson_class_params){ {
@@ -312,8 +312,7 @@ describe 'LessonClasses API', type: :request do
       let(:access_token){ admin.access_token }
       let(:lesson_classes_id){ LessonClass.last.id }
       it '200 OK を返す' do
-        subject
-
+        expect{subject}.to change{LessonClass.count}.by(-1)
         expect(response.status).to eq 200
         expect(json['message']).to eq 'Lesson Class deleted.'
       end
@@ -324,8 +323,7 @@ describe 'LessonClasses API', type: :request do
       let(:access_token){ admin.access_token }
       let(:lesson_classes_id){ LessonClass.last.id + 1 }
       it '404 NotFound を返す' do
-        subject
-
+        expect{subject}.to change{LessonClass.count}.by(0)
         expect(response.status).to eq 404
         expect(json['code']).to eq 'lesson_class_not_found'
       end
@@ -336,8 +334,7 @@ describe 'LessonClasses API', type: :request do
       let(:access_token){ user.access_token }
       let(:lesson_classes_id){ LessonClass.last.id }
       it '403 Forbidden を返す' do
-        subject
-
+        expect{subject}.to change{LessonClass.count}.by(0)
         expect(response.status).to eq 403
         expect(json['code']).to eq 'not_permitted'
       end
