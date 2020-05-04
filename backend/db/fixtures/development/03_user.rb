@@ -12,7 +12,8 @@ User.seed(:id,
             phone_number: Faker::PhoneNumber.cell_phone,
             plan: Plan.default_plan,
             role: Role.admin,
-            password: 'password'
+            password: 'password',
+            confirmed_at: Time.current
           }
 )
 
@@ -30,7 +31,8 @@ roles.each_with_index do |role, i|
               phone_number: Faker::PhoneNumber.cell_phone,
               plan: Plan.default_plan,
               role: Role.send(role),
-              password: 'password'
+              password: 'password',
+              confirmed_at: Time.current
             }
   )
 end

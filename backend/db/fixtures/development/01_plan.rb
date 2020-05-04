@@ -1,6 +1,12 @@
-Plan.seed(:id,
-          { id: 1,
-            name: 'Basic Plan',
-            price: 3000
-          }
-)
+Faker::Config.locale = 'ja'
+
+3.times do |i|
+  Plan.seed(:id,
+            { id: i + 1,
+              name: Faker::Space.galaxy,
+              price: rand(100..5000),
+              monthly_lesson_count: rand(1..8),
+              for_children: Faker::Boolean.boolean
+            }
+  )
+end
