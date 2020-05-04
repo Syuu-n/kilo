@@ -34,6 +34,9 @@ module V1
         when LessonRuleInvalidError
           render json: { code: 'lesson_rule_invalid_error' }, status: :unprocessable_entity
           return
+        else
+          render json: { code: 'lesson_class_create_error' }, status: :unprocessable_entity
+          return
         end
       end
       render json: @lesson_class, status: :created
@@ -47,10 +50,10 @@ module V1
         end
 
         ActiveRecord::Base.transaction do
+          @lesson_class.update!(lesson_class_params)
           @lesson_class.lesson_rules.each do |lr|
             lr.destroy!
           end
-
           lesson_rule_params[:lesson_rules].each do |lesson_rule|
             lr = LessonRule.new(lesson_rule.merge(lesson_class: @lesson_class))
             unless lr.save
@@ -65,6 +68,9 @@ module V1
           return
         when LessonRuleInvalidError
           render json: { code: 'lesson_rule_invalid_error' }, status: :unprocessable_entity
+          return
+        else
+          render json: { code: 'lesson_class_update_error' }, status: :unprocessable_entity
           return
         end
       end
