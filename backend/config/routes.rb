@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     resource :trials, only: [:create, :update]
     resource :passwords, only: [:create, :update]
 
-    resources :plan, except: [:new, :edit]
+    resources :plans, except: [:new, :edit]
 
     resources :lessons, except: [:new, :edit] do
       member do
