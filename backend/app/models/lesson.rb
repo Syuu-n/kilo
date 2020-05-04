@@ -6,6 +6,12 @@ class Lesson < ApplicationRecord
   validates :start_at, presence: true
   validates :end_at, presence: true
 
+  def class_name
+    if lesson_class
+      lesson_class.name
+    end
+  end
+
   def joined?(user)
     users.include? user
   end

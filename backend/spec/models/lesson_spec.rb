@@ -39,6 +39,12 @@ describe Lesson, type: :model do
       end
       let(:user){ create(:user) }
       let(:lesson){ Lesson.first }
+      context '#class_name' do
+        it '指定したレッスンのクラス名を取得できる' do
+          expect(lesson.class_name).to eq lesson.lesson_class.name
+        end
+      end
+
       context '#joined?' do
         before do
           lesson.join(user)

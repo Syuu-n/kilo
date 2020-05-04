@@ -99,7 +99,7 @@ describe 'Users API', type: :request do
       birthday: (Time.current - rand(1..100).year).strftime('%Y-%m-%d'),
       phone_number: Faker::PhoneNumber.cell_phone
     } }
-    context '管理者はユーザ情報を変更した場合' do
+    context '管理者がユーザ情報を変更した場合' do
       login_admin
       let(:access_token){ admin.access_token }
       let(:target_user_id){ User.last.id }
@@ -114,7 +114,7 @@ describe 'Users API', type: :request do
       end
     end
 
-    context 'ユーザは自身のユーザ情報を変更した場合' do
+    context 'ユーザが自身のユーザ情報を変更した場合' do
       login_user
       let(:access_token){ user.access_token }
       let(:target_user_id){ user.id }
@@ -280,9 +280,9 @@ describe 'Users API', type: :request do
         last_lesson = User.last.lessons.first
         if last_lesson
           expect(json.last['id']).to eq last_lesson.id
-          expect(json.last['lesson_class_name']).to eq last_lesson.lesson_class.name
-          expect(json.last['start_at']).to eq last_lesson.start_at
-          expect(json.last['end_at']).to eq last_lesson.end_at
+          expect(json.last['class_name']).to eq last_lesson.class_name
+          expect(Time.zone.parse(json.last['start_at'])).to eq last_lesson.start_at
+          expect(Time.zone.parse(json.last['end_at'])).to eq last_lesson.end_at
           expect(json.last['users'].include? User.last).to eq true
         else
           expect(json).to eq []
@@ -301,9 +301,9 @@ describe 'Users API', type: :request do
         last_lesson = user.lessons.first
         if last_lesson
           expect(json.last['id']).to eq last_lesson.id
-          expect(json.last['lesson_class_name']).to eq last_lesson.lesson_class.name
-          expect(json.last['start_at']).to eq last_lesson.start_at
-          expect(json.last['end_at']).to eq last_lesson.end_at
+          expect(json.last['class_name']).to eq last_lesson.class_name
+          expect(Time.zone.parse(json.last['start_at'])).to eq last_lesson.start_at
+          expect(Time.zone.parse(json.last['end_at'])).to eq last_lesson.end_at
         else
           expect(json).to eq []
         end
