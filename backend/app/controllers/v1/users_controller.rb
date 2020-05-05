@@ -15,6 +15,11 @@ module V1
       @user.plan = Plan.default_plan
       @user.role = Role.normal
 
+      if User.find_by(email: @user.email)
+        render json: { code: 'email_already_exists_error' }, status: :bad_request
+        return
+      end
+
       @user.skip_confirmation!
       if @user.save
         render json: @user, status: :created

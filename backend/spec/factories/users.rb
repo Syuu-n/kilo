@@ -38,6 +38,5 @@ FactoryBot.define do
     phone_number { Faker::PhoneNumber.cell_phone }
     plan { Plan.default_plan }
     role { Role.trial }
-    confirmed_at { Time.current }
   end
 end

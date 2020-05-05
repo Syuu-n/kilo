@@ -14,7 +14,7 @@ module V1
       end
 
       if @user.save
-        render json: @user, status: :ok
+      render json: { message: 'Trial request mail was sent.' }, status: :ok
       else
         render json: { code: 'trial_request_create_error' }, status: :unprocessable_entity
       end
