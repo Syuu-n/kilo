@@ -10,4 +10,16 @@ module ControllerHelpers
   def find_trial_user
     User.find_by(role: Role.trial)
   end
+
+  def sent_emails
+    ActionMailer::Base.deliveries
+  end
+
+  def last_email
+    ActionMailer::Base.deliveries.last
+  end
+
+  def reset_email
+    ActionMailer::Base.deliveries.clear
+  end
 end
