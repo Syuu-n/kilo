@@ -19,14 +19,14 @@ services:
       - db
 
   frontend:
-    image: "node:10-alpine"
-    user: "node"
-    working_dir: /myapp/frontend
+    build:
+      context: "frontend"
+    image: "node:14-alpine"
     volumes:
-      - ./frontend:/myapp/frontend
+      - ./frontend/dist:/usr/src/app/dist
     ports:
       - "3000:3000"
-    command: "yarn start"
     stdin_open: true
+    tty: true
     depends_on:
       - backend
