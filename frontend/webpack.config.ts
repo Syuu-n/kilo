@@ -1,17 +1,15 @@
 import * as path from 'path';
-import { Configuration } from 'webpack';
 
-const config: Configuration = {
-  context: path.join(__dirname, 'src'),
-  entry: './index.tsx',
+module.exports = {
+  entry: [path.resolve(__dirname, "./src/index.tsx")],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.resolve(__dirname, "public"),
     filename: 'bundle.js'
   },
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(js|ts|tsx)?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
       },
@@ -22,9 +20,8 @@ const config: Configuration = {
   },
   devtool: "inline-source-map",
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    port: 3000
-  },
+    contentBase: "./public",
+    port: 3000,
+    host: '0.0.0.0'
+  }
 };
-
-export default config;
