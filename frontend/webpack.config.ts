@@ -1,4 +1,5 @@
-import * as path from 'path';
+// import * as path from 'path';
+const path = require('path');
 
 module.exports = {
   entry: [path.resolve(__dirname, "./src/index.tsx")],
@@ -13,10 +14,20 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.css?$/,
+        use: [
+          "style-loader",
+          {
+            loader: "css-loader",
+            options: { url: false }
+          }
+        ]
+      }
     ],
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', 'jsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
   },
   devtool: "inline-source-map",
   devServer: {
