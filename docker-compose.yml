@@ -23,7 +23,7 @@ services:
       context: "frontend"
     image: "node:14-alpine"
     volumes:
-      - ./frontend/public:/usr/src/app/public
+      - ./frontend:/usr/src/app
     ports:
       - "3000:3000"
     stdin_open: true

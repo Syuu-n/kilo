@@ -2,9 +2,10 @@ import * as path from 'path';
 import { Configuration } from 'webpack';
 
 const config: Configuration = {
-  entry: './src/index.tsx',
+  context: path.join(__dirname, 'src'),
+  entry: './index.tsx',
   output: {
-    path: path.resolve(__dirname, "public"),
+    path: path.join(__dirname, 'dist'),
     filename: 'bundle.js'
   },
   module: {
@@ -21,7 +22,7 @@ const config: Configuration = {
   },
   devtool: "inline-source-map",
   devServer: {
-    contentBase: "./public",
+    contentBase: path.join(__dirname, 'dist'),
     port: 3000
   },
 };
