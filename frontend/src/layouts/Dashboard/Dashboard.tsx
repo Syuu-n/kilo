@@ -1,4 +1,4 @@
-import { withStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import logo from 'assets/img/reactlogo.png';
 import image from 'assets/img/sidebar-2.jpg';
 import appStyle from 'assets/jss/material-dashboard-react/appStyle';
@@ -9,6 +9,10 @@ import 'perfect-scrollbar/css/perfect-scrollbar.css';
 import * as React from 'react';
 import { Redirect, Route, RouteProps, Switch } from 'react-router-dom';
 import dashboardRoutes from 'routes/dashboard';
+
+const useStyles = makeStyles(() => ({
+  ...appStyle
+}));
 
 const switchRoutes = (
   <Switch>
@@ -23,13 +27,6 @@ const switchRoutes = (
 );
 
 interface Props {
-  classes: {
-    content: string;
-    container: string;
-    map: string;
-    mainPanel: string;
-    wrapper: string;
-  };
 }
 
 interface State {
@@ -66,7 +63,8 @@ class App extends React.Component<Props & RouteProps, State> {
   }
 
   render() {
-    const { classes, ...rest } = this.props;
+    const { ...rest } = this.props;
+    const classes = useStyles();
 
     return (
       <div className={classes.wrapper}>
@@ -115,4 +113,4 @@ class App extends React.Component<Props & RouteProps, State> {
   }
 }
 
-export default withStyles(appStyle)(App);
+export default App;

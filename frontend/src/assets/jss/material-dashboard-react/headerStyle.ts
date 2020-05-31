@@ -2,7 +2,7 @@
 // // // Header styles
 // #############################
 
-import { StyleRulesCallback } from '@material-ui/core';
+import { Theme, makeStyles, createStyles } from '@material-ui/core';
 import {
   container,
   dangerColor,
@@ -14,7 +14,8 @@ import {
   warningColor,
 } from 'assets/jss/material-dashboard-react';
 
-const headerStyle: StyleRulesCallback = theme => ({
+const headerStyle = makeStyles((theme: Theme) =>
+createStyles({
   appBar: {
     backgroundColor: 'transparent',
     boxShadow: 'none',
@@ -78,6 +79,7 @@ const headerStyle: StyleRulesCallback = theme => ({
     color: '#FFFFFF',
     ...defaultBoxShadow,
   },
-});
+}),
+);
 
 export default headerStyle;

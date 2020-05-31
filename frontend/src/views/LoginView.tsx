@@ -1,4 +1,4 @@
-import { Grid, withStyles } from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
 import loginViewStyle from 'assets/jss/kiloStyles/loginViewStyle';
 import {
   ItemGrid,
@@ -6,17 +6,13 @@ import {
  } from 'components';
 import * as React from 'react';
 
-interface Props {
-  classes: {
-    wrapper: string;
-    loginView: string;
-    cardTitle: string;
-  };
-}
+const useStyles = makeStyles(() => ({
+  ...loginViewStyle
+}));
 
-class LoginView extends React.Component<Props> {
+class LoginView extends React.Component {
   render() {
-    const { classes } = this.props;
+    const classes = useStyles();
 
     return (
       <div className={classes.wrapper}>
@@ -33,4 +29,4 @@ class LoginView extends React.Component<Props> {
   }
 }
 
-export default withStyles(loginViewStyle)(LoginView);
+export default LoginView;

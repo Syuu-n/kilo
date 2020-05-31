@@ -1,11 +1,11 @@
-import { Grid, withStyles } from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
 import {
   Accessibility,
   AccessTime,
   ArrowUpward,
-  ContentCopy,
+  FileCopy,
   DateRange,
-  InfoOutline,
+  InfoOutlined,
   LocalOffer,
   Store,
   Update,
@@ -29,23 +29,20 @@ import {
   emailsSubscriptionChart,
 } from 'variables/charts';
 
-interface Props {
-  classes: {
-    successText: string;
-    upArrowCardCategory: string;
-  };
-}
+const useStyles = makeStyles(() => ({
+  ...dashboardStyle
+}));
 
-class Dashboard extends React.Component<Props> {
+class Dashboard extends React.Component {
   render() {
-    const { classes } = this.props;
+    const classes = useStyles();
 
     return (
       <div>
         <Grid container>
           <ItemGrid xs={12} sm={6} md={3}>
             <StatsCard
-              icon={ContentCopy}
+              icon={FileCopy}
               iconColor="orange"
               title="Used Space"
               description="49/50"
@@ -67,7 +64,7 @@ class Dashboard extends React.Component<Props> {
           </ItemGrid>
           <ItemGrid xs={12} sm={6} md={3}>
             <StatsCard
-              icon={InfoOutline}
+              icon={InfoOutlined}
               iconColor="red"
               title="Fixed Issues"
               description="75"
@@ -179,4 +176,4 @@ class Dashboard extends React.Component<Props> {
   }
 }
 
-export default withStyles(dashboardStyle)(Dashboard);
+export default Dashboard;

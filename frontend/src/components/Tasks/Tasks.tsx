@@ -6,30 +6,17 @@ import {
   TableCell,
   TableRow,
   Tooltip,
-  withStyles,
+  makeStyles,
 } from '@material-ui/core';
 import { Check, Close, Edit } from '@material-ui/icons';
 import tasksStyle from 'assets/jss/material-dashboard-react/tasksStyle';
 import * as React from 'react';
 
+const useStyles = makeStyles(() => ({
+  ...tasksStyle
+}));
+
 interface Props {
-  classes: {
-    table: string;
-    tableRow: string;
-    tableCell: string;
-    tableActions: string;
-    tableActionButton: string;
-    tableActionButtonIcon: string;
-
-    checked: string;
-    checkedIcon: string;
-    uncheckedIcon: string;
-
-    edit: string;
-    close: string;
-    tooltip: string;
-  };
-
   checkedIndexes: number[];
   tasksIndexes: number[];
   tasks: React.ReactNode[];
@@ -49,8 +36,9 @@ class Tasks extends React.Component<Props, State> {
   }
 
   render() {
-    const { classes, tasksIndexes, tasks } = this.props;
+    const { tasksIndexes, tasks } = this.props;
     const { checked } = this.state;
+    const classes = useStyles();
 
     const tableRows = tasksIndexes.map(value => (
       <TableRow key={value} className={classes.tableRow}>
@@ -126,4 +114,4 @@ class Tasks extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(tasksStyle)(Tasks);
+export default Tasks;

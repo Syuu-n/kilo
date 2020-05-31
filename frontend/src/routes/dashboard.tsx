@@ -1,6 +1,6 @@
 import {
   BubbleChart,
-  ContentPaste,
+  FileCopy,
   Dashboard,
   LibraryBooks,
   LocationOn,
@@ -9,7 +9,6 @@ import {
 } from '@material-ui/icons';
 import DashboardPage from 'views/Dashboard/Dashboard';
 import Icons from 'views/Icons/Icons';
-import Maps from 'views/Maps/Maps';
 import NotificationsPage from 'views/Notifications/Notifications';
 import TableList from 'views/TableList/TableList';
 import Typography from 'views/Typography/Typography';
@@ -35,7 +34,7 @@ const dashboardRoutes = [
     path: '/table',
     sidebarName: 'Table List',
     navbarName: 'Table List',
-    icon: ContentPaste,
+    icon: FileCopy,
     component: TableList,
   },
   {
@@ -51,13 +50,6 @@ const dashboardRoutes = [
     navbarName: 'Icons',
     icon: BubbleChart,
     component: Icons,
-  },
-  {
-    path: '/maps',
-    sidebarName: 'Maps',
-    navbarName: 'Map',
-    icon: LocationOn,
-    component: Maps,
   },
   {
     path: '/notifications',

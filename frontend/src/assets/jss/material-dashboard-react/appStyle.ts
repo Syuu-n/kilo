@@ -2,14 +2,15 @@
 // // // App styles
 // #############################
 
-import { StyleRulesCallback } from '@material-ui/core';
+import { Theme, makeStyles, createStyles } from '@material-ui/core';
 import {
   container,
   drawerWidth,
   transition,
 } from 'assets/jss/material-dashboard-react';
 
-const appStyle: StyleRulesCallback = theme => ({
+const appStyle = makeStyles((theme: Theme) =>
+createStyles({
   wrapper: {
     position: 'relative',
     top: '0',
@@ -36,6 +37,7 @@ const appStyle: StyleRulesCallback = theme => ({
   map: {
     marginTop: '70px',
   },
-});
+}),
+);
 
 export default appStyle;

@@ -2,7 +2,7 @@
 // // // HeaderLinks styles
 // #############################
 
-import { StyleRulesCallback } from '@material-ui/core';
+import { Theme, makeStyles, createStyles } from '@material-ui/core';
 import {
   dangerColor,
   defaultFont,
@@ -10,7 +10,8 @@ import {
   primaryColor,
 } from 'assets/jss/material-dashboard-react';
 
-const headerLinksStyle: StyleRulesCallback = theme => ({
+const headerLinksStyle= makeStyles((theme: Theme) =>
+createStyles({
   popperClose: {
     pointerEvents: 'none',
   },
@@ -138,6 +139,7 @@ const headerLinksStyle: StyleRulesCallback = theme => ({
       ...primaryBoxShadow,
     },
   },
-});
+}),
+);
 
 export default headerLinksStyle;

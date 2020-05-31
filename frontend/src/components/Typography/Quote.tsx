@@ -1,21 +1,19 @@
-import { withStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import typographyStyle from 'assets/jss/material-dashboard-react/typographyStyle';
 import * as React from 'react';
 
-interface Props {
-  classes: {
-    defaultFontStyle: string;
-    quote: string;
-    quoteText: string;
-    quoteAuthor: string;
-  };
+const useStyles = makeStyles(() => ({
+  ...typographyStyle
+}));
 
+interface Props {
   text?: React.ReactNode;
   author?: React.ReactNode;
 }
 
 const Quote: React.SFC<Props> = props => {
-  const { classes, text, author } = props;
+  const { text, author } = props;
+  const classes = useStyles();
 
   return (
     <blockquote className={classes.defaultFontStyle + ' ' + classes.quote}>
@@ -25,4 +23,4 @@ const Quote: React.SFC<Props> = props => {
   );
 };
 
-export default withStyles(typographyStyle)(Quote);
+export default Quote;

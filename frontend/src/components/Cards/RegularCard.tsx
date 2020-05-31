@@ -3,23 +3,17 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  withStyles,
+  makeStyles,
 } from '@material-ui/core';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 import * as cx from 'classnames';
 import * as React from 'react';
 
-interface Props {
-  classes: {
-    card: string;
-    cardActions: string;
-    cardHeader: string;
-    cardPlain: string;
-    cardPlainHeader: string;
-    cardSubtitle: string;
-    cardTitle: string;
-  };
+const useStyles = makeStyles(() => ({
+  ...regularCardStyle
+}));
 
+interface Props {
   plainCard?: boolean;
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple';
   cardTitle?: React.ReactNode;
@@ -35,7 +29,6 @@ class RegularCard extends React.Component<Props> {
 
   public render() {
     const {
-      classes,
       headerColor,
       plainCard,
       cardTitle,
@@ -43,6 +36,8 @@ class RegularCard extends React.Component<Props> {
       content,
       footer,
     } = this.props;
+
+    const classes = useStyles();
 
     const plainCardClasses = cx({
       [' ' + classes.cardPlain]: plainCard,
@@ -76,4 +71,4 @@ class RegularCard extends React.Component<Props> {
   }
 }
 
-export default withStyles(regularCardStyle)(RegularCard);
+export default RegularCard;

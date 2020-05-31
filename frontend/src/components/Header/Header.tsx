@@ -4,7 +4,7 @@ import {
   Hidden,
   IconButton,
   Toolbar,
-  withStyles,
+  makeStyles,
 } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
 import headerStyle from 'assets/jss/material-dashboard-react/headerStyle';
@@ -16,15 +16,11 @@ import { RouteProps } from 'react-router';
 
 type ColorType = 'primary' | 'info' | 'success' | 'warning' | 'danger';
 
-interface Props {
-  classes: {
-    appBar: string;
-    container: string;
-    flex: string;
-    title: string;
-    appResponsive: string;
-  } & Partial<Record<ColorType, string>>;
+const classes = useStyles(() => ({
+  ...headerStyle
+}));
 
+interface Props {
   color?: ColorType;
 
   handleDrawerToggle?: () => void;
@@ -39,7 +35,9 @@ class Header extends React.Component<Props & RouteProps> {
   }
 
   public render() {
-    const { classes, color, handleDrawerToggle } = this.props;
+    const { color, handleDrawerToggle } = this.props;
+
+    const classes = useStyles();
 
     const appBarClasses = cx(classes.appBar, color && classes[color]);
 
@@ -87,4 +85,4 @@ class Header extends React.Component<Props & RouteProps> {
   }
 }
 
-export default withStyles(headerStyle)(Header);
+export default Header;

@@ -4,8 +4,7 @@ import {
   CardHeader,
   Tab,
   Tabs,
-  Typography,
-  withStyles,
+  Typography
 } from '@material-ui/core';
 import { BugReport, Cloud, Code } from '@material-ui/icons';
 import tasksCardStyle from 'assets/jss/material-dashboard-react/tasksCardStyle';
@@ -14,18 +13,6 @@ import * as React from 'react';
 import { bugs, server, website } from 'variables/general';
 
 interface Props {
-  classes: {
-    card: string;
-    cardHeader: string;
-    cardTitle: string;
-    cardHeaderContent: string;
-    tabsContainer: string;
-    displayNone: string;
-    tabWrapper: string;
-    label: string;
-    labelIcon: string;
-    tabIcon: string;
-  };
 }
 
 interface State {
@@ -42,7 +29,7 @@ class TasksCard extends React.Component<Props, State> {
   }
 
   render() {
-    const { classes } = this.props;
+    const classes = tasksCardStyle();
 
     return (
       <Card className={classes.card}>
@@ -67,7 +54,7 @@ class TasksCard extends React.Component<Props, State> {
                 classes={{
                   wrapper: classes.tabWrapper,
                   labelIcon: classes.labelIcon,
-                  label: classes.label,
+                  root: classes.label,
                 }}
                 icon={<BugReport className={classes.tabIcon} />}
                 label="Bugs"
@@ -76,7 +63,7 @@ class TasksCard extends React.Component<Props, State> {
                 classes={{
                   wrapper: classes.tabWrapper,
                   labelIcon: classes.labelIcon,
-                  label: classes.label,
+                  root: classes.label,
                 }}
                 icon={<Code className={classes.tabIcon} />}
                 label="Website"
@@ -85,7 +72,7 @@ class TasksCard extends React.Component<Props, State> {
                 classes={{
                   wrapper: classes.tabWrapper,
                   labelIcon: classes.labelIcon,
-                  label: classes.label,
+                  root: classes.label,
                 }}
                 icon={<Cloud className={classes.tabIcon} />}
                 label="Server"
@@ -133,4 +120,4 @@ class TasksCard extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(tasksCardStyle)(TasksCard);
+export default TasksCard;

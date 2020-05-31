@@ -5,23 +5,16 @@ import {
   CardHeader,
   SvgIcon,
   Typography,
-  withStyles,
+  makeStyles,
 } from '@material-ui/core';
 import chartCardStyle from 'assets/jss/material-dashboard-react/chartCardStyle';
 import * as React from 'react';
 
+const useStyles = makeStyles(() => ({
+  ...chartCardStyle
+}));
+
 interface Props {
-  classes: {
-    card: string;
-    cardHeader: string;
-    cardContent: string;
-    cardCategory: string;
-    cardActions: string;
-    cardStats: string;
-    cardStatsIcon: string;
-    cardStatsLink: string;
-    cardTitle: string;
-  };
   chart: React.ReactNode;
   title?: React.ReactNode;
   text?: React.ReactNode;
@@ -51,7 +44,6 @@ class ChartCard extends React.Component<Props> {
 
   public render() {
     const {
-      classes,
       chartColor,
       statIconColor,
       chart,
@@ -61,6 +53,8 @@ class ChartCard extends React.Component<Props> {
       statText,
       statIcon: StatIcon,
     } = this.props;
+
+    const classes = useStyles();
 
     return (
       <Card className={classes.card}>
@@ -72,7 +66,7 @@ class ChartCard extends React.Component<Props> {
         />
         <CardContent className={classes.cardContent}>
           <Typography
-            variant="title"
+            variant="h4"
             component="h4"
             className={classes.cardTitle}
           >
@@ -105,4 +99,4 @@ class ChartCard extends React.Component<Props> {
   }
 }
 
-export default withStyles(chartCardStyle)(ChartCard);
+export default ChartCard;

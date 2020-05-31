@@ -1,24 +1,15 @@
-import { FormControl, Input, InputLabel, withStyles } from '@material-ui/core';
+import { FormControl, Input, InputLabel, makeStyles } from '@material-ui/core';
 import { FormControlProps } from '@material-ui/core/FormControl';
 import { Check, Clear } from '@material-ui/icons';
 import customInputStyle from 'assets/jss/material-dashboard-react/customInputStyle';
 import * as cx from 'classnames';
 import * as React from 'react';
 
-interface Props {
-  classes: {
-    labelRootError: string;
-    labelRootSuccess: string;
-    underlineError: string;
-    underlineSuccess: string;
-    underline: string;
-    marginTop: string;
-    formControl: string;
-    labelRoot: string;
-    disabled: string;
-    feedback: string;
-  };
+const useStyles = makeStyles(() => ({
+  ...customInputStyle
+}));
 
+interface Props {
   labelText?: React.ReactNode;
   labelProps?: object;
   id?: string;
@@ -30,7 +21,6 @@ interface Props {
 
 const CustomInput: React.SFC<Props> = props => {
   const {
-    classes,
     formControlProps,
     labelText,
     id,
@@ -39,6 +29,8 @@ const CustomInput: React.SFC<Props> = props => {
     error,
     success,
   } = props;
+
+  const classes = useStyles();
 
   const labelClasses = cx({
     [' ' + classes.labelRootError]: error,
@@ -89,4 +81,4 @@ const CustomInput: React.SFC<Props> = props => {
   );
 };
 
-export default withStyles(customInputStyle)(CustomInput);
+export default CustomInput;

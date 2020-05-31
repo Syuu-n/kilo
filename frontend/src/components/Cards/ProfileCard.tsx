@@ -4,24 +4,16 @@ import {
   CardContent,
   CardHeader,
   Typography,
-  withStyles,
+  makeStyles,
 } from '@material-ui/core';
 import profileCardStyle from 'assets/jss/material-dashboard-react/profileCardStyle';
 import * as React from 'react';
 
-interface Props {
-  classes: {
-    card: string;
-    cardHeader: string;
-    cardAvatar: string;
-    textAlign: string;
-    img: string;
-    cardTitle: string;
-    cardSubtitle: string;
-    cardDescription: string;
-    cardActions: string;
-  };
+const useStyles = makeStyles(() => ({
+  ...profileCardStyle
+}));
 
+interface Props {
   title?: React.ReactNode;
   subtitle?: React.ReactNode;
   description?: React.ReactNode;
@@ -32,13 +24,14 @@ interface Props {
 class ProfileCard extends React.Component<Props> {
   public render() {
     const {
-      classes,
       subtitle,
       title,
       description,
       footer,
       avatar,
     } = this.props;
+
+    const classes = useStyles();
 
     return (
       <Card className={classes.card}>
@@ -74,4 +67,4 @@ class ProfileCard extends React.Component<Props> {
   }
 }
 
-export default withStyles(profileCardStyle)(ProfileCard);
+export default ProfileCard;

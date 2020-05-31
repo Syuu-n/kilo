@@ -1,17 +1,16 @@
 import {
   Checkbox,
-  withStyles
+  makeStyles
 } from '@material-ui/core';
 import { Check } from '@material-ui/icons';
 import checkboxStyle from 'assets/jss/material-dashboard-react/customCheckBoxRadioSwitchStyle';
 import * as React from 'react';
 
+const useStyles = makeStyles(() => ({
+  ...checkboxStyle
+}));
+
 interface Props {
-  classes: {
-    checked: string;
-    checkedIcon: string;
-    uncheckedIcon: string;
-  };
   checked: boolean;
 }
 
@@ -27,7 +26,8 @@ class CustomCheckbox extends React.Component<Props, State> {
   }
 
   render() {
-    const { classes, checked } = this.props;
+    const { checked } = this.props;
+    const classes = useStyles();
 
     return (
       <Checkbox
@@ -47,4 +47,4 @@ class CustomCheckbox extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(checkboxStyle)(CustomCheckbox);
+export default CustomCheckbox;

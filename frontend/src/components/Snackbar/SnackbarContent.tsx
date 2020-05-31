@@ -2,24 +2,20 @@ import {
   IconButton,
   SnackbarContent as Snack,
   SvgIcon,
-  withStyles,
+  makeStyles,
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import snackbarContentStyle from 'assets/jss/material-dashboard-react/snackbarContentStyle';
 import * as cx from 'classnames';
 import * as React from 'react';
 
+const useStyles = makeStyles(() => ({
+  ...snackbarContentStyle
+}));
+
 type ColorType = 'info' | 'success' | 'warning' | 'danger' | 'primary';
 
 interface Props {
-  classes: {
-    icon: string;
-    iconMessage: string;
-    iconButton: string;
-    close: string;
-    message: string;
-    root: string;
-  } & Partial<Record<ColorType, string>>;
   message: React.ReactNode;
 
   color?: ColorType;
@@ -28,7 +24,8 @@ interface Props {
 }
 
 const SnackbarContent: React.SFC<Props> = props => {
-  const { classes, message, color, close, icon } = props;
+  const { message, color, close, icon } = props;
+  const classes = useStyles();
 
   const action = close ? (
     <IconButton
@@ -62,4 +59,4 @@ const SnackbarContent: React.SFC<Props> = props => {
   );
 };
 
-export default withStyles(snackbarContentStyle)(SnackbarContent);
+export default SnackbarContent;

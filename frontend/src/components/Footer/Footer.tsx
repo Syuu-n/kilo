@@ -1,22 +1,13 @@
-import { List, ListItem, withStyles } from '@material-ui/core';
+import { List, ListItem, makeStyles } from '@material-ui/core';
 import footerStyle from 'assets/jss/material-dashboard-react/footerStyle';
 import * as React from 'react';
 
-interface Props {
-  classes: {
-    footer: string;
-    container: string;
-    left: string;
-    list: string;
-    inlineBlock: string;
-    block: string;
-    right: string;
-    a: string;
-  };
-}
+const useStyles = makeStyles(() => ({
+  ...footerStyle
+}));
 
-const Footer: React.SFC<Props> = props => {
-  const { classes } = props;
+const Footer: React.SFC = () => {
+  const classes = useStyles();
 
   return (
     <footer className={classes.footer}>
@@ -58,4 +49,4 @@ const Footer: React.SFC<Props> = props => {
   );
 };
 
-export default withStyles(footerStyle)(Footer);
+export default Footer;

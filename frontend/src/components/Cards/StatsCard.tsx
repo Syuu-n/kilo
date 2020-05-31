@@ -5,26 +5,16 @@ import {
   CardHeader,
   SvgIcon,
   Typography,
-  withStyles,
+  makeStyles,
 } from '@material-ui/core';
 import statsCardStyle from 'assets/jss/material-dashboard-react/statsCardStyle';
 import * as React from 'react';
 
+const useStyles = makeStyles(() => ({
+  ...statsCardStyle
+}));
+
 interface Props {
-  classes: {
-    card: string;
-    cardHeader: string;
-    cardAvatar: string;
-    cardIcon: string;
-    cardContent: string;
-    cardCategory: string;
-    cardTitle: string;
-    cardTitleSmall: string;
-    cardActions: string;
-    cardStats: string;
-    cardStatsIcon: string;
-    cardStatsLink: string;
-  };
   icon: typeof SvgIcon;
   statIcon: typeof SvgIcon;
 
@@ -56,7 +46,6 @@ class StatsCard extends React.Component<Props> {
 
   public render() {
     const {
-      classes,
       title,
       description,
       statLink,
@@ -67,6 +56,8 @@ class StatsCard extends React.Component<Props> {
       statIconColor,
       iconColor,
     } = this.props;
+
+    const classes = useStyles();
 
     return (
       <Card className={classes.card}>
@@ -82,7 +73,7 @@ class StatsCard extends React.Component<Props> {
             {title}
           </Typography>
           <Typography
-            variant="headline"
+            variant="h2"
             component="h2"
             className={classes.cardTitle}
           >
@@ -115,4 +106,4 @@ class StatsCard extends React.Component<Props> {
   }
 }
 
-export default withStyles(statsCardStyle)(StatsCard);
+export default StatsCard;

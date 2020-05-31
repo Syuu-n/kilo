@@ -5,7 +5,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  withStyles,
+  makeStyles,
 } from '@material-ui/core';
 import sidebarStyle from 'assets/jss/material-dashboard-react/sidebarStyle';
 import * as cx from 'classnames';
@@ -14,24 +14,11 @@ import * as React from 'react';
 import { NavLink, RouteProps } from 'react-router-dom';
 import { Route } from 'routes/dashboard';
 
-interface Props {
-  classes: {
-    list: string;
-    whiteFont: string;
-    itemLink: string;
-    itemIcon: string;
-    itemText: string;
-    logo: string;
-    img: string;
-    drawerPaper: string;
-    open: string;
-    sidebarWrapper: string;
-    background: string;
-    logoLink: string;
-    logoImage: string;
-    item: string;
-  };
+const useStyles = makeStyles(() => ({
+  ...sidebarStyle
+}));
 
+interface Props {
   handleDrawerToggle: () => void;
   open: boolean;
 
@@ -43,7 +30,8 @@ interface Props {
 }
 
 const Sidebar: React.SFC<Props & RouteProps> = props => {
-  const { classes, color, logo, image, logoText, routes } = props;
+  const { color, logo, image, logoText, routes } = props;
+  const classes = useStyles();
 
   var links = (
     <List className={classes.list}>
@@ -154,4 +142,4 @@ const Sidebar: React.SFC<Props & RouteProps> = props => {
   }
 };
 
-export default withStyles(sidebarStyle)(Sidebar);
+export default Sidebar;

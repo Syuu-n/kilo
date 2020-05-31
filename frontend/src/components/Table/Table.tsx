@@ -4,19 +4,16 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  withStyles,
+  makeStyles,
 } from '@material-ui/core';
 import tableStyle from 'assets/jss/material-dashboard-react/tableStyle';
 import * as React from 'react';
 
-interface Props {
-  classes: {
-    table: string;
-    tableResponsive: string;
-    tableCell: string;
-    tableHeadCell: string;
-  };
+const useStyles = makeStyles(() => ({
+  ...tableStyle
+}));
 
+interface Props {
   tableHeaderColor?:
     | 'warning'
     | 'primary'
@@ -30,7 +27,8 @@ interface Props {
 }
 
 const CustomTable: React.SFC<Props> = props => {
-  const { classes, tableHead, tableData, tableHeaderColor } = props;
+  const { tableHead, tableData, tableHeaderColor } = props;
+  const classes = useStyles();
 
   const tableRows =
     tableData &&
@@ -72,4 +70,4 @@ CustomTable.defaultProps = {
   tableHeaderColor: 'gray',
 };
 
-export default withStyles(tableStyle)(CustomTable);
+export default CustomTable;

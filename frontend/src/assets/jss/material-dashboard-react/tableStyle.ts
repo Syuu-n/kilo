@@ -2,7 +2,7 @@
 // // // Table styles
 // #############################
 
-import { StyleRulesCallback } from '@material-ui/core';
+import { Theme, makeStyles, createStyles } from '@material-ui/core';
 import {
   dangerColor,
   defaultFont,
@@ -14,7 +14,8 @@ import {
   warningColor,
 } from 'assets/jss/material-dashboard-react';
 
-const tableStyle: StyleRulesCallback = theme => ({
+const tableStyle = makeStyles((theme: Theme) =>
+createStyles({
   warningTableHeader: {
     color: warningColor,
   },
@@ -57,9 +58,10 @@ const tableStyle: StyleRulesCallback = theme => ({
   },
   tableResponsive: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     overflowX: 'auto',
   },
-});
+}),
+);
 
 export default tableStyle;

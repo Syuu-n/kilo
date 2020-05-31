@@ -2,7 +2,7 @@
 // // // TasksCard styles
 // #############################
 
-import { StyleRulesCallback } from '@material-ui/core';
+import { Theme, makeStyles, createStyles } from '@material-ui/core';
 import {
   card,
   cardHeader,
@@ -10,7 +10,8 @@ import {
   primaryBoxShadow,
 } from 'assets/jss/material-dashboard-react';
 
-const tasksCardStyle: StyleRulesCallback = theme => ({
+const tasksCardStyle = makeStyles((theme: Theme) =>
+createStyles({
   card,
   cardHeader: {
     flex: 'none',
@@ -80,6 +81,7 @@ const tasksCardStyle: StyleRulesCallback = theme => ({
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     transition: 'background-color .4s',
   },
-});
+}),
+);
 
 export default tasksCardStyle;

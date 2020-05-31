@@ -2,7 +2,7 @@
 // // // Sidebar styles
 // #############################
 
-import { StyleRulesCallback } from '@material-ui/core';
+import { Theme, makeStyles, createStyles } from '@material-ui/core';
 import {
   boxShadow,
   dangerColor,
@@ -16,7 +16,8 @@ import {
   warningColor,
 } from 'assets/jss/material-dashboard-react';
 
-const sidebarStyle: StyleRulesCallback = theme => ({
+const sidebarStyle = makeStyles((theme: Theme) =>
+createStyles({
   drawerPaper: {
     border: 'none',
     position: 'fixed',
@@ -216,6 +217,7 @@ const sidebarStyle: StyleRulesCallback = theme => ({
     zIndex: 4,
     overflowScrolling: 'touch',
   },
-});
+}),
+);
 
 export default sidebarStyle;
