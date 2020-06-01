@@ -3,7 +3,6 @@ import {
   FileCopy,
   Dashboard,
   LibraryBooks,
-  LocationOn,
   Notifications,
   Person,
 } from '@material-ui/icons';

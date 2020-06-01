@@ -5,7 +5,6 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  makeStyles,
 } from '@material-ui/core';
 import sidebarStyle from 'assets/jss/material-dashboard-react/sidebarStyle';
 import * as cx from 'classnames';
@@ -13,10 +12,6 @@ import { HeaderLinks } from 'components';
 import * as React from 'react';
 import { NavLink, RouteProps } from 'react-router-dom';
 import { Route } from 'routes/dashboard';
-
-const useStyles = makeStyles(() => ({
-  ...sidebarStyle
-}));
 
 interface Props {
   handleDrawerToggle: () => void;
@@ -31,7 +26,7 @@ interface Props {
 
 const Sidebar: React.SFC<Props & RouteProps> = props => {
   const { color, logo, image, logoText, routes } = props;
-  const classes = useStyles();
+  const classes = sidebarStyle();
 
   var links = (
     <List className={classes.list}>
