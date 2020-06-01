@@ -4,7 +4,6 @@ import {
   Hidden,
   IconButton,
   Toolbar,
-  makeStyles,
 } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
 import headerStyle from 'assets/jss/material-dashboard-react/headerStyle';
@@ -15,10 +14,6 @@ import HeaderLinks from './HeaderLinks';
 import { RouteProps } from 'react-router';
 
 type ColorType = 'primary' | 'info' | 'success' | 'warning' | 'danger';
-
-const classes = useStyles(() => ({
-  ...headerStyle
-}));
 
 interface Props {
   color?: ColorType;
@@ -37,7 +32,7 @@ class Header extends React.Component<Props & RouteProps> {
   public render() {
     const { color, handleDrawerToggle } = this.props;
 
-    const classes = useStyles();
+    const classes = headerStyle();
 
     const appBarClasses = cx(classes.appBar, color && classes[color]);
 

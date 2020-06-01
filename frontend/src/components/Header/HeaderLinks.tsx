@@ -6,7 +6,6 @@ import {
   MenuItem,
   MenuList,
   Paper,
-  withStyles,
 } from '@material-ui/core';
 import { Dashboard, Notifications, Person, Search } from '@material-ui/icons';
 import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
@@ -16,20 +15,6 @@ import * as React from 'react';
 import { Manager, Popper, Target } from 'react-popper';
 
 interface Props {
-  classes: {
-    margin: string;
-    search: string;
-    searchButton: string;
-    searchIcon: string;
-    buttonLink: string;
-    notifications: string;
-    links: string;
-    linkText: string;
-    popperResponsive: string;
-    dropdown: string;
-    dropdownItem: string;
-    popperClose: string;
-  };
 }
 
 interface State {
@@ -47,7 +32,7 @@ class HeaderLinks extends React.Component<Props, State> {
   }
 
   public render() {
-    const { classes } = this.props;
+    const classes = headerLinksStyle();
     const { open } = this.state;
 
     return (
@@ -170,4 +155,4 @@ class HeaderLinks extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(headerLinksStyle)(HeaderLinks);
+export default HeaderLinks;
