@@ -3,7 +3,6 @@ import { createBrowserHistory } from 'history';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Route, Router, Switch } from 'react-router-dom';
-// import indexRoutes from 'routes';
 import indexRoutes from './routes';
 
 const hist = createBrowserHistory();
