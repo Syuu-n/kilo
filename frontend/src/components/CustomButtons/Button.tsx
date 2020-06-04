@@ -1,12 +1,8 @@
-import { Button, makeStyles } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { ButtonProps } from '@material-ui/core/Button';
 import buttonStyle from 'assets/jss/material-dashboard-react/buttonStyle';
 import * as cx from 'classnames';
 import * as React from 'react';
-
-const useStyles = makeStyles(() => ({
-  ...buttonStyle
-}));
 
 type ColorType =
   | 'primary'
@@ -38,7 +34,7 @@ const RegularButton: React.SFC<
     ...rest
   } = props;
 
-  const classes = useStyles();
+  const classes = buttonStyle();
 
   const btnClasses = cx(color && classes[color], {
     [classes.round]: round,

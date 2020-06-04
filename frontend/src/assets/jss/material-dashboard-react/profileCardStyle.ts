@@ -2,7 +2,7 @@
 // // // ProfileCard styles
 // #############################
 
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   boxShadow,
   card,
@@ -10,7 +10,8 @@ import {
   grayColor,
 } from 'assets/jss/material-dashboard-react';
 
-const profileCardStyle: StyleRules = {
+const profileCardStyle = makeStyles(() =>
+createStyles({
   card: {
     marginTop: '30px',
     textAlign: 'center',
@@ -61,6 +62,6 @@ const profileCardStyle: StyleRules = {
     height: 'auto',
     display: 'inline',
   },
-};
+}));
 
 export default profileCardStyle;

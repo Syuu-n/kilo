@@ -2,7 +2,7 @@
 // // // RegularCard styles
 // #############################
 
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   blueCardHeader,
   card,
@@ -14,7 +14,8 @@ import {
   redCardHeader,
 } from 'assets/jss/material-dashboard-react';
 
-const regularCardStyle: StyleRules = {
+const regularCardStyle = makeStyles(() =>
+createStyles({
   card,
   cardPlain: {
     background: 'transparent',
@@ -51,6 +52,6 @@ const regularCardStyle: StyleRules = {
     display: 'block',
     height: 'auto',
   },
-};
+}));
 
 export default regularCardStyle;

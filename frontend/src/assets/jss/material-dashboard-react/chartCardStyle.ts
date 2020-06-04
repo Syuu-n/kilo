@@ -2,7 +2,7 @@
 // // // ChartCard styles
 // #############################
 
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   blueCardHeader,
   card,
@@ -22,7 +22,8 @@ import {
   warningColor,
 } from 'assets/jss/material-dashboard-react';
 
-const chartCardStyle: StyleRules = {
+const chartCardStyle = makeStyles(() =>
+createStyles({
   card,
   cardHeader: {
     ...cardHeader,
@@ -93,6 +94,6 @@ const chartCardStyle: StyleRules = {
     textDecoration: 'none',
     ...defaultFont,
   },
-};
+}));
 
 export default chartCardStyle;

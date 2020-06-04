@@ -2,14 +2,15 @@
 // // // Footer styles
 // #############################
 
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   container,
   defaultFont,
   primaryColor,
 } from 'assets/jss/material-dashboard-react';
 
-const footerStyle: StyleRules = {
+const footerStyle = makeStyles(() =>
+createStyles({
   block: {
     color: 'inherit',
     padding: '15px',
@@ -54,5 +55,5 @@ const footerStyle: StyleRules = {
     paddingTop: '0px',
     width: 'auto',
   },
-};
+}));
 export default footerStyle;

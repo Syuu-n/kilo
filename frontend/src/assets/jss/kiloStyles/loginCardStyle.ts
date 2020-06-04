@@ -1,4 +1,4 @@
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   blueCardHeader,
   card,
@@ -10,7 +10,8 @@ import {
   redCardHeader,
 } from 'assets/jss/material-dashboard-react';
 
-const loginCardStyle: StyleRules = {
+const loginCardStyle = makeStyles(() =>
+createStyles({
   card,
   cardHeader: {
     ...cardHeader,
@@ -45,6 +46,6 @@ const loginCardStyle: StyleRules = {
   rememberMeWrap: {
     display: 'flex'
   }
-};
+}));
 
 export default loginCardStyle;

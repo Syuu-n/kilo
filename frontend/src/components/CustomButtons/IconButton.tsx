@@ -1,11 +1,7 @@
-import { IconButton, makeStyles } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import { IconButtonProps } from '@material-ui/core/IconButton';
 import iconButtonStyle from 'assets/jss/material-dashboard-react/iconButtonStyle';
 import * as React from 'react';
-
-const useStyles = makeStyles(() => ({
-  ...iconButtonStyle
-}));
 
 interface Props {
   color?:
@@ -25,7 +21,7 @@ const IconCustomButton: React.SFC<
   Props & Pick<IconButtonProps, Exclude<keyof IconButtonProps, keyof Props>>
 > = props => {
   const { color, children, customClass, ...rest } = props;
-  const classes = useStyles();
+  const classes = iconButtonStyle();
 
   return (
     <IconButton

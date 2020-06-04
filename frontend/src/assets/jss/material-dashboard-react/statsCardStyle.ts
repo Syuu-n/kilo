@@ -2,7 +2,7 @@
 // // // StatsCard styles
 // #############################
 
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   blueCardHeader,
   card,
@@ -22,7 +22,8 @@ import {
   warningColor,
 } from 'assets/jss/material-dashboard-react';
 
-const statsCardStyle: StyleRules = {
+const statsCardStyle = makeStyles(() =>
+createStyles({
   card,
   cardHeader: {
     ...cardHeader,
@@ -107,6 +108,6 @@ const statsCardStyle: StyleRules = {
     textDecoration: 'none',
     ...defaultFont,
   },
-};
+}));
 
 export default statsCardStyle;

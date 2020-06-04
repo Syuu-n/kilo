@@ -3,15 +3,10 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  makeStyles,
 } from '@material-ui/core';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 import * as cx from 'classnames';
 import * as React from 'react';
-
-const useStyles = makeStyles(() => ({
-  ...regularCardStyle
-}));
 
 interface Props {
   plainCard?: boolean;
@@ -22,53 +17,38 @@ interface Props {
   footer?: React.ReactNode;
 }
 
-class RegularCard extends React.Component<Props> {
-  public static defaultProps: Partial<Props> = {
-    headerColor: 'purple',
-  };
+const RegularCard: React.FC<Props> = ({ plainCard, headerColor='purple', cardTitle, cardSubtitle, content, footer }) => {
+  const classes = regularCardStyle();
 
-  public render() {
-    const {
-      headerColor,
-      plainCard,
-      cardTitle,
-      cardSubtitle,
-      content,
-      footer,
-    } = this.props;
+  const plainCardClasses = cx({
+    [' ' + classes.cardPlain]: plainCard,
+  });
 
-    const classes = useStyles();
+  const cardPlainHeaderClasses = cx({
+    [' ' + classes.cardPlainHeader]: plainCard,
+  });
 
-    const plainCardClasses = cx({
-      [' ' + classes.cardPlain]: plainCard,
-    });
-
-    const cardPlainHeaderClasses = cx({
-      [' ' + classes.cardPlainHeader]: plainCard,
-    });
-
-    return (
-      <Card className={classes.card + plainCardClasses}>
-        <CardHeader
-          classes={{
-            root:
-              classes.cardHeader +
-              ' ' +
-              classes[headerColor + 'CardHeader'] +
-              cardPlainHeaderClasses,
-            title: classes.cardTitle,
-            subheader: classes.cardSubtitle,
-          }}
-          title={cardTitle}
-          subheader={cardSubtitle}
-        />
-        <CardContent>{content}</CardContent>
-        {footer !== undefined ? (
-          <CardActions className={classes.cardActions}>{footer}</CardActions>
-        ) : null}
-      </Card>
-    );
-  }
+  return (
+    <Card className={classes.card + plainCardClasses}>
+      <CardHeader
+        classes={{
+          root:
+            classes.cardHeader +
+            ' ' +
+            classes[headerColor + 'CardHeader'] +
+            cardPlainHeaderClasses,
+          title: classes.cardTitle,
+          subheader: classes.cardSubtitle,
+        }}
+        title={cardTitle}
+        subheader={cardSubtitle}
+      />
+      <CardContent>{content}</CardContent>
+      {footer !== undefined ? (
+        <CardActions className={classes.cardActions}>{footer}</CardActions>
+      ) : null}
+    </Card>
+  );
 }
 
 export default RegularCard;

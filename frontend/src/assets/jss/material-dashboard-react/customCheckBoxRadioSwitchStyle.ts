@@ -1,4 +1,4 @@
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   primaryColor,
   dangerColor,
@@ -6,7 +6,8 @@ import {
   grayColor
 } from 'assets/jss/material-dashboard-react';
 
-const customCheckboxRadioSwitchStyle: StyleRules = {
+const customCheckboxRadioSwitchStyle = makeStyles(() =>
+createStyles({
   checkRoot: {
     padding: '12px',
     '&:hover': {
@@ -176,6 +177,6 @@ const customCheckboxRadioSwitchStyle: StyleRules = {
   switchRoot: {
     height: '48px'
   }
-};
+}));
 
 export default customCheckboxRadioSwitchStyle;

@@ -4,7 +4,7 @@
 
 // tslint:disable:max-line-length
 
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   dangerColor,
   grayColor,
@@ -15,7 +15,8 @@ import {
   warningColor,
 } from 'assets/jss/material-dashboard-react';
 
-const buttonStyle: StyleRules = {
+const buttonStyle = makeStyles(() =>
+createStyles({
   button: {
     backgroundColor: grayColor,
     color: '#FFFFFF',
@@ -135,6 +136,6 @@ const buttonStyle: StyleRules = {
     opacity: 0.65,
     pointerEvents: 'none',
   },
-};
+}));
 
 export default buttonStyle;

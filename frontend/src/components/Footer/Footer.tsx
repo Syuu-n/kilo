@@ -1,13 +1,9 @@
-import { List, ListItem, makeStyles } from '@material-ui/core';
+import { List, ListItem } from '@material-ui/core';
 import footerStyle from 'assets/jss/material-dashboard-react/footerStyle';
 import * as React from 'react';
 
-const useStyles = makeStyles(() => ({
-  ...footerStyle
-}));
-
 const Footer: React.SFC = () => {
-  const classes = useStyles();
+  const classes = footerStyle();
 
   return (
     <footer className={classes.footer}>

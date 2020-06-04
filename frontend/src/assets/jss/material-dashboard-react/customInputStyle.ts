@@ -2,10 +2,11 @@
 // // // CustomInput styles
 // #############################
 
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { dangerColor, defaultFont, primaryColor, successColor } from 'assets/jss/material-dashboard-react';
 
-const customInputStyle: StyleRules = {
+const customInputStyle = makeStyles(() =>
+createStyles({
   disabled: {
     '&:before': {
       borderColor: 'transparent !important',
@@ -74,6 +75,6 @@ const customInputStyle: StyleRules = {
     margin: '0 0 27px 0',
     position: 'relative',
   },
-};
+}));
 
 export default customInputStyle;

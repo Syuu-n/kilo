@@ -2,10 +2,11 @@
 // // // Dashboard styles
 // #############################
 
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { successColor } from 'assets/jss/material-dashboard-react';
 
-const dashboardStyle: StyleRules = {
+const dashboardStyle = makeStyles(() =>
+createStyles({
   successText: {
     color: successColor,
   },
@@ -13,6 +14,6 @@ const dashboardStyle: StyleRules = {
     width: 14,
     height: 14,
   },
-};
+}));
 
 export default dashboardStyle;

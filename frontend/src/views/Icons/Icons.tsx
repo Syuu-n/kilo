@@ -1,14 +1,10 @@
-import { Grid, Hidden, makeStyles } from '@material-ui/core';
+import { Grid, Hidden } from '@material-ui/core';
 import iconsStyle from 'assets/jss/material-dashboard-react/iconsStyle';
 import { A, ItemGrid, P, RegularCard } from 'components';
 import * as React from 'react';
 
-const useStyles = makeStyles(() => ({
-  ...iconsStyle
-}));
-
 const Icons: React.SFC = () => {
-  const classes = useStyles();
+  const classes = iconsStyle();
   return (
     <Grid container>
       <ItemGrid xs={12} sm={12} md={12}>

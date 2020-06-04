@@ -4,7 +4,7 @@
 
 // tslint:disable:max-line-length
 
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   dangerColor,
   grayColor,
@@ -15,7 +15,8 @@ import {
   warningColor,
 } from 'assets/jss/material-dashboard-react';
 
-const iconButtonStyle: StyleRules = {
+const iconButtonStyle = makeStyles(() =>
+createStyles({
   button: {
     height: '40px',
     minWidth: '40px',
@@ -122,6 +123,6 @@ const iconButtonStyle: StyleRules = {
     background: 'transparent',
     boxShadow: 'none',
   },
-};
+}));
 
 export default iconButtonStyle;

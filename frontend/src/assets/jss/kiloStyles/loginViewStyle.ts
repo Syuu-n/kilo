@@ -1,7 +1,8 @@
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import loginBackgroundImg from '../../img/login_img.jpg';
 
-const loginViewStyle: StyleRules = {
+const loginViewStyle = makeStyles(() =>
+createStyles({
   wrapper: {
     position: 'relative',
     top: '0',
@@ -21,6 +22,6 @@ const loginViewStyle: StyleRules = {
     textAlign: 'center',
     fontFamily: 'cursive'
   }
-};
+}));
 
 export default loginViewStyle;
