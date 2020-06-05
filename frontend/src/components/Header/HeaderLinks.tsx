@@ -14,20 +14,7 @@ import { CustomInput, IconButton as SearchButton } from 'components';
 import * as React from 'react';
 import { Manager, Popper, Target } from 'react-popper';
 
-// interface State {
-//   open: boolean;
-// }
-
 const HeaderLinks: React.FC = () => {
-  // constructor(props: Props) {
-  //   super(props);
-
-  //   this.state = { open: false };
-
-  //   this.handleClick = this.handleClick.bind(this);
-  //   this.handleClose = this.handleClose.bind(this);
-  // }
-
   const classes = headerLinksStyle();
   const [open, setOpen] = React.useState(false);
 

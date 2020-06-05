@@ -22,49 +22,13 @@ interface Props {
   routes: Route[];
 }
 
-class Header extends React.Component<Props & RouteProps> {
-  constructor(props: Props) {
-    super(props);
+const Header: React.SFC<Props & RouteProps> = (props) => {
+  const { color, handleDrawerToggle } = props;
+  const classes = headerStyle();
+  const appBarClasses = cx(classes.appBar, color && classes[color]);
 
-    this.makeBrand = this.makeBrand.bind(this);
-  }
-
-  public render() {
-    const { color, handleDrawerToggle } = this.props;
-
-    const classes = headerStyle();
-
-    const appBarClasses = cx(classes.appBar, color && classes[color]);
-
-    return (
-      <AppBar className={appBarClasses}>
-        <Toolbar className={classes.container}>
-          <div className={classes.flex}>
-            {/* Here we create navbar brand, based on route name */}
-            <Button href="#" className={classes.title}>
-              {this.makeBrand()}
-            </Button>
-          </div>
-          <Hidden smDown implementation="css">
-            <HeaderLinks />
-          </Hidden>
-          <Hidden mdUp>
-            <IconButton
-              className={classes.appResponsive}
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerToggle}
-            >
-              <Menu />
-            </IconButton>
-          </Hidden>
-        </Toolbar>
-      </AppBar>
-    );
-  }
-
-  private makeBrand() {
-    const { routes, location } = this.props;
+  function makeBrand() {
+    const { routes, location } = props;
 
     var name;
 
@@ -78,6 +42,32 @@ class Header extends React.Component<Props & RouteProps> {
 
     return name;
   }
+
+  return (
+    <AppBar className={appBarClasses}>
+      <Toolbar className={classes.container}>
+        <div className={classes.flex}>
+          {/* Here we create navbar brand, based on route name */}
+          <Button href="#" className={classes.title}>
+            {makeBrand()}
+          </Button>
+        </div>
+        <Hidden smDown implementation="css">
+          <HeaderLinks />
+        </Hidden>
+        <Hidden mdUp>
+          <IconButton
+            className={classes.appResponsive}
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerToggle}
+          >
+            <Menu />
+          </IconButton>
+        </Hidden>
+      </Toolbar>
+    </AppBar>
+  );
 }
 
 export default Header;

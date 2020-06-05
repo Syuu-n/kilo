@@ -4,7 +4,7 @@
 
 // tslint:disable:max-line-length
 
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   dangerBoxShadow,
   defaultFont,
@@ -14,7 +14,8 @@ import {
   warningBoxShadow,
 } from 'assets/jss/material-dashboard-react';
 
-const snackbarContentStyle: StyleRules = {
+const snackbarContentStyle = makeStyles(() =>
+createStyles({
   root: {
     ...defaultFont,
     position: 'relative',
@@ -79,6 +80,6 @@ const snackbarContentStyle: StyleRules = {
     paddingLeft: '65px',
     display: 'block',
   },
-};
+}));
 
 export default snackbarContentStyle;

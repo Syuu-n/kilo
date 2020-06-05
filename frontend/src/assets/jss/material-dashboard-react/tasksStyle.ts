@@ -2,14 +2,15 @@
 // // // Tasks styles
 // #############################
 
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   dangerColor,
   defaultFont,
   primaryColor,
 } from 'assets/jss/material-dashboard-react';
 
-const tasksStyle: StyleRules = {
+const tasksStyle = makeStyles(() =>
+createStyles({
   table: {
     marginBottom: '0',
     overflow: 'visible',
@@ -91,5 +92,5 @@ const tasksStyle: StyleRules = {
     whiteSpace: 'normal',
     lineBreak: 'auto',
   },
-};
+}));
 export default tasksStyle;

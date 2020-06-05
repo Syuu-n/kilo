@@ -6,15 +6,10 @@ import {
   TableCell,
   TableRow,
   Tooltip,
-  makeStyles,
 } from '@material-ui/core';
 import { Check, Close, Edit } from '@material-ui/icons';
 import tasksStyle from 'assets/jss/material-dashboard-react/tasksStyle';
 import * as React from 'react';
-
-const useStyles = makeStyles(() => ({
-  ...tasksStyle
-}));
 
 interface Props {
   checkedIndexes: number[];
@@ -22,84 +17,13 @@ interface Props {
   tasks: React.ReactNode[];
 }
 
-interface State {
-  checked: Props['checkedIndexes'];
-}
+const Tasks: React.FC<Props> = (props) => {
+  const { tasksIndexes, tasks, checkedIndexes } = props;
+  const [ checked, setChecked ] = React.useState(checkedIndexes);
+  const classes = tasksStyle();
 
-class Tasks extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = { checked: props.checkedIndexes };
-
-    this.handleToggle = this.handleToggle.bind(this);
-  }
-
-  render() {
-    const { tasksIndexes, tasks } = this.props;
-    const { checked } = this.state;
-    const classes = useStyles();
-
-    const tableRows = tasksIndexes.map(value => (
-      <TableRow key={value} className={classes.tableRow}>
-        <TableCell className={classes.tableCell}>
-          <Checkbox
-            checked={checked && checked.indexOf(value) !== -1}
-            tabIndex={-1}
-            onClick={this.handleToggle(value)}
-            checkedIcon={<Check className={classes.checkedIcon} />}
-            icon={<Check className={classes.uncheckedIcon} />}
-            classes={{
-              checked: classes.checked,
-            }}
-          />
-        </TableCell>
-
-        <TableCell className={classes.tableCell}>{tasks[value]}</TableCell>
-
-        <TableCell className={classes.tableActions}>
-          <Tooltip
-            id="tooltip-top"
-            title="Edit Task"
-            placement="top"
-            classes={{ tooltip: classes.tooltip }}
-          >
-            <IconButton aria-label="Edit" className={classes.tableActionButton}>
-              <Edit
-                className={classes.tableActionButtonIcon + ' ' + classes.edit}
-              />
-            </IconButton>
-          </Tooltip>
-
-          <Tooltip
-            id="tooltip-top-start"
-            title="Remove"
-            placement="top"
-            classes={{ tooltip: classes.tooltip }}
-          >
-            <IconButton
-              aria-label="Close"
-              className={classes.tableActionButton}
-            >
-              <Close
-                className={classes.tableActionButtonIcon + ' ' + classes.close}
-              />
-            </IconButton>
-          </Tooltip>
-        </TableCell>
-      </TableRow>
-    ));
-
-    return (
-      <Table className={classes.table}>
-        <TableBody>{tableRows}</TableBody>
-      </Table>
-    );
-  }
-
-  private handleToggle(value: number) {
+  function handleToggle(value: number) {
     return () => {
-      const { checked } = this.state;
       const currentIndex = checked.indexOf(value);
       const newChecked = [...checked];
 
@@ -109,9 +33,65 @@ class Tasks extends React.Component<Props, State> {
         newChecked.splice(currentIndex, 1);
       }
 
-      this.setState({ checked: newChecked });
+      setChecked(newChecked);
     };
   }
+
+  const tableRows = tasksIndexes.map(value => (
+    <TableRow key={value} className={classes.tableRow}>
+      <TableCell className={classes.tableCell}>
+        <Checkbox
+          checked={checked && checked.indexOf(value) !== -1}
+          tabIndex={-1}
+          onClick={handleToggle(value)}
+          checkedIcon={<Check className={classes.checkedIcon} />}
+          icon={<Check className={classes.uncheckedIcon} />}
+          classes={{
+            checked: classes.checked,
+          }}
+        />
+      </TableCell>
+
+      <TableCell className={classes.tableCell}>{tasks[value]}</TableCell>
+
+      <TableCell className={classes.tableActions}>
+        <Tooltip
+          id="tooltip-top"
+          title="Edit Task"
+          placement="top"
+          classes={{ tooltip: classes.tooltip }}
+        >
+          <IconButton aria-label="Edit" className={classes.tableActionButton}>
+            <Edit
+              className={classes.tableActionButtonIcon + ' ' + classes.edit}
+            />
+          </IconButton>
+        </Tooltip>
+
+        <Tooltip
+          id="tooltip-top-start"
+          title="Remove"
+          placement="top"
+          classes={{ tooltip: classes.tooltip }}
+        >
+          <IconButton
+            aria-label="Close"
+            className={classes.tableActionButton}
+          >
+            <Close
+              className={classes.tableActionButtonIcon + ' ' + classes.close}
+            />
+          </IconButton>
+        </Tooltip>
+      </TableCell>
+    </TableRow>
+  ));
+
+  return (
+    <Table className={classes.table}>
+      <TableBody>{tableRows}</TableBody>
+    </Table>
+  );
 }
 
 export default Tasks;
