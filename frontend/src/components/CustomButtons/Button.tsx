@@ -20,6 +20,7 @@ interface Props {
   round?: boolean;
   fullWidth?: boolean;
   disabled?: boolean;
+  width?: string;
 }
 
 const RegularButton: React.SFC<
@@ -31,6 +32,7 @@ const RegularButton: React.SFC<
     children,
     fullWidth,
     disabled,
+    width,
     ...rest
   } = props;
 
@@ -39,11 +41,15 @@ const RegularButton: React.SFC<
   const btnClasses = cx(color && classes[color], {
     [classes.round]: round,
     [classes.fullWidth]: fullWidth,
-    [classes.disabled]: disabled,
+    [classes.disabled]: disabled
   });
 
+  const widthStyle = {
+    width: width
+  };
+
   return (
-    <Button {...rest} className={classes.button + ' ' + btnClasses}>
+    <Button {...rest} className={classes.button + ' ' + btnClasses} style={widthStyle}>
       {children}
     </Button>
   );

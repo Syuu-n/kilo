@@ -45,6 +45,19 @@ createStyles({
   },
   rememberMeWrap: {
     display: 'flex'
+  },
+  rememberLabel: {
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: '12px'
+  },
+  loginBtnWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '15px'
+  },
+  loginBtn: {
+    // width: '70%'
   }
 }));
 

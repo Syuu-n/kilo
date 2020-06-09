@@ -3,6 +3,7 @@ import {
   CardContent,
   CardHeader,
   InputAdornment,
+  Typography
 } from '@material-ui/core';
 import {
   Email,
@@ -10,8 +11,11 @@ import {
 } from '@material-ui/icons';
 import * as React from 'react';
 import loginCardStyle from 'assets/jss/kiloStyles/loginCardStyle';
-import CustomCheckbox from 'components/CustomCheckBoxRadioSwitch/CustomCheckbox';
-import CustomInput from 'components/CustomInput/CustomInput';
+import {
+  CustomCheckbox,
+  CustomInput,
+  Button
+} from 'components';
 
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple';
@@ -63,6 +67,20 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
           <CustomCheckbox
             checked={false}
           />
+          <Typography
+            component="label"
+            className={classes.rememberLabel}
+          >
+            ログインしたままにする
+          </Typography>
+        </div>
+        <div className={classes.loginBtnWrap}>
+          <Button
+            color='primary'
+            width='70%'
+          >
+            ログイン
+          </Button>
         </div>
       </CardContent>
     </Card>

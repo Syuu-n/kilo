@@ -42,7 +42,7 @@ createStyles({
     marginBottom: '0'
   },
   checked: {
-    color: primaryColor
+    color: primaryColor + '!important'
   },
   checkedIcon: {
     width: '20px',
