@@ -56,9 +56,6 @@ createStyles({
     justifyContent: 'center',
     marginTop: '15px'
   },
-  loginBtn: {
-    // width: '70%'
-  }
 }));
 
 export default loginCardStyle;
