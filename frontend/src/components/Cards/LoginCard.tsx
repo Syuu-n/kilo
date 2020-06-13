@@ -28,19 +28,8 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const handleEmailInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ): void => {
-    setEmail(event.target.value);
-  }
-
-  const handlePasswordInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ): void => {
-    setPassword(event.target.value);
-  }
-
-  const handleLogin = () => {
+  const handleLogin = (event:React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     console.log('Email:' + email, 'Password' + password)
   }
 
@@ -59,52 +48,54 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
         subheader={cardSubtitle}
       />
       <CardContent className={classes.cardContent}>
-        <CustomInput
-          labelText="メールアドレス"
-          formControlProps={{
-              fullWidth: true,
-              className: 'email-input'
-          }}
-          inputProps={{
-            type: 'email',
-            endAdornment: (<InputAdornment className={classes.inputIcon} position="start"><Email/></InputAdornment>),
-            onChange: handleEmailInputChange,
-            value: email
-          }}
-        />
-        <CustomInput
-          labelText="パスワード"
-          formControlProps={{
-              fullWidth: true,
-              className: 'password-input'
-          }}
-          inputProps={{
-            type: 'password',
-            endAdornment: (<InputAdornment className={classes.inputIcon} position="start"><Lock/></InputAdornment>),
-            onChange: handlePasswordInputChange,
-            value: password
-          }}
-        />
-        <div className={classes.rememberMeWrap}>
-          <CustomCheckbox
-            checked={false}
+        <form onSubmit={handleLogin}>
+          <CustomInput
+            labelText="メールアドレス"
+            formControlProps={{
+                fullWidth: true,
+                className: 'email-input'
+            }}
+            inputProps={{
+              type: 'email',
+              endAdornment: (<InputAdornment className={classes.inputIcon} position="start"><Email/></InputAdornment>),
+              onChange: (event: React.ChangeEvent<HTMLInputElement>) => {setEmail(event.currentTarget.value)},
+              value: email
+            }}
           />
-          <Typography
-            component="label"
-            className={classes.rememberLabel}
-          >
-            ログインしたままにする
-          </Typography>
-        </div>
-        <div className={classes.loginBtnWrap}>
-          <Button
-            color='primary'
-            width='70%'
-            onClick={handleLogin}
-          >
-            ログイン
-          </Button>
-        </div>
+          <CustomInput
+            labelText="パスワード"
+            formControlProps={{
+                fullWidth: true,
+                className: 'password-input'
+            }}
+            inputProps={{
+              type: 'password',
+              endAdornment: (<InputAdornment className={classes.inputIcon} position="start"><Lock/></InputAdornment>),
+              onChange: (event: React.ChangeEvent<HTMLInputElement>) => {setPassword(event.currentTarget.value)},
+              value: password
+            }}
+          />
+          <div className={classes.rememberMeWrap}>
+            <CustomCheckbox
+              checked={false}
+            />
+            <Typography
+              component="label"
+              className={classes.rememberLabel}
+            >
+              ログインしたままにする
+            </Typography>
+          </div>
+          <div className={classes.loginBtnWrap}>
+            <Button
+              color='primary'
+              width='70%'
+              type='submit'
+            >
+              ログイン
+            </Button>
+          </div>
+        </form>
       </CardContent>
     </Card>
   );
