@@ -16,6 +16,7 @@ import {
   CustomInput,
   Button
 } from 'components';
+import { fetchApp } from 'request/fetcher';
 
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple';
@@ -32,6 +33,17 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
   const handleLogin = (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log('Email:' + email, 'Password:' + password, 'RememberMe:' + rememberMe)
+    const res = fetchApp('/v1/login',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    });
+    console.log(res);
   }
 
   return (
