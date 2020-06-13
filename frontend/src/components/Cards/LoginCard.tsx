@@ -27,10 +27,11 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
   const classes = loginCardStyle();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [rememberMe, setRememberMe] = React.useState(false);
 
   const handleLogin = (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('Email:' + email, 'Password' + password)
+    console.log('Email:' + email, 'Password:' + password, 'RememberMe:' + rememberMe)
   }
 
   return (
@@ -77,7 +78,8 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
           />
           <div className={classes.rememberMeWrap}>
             <CustomCheckbox
-              checked={false}
+              checked={rememberMe}
+              onClick={() => setRememberMe(!rememberMe)}
             />
             <Typography
               component="label"

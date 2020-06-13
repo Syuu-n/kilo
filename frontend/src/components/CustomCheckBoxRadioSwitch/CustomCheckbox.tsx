@@ -7,20 +7,16 @@ import * as React from 'react';
 
 interface Props {
   checked: boolean;
+  onClick: any;
 }
 
-const CustomCheckbox: React.FC<Props> = ({ checked }) => {
-  const [check, setChecked] = React.useState(checked);
+const CustomCheckbox: React.FC<Props> = ({ checked, onClick }) => {
   const classes = checkboxStyle();
-
-  const handleToggle = () => {
-    setChecked(!check);
-  }
 
   return (
     <Checkbox
-      checked={check}
-      onClick={handleToggle}
+      checked={checked}
+      onClick={() => onClick()}
       checkedIcon={<Check className={classes.checkedIcon} />}
       icon={<Check className={classes.uncheckedIcon} />}
       classes={{
