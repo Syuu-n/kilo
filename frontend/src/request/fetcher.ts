@@ -1,15 +1,31 @@
+// API のベース URL
 const APP_BASE_URL = 'http://localhost:3001'
 
-export function fetchApp(path: string, init?: RequestInit) {
-  const res = fetch(`${APP_BASE_URL}` + path, init)
-    .then(res => res.json())
-    .then(
-      (result) => {
-        return result;
-      },
-      (error) => {
-        return error;
-      }
-    )
-  return res;
+// ネットワークエラー
+export class NetworkError {
+  public readonly isError = true;
 }
+
+function handleNetworkError(error: Error): NetworkError {
+  if (error instanceof TypeError) {
+    return new NetworkError();
+  }
+  throw error;
+}
+
+export async function fetchApp(path:string, method:string='GET', body?:RequestInit['body'], token?:string) {
+  const requestHeader = token ?
+    new Headers({ 'Content-Type': 'application/json', 'Authorization': token }) :
+    new Headers({ 'Content-Type': 'application/json'})
+
+  const res = await fetch(
+    `${APP_BASE_URL}` + path,
+    {
+      method: method,
+      headers: requestHeader,
+      body: body
+    }
+  ).catch(handleNetworkError);
+
+  return res;
+};

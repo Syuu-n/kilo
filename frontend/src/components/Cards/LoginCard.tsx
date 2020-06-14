@@ -14,9 +14,10 @@ import loginCardStyle from 'assets/jss/kiloStyles/loginCardStyle';
 import {
   CustomCheckbox,
   CustomInput,
-  Button
+  Button,
+  P
 } from 'components';
-import { fetchApp } from 'request/fetcher';
+import { fetchApp, NetworkError } from 'request/fetcher';
 
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple';
@@ -29,21 +30,39 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [rememberMe, setRememberMe] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const [buttonDisabled, setButtonDisabled] = React.useState(false);
 
-  const handleLogin = (event:React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setButtonDisabled(true);
     console.log('Email:' + email, 'Password:' + password, 'RememberMe:' + rememberMe)
-    const res = fetchApp('/v1/login',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    const res = await fetchApp(
+      '/v1/login',
+      'POST',
+      JSON.stringify({
         email: email,
         password: password
       })
-    });
-    console.log(res);
+    )
+    if (res instanceof NetworkError) {
+      setErrorMessage('予期せぬエラーが発生しました。時間をおいて再度お試しください。');
+      setButtonDisabled(false);
+      return
+    }
+
+    switch (res.status) {
+      case 400:
+        setErrorMessage('入力された情報の組み合わせが正しくありません。');
+        break;
+      case 200:
+        const json = await res.json();
+        localStorage.setItem('kiloToken', json.access_token);
+        break;
+      default:
+        setErrorMessage('予期せぬエラーが発生しました。時間をおいて再度お試しください。');
+    }
+    setButtonDisabled(false);
   }
 
   return (
@@ -88,7 +107,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
               value: password
             }}
           />
-          <div className={classes.rememberMeWrap}>
+          <div className={classes.rememberMeContainer}>
             <CustomCheckbox
               checked={rememberMe}
               onClick={() => setRememberMe(!rememberMe)}
@@ -100,11 +119,15 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
               ログインしたままにする
             </Typography>
           </div>
+          <div className={classes.errorMessageContainer}>
+            <P>{errorMessage}</P>
+          </div>
           <div className={classes.loginBtnWrap}>
             <Button
               color='primary'
               width='70%'
               type='submit'
+              disabled={buttonDisabled}
             >
               ログイン
             </Button>

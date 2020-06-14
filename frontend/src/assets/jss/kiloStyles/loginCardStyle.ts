@@ -8,6 +8,7 @@ import {
   orangeCardHeader,
   purpleCardHeader,
   redCardHeader,
+  dangerColor
 } from 'assets/jss/material-dashboard-react';
 
 const loginCardStyle = makeStyles(() =>
@@ -43,7 +44,7 @@ createStyles({
   inputIcon: {
     color: '#555555'
   },
-  rememberMeWrap: {
+  rememberMeContainer: {
     display: 'flex'
   },
   rememberLabel: {
@@ -56,6 +57,11 @@ createStyles({
     justifyContent: 'center',
     marginTop: '15px'
   },
+  errorMessageContainer: {
+    color: dangerColor,
+    textAlign: 'center',
+    marginTop: '10px'
+  }
 }));
 
 export default loginCardStyle;
