@@ -5,8 +5,10 @@ import {
   LoginCard
  } from 'components';
 import * as React from 'react';
+import { RouteProps} from 'react-router-dom';
 
-const LoginView: React.FC = () => {
+
+const LoginView: React.FC<RouteProps> = () => {
   const classes = loginViewStyle();
 
   return (
