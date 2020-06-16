@@ -1,6 +1,6 @@
 module V1
   class SessionsController < ApplicationController
-    skip_before_action :authenticate_user_from_token!
+    skip_before_action :authenticate_user_from_token!, only: [:create]
 
     # POST /v1/login
     def create
@@ -16,6 +16,11 @@ module V1
       else
         invalid_email_or_email
       end
+    end
+
+    # GET /v1/token
+    def check_token
+      render json: current_user, status: :ok
     end
 
     private

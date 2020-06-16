@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   namespace :v1, defaults: { format: :json } do
     resource :login, only: [:create], controller: :sessions
+    get 'token' => 'sessions#check_token'
 
     resources :users, except: [:new, :edit] do
       member do

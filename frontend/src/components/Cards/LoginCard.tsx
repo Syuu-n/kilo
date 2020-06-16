@@ -40,6 +40,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
     const res = await fetchApp(
       '/v1/login',
       'POST',
+      '',
       JSON.stringify({
         email: email,
         password: password
@@ -57,7 +58,13 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
         break;
       case 200:
         const json = await res.json();
-        localStorage.setItem('kiloToken', json.access_token);
+        if (rememberMe === true) {
+          localStorage.setItem('kiloToken', json.access_token);
+        } else {
+          localStorage.removeItem('kiloToken');
+        }
+
+        console.log('ログインしました。')
         break;
       default:
         setErrorMessage('予期せぬエラーが発生しました。時間をおいて再度お試しください。');

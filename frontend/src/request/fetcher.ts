@@ -13,7 +13,7 @@ function handleNetworkError(error: Error): NetworkError {
   throw error;
 }
 
-export async function fetchApp(path:string, method:string='GET', body?:RequestInit['body'], token?:string) {
+export async function fetchApp(path:string, method:string='GET', token?:string, body?:RequestInit['body']) {
   const requestHeader = token ?
     new Headers({ 'Content-Type': 'application/json', 'Authorization': token }) :
     new Headers({ 'Content-Type': 'application/json'})
