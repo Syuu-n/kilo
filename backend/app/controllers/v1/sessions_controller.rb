@@ -18,8 +18,8 @@ module V1
       end
     end
 
-    # GET /v1/token
-    def check_token
+    # GET /v1/me
+    def me
       render json: current_user, status: :ok
     end
 

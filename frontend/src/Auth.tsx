@@ -27,7 +27,7 @@ const AuthProvider = (props: any) => {
     }
 
     const res = await fetchApp(
-      '/v1/token',
+      '/v1/me',
       'GET',
       accessToken
     )
