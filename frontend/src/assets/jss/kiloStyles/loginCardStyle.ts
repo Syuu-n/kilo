@@ -8,6 +8,7 @@ import {
   orangeCardHeader,
   purpleCardHeader,
   redCardHeader,
+  roseCardHeader,
   dangerColor
 } from 'assets/jss/material-dashboard-react';
 
@@ -23,6 +24,7 @@ createStyles({
   redCardHeader,
   blueCardHeader,
   purpleCardHeader,
+  roseCardHeader,
   cardTitle: {
     color: '#FFFFFF',
     margin: '10px 0',

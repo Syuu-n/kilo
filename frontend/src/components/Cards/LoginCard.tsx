@@ -20,7 +20,7 @@ import {
 import { fetchApp, NetworkError } from 'request/fetcher';
 
 interface Props {
-  headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple';
+  headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
   cardTitle?: React.ReactNode;
   cardSubtitle?: React.ReactNode;
 }
