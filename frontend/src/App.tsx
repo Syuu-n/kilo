@@ -2,7 +2,7 @@ import { createBrowserHistory } from 'history';
 import * as React from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 import { AuthProvider } from 'Auth';
-import Dashboard from 'layouts/Dashboard/Dashboard';
+import MainPage from 'layouts/MainPageLayout';
 import LoginView from 'views/LoginView';
 
 const hist = createBrowserHistory();
@@ -14,7 +14,7 @@ const App: React.FC = () => {
       <Switch>
         <Route exact path='/login' component={LoginView} />
         <AuthProvider>
-          <Route path='/' component={Dashboard} />
+          <Route path='/' component={MainPage} />
         </AuthProvider>
       </Switch>
     </Router>

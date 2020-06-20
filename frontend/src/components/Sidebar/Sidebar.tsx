@@ -11,7 +11,7 @@ import * as cx from 'classnames';
 import { HeaderLinks } from 'components';
 import * as React from 'react';
 import { NavLink, RouteProps } from 'react-router-dom';
-import { Route } from 'routes/dashboard';
+import { Route } from 'routes/mainPageRoutes';
 
 interface Props {
   handleDrawerToggle: () => void;
@@ -19,7 +19,7 @@ interface Props {
 
   color: string;
   logo: string;
-  image: string;
+  image?: string;
   logoText: string;
   routes: Route[];
 }
@@ -31,9 +31,6 @@ const Sidebar: React.SFC<Props & RouteProps> = props => {
   var links = (
     <List className={classes.list}>
       {routes.map((prop, key) => {
-        if (prop.redirect) {
-          return null;
-        }
 
         const listItemClasses = cx({
           [' ' + classes[color]]: activeRoute(prop.path),

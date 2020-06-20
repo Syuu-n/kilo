@@ -149,14 +149,14 @@ createStyles({
     marginRight: '15px',
     textAlign: 'center',
     verticalAlign: 'middle',
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: '#555555',
   },
   itemText: {
     ...defaultFont,
     margin: '0',
     lineHeight: '30px',
     fontSize: '14px',
-    color: '#FFFFFF',
+    color: '#555555',
   },
   whiteFont: {
     color: '#FFFFFF',
