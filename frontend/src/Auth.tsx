@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { fetchApp, NetworkError } from 'request/fetcher';
+import { Redirect } from 'react-router-dom';
+import Spinner from '@material-ui/core/CircularProgress';
+import authStyle from 'assets/jss/kiloStyles/authStyle';
 
 // Context の型
 interface IAuthContext {
@@ -13,9 +16,11 @@ interface IAuthContext {
 const AuthContext = React.createContext<IAuthContext>({ currentUser: undefined });
 
 const AuthProvider = (props: any) => {
+  const classes = authStyle();
   const [currentUser, setCurrentUser] = React.useState<JSON | null | undefined>(
     undefined
   );
+  const [isLoaded, setIsLoaded] = React.useState(false);
 
   // アクセストークンのチェック
   // localStorage に既に保存されている場合はアクセストークンの有効性を確かめる
@@ -48,17 +53,35 @@ const AuthProvider = (props: any) => {
   React.useEffect(() => {
     checkAccessToken().then((result) => {
       setCurrentUser(result);
+      setIsLoaded(true);
     });
   }, []);
 
+  // トークンから自身の情報を取得し以下の状態によって分岐させる
+  // isLoaded===false : ロード画面を表示
+  // isLoaded===true && currentUser===null : ログイン画面を表示（ログイン情報なし）
+  // isLoaded===true && currentUser===JSON : 子要素を表示（ログイン情報あり）
+
   return (
-    <AuthContext.Provider
-      value={{
-        currentUser: currentUser
-      }}
-    >
-      {props.children}
-    </AuthContext.Provider>
+    <div>
+      { isLoaded ? (
+        currentUser === null ? (
+          <Redirect to='/login' />
+        ) : (
+          <AuthContext.Provider
+            value={{
+              currentUser: currentUser
+            }}
+          >
+            {props.children}
+          </AuthContext.Provider>
+        )
+      ) : (
+        <div className={classes.spinnerWrap}>
+          <Spinner color='inherit'/>
+        </div>
+      )}
+    </div>
   );
 };
 
