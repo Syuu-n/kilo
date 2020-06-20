@@ -14,7 +14,7 @@ const App: React.FC = () => {
       <Switch>
         <Route exact path='/login' component={LoginView} />
         <AuthProvider>
-          <Route exact path='/dashboard' component={Dashboard} />
+          <Route path='/' component={Dashboard} />
         </AuthProvider>
       </Switch>
     </Router>
