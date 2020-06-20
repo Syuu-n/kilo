@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Button,
   Hidden,
   IconButton,
   Toolbar,
@@ -23,6 +22,7 @@ interface Props {
 }
 
 const Header: React.SFC<Props & RouteProps> = (props) => {
+  const [hrWidth, setHrWidth] = React.useState(0);
   const { color, handleDrawerToggle } = props;
   const classes = headerStyle();
   const appBarClasses = cx(classes.appBar, color && classes[color]);
@@ -43,14 +43,21 @@ const Header: React.SFC<Props & RouteProps> = (props) => {
     return name;
   }
 
+  const el = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    if (el && el.current) {
+      setHrWidth(el.current.clientWidth);
+    }
+  }, [makeBrand]);
+
   return (
     <AppBar className={appBarClasses}>
       <Toolbar className={classes.container}>
         <div className={classes.flex}>
-          {/* Here we create navbar brand, based on route name */}
-          <Button href="#" className={classes.title}>
+          <h3 className={classes.title} ref={el}>
             {makeBrand()}
-          </Button>
+          </h3>
+          <hr className={classes.highlighter} style={{width: hrWidth}}/>
         </div>
         <Hidden smDown implementation="css">
           <HeaderLinks />

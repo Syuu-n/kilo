@@ -44,12 +44,14 @@ createStyles({
     ...defaultFont,
     lineHeight: '30px',
     fontSize: '18px',
-    borderRadius: '3px',
-    textTransform: 'none',
     color: 'inherit',
-    '&:hover,&:focus': {
-      background: 'transparent',
-    },
+    margin: 0,
+    display: 'inline-block'
+  },
+  highlighter: {
+    margin: 0,
+    borderTop: "2px solid",
+    color: primaryColor,
   },
   appResponsive: {
     top: '8px',

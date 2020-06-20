@@ -1,5 +1,5 @@
 import { makeStyles, createStyles } from '@material-ui/core/styles';
-import loginBackgroundImg from '../../img/login_img.jpg';
+import loginBackgroundImg from 'assets/img/login_img.jpg';
 
 const loginViewStyle = makeStyles(() =>
 createStyles({

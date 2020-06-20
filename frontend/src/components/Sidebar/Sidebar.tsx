@@ -12,20 +12,17 @@ import { HeaderLinks } from 'components';
 import * as React from 'react';
 import { NavLink, RouteProps } from 'react-router-dom';
 import { Route } from 'routes/mainPageRoutes';
+import logoImg from 'assets/img/logo.png';
 
 interface Props {
   handleDrawerToggle: () => void;
   open: boolean;
-
   color: string;
-  logo: string;
-  image?: string;
-  logoText: string;
   routes: Route[];
 }
 
 const Sidebar: React.SFC<Props & RouteProps> = props => {
-  const { color, logo, image, logoText, routes } = props;
+  const { color, routes } = props;
   const classes = sidebarStyle();
 
   var links = (
@@ -67,11 +64,8 @@ const Sidebar: React.SFC<Props & RouteProps> = props => {
 
   var brand = (
     <div className={classes.logo}>
-      <a href="https://www.creative-tim.com" className={classes.logoLink}>
-        <div className={classes.logoImage}>
-          <img src={logo} alt="logo" className={classes.img} />
-        </div>
-        {logoText}
+      <a href="#" className={classes.logoLink}>
+        <img src={logoImg} alt="logo" className={classes.img} />
       </a>
     </div>
   );
@@ -96,12 +90,6 @@ const Sidebar: React.SFC<Props & RouteProps> = props => {
             <HeaderLinks />
             {links}
           </div>
-          {image !== undefined ? (
-            <div
-              className={classes.background}
-              style={{ backgroundImage: 'url(' + image + ')' }}
-            />
-          ) : null}
         </Drawer>
       </Hidden>
       <Hidden smDown>
@@ -115,12 +103,6 @@ const Sidebar: React.SFC<Props & RouteProps> = props => {
         >
           {brand}
           <div className={classes.sidebarWrapper}>{links}</div>
-          {image !== undefined ? (
-            <div
-              className={classes.background}
-              style={{ backgroundImage: 'url(' + image + ')' }}
-            />
-          ) : null}
         </Drawer>
       </Hidden>
     </div>

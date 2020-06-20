@@ -5,8 +5,7 @@ import {
   Header,
 } from 'components';
 import mainPageRoutes from 'routes/mainPageRoutes';
-import logo from 'assets/img/reactlogo.png';
-// import { primaryColor } from 'assets/jss/material-dashboard-react';
+import mainPageLayoutStyle from 'assets/jss/kiloStyles/mainPageLayoutStyle';
 
 const switchRoutes = (
   <Switch>
@@ -18,30 +17,29 @@ const switchRoutes = (
 
 const MainPageLayout: React.FC<RouteProps> = (props) => {
   const { ...rest } = props;
+  const classes = mainPageLayoutStyle();
 
   function handleDrawerToggle() {
     console.log('handleDrawerToggle!');
   }
 
   return (
-    <div>
+    <div className={classes.wrapper}>
       <Sidebar
         routes={mainPageRoutes}
-        logoText={'K Dance Classic Studio'}
-        logo={logo}
         handleDrawerToggle={handleDrawerToggle}
         open={false}
         color='purple'
         {...rest}
       />
-      <div>
+      <div className={classes.mainPanel}>
         <Header
           routes={mainPageRoutes}
           handleDrawerToggle={handleDrawerToggle}
           {...rest}
         />
-        <div>
-          <div>{switchRoutes}</div>
+        <div className={classes.content}>
+          <div className={classes.container}>{switchRoutes}</div>
         </div>
       </div>
     </div>
