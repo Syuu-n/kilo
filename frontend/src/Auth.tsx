@@ -73,7 +73,6 @@ const AuthProvider = (props: any) => {
           >
             {props.children}
           </AuthContext.Provider>
-
         ) : (
           <Redirect to='/login' />
         )
