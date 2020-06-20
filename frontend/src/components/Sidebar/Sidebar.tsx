@@ -28,6 +28,9 @@ const Sidebar: React.SFC<Props & RouteProps> = props => {
   var links = (
     <List className={classes.list}>
       {routes.map((prop, key) => {
+        if (prop.redirect) {
+          return null;
+        }
 
         const listItemClasses = cx({
           [' ' + classes[color]]: activeRoute(prop.path),

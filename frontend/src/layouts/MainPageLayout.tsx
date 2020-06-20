@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, RouteProps, Switch } from 'react-router-dom';
+import { Route, RouteProps, Switch, Redirect } from 'react-router-dom';
 import {
   Sidebar,
   Header,
@@ -10,7 +10,10 @@ import mainPageLayoutStyle from 'assets/jss/kiloStyles/mainPageLayoutStyle';
 const switchRoutes = (
   <Switch>
     {mainPageRoutes.map((props, key) =>{
-      return <Route path={props.path} component={props.component} key={key} />
+      if (props.redirect) {
+        return <Redirect from={props.path} to={props.to} key={key}/>;
+      }
+      return <Route path={props.path} component={props.component} key={key} />;
     })}
   </Switch>
 );

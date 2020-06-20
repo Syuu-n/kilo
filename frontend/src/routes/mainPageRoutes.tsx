@@ -21,6 +21,12 @@ const mainPageRoutes = [
     icon: AccountCircle,
     component: ProfileView,
   },
+  {
+    path: '/',
+    navbarName: 'Redirect',
+    redirect: true,
+    to: '/schedule',
+  },
 ];
 
 export default mainPageRoutes;
