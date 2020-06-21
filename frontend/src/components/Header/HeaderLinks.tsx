@@ -12,10 +12,12 @@ import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksSty
 import * as cx from 'classnames';
 import * as React from 'react';
 import { Manager, Popper, Target } from 'react-popper';
+import { AuthContext } from 'Auth';
 
 const HeaderLinks: React.FC = () => {
   const classes = headerLinksStyle();
   const [open, setOpen] = React.useState(false);
+  const { currentUser } = React.useContext(AuthContext);
 
   function handleClick() {
     setOpen(!open);
@@ -39,7 +41,8 @@ const HeaderLinks: React.FC = () => {
               className={classes.buttonLink}
             >
               <Notifications className={classes.links} />
-              <span className={classes.notifications}>5</span>
+              {/* NOTE: 通知数表示 */}
+              {/* <span className={classes.notifications}>5</span> */}
               <Hidden mdUp>
                 <p onClick={handleClick} className={classes.linkText}>
                   Notification
@@ -104,6 +107,12 @@ const HeaderLinks: React.FC = () => {
           <p className={classes.linkText}>Profile</p>
         </Hidden>
       </IconButton>
+      { currentUser ? (
+        <span>{currentUser.name} 様</span>
+      ) : (
+        <span>ロード中...</span>
+      )
+      }
     </div>
   );
 }
