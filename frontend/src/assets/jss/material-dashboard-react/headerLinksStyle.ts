@@ -15,20 +15,6 @@ createStyles({
   popperClose: {
     pointerEvents: 'none',
   },
-  search: {
-    '& > div': {
-      marginTop: '0',
-    },
-    [theme.breakpoints.down('sm')]: {
-      margin: '10px 15px',
-      float: 'none !important' as 'none',
-      paddingTop: '1px',
-      paddingBottom: '1px',
-      padding: '10px 15px',
-      width: 'auto',
-      marginTop: '40px',
-    },
-  },
   linkText: {
     zIndex: 4,
     ...defaultFont,
@@ -41,20 +27,9 @@ createStyles({
       width: 'auto',
     },
   },
-  searchButton: {
-    [theme.breakpoints.down('sm')]: {
-      top: '-50px !important',
-      marginRight: '22px',
-      float: 'right',
-    },
-  },
   margin: {
     zIndex: 4,
     margin: '0',
-  },
-  searchIcon: {
-    width: '17px',
-    zIndex: 4,
   },
   links: {
     width: '20px',
