@@ -6,6 +6,8 @@ import {
 } from 'components';
 import mainPageRoutes from 'routes/mainPageRoutes';
 import mainPageLayoutStyle from 'assets/jss/kiloStyles/mainPageLayoutStyle';
+import PerfectScrollbar from 'perfect-scrollbar';
+import 'perfect-scrollbar/css/perfect-scrollbar.css';
 
 const switchRoutes = (
   <Switch>
@@ -19,23 +21,40 @@ const switchRoutes = (
 );
 
 const MainPageLayout: React.FC<RouteProps> = (props) => {
+  let mainPanel: HTMLDivElement | null = null;
+  const [mobileOpen, setMobileOpen] = React.useState(false);
   const { ...rest } = props;
   const classes = mainPageLayoutStyle();
 
   function handleDrawerToggle() {
-    console.log('handleDrawerToggle!');
+    setMobileOpen(!mobileOpen);
   }
+
+  React.useEffect(() => {
+    if (!mainPanel) {
+      throw new Error('mainPanel ref missing');
+    }
+
+    if (navigator.platform.indexOf('Win') > -1) {
+      // tslint:disable-next-line:no-unused-expression
+      new PerfectScrollbar(mainPanel);
+    }
+
+    if (mainPanel) {
+      mainPanel.scrollTop = 0;
+    }
+  });
 
   return (
     <div className={classes.wrapper}>
       <Sidebar
         routes={mainPageRoutes}
         handleDrawerToggle={handleDrawerToggle}
-        open={false}
+        open={mobileOpen}
         color='purple'
         {...rest}
       />
-      <div className={classes.mainPanel}>
+      <div className={classes.mainPanel} ref={ref => (mainPanel = ref)}>
         <Header
           routes={mainPageRoutes}
           handleDrawerToggle={handleDrawerToggle}
