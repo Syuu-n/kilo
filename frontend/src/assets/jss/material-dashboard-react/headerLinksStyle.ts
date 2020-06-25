@@ -19,12 +19,20 @@ createStyles({
     zIndex: 4,
     ...defaultFont,
     fontSize: '14px',
+    [theme.breakpoints.down('sm')]: {
+      lineHeight: '30px',
+      margin: 0,
+    },
   },
   buttonLink: {
     [theme.breakpoints.down('sm')]: {
       display: 'flex',
-      marginLeft: '30px',
-      width: 'auto',
+      justifyContent: 'start',
+      margin: '10px 15px 0 15px',
+      padding: '10px 13px',
+      width: '230px',
+      borderRadius: '3px',
+      color: '#555555',
     },
   },
   margin: {
@@ -39,8 +47,7 @@ createStyles({
       display: 'block',
       width: '30px',
       height: '30px',
-      color: '#a9afbb',
-      marginRight: '15px',
+      marginRight: '41px',
     },
   },
   notifications: {
@@ -113,6 +120,9 @@ createStyles({
       color: '#FFFFFF',
       ...primaryBoxShadow,
     },
+  },
+  currentUserContainer: {
+    cursor: 'pointer',
   },
 }),
 );

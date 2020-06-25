@@ -7,7 +7,7 @@ import {
   MenuList,
   Paper,
 } from '@material-ui/core';
-import { Notifications, Person } from '@material-ui/icons';
+import { Person } from '@material-ui/icons';
 import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
 import * as cx from 'classnames';
 import * as React from 'react';
@@ -29,26 +29,50 @@ const HeaderLinks: React.FC = () => {
 
   return (
     <div>
+      {/* NOTE: 通知表示 */}
+      {/* <IconButton
+        color="inherit"
+        aria-label="Notifications"
+        className={classes.buttonLink}
+      >
+        <Notifications className={classes.links} />
+        <span className={classes.notifications}>5</span>
+        <Hidden mdUp>
+          <p onClick={handleClick} className={classes.linkText}>
+            通知
+          </p>
+        </Hidden>
+      </IconButton> */}
       <ClickAwayListener onClickAway={handleClose}>
         <Manager style={{ display: 'inline-block' }}>
           <Target>
-            <IconButton
-              color="inherit"
-              aria-label="Notifications"
-              aria-owns={open ? 'menu-list' : undefined}
-              aria-haspopup="true"
-              onClick={handleClick}
-              className={classes.buttonLink}
-            >
-              <Notifications className={classes.links} />
-              {/* NOTE: 通知数表示 */}
-              {/* <span className={classes.notifications}>5</span> */}
-              <Hidden mdUp>
-                <p onClick={handleClick} className={classes.linkText}>
-                  Notification
-                </p>
+            <div onClick={handleClick} className={classes.currentUserContainer}>
+              <IconButton
+                color="inherit"
+                aria-label="Person"
+                aria-owns={open ? 'menu-list' : undefined}
+                aria-haspopup="true"
+                className={classes.buttonLink}
+              >
+                <Person className={classes.links} />
+                <Hidden mdUp>
+                  { currentUser ? (
+                    <p className={classes.linkText}>{currentUser.name} 様</p>
+                  ) : (
+                    <p className={classes.linkText}>ロード中...</p>
+                  )
+                  }
+                </Hidden>
+              </IconButton>
+              <Hidden smDown>
+                { currentUser ? (
+                  <span>{currentUser.name} 様</span>
+                ) : (
+                  <span>ロード中...</span>
+                )
+                }
               </Hidden>
-            </IconButton>
+            </div>
           </Target>
           <Popper
             placement="bottom-start"
@@ -65,31 +89,7 @@ const HeaderLinks: React.FC = () => {
                     onClick={handleClose}
                     className={classes.dropdownItem}
                   >
-                    Mike John responded to your email
-                  </MenuItem>
-                  <MenuItem
-                    onClick={handleClose}
-                    className={classes.dropdownItem}
-                  >
-                    You have 5 new tasks
-                  </MenuItem>
-                  <MenuItem
-                    onClick={handleClose}
-                    className={classes.dropdownItem}
-                  >
-                    You're now friend with Andrew
-                  </MenuItem>
-                  <MenuItem
-                    onClick={handleClose}
-                    className={classes.dropdownItem}
-                  >
-                    Another Notification
-                  </MenuItem>
-                  <MenuItem
-                    onClick={handleClose}
-                    className={classes.dropdownItem}
-                  >
-                    Another One
+                    ログアウト
                   </MenuItem>
                 </MenuList>
               </Paper>
@@ -97,22 +97,6 @@ const HeaderLinks: React.FC = () => {
           </Popper>
         </Manager>
       </ClickAwayListener>
-      <IconButton
-        color="inherit"
-        aria-label="Person"
-        className={classes.buttonLink}
-      >
-        <Person className={classes.links} />
-        <Hidden mdUp>
-          <p className={classes.linkText}>Profile</p>
-        </Hidden>
-      </IconButton>
-      { currentUser ? (
-        <span>{currentUser.name} 様</span>
-      ) : (
-        <span>ロード中...</span>
-      )
-      }
     </div>
   );
 }
