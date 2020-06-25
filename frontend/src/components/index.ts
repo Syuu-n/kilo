@@ -87,6 +87,8 @@ import Danger from './Typography/Danger';
 import Small from './Typography/Small';
 import A from './Typography/A';
 
+import KSpinner from './Spinner/Spinner';
+
 export {
   // Cards
   ChartCard,
@@ -129,4 +131,5 @@ export {
   Danger,
   Small,
   A,
+  KSpinner,
 };

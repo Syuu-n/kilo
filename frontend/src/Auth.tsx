@@ -2,7 +2,7 @@ import * as React from 'react';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { User } from 'responses/responseStructs';
 import { Redirect } from 'react-router-dom';
-import Spinner from '@material-ui/core/CircularProgress';
+import { KSpinner } from 'components';
 import authStyle from 'assets/jss/kiloStyles/authStyle';
 
 // Context の型
@@ -78,7 +78,7 @@ const AuthProvider = (props: any) => {
         )
       ) : (
         <div className={classes.spinnerWrap}>
-          <Spinner color='inherit'/>
+          <KSpinner/>
         </div>
       )}
     </div>
