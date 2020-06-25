@@ -18,6 +18,7 @@ import {
   P
 } from 'components';
 import { fetchApp, NetworkError } from 'request/fetcher';
+import history from 'RouterHistory';
 
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
@@ -63,8 +64,9 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
         } else {
           localStorage.removeItem('kiloToken');
         }
-
-        console.log('ログインしました。')
+        console.log('ログインしました。');
+        // トップページへ移動
+        history.push('/');
         break;
       default:
         setErrorMessage('予期せぬエラーが発生しました。時間をおいて再度お試しください。');

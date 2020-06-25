@@ -13,6 +13,7 @@ import * as cx from 'classnames';
 import * as React from 'react';
 import { Manager, Popper, Target } from 'react-popper';
 import { AuthContext } from 'Auth';
+import history from 'RouterHistory';
 
 const HeaderLinks: React.FC = () => {
   const classes = headerLinksStyle();
@@ -25,6 +26,11 @@ const HeaderLinks: React.FC = () => {
 
   function handleClose() {
     setOpen(false);
+  }
+
+  function logout() {
+    localStorage.removeItem('kiloToken');
+    history.push('/login');
   }
 
   return (
@@ -86,7 +92,7 @@ const HeaderLinks: React.FC = () => {
               <Paper className={classes.dropdown}>
                 <MenuList role="menu">
                   <MenuItem
-                    onClick={handleClose}
+                    onClick={logout}
                     className={classes.dropdownItem}
                   >
                     ログアウト
