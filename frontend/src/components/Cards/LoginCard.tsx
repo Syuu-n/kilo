@@ -56,6 +56,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
     switch (res.status) {
       case 400:
         setErrorMessage('入力された情報の組み合わせが正しくありません。');
+        setButtonDisabled(false);
         break;
       case 200:
         const json = await res.json();
@@ -70,8 +71,8 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
         break;
       default:
         setErrorMessage('予期せぬエラーが発生しました。時間をおいて再度お試しください。');
+        setButtonDisabled(false);
     }
-    setButtonDisabled(false);
   }
 
   return (
