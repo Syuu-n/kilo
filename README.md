@@ -23,5 +23,5 @@ $ docker-comppose up -d
 # Test
 ```
 $ docker-compose exec backend bash
-& rspec
+$ rspec
 ```
