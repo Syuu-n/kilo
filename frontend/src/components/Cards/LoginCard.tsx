@@ -3,7 +3,8 @@ import {
   CardContent,
   CardHeader,
   InputAdornment,
-  Typography
+  // TODO: rememberMe を有効にするにはアンコメント
+  // Typography
 } from '@material-ui/core';
 import {
   Email,
@@ -12,7 +13,8 @@ import {
 import * as React from 'react';
 import loginCardStyle from 'assets/jss/kiloStyles/loginCardStyle';
 import {
-  CustomCheckbox,
+  // TODO: rememberMe を有効にするにはアンコメント
+  // CustomCheckbox,
   CustomInput,
   Button,
   P
@@ -30,14 +32,14 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
   const classes = loginCardStyle();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [rememberMe, setRememberMe] = React.useState(false);
+  // TODO: rememberMe を有効にするにはアンコメント
+  // const [rememberMe, setRememberMe] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
 
   const handleLogin = async (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setButtonDisabled(true);
-    console.log('Email:' + email, 'Password:' + password, 'RememberMe:' + rememberMe)
     const res = await fetchApp(
       '/v1/login',
       'POST',
@@ -60,12 +62,13 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
         break;
       case 200:
         const json = await res.json();
-        if (rememberMe === true) {
-          localStorage.setItem('kiloToken', json.access_token);
-        } else {
-          localStorage.removeItem('kiloToken');
-        }
-        console.log('ログインしました。');
+        // TODO: rememberMe を有効にするにはアンコメント
+        // if (rememberMe === true) {
+        //   localStorage.setItem('kiloToken', json.access_token);
+        // } else {
+        //   localStorage.removeItem('kiloToken');
+        // }
+        localStorage.setItem('kiloToken', json.access_token);
         // トップページへ移動
         history.push('/');
         break;
@@ -117,7 +120,8 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
               value: password
             }}
           />
-          <div className={classes.rememberMeContainer}>
+          {/* TODO: rememberMe を有効にするにはアンコメント */}
+          {/* <div className={classes.rememberMeContainer}>
             <CustomCheckbox
               checked={rememberMe}
               onClick={() => setRememberMe(!rememberMe)}
@@ -128,7 +132,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
             >
               ログインしたままにする
             </Typography>
-          </div>
+          </div> */}
           <div className={classes.errorMessageContainer}>
             <P>{errorMessage}</P>
           </div>
