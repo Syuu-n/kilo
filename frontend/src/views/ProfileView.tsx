@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { AuthContext } from 'Auth';
+import { MyProfileCard } from 'components';
+import { AccountCircle } from '@material-ui/icons';
 
 const ProfileView: React.SFC = () => {
   const { currentUser } = React.useContext(AuthContext);
@@ -16,7 +18,13 @@ const ProfileView: React.SFC = () => {
       ) : (
         <p>ユーザ情報なし</p>
       )
+      
     }
+      <MyProfileCard
+        headerColor="orange"
+        cardTitle="マイプロフィール"
+        icon={AccountCircle}
+      />
     </div>
   );
 };
