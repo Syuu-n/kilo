@@ -41,6 +41,22 @@ createStyles({
     margin: 'auto 0',
     ...defaultFont,
     fontFamily: 'cursive',
+  },
+  table: {
+    marginBottom: '0',
+    overflow: 'visible',
+  },
+  tableRow: {
+    position: 'relative',
+    borderBottom: '1px solid #dddddd',
+  },
+  tableCell: {
+    ...defaultFont,
+    padding: '8px',
+    verticalAlign: 'middle',
+    border: 'none',
+    lineHeight: '1.42857143',
+    fontSize: '14px',
   }
 }));
 

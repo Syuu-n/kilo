@@ -5,15 +5,19 @@ import {
   CardContent,
   SvgIcon,
 } from '@material-ui/core';
-import myProfileCardStyle from 'assets/jss/kiloStyles/myProfileCard';
+import myProfileCardStyle from 'assets/jss/kiloStyles/myProfileCardStyle';
+import { Table } from 'components';
 
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
   cardTitle?: React.ReactNode;
   icon: typeof SvgIcon;
+  tableHeaderColor?: 'warning' | 'primary' | 'danger' | 'success' | 'info' | 'rose' | 'gray';
+  tableHead?: string[];
+  tableData?: string[][];
 }
 
-const MyProfileCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, icon}) => {
+const MyProfileCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, icon, tableHeaderColor = 'primary', tableHead, tableData }) => {
   const classes = myProfileCardStyle();
   const Icon = icon;
 
@@ -33,7 +37,11 @@ const MyProfileCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, ic
         <h4 className={classes.cardTitle}>{cardTitle}</h4>
       </div>
       <CardContent>
-
+        <Table
+          tableHeaderColor={tableHeaderColor}
+          tableHead={tableHead}
+          tableData={tableData}
+        />
       </CardContent>
     </Card>
   );
