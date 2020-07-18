@@ -1,30 +1,55 @@
 import * as React from 'react';
 import { AuthContext } from 'Auth';
-import { MyProfileCard } from 'components';
+import { 
+  MyProfileCard,
+  ItemGrid,
+} from 'components';
 import { AccountCircle } from '@material-ui/icons';
+import { Grid } from '@material-ui/core';
+import * as moment from 'moment';
 
 const ProfileView: React.SFC = () => {
   const { currentUser } = React.useContext(AuthContext);
 
   return (
     <div>
-      <h2>プロフィール</h2>
       { currentUser ? (
-        <div>
-          <p>{currentUser.name}</p>
-          <p>{currentUser.name_kana}</p>
-          <p>{currentUser.email}</p>
-        </div>
+        <Grid container>
+          <ItemGrid xs={12} md={6} lg={6}>
+            <MyProfileCard
+              headerColor="orange"
+              cardTitle="マイプロフィール"
+              icon={AccountCircle}
+              tableData={[
+                ["名前", currentUser.name],
+                ["名前（カナ）", currentUser.name_kana],
+                ["電話番号", currentUser.phone_number],
+                ["メールアドレス", currentUser.email],
+                ["年齢", currentUser.age + " 歳"],
+                ["生年月日", moment(currentUser.birthday).format("LL")],
+              ]}
+            />
+          </ItemGrid>
+          <ItemGrid xs={12} md={6} lg={4}>
+            <MyProfileCard
+              headerColor="orange"
+              cardTitle="マイプロフィール"
+              icon={AccountCircle}
+              tableData={[
+                ["名前", currentUser.name],
+                ["名前（カナ）", currentUser.name_kana],
+                ["電話番号", currentUser.phone_number],
+                ["メールアドレス", currentUser.email],
+                ["年齢", currentUser.age + " 歳"],
+                ["生年月日", moment(currentUser.birthday).format("LL")],
+              ]}
+            />
+          </ItemGrid>
+        </Grid>
       ) : (
-        <p>ユーザ情報なし</p>
+        <p>予期せぬエラーが発生しました。時間をおいて再度お試しください。</p>
       )
-      
-    }
-      <MyProfileCard
-        headerColor="orange"
-        cardTitle="マイプロフィール"
-        icon={AccountCircle}
-      />
+      }
     </div>
   );
 };

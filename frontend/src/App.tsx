@@ -4,6 +4,8 @@ import { Router, Switch, Route } from 'react-router-dom';
 import { AuthProvider } from 'Auth';
 import MainPage from 'layouts/MainPageLayout';
 import LoginView from 'views/LoginView';
+// moment を日本語に設定
+import 'moment/locale/ja';
 
 // AuthProvider 配下は認証が必要
 const App: React.FC = () => {
