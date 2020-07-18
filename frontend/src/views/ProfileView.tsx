@@ -7,9 +7,30 @@ import {
 import { AccountCircle } from '@material-ui/icons';
 import { Grid } from '@material-ui/core';
 import * as moment from 'moment';
+import { fetchApp, NetworkError } from 'request/fetcher';
 
 const ProfileView: React.SFC = () => {
   const { currentUser } = React.useContext(AuthContext);
+  const accessToken = localStorage.getItem('kiloToken');
+  const fetchMyPlan = async => {
+    const res = await fetchApp(
+      `/v1/${currentUser?.id}/plan`,
+      'GET',
+      accessToken,
+    )
+    if (res instanceof NetworkError) {
+      console.log("Network Error");
+      return
+    }
+
+    switch(res.status) {
+      case 403:
+        console.log("Not Permitted");
+        break;
+      case 200:
+
+    }
+  }
 
   return (
     <div>
@@ -33,7 +54,7 @@ const ProfileView: React.SFC = () => {
           <ItemGrid xs={12} md={6} lg={4}>
             <MyProfileCard
               headerColor="orange"
-              cardTitle="マイプロフィール"
+              cardTitle="マイコース"
               icon={AccountCircle}
               tableData={[
                 ["名前", currentUser.name],
