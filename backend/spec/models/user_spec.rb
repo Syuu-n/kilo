@@ -117,6 +117,13 @@ describe User, type: :model do
           expect(trial.is_trial?).to eq true
         end
       end
+
+      context '#age' do
+        let(:userAge){ (Date.today.strftime('%Y%m%d').to_i - user.birthday.strftime('%Y%m%d').to_i) / 10000 }
+        it 'ユーザの年齢を取得できる' do
+          expect(user.age).to eq userAge
+        end
+      end
     end
   end
 end

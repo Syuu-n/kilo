@@ -51,4 +51,9 @@ class User < ApplicationRecord
   def is_trial?
     self.role.trial?
   end
+
+  def age
+    # 現在の年齢
+    (Date.today.strftime('%Y%m%d').to_i - birthday.strftime('%Y%m%d').to_i) / 10000
+  end
 end
