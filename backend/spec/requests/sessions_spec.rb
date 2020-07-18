@@ -52,7 +52,7 @@ describe 'Sessions API', type: :request do
     end
   end
 
-  describe 'POST /v1/me' do
+  describe 'GET /v1/me' do
     subject { get "/v1/me", headers: { Authorization: access_token }  }
     let(:user){ create(:user) }
     let(:access_token){ user.access_token }
@@ -68,6 +68,84 @@ describe 'Sessions API', type: :request do
         expect(json['birthday']).to eq user.birthday.to_s
         expect(json['phone_number']).to eq user.phone_number
         expect(json['plan_name']).to eq user.plan_name
+      end
+    end
+
+    context 'アクセストークンが正しくない場合' do
+      let(:access_token){ 'hogehogehoge' }
+      it '401 Unauthorized を返す' do
+        subject
+
+        expect(response.status).to eq 401
+        expect(json['code']).to eq 'unauthenticated'
+      end
+    end
+
+    context 'アクセストークンの期限が切れている場合' do
+      it '403 Forbidden を返す' do
+        user
+        travel_to(Time.current + 15.days) do
+          subject
+
+          expect(response.status).to eq 403
+          expect(json['code']).to eq 'access_token_expired'
+        end
+      end
+    end
+  end
+
+  describe 'GET /v1/my_plan' do
+    subject { get "/v1/my_plan", headers: { Authorization: access_token }  }
+    let(:user){ create(:user) }
+    let(:access_token){ user.access_token }
+    context 'アクセストークンが正しくかつ期限が切れていない場合' do
+      it '自身のコースを取得できる' do
+        subject
+
+        user_plan = user.plan
+        expect(response.status).to eq 200
+        expect(json['id']).to eq user_plan.id
+        expect(json['name']).to eq user_plan.name
+        expect(json['price']).to eq user_plan.price
+        expect(json['monthly_lesson_count']).to eq user_plan.monthly_lesson_count
+        expect(json['for_children']).to eq user_plan.for_children
+      end
+    end
+
+    context 'アクセストークンが正しくない場合' do
+      let(:access_token){ 'hogehogehoge' }
+      it '401 Unauthorized を返す' do
+        subject
+
+        expect(response.status).to eq 401
+        expect(json['code']).to eq 'unauthenticated'
+      end
+    end
+
+    context 'アクセストークンの期限が切れている場合' do
+      it '403 Forbidden を返す' do
+        user
+        travel_to(Time.current + 15.days) do
+          subject
+
+          expect(response.status).to eq 403
+          expect(json['code']).to eq 'access_token_expired'
+        end
+      end
+    end
+  end
+
+  describe 'GET /v1/my_lessons' do
+    subject { get "/v1/my_lessons", headers: { Authorization: access_token }  }
+    let(:user){ create(:user) }
+    let(:access_token){ user.access_token }
+    context 'アクセストークンが正しくかつ期限が切れていない場合' do
+      it '自身のレッスンを取得できる' do
+        subject
+
+        last_user_lessons = user.lessons.last
+        expect(response.status).to eq 200
+        expect(json).to eq []
       end
     end
 

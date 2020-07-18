@@ -23,6 +23,16 @@ module V1
       render json: current_user, status: :ok
     end
 
+    # GET /v1/my_lessons
+    def my_lessons
+      render json: current_user.lessons, status: :ok
+    end
+
+    # GET /v1/my_plan
+    def my_plan
+      render json: current_user.plan, status: :ok
+    end
+
     private
 
     def invalid_email_or_email
