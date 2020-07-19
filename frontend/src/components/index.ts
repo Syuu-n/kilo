@@ -9,6 +9,7 @@ import StatsCard from './Cards/StatsCard';
 import TasksCard from './Cards/TasksCard';
 import LoginCard from './Cards/LoginCard';
 import MyProfileCard from './Cards/MyProfileCard';
+import LoginSettingCard from './Cards/LoginSettingCard';
 
 // ##############################
 // // // CustomButtons
@@ -66,6 +67,7 @@ import SnackbarContent from './Snackbar/SnackbarContent';
 // #############################
 
 import Table from './Table/Table';
+import LoginSettingTable from './Table/LoginSettingTable';
 
 // ##############################
 // // // Tasks
@@ -99,6 +101,7 @@ export {
   TasksCard,
   LoginCard,
   MyProfileCard,
+  LoginSettingCard,
   // CustomButtons
   Button,
   IconButton,
@@ -120,6 +123,7 @@ export {
   SnackbarContent,
   // Table
   Table,
+  LoginSettingTable,
   // Tasks
   Tasks,
   // Typography
