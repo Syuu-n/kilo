@@ -14,7 +14,7 @@ interface Props {
   icon: typeof SvgIcon;
   tableHeaderColor?: 'warning' | 'primary' | 'danger' | 'success' | 'info' | 'rose' | 'gray';
   tableHead?: string[];
-  tableData?: string[][];
+  tableData?: any[][];
 }
 
 const MyProfileCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, icon, tableHeaderColor = 'primary', tableHead, tableData }) => {

@@ -18,7 +18,7 @@ interface Props {
     | 'rose'
     | 'gray';
   tableHead?: string[];
-  tableData?: string[][];
+  tableData?: any[][];
 }
 
 const CustomTable: React.SFC<Props> = props => {
