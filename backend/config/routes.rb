@@ -11,7 +11,6 @@ Rails.application.routes.draw do
     resources :users, except: [:new, :edit] do
       member do
         get 'lessons' => 'users#my_lessons'
-        get 'plan' => 'users#my_plan'
       end
     end
     resource :trials, only: [:create, :update]

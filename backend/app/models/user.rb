@@ -40,10 +40,6 @@ class User < ApplicationRecord
     last_name_kana + " " + first_name_kana
   end
 
-  def plan_name
-    plan.name
-  end
-
   def is_admin?
     self.role.admin?
   end

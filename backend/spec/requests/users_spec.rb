@@ -19,7 +19,12 @@ describe 'Users API', type: :request do
         expect(json.last['name_kana']).to eq last_user.name_kana
         expect(json.last['birthday']).to eq last_user.birthday.to_s
         expect(json.last['phone_number']).to eq last_user.phone_number
-        expect(json.last['plan_name']).to eq last_user.plan_name
+        user_plan = last_user.plan
+        expect(json.last['plan']['id']).to eq user_plan.id
+        expect(json.last['plan']['name']).to eq user_plan.name
+        expect(json.last['plan']['price']).to eq user_plan.price
+        expect(json.last['plan']['monthly_lesson_count']).to eq user_plan.monthly_lesson_count
+        expect(json.last['plan']['for_children']).to eq user_plan.for_children
       end
     end
 
@@ -46,6 +51,7 @@ describe 'Users API', type: :request do
       last_name_kana: Faker::Creature::Animal.name,
       birthday: Time.current - rand(1..100).year,
       phone_number: Faker::PhoneNumber.cell_phone,
+      plan: Plan.default_plan
     } }
     context '管理者がユーザを作成した場合' do
       login_admin
@@ -59,7 +65,12 @@ describe 'Users API', type: :request do
         expect(json['name_kana']).to eq new_user.name_kana
         expect(json['birthday']).to eq new_user.birthday.to_s
         expect(json['phone_number']).to eq new_user.phone_number
-        expect(json['plan_name']).to eq new_user.plan_name
+        default_plan = Plan.default_plan
+        expect(json['plan']['id']).to eq default_plan.id
+        expect(json['plan']['name']).to eq default_plan.name
+        expect(json['plan']['price']).to eq default_plan.price
+        expect(json['plan']['monthly_lesson_count']).to eq default_plan.monthly_lesson_count
+        expect(json['plan']['for_children']).to eq default_plan.for_children
       end
     end
 
@@ -97,7 +108,8 @@ describe 'Users API', type: :request do
       first_name_kana: Faker::Ancient.god,
       last_name_kana: Faker::Creature::Animal.name,
       birthday: (Time.current - rand(1..100).year).strftime('%Y-%m-%d'),
-      phone_number: Faker::PhoneNumber.cell_phone
+      phone_number: Faker::PhoneNumber.cell_phone,
+      plan: Plan.default_plan,
     } }
     context '管理者がユーザ情報を変更した場合' do
       login_admin
@@ -111,6 +123,12 @@ describe 'Users API', type: :request do
         expect(json['name_kana']).to eq user_params[:last_name_kana] + " " + user_params[:first_name_kana]
         expect(json['birthday']).to eq user_params[:birthday].to_s
         expect(json['phone_number']).to eq user_params[:phone_number]
+        default_plan = Plan.default_plan
+        expect(json['plan']['id']).to eq default_plan.id
+        expect(json['plan']['name']).to eq default_plan.name
+        expect(json['plan']['price']).to eq default_plan.price
+        expect(json['plan']['monthly_lesson_count']).to eq default_plan.monthly_lesson_count
+        expect(json['plan']['for_children']).to eq default_plan.for_children
       end
     end
 
@@ -183,7 +201,11 @@ describe 'Users API', type: :request do
         expect(json['name_kana']).to eq last_user.name_kana
         expect(json['birthday']).to eq last_user.birthday.to_s
         expect(json['phone_number']).to eq last_user.phone_number
-        expect(json['plan_name']).to eq last_user.plan_name
+        expect(json['plan']['id']).to eq last_user.plan.id
+        expect(json['plan']['name']).to eq last_user.plan.name
+        expect(json['plan']['price']).to eq last_user.plan.price
+        expect(json['plan']['monthly_lesson_count']).to eq last_user.plan.monthly_lesson_count
+        expect(json['plan']['for_children']).to eq last_user.plan.for_children
       end
     end
 
@@ -200,7 +222,12 @@ describe 'Users API', type: :request do
         expect(json['name_kana']).to eq user.name_kana
         expect(json['birthday']).to eq user.birthday.to_s
         expect(json['phone_number']).to eq user.phone_number
-        expect(json['plan_name']).to eq user.plan_name
+        user_plan = user.plan
+        expect(json['plan']['id']).to eq user_plan.id
+        expect(json['plan']['name']).to eq user_plan.name
+        expect(json['plan']['price']).to eq user_plan.price
+        expect(json['plan']['monthly_lesson_count']).to eq user_plan.monthly_lesson_count
+        expect(json['plan']['for_children']).to eq user_plan.for_children
       end
     end
 
@@ -321,67 +348,6 @@ describe 'Users API', type: :request do
     end
 
     context 'ユーザが他のユーザのレッスン情報を取得した場合' do
-      login_user
-      let(:access_token){ user.access_token }
-      let(:target_user_id){ User.first.id }
-      it '403 Forbidden を返す' do
-        subject
-
-        expect(response.status).to eq 403
-        expect(json['code']).to eq 'not_permitted'
-      end
-    end
-  end
-
-  describe 'GET /users/:id/plan' do
-    subject { get "/v1/users/#{target_user_id}/plan", headers: { Authorization: access_token }  }
-    context '管理者が他のユーザのプラン情報を取得した場合' do
-      login_admin
-      let(:access_token){ admin.access_token }
-      let(:target_user_id){ User.last.id }
-      it '200 OK を返す' do
-        subject
-
-        expect(response.status).to eq 200
-        user_plan = User.last.plan
-        expect(json['id']).to eq user_plan.id
-        expect(json['name']).to eq user_plan.name
-        expect(json['price']).to eq user_plan.price
-        expect(json['monthly_lesson_count']).to eq user_plan.monthly_lesson_count
-        expect(json['for_children']).to eq user_plan.for_children
-      end
-    end
-
-    context 'ユーザが自身のプラン情報を取得した場合' do
-      login_user
-      let(:access_token){ user.access_token }
-      let(:target_user_id){ user.id }
-      it '200 OK を返す' do
-        subject
-
-        expect(response.status).to eq 200
-        user_plan = user.plan
-        expect(json['id']).to eq user_plan.id
-        expect(json['name']).to eq user_plan.name
-        expect(json['price']).to eq user_plan.price
-        expect(json['monthly_lesson_count']).to eq user_plan.monthly_lesson_count
-        expect(json['for_children']).to eq user_plan.for_children
-      end
-    end
-
-    context '存在しないユーザのプラン情報を取得した場合' do
-      login_admin
-      let(:access_token){ admin.access_token }
-      let(:target_user_id){ User.last.id + 1 }
-      it '404 NotFound を返す' do
-        subject
-
-        expect(response.status).to eq 404
-        expect(json['code']).to eq 'user_not_found'
-      end
-    end
-
-    context 'ユーザが他のユーザのプラン情報を取得した場合' do
       login_user
       let(:access_token){ user.access_token }
       let(:target_user_id){ User.first.id }

@@ -75,7 +75,12 @@ describe 'Passwords API', type: :request do
         expect(json['name_kana']).to eq user.name_kana
         expect(json['birthday']).to eq user.birthday.to_s
         expect(json['phone_number']).to eq user.phone_number
-        expect(json['plan_name']).to eq user.plan_name
+        user_plan = user.plan
+        expect(json['plan']['id']).to eq user_plan.id
+        expect(json['plan']['name']).to eq user_plan.name
+        expect(json['plan']['price']).to eq user_plan.price
+        expect(json['plan']['monthly_lesson_count']).to eq user_plan.monthly_lesson_count
+        expect(json['plan']['for_children']).to eq user_plan.for_children
         user.reload
         expect(user.valid_password?(new_password)).to eq true
       end

@@ -87,7 +87,12 @@ describe 'Trials API', type: :request do
         expect(json['name_kana']).to eq trial_user.name_kana
         expect(json['birthday']).to eq trial_user.birthday.to_s
         expect(json['phone_number']).to eq trial_user.phone_number
-        expect(json['plan_name']).to eq trial_user.plan_name
+        default_plan = Plan.default_plan
+        expect(json['plan']['id']).to eq default_plan.id
+        expect(json['plan']['name']).to eq default_plan.name
+        expect(json['plan']['price']).to eq default_plan.price
+        expect(json['plan']['monthly_lesson_count']).to eq default_plan.monthly_lesson_count
+        expect(json['plan']['for_children']).to eq default_plan.for_children
         trial_user.reload
         expect(trial_user.confirmed?).to eq true
       end
