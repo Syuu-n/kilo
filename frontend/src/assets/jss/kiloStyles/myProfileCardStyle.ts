@@ -38,7 +38,7 @@ createStyles({
     height: '33px',
   },
   cardTitle: {
-    margin: 'auto 0',
+    margin: '10px 0 0 0',
     ...defaultFont,
     fontFamily: 'cursive',
   },

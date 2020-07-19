@@ -3,10 +3,10 @@ export interface User {
   email:        string;
   name:         string;
   name_kana:    string;
-  age:          string;
+  age:          number;
   birthday:     string;
   phone_number: string;
-  plan_name:    string;
+  plan:         Plan;
 }
 
 export interface Plan {

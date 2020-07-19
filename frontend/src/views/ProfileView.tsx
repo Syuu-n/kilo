@@ -4,33 +4,15 @@ import {
   MyProfileCard,
   ItemGrid,
 } from 'components';
-import { AccountCircle } from '@material-ui/icons';
+import {
+  AccountCircle,
+  LocalAtm,
+} from '@material-ui/icons';
 import { Grid } from '@material-ui/core';
 import * as moment from 'moment';
-import { fetchApp, NetworkError } from 'request/fetcher';
 
 const ProfileView: React.SFC = () => {
   const { currentUser } = React.useContext(AuthContext);
-  const accessToken = localStorage.getItem('kiloToken');
-  const fetchMyPlan = async => {
-    const res = await fetchApp(
-      `/v1/${currentUser?.id}/plan`,
-      'GET',
-      accessToken,
-    )
-    if (res instanceof NetworkError) {
-      console.log("Network Error");
-      return
-    }
-
-    switch(res.status) {
-      case 403:
-        console.log("Not Permitted");
-        break;
-      case 200:
-
-    }
-  }
 
   return (
     <div>
@@ -55,14 +37,11 @@ const ProfileView: React.SFC = () => {
             <MyProfileCard
               headerColor="orange"
               cardTitle="マイコース"
-              icon={AccountCircle}
+              icon={LocalAtm}
               tableData={[
-                ["名前", currentUser.name],
-                ["名前（カナ）", currentUser.name_kana],
-                ["電話番号", currentUser.phone_number],
-                ["メールアドレス", currentUser.email],
-                ["年齢", currentUser.age + " 歳"],
-                ["生年月日", moment(currentUser.birthday).format("LL")],
+                ["名前", currentUser.plan.name],
+                ["毎月の参加可能数", currentUser.plan.monthly_lesson_count + " 回"],
+                ["種類", `${currentUser.plan.for_children ? "子供" : "大人"}` + "コース"],
               ]}
             />
           </ItemGrid>
