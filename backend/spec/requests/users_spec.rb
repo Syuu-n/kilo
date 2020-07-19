@@ -107,9 +107,7 @@ describe 'Users API', type: :request do
       last_name: Faker::Name.last_name,
       first_name_kana: Faker::Ancient.god,
       last_name_kana: Faker::Creature::Animal.name,
-      birthday: (Time.current - rand(1..100).year).strftime('%Y-%m-%d'),
       phone_number: Faker::PhoneNumber.cell_phone,
-      plan: Plan.default_plan,
     } }
     context '管理者がユーザ情報を変更した場合' do
       login_admin
@@ -121,7 +119,6 @@ describe 'Users API', type: :request do
         expect(response.status).to eq 200
         expect(json['name']).to eq user_params[:last_name] + " " + user_params[:first_name]
         expect(json['name_kana']).to eq user_params[:last_name_kana] + " " + user_params[:first_name_kana]
-        expect(json['birthday']).to eq user_params[:birthday].to_s
         expect(json['phone_number']).to eq user_params[:phone_number]
         default_plan = Plan.default_plan
         expect(json['plan']['id']).to eq default_plan.id
@@ -142,7 +139,6 @@ describe 'Users API', type: :request do
         expect(response.status).to eq 200
         expect(json['name']).to eq user_params[:last_name] + " " + user_params[:first_name]
         expect(json['name_kana']).to eq user_params[:last_name_kana] + " " + user_params[:first_name_kana]
-        expect(json['birthday']).to eq user_params[:birthday].to_s
         expect(json['phone_number']).to eq user_params[:phone_number]
       end
     end

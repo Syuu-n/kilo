@@ -80,7 +80,7 @@ module V1
     end
 
     def update_params
-      params.require(:user).permit(:first_name, :last_name, :first_name_kana, :last_name_kana, :birthday, :phone_number)
+      params.require(:user).permit(:first_name, :last_name, :first_name_kana, :last_name_kana, :phone_number)
     end
   end
 end
