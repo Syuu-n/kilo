@@ -3,7 +3,7 @@ import { AuthContext } from 'Auth';
 import { 
   MyProfileCard,
   ItemGrid,
-  Button,
+  PasswordResetButton,
 } from 'components';
 import {
   AccountCircle,
@@ -15,18 +15,6 @@ import * as moment from 'moment';
 
 const ProfileView: React.SFC = () => {
   const { currentUser } = React.useContext(AuthContext);
-  const emailSettingBtn =
-    <Button
-      color='primary'
-    >
-      変更
-    </Button>;
-    const passwordSettingBtn =
-    <Button
-      color='primary'
-    >
-      変更
-    </Button>;
 
   return (
     <div>
@@ -68,8 +56,8 @@ const ProfileView: React.SFC = () => {
                 cardTitle="ログイン設定"
                 icon={LockOutlined}
                 tableData={[
-                  ["メールアドレス", emailSettingBtn],
-                  ["パスワード", passwordSettingBtn],
+                  ["メールアドレス", <PasswordResetButton/>],
+                  ["パスワード", <PasswordResetButton/>],
                 ]}
               />
             </ItemGrid>

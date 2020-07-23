@@ -16,6 +16,7 @@ import MyProfileCard from './Cards/MyProfileCard';
 
 import Button from './CustomButtons/Button';
 import IconButton from './CustomButtons/IconButton';
+import PasswordResetButton from './CustomButtons/PasswordResetButton';
 
 // ##############################
 // // // CustomInput
@@ -102,6 +103,7 @@ export {
   // CustomButtons
   Button,
   IconButton,
+  PasswordResetButton,
   // CustomInput
   CustomInput,
   // CustomCheckBoxRadioSwitch

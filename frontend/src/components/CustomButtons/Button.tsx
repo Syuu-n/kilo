@@ -21,6 +21,7 @@ interface Props {
   fullWidth?: boolean;
   disabled?: boolean;
   width?: string;
+  customClass?: string;
 }
 
 const RegularButton: React.SFC<
@@ -33,6 +34,7 @@ const RegularButton: React.SFC<
     fullWidth,
     disabled,
     width,
+    customClass,
     ...rest
   } = props;
 
@@ -49,7 +51,7 @@ const RegularButton: React.SFC<
   };
 
   return (
-    <Button {...rest} className={classes.button + ' ' + btnClasses} style={widthStyle}>
+    <Button {...rest} className={classes.button + ' ' + btnClasses + (customClass ? ' ' + customClass : '')} style={widthStyle}>
       {children}
     </Button>
   );
