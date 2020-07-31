@@ -20,6 +20,7 @@ createStyles({
     [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
     },
+    overflow: 'auto',
     position: 'relative',
     float: 'right',
     ...transition,
@@ -30,7 +31,7 @@ createStyles({
   content: {
     marginTop: '70px',
     padding: '30px 15px',
-    minHeight: 'calc(100% - 123px)',
+    minHeight: 'calc(100vh - 123px)',
   },
   container,
   map: {
