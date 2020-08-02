@@ -122,6 +122,7 @@ createStyles({
   },
   itemIcon: {
     width: '24px',
+    minWidth: '24px',
     height: '30px',
     float: 'left',
     marginRight: '15px',
