@@ -56,7 +56,7 @@ const ProfileView: React.SFC = () => {
                 cardTitle="ログイン設定"
                 icon={LockOutlined}
                 tableData={[
-                  ["パスワード", <PasswordResetButton/>],
+                  ["パスワード", <PasswordResetButton email={currentUser.email}/>],
                 ]}
               />
             </ItemGrid>

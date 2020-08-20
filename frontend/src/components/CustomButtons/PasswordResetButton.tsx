@@ -5,9 +5,14 @@ import {
 } from 'components';
 import passwordResetButtonStyle from 'assets/jss/kiloStyles/passwordResetButtonStyle';
 
-const PasswordResetButton: React.FC = () => {
+interface Props {
+  email: string;
+}
+
+const PasswordResetButton: React.FC<Props> = (props) => {
   const classes = passwordResetButtonStyle();
   const [openModal, setOpenModal] = React.useState(false);
+  const { email } = props;
 
   return (
     <div className={classes.buttonWrap}>
@@ -21,6 +26,7 @@ const PasswordResetButton: React.FC = () => {
       <PasswordResetModal
         open={openModal}
         closeFunc={() => {setOpenModal(false)}}
+        email={email}
       />
     </div>
   );

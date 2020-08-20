@@ -9,7 +9,7 @@ import {
   DialogActions,
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
-import passwordResetButtonStyle from 'assets/jss/kiloStyles/modalStyle';
+import modalStyle from 'assets/jss/kiloStyles/modalStyle';
 
 interface Props {
   open: boolean;
@@ -23,7 +23,7 @@ interface Props {
 const Modal: React.FC<Props> = (props) => {
   const { open, headerTitle, content, submitText, submitFunc, closeFunc } = props;
   const [openModal, setOpenModal] = React.useState(false);
-  const classes = passwordResetButtonStyle();
+  const classes = modalStyle();
   const doSubmit = () => {
     submitFunc();
     closeFunc();
@@ -63,11 +63,13 @@ const Modal: React.FC<Props> = (props) => {
         </DialogContent>
         <DialogActions>
           <Button
+            customClass={classes.cancelButton}
             onClick={() => closeFunc()}
           >
             キャンセル
           </Button>
           <Button
+            customClass={classes.submitButton}
             color='primary'
             onClick={() => doSubmit()}
           >

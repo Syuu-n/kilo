@@ -14,7 +14,14 @@ createStyles({
   },
   modalTitle: {
     margin: 0,
-  }
+  },
+  cancelButton: {
+    minWidth: '120px',
+  },
+  submitButton: {
+    minWidth: '120px',
+    marginRight: '50px',
+  },
 }));
 
 export default modalStyle;
