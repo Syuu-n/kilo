@@ -1,30 +1,25 @@
 import * as React from 'react';
 import {
   Button,
-  Modal,
+  PasswordResetModal,
 } from 'components';
-// import passwordResetButtonStyle from 'assets/jss/kiloStyles/passwordResetButtonStyle';
+import passwordResetButtonStyle from 'assets/jss/kiloStyles/passwordResetButtonStyle';
 
 const PasswordResetButton: React.FC = () => {
-  // const classes = passwordResetButtonStyle();
+  const classes = passwordResetButtonStyle();
   const [openModal, setOpenModal] = React.useState(false);
-  const content = 
-    <h5>本当によろしいですか？</h5>;
 
   return (
-    <div>
+    <div className={classes.buttonWrap}>
       <Button
+        customClass={classes.resetButton}
         color='primary'
         onClick={() => setOpenModal(true)}
       >
         変更
       </Button>
-      <Modal
+      <PasswordResetModal
         open={openModal}
-        headerTitle="パスワード変更"
-        content={content}
-        submitText="変更"
-        submitFunc={() => {console.log('Submit!!')}}
         closeFunc={() => {setOpenModal(false)}}
       />
     </div>

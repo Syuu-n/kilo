@@ -90,7 +90,10 @@ import Small from './Typography/Small';
 import A from './Typography/A';
 
 import KSpinner from './Spinner/Spinner';
+
+// Modals
 import Modal from './Modal/Modal';
+import PasswordResetModal from './Modal/PasswordResetModal';
 
 export {
   // Cards
@@ -137,5 +140,7 @@ export {
   Small,
   A,
   KSpinner,
+  // Modal
   Modal,
+  PasswordResetModal,
 };
