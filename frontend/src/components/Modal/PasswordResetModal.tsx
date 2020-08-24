@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Modal } from 'components';
+import { Modal, Snackbar } from 'components';
 import { fetchApp, NetworkError } from 'request/fetcher';
+import { MailOutline } from '@material-ui/icons';
 
 interface Props {
   open: boolean;
@@ -10,11 +11,17 @@ interface Props {
 
 const PasswordResetModal: React.FC<Props> = (props) => {
   const { open, closeFunc, email } = props;
+  const [notification, setNotification] = React.useState(false);
   const content = 
     <p>
       登録されているメールアドレスにパスワード変更のメールを送信します。<br/>
       メールからパスワード変更をおこなうとパスワードが変更できます。
     </p>;
+
+  const showNotification = () => {
+    setNotification(true)
+    setTimeout(() => setNotification(false), 8000);
+  }
 
   const handleSubmit = async () => {
     const accessToken = localStorage.getItem('kiloToken');
@@ -36,6 +43,7 @@ const PasswordResetModal: React.FC<Props> = (props) => {
       switch (res.status) {
         case 200:
           console.log('送信しました。')
+          showNotification()
           break;
         default:
           console.log('予期せぬエラーが発生しました。時間をおいて再度お試しください。');
@@ -47,14 +55,25 @@ const PasswordResetModal: React.FC<Props> = (props) => {
   }
 
   return (
-    <Modal
-      open={open}
-      headerTitle="パスワード変更"
-      content={content}
-      submitText="変更"
-      submitFunc={() => {handleSubmit()}}
-      closeFunc={closeFunc}
-    />
+    <div>
+      <Modal
+        open={open}
+        headerTitle="パスワード変更"
+        content={content}
+        submitText="変更"
+        submitFunc={() => {handleSubmit()}}
+        closeFunc={closeFunc}
+      />
+      <Snackbar
+        place="br"
+        color="success"
+        message="パスワード再設定用のメールを送信しました。"
+        icon={MailOutline}
+        open={notification}
+        closeNotification={() => setNotification(false)}
+        close
+      />
+    </div>
   );
 };
 
