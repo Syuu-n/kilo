@@ -107,6 +107,10 @@ body {
     color: #3C4858;
 }
 
+p {
+    font-size: 14px;
+}
+
 blockquote p {
     font-style: italic;
 }
