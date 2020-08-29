@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { Calender } from 'components';
+import { CalenderCard } from 'components';
 
 const ScheduleView: React.SFC = () => {
   return (
     <div>
-      <Calender/>
+      <CalenderCard
+        cardTitle="スケジュール"
+      />
     </div>
   );
 };

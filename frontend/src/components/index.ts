@@ -9,6 +9,7 @@ import StatsCard from './Cards/StatsCard';
 import TasksCard from './Cards/TasksCard';
 import LoginCard from './Cards/LoginCard';
 import MyProfileCard from './Cards/MyProfileCard';
+import CalenderCard from './Cards/CalenderCard';
 
 // ##############################
 // // // CustomButtons
@@ -108,6 +109,7 @@ export {
   TasksCard,
   LoginCard,
   MyProfileCard,
+  CalenderCard,
   // CustomButtons
   Button,
   IconButton,
