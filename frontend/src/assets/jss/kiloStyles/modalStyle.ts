@@ -3,17 +3,16 @@ import { makeStyles, createStyles } from '@material-ui/core/styles';
 const modalStyle = makeStyles(() => 
 createStyles({
   modal: {
-    padding: '0 40px 0 15px'
+    padding: '0 15px'
   },
   modalHeader: {
     display: 'flex',
   },
   closeButton: {
     position: 'absolute',
-    top: '8px',
+    top: '10px',
     right: 0,
-    margin: 0,
-    padding: '10px',
+    margin: '0 20px 0 0',
   },
   modalTitle: {
     margin: 0,

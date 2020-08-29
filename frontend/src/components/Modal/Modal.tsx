@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   Button,
+  IconButton,
 } from 'components';
 import {
   Dialog,
@@ -47,14 +48,14 @@ const Modal: React.FC<Props> = (props) => {
           className={classes.modalHeader}
           disableTypography
         >
-          <Button
+          <IconButton
+            color="white"
             customClass={classes.closeButton}
-            color='transparent'
             key="Close"
             onClick={() => closeFunc()}
           >
             <Close/>
-          </Button>
+          </IconButton>
           <h4 className={classes.modalTitle}>{headerTitle}</h4>
         </DialogTitle>
         <DialogContent
