@@ -30,7 +30,7 @@ createStyles({
   },
   content: {
     marginTop: '70px',
-    padding: '30px 15px',
+    padding: '25px 15px',
     minHeight: 'calc(100vh - 123px)',
   },
   container,
