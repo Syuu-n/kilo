@@ -2,6 +2,9 @@ import { makeStyles, createStyles } from '@material-ui/core/styles';
 
 const modalStyle = makeStyles(() => 
 createStyles({
+  modal: {
+    padding: '0 40px 0 15px'
+  },
   modalHeader: {
     display: 'flex',
   },
@@ -20,7 +23,7 @@ createStyles({
   },
   submitButton: {
     minWidth: '120px',
-    marginRight: '50px',
+    marginRight: '10px',
   },
 }));
 

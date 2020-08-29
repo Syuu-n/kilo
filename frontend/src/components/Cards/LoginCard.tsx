@@ -21,6 +21,7 @@ import {
 } from 'components';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import history from 'RouterHistory';
+import { useSnackbar } from 'notistack';
 
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
@@ -36,6 +37,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
   // const [rememberMe, setRememberMe] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleLogin = async (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -71,6 +73,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
         localStorage.setItem('kiloToken', json.access_token);
         // トップページへ移動
         history.push('/');
+        enqueueSnackbar('ログインしました。', { variant: 'info' })
         break;
       default:
         setErrorMessage('予期せぬエラーが発生しました。時間をおいて再度お試しください。');

@@ -40,6 +40,7 @@ const Modal: React.FC<Props> = (props) => {
         keepMounted
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
+        classes={{ paper: classes.modal}}
       >
         <DialogTitle
           id="modal-header-title"

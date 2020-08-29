@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Modal } from 'components';
 import { fetchApp, NetworkError } from 'request/fetcher';
-import { useSnackbar, VariantType } from 'notistack';
+import { useSnackbar } from 'notistack';
 
 interface Props {
   open: boolean;
@@ -11,17 +11,12 @@ interface Props {
 
 const PasswordResetModal: React.FC<Props> = (props) => {
   const { open, closeFunc, email } = props;
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const content = 
     <p>
       登録されているメールアドレスにパスワード変更のメールを送信します。<br/>
       メールからパスワード変更をおこなうとパスワードが変更できます。
     </p>;
-
-  const showNotification = (message: string, variant?: VariantType) => {
-    enqueueSnackbar(message, { variant });
-    setTimeout(() => closeSnackbar(), 8000);
-  }
 
   const handleSubmit = async () => {
     const res = await fetchApp(
@@ -36,15 +31,15 @@ const PasswordResetModal: React.FC<Props> = (props) => {
     )
     if (res instanceof NetworkError) {
       console.log('NetworkError');
-      showNotification('予期せぬエラーが発生しました。時間をおいて再度お試しください。', 'error');
+      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
       return
     }
     switch (res.status) {
       case 200:
-        showNotification('パスワード再設定用のメールを送信しました。', 'success');
+        enqueueSnackbar('パスワード再設定用のメールを送信しました。',  { variant: 'success' });
         break;
       default:
-        showNotification('予期せぬエラーが発生しました。時間をおいて再度お試しください。', 'error');
+        enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
     }
   }
 
