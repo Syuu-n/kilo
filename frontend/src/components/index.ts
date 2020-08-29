@@ -89,7 +89,11 @@ import Danger from './Typography/Danger';
 import Small from './Typography/Small';
 import A from './Typography/A';
 
+// Spinner
 import KSpinner from './Spinner/Spinner';
+
+// Calender
+import Calender from './Calender/Calender';
 
 // Modals
 import Modal from './Modal/Modal';
@@ -139,7 +143,10 @@ export {
   Danger,
   Small,
   A,
+  // Spinner
   KSpinner,
+  // Calender
+  Calender,
   // Modal
   Modal,
   PasswordResetModal,
