@@ -17,7 +17,6 @@ import {
   // CustomCheckbox,
   CustomInput,
   Button,
-  P
 } from 'components';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import history from 'RouterHistory';
@@ -137,7 +136,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
             </Typography>
           </div> */}
           <div className={classes.errorMessageContainer}>
-            <P>{errorMessage}</P>
+            <p className={classes.errorMessage}>{errorMessage}</p>
           </div>
           <div className={classes.loginBtnWrap}>
             <Button

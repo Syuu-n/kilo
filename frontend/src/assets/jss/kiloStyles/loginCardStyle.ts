@@ -26,9 +26,9 @@ createStyles({
   purpleCardHeader,
   roseCardHeader,
   cardTitle: {
-    color: '#FFFFFF',
     margin: '10px 0',
     ...defaultFont,
+    color: '#FFFFFF',
     fontSize: '1.125em',
     textAlign: 'center',
     fontFamily: 'cursive'
@@ -60,9 +60,11 @@ createStyles({
     marginTop: '15px'
   },
   errorMessageContainer: {
-    color: dangerColor,
     textAlign: 'center',
     marginTop: '10px'
+  },
+  errorMessage: {
+    color: dangerColor,
   }
 }));
 
