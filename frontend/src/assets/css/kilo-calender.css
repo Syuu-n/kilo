@@ -1,0 +1,346 @@
+/* kilo calender style */
+
+.rbc-calendar * {
+  color: #555555;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.rbc-toolbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 16px;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.rbc-toolbar .rbc-btn-group button{
+  background-color: #ff9800;
+  color: #FFFFFF;
+  box-shadow: 0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12);
+  border: none;
+  border-radius: 30px;
+  position: relative;
+  padding: 6px 12px;
+  margin: 10px 1px;
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  will-change: box-shadow, transform;
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  line-height: 20px;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+.rbc-toolbar .rbc-btn-group button:hover{
+  background-color: #ff9800;
+  box-shadow: 0 14px 26px -12px rgba(156, 39, 176, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(156, 39, 176, 0.2);
+}
+
+.rbc-toolbar .rbc-toolbar-label {
+  flex-grow: 1;
+  padding: 0 10px;
+  text-align: center;
+  font-family: inherit;
+  line-height: 1.5em;
+  color: inherit;
+  font-weight: 300;
+  margin: 0;
+  font-size: 1.8em;
+}
+
+.rbc-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.rbc-header {
+  overflow: hidden;
+  flex: 1 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 3px;
+  text-align: right;
+  vertical-align: middle;
+  font-weight: 700;
+  font-size: 1em;
+  min-height: 0;
+  border-bottom: 1px solid #ddd;
+  color: #999;
+}
+
+.rbc-header span {
+  color: #999;
+}
+
+.rbc-label {
+  padding: 0 5px;
+}
+
+.rbc-row-bg {
+  display: flex;
+  flex-direction: row;
+  flex: 1 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.rbc-time-content {
+  display: flex;
+  flex: 1 0;
+  align-items: flex-start;
+  width: 100%;
+  border-top: 2px solid #ddd;
+  overflow-y: auto;
+  position: relative;
+}
+
+.rbc-time-content>.rbc-time-gutter {
+  flex: none;
+}
+
+.rbc-time-content>.rbc-day-slot {
+  width: 100%;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.rbc-time-content>*+*>* {
+  border-left: 1px solid #ddd;
+}
+
+.rbc-timeslot-group {
+  border-bottom: 1px solid #ddd;
+  min-height: 40px;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.rbc-day-slot {
+  position: relative;
+}
+
+.rbc-day-slot .rbc-events-container {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 10px;
+  top: 0;
+}
+
+.rbc-day-slot .rbc-event {
+  display: block!important;
+  max-height: 100%;
+  min-height: 20px;
+}
+
+.rbc-day-slot .rbc-event-label {
+  flex: none;
+  padding-right: 5px;
+  width: auto;
+  font-weight: 700;
+  box-sizing: content-box;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.rbc-day-slot .rbc-event-content {
+  width: 100%;
+  flex: 1 1;
+  word-wrap: break-word;
+  line-height: 1;
+  height: 100%;
+  min-height: 1em;
+}
+
+.rbc-time-slot {
+  flex: 1 0;
+}
+
+.rbc-day-slot .rbc-time-slot+.rbc-time-slot {
+  border-top: 1px dotted #ddd;
+}
+
+.rbc-time-column {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.rbc-time-column .rbc-timeslot-group {
+  flex: 1 1;
+}
+
+.rbc-row-content {
+  position: relative;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 4;
+  min-height: 90px;
+}
+
+.rbc-row-segment {
+  padding: 2px 6px 1px;
+}
+
+.rbc-event {
+  width: 100%;
+  position: relative;
+  display: block;
+  border-radius: 2px;
+  font-weight: 400;
+  text-align: right;
+  border: none;
+  padding: 0 0 1px;
+  line-height: 1.2;
+  background-color: #999;
+  box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px hsla(0,0%,60%,.4);
+}
+
+.rbc-event.event-default {
+  background-color: #999;
+  box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px hsla(0,0%,60%,.4);
+}
+
+.rbc-event.event-azure {
+  background-color: #00bcd4;
+  box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(0,188,212,.4);
+}
+
+.rbc-event.event-green {
+  background-color: #4caf50;
+  box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(76,175,80,.4);
+}
+
+.rbc-event.event-orange {
+  background-color: #ff9800;
+  box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(255,152,0,.4);
+}
+
+.rbc-event.event-rose {
+  background-color: #e91e63;
+  box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(233,30,99,.4);
+}
+
+.rbc-event .rbc-event-content {
+  position: relative;
+  z-index: 2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+  padding: 0 5px;
+  font-size: .85em;
+}
+
+.rbc-event-label {
+  font-size: 80%;
+}
+
+.rbc-day-bg {
+  flex: 1 0;
+}
+
+.rbc-day-bg + .rbc-day-bg {
+  border-left: 1px solid #ddd;
+}
+
+/* 月表示 */
+.rbc-month-view {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0;
+  width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+  height: 100%;
+  border: 1px solid #ddd;
+  border-right: none;
+  border-left: none;
+  border-top: none;
+}
+
+.rbc-month-view .rbc-month-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.rbc-month-view .rbc-month-row {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  flex: 1 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+.rbc-month-view .rbc-month-row + .rbc-month-row {
+  border-top: 1px solid #ddd;
+}
+
+.rbc-month-view .rbc-date-cell {
+  flex: 1 1;
+  min-width: 0;
+  padding-right: 5px;
+  text-align: right;
+}
+
+.rbc-month-view .rbc-off-range {
+  color: #333;
+  opacity: .3;
+}
+
+.rbc-time-view {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1;
+  width: 100%;
+  min-height: 0;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+/* 週表示 */
+.rbc-time-view .rbc-time-header {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: row;
+}
+
+.rbc-time-view .rbc-time-header-content {
+  flex: 1 1;
+  min-width: 0;
+  flex-direction: column;
+  border-left: 1px solid #ddd;
+}
+
+.rbc-time-view .rbc-row {
+  box-sizing: border-box;
+  min-height: 20px;
+}
+
+.rbc-time-view .rbc-allday-cell {
+  box-sizing: content-box;
+  width: 100%;
+  position: relative;
+}
+
+.rbc-time-view .rbc-time-gutter {
+  white-space: nowrap;
+}
+
