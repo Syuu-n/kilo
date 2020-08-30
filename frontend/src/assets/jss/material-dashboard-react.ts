@@ -55,6 +55,7 @@ const defaultFont: CSSProperties = {
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
   fontWeight: 300,
   lineHeight: '1.5em',
+  color: '#3C4858'
 };
 
 const primaryColor = '#ff9800';
