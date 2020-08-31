@@ -16,7 +16,7 @@ interface Props {
   isAdmin: boolean;
 }
 
-const CalenderCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, lessons }) => {
+const CalenderCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, lessons, isAdmin }) => {
   const classes = calenderCardStyle();
 
   return(
@@ -37,7 +37,7 @@ const CalenderCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, les
         </div>
         <CardContent>
           <Calender
-            isAdmin={}
+            isAdmin={isAdmin}
             lessons={lessons}
           />
         </CardContent>
