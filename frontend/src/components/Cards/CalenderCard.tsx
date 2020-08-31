@@ -7,34 +7,42 @@ import {
 import { Event } from '@material-ui/icons';
 import calenderCardStyle from 'assets/jss/kiloStyles/calenderCardStyle';
 import { Calender } from 'components';
+import { Lesson } from 'responses/responseStructs';
 
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
   cardTitle?: React.ReactNode;
+  lessons: Lesson[];
+  isAdmin: boolean;
 }
 
-const CalenderCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle }) => {
+const CalenderCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, lessons }) => {
   const classes = calenderCardStyle();
 
   return(
-    <Card className={classes.card}>
-      <div className={classes.headerContainer}>
-        <CardHeader
-          classes={{
-            root:
-            classes.cardHeader +
-            ' ' +
-            classes[headerColor + 'CardHeader'],
-            avatar: classes.cardAvatar,
-          }}
-          avatar={<Event className={classes.cardIcon}/>}
-        />
-        <h4 className={classes.cardTitle}>{cardTitle}</h4>
-      </div>
-      <CardContent>
-        <Calender/>
-      </CardContent>
-    </Card>
+    <div>
+      <Card className={classes.card}>
+        <div className={classes.headerContainer}>
+          <CardHeader
+            classes={{
+              root:
+              classes.cardHeader +
+              ' ' +
+              classes[headerColor + 'CardHeader'],
+              avatar: classes.cardAvatar,
+            }}
+            avatar={<Event className={classes.cardIcon}/>}
+          />
+          <h4 className={classes.cardTitle}>{cardTitle}</h4>
+        </div>
+        <CardContent>
+          <Calender
+            isAdmin={}
+            lessons={lessons}
+          />
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

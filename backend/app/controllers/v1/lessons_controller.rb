@@ -1,6 +1,6 @@
 module V1
   class LessonsController < ApplicationController
-    before_action :permission_check, only: [:index, :create, :update, :destroy]
+    before_action :permission_check, only: [:create, :update, :destroy]
     before_action :setup_lesson, only: [:update, :show, :destroy, :user_join, :user_leave]
 
     #  GET /lessons

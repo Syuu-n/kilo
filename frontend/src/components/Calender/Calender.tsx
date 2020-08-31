@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Calendar, momentLocalizer, Formats, Messages } from 'react-big-calendar';
+import { Calendar, momentLocalizer, Formats, Messages, Event } from 'react-big-calendar';
 import * as moment from 'moment';
 import '../../assets/css/kilo-calender.css';
 import { Modal } from 'components';
+import { Lesson } from 'responses/responseStructs';
 
 const localizer = momentLocalizer(moment);
 
@@ -24,23 +25,6 @@ const messages:Messages ={
   day: '日',
 };
 
-const eventList = [
-  {
-    id: 0,
-    title: 'All Day Event very long title',
-    allDay: true,
-    start: new Date('2020-08-029'),
-    end: new Date('2020-08-029'),
-  },
-  {
-    id: 1,
-    title: 'Long Event',
-    allDay: false,
-    start: new Date('2020-08-24 15:00'),
-    end: new Date('2020-08-24 17:00'),
-  }
-];
-
 // const eventColors = (event:Event) => {
 //   var backgroundColor = "event-";
 //   event.color
@@ -51,8 +35,19 @@ const eventList = [
 //   };
 // };
 
-const Calender: React.FC = () => {
+interface Props {
+  isAdmin: boolean;
+  lessons: Lesson[];
+}
+
+const Calender: React.FC<Props> = (props) => {
+  const { isAdmin, lessons } = props;
   const [openModal, setOpenModal] = React.useState(false);
+  const eventList:Event[] = lessons.map(lesson => {return {
+    title: lesson.class_name,
+    start: new Date(lesson.start_at),
+    end:   new Date(lesson.end_at),
+  }});
 
   const addNewEventModal = () => {
     setOpenModal(true);
@@ -76,7 +71,7 @@ const Calender: React.FC = () => {
         headerTitle="パスワード変更"
         content={<p>テスト</p>}
         submitText="変更"
-        submitFunc={() => {console.log('押された')}}
+        submitFunc={() => {console.log(isAdmin)}}
         closeFunc={() => {setOpenModal(false)}}
       />
     </div>
