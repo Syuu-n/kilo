@@ -67,6 +67,7 @@ describe 'Sessions API', type: :request do
         expect(json['name_kana']).to eq user.name_kana
         expect(json['birthday']).to eq user.birthday.to_s
         expect(json['phone_number']).to eq user.phone_number
+        expect(json['role']).to eq user.role.name
         user_plan = user.plan
         expect(json['plan']['id']).to eq user_plan.id
         expect(json['plan']['name']).to eq user_plan.name
