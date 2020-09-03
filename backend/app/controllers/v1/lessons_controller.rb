@@ -78,7 +78,7 @@ module V1
     end
 
     def lesson_params
-      params.require(:lesson).permit(:lesson_class_id, :start_at, :end_at)
+      params.require(:lesson).permit(:lesson_class_id, :start_at, :end_at, :color)
     end
   end
 end

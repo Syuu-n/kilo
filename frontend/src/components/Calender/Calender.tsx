@@ -35,6 +35,16 @@ const messages:Messages ={
 //   };
 // };
 
+const eventStyleGetter = (event:any) => {
+  var backgroundColor = "event-";
+  event.color
+    ? (backgroundColor = backgroundColor + event.color)
+    : (backgroundColor = backgroundColor + "default");
+  return {
+    className: backgroundColor
+  };
+};
+
 interface Props {
   isAdmin: boolean;
   lessons: Lesson[];
@@ -47,6 +57,7 @@ const Calender: React.FC<Props> = (props) => {
     title: lesson.class_name,
     start: new Date(lesson.start_at),
     end:   new Date(lesson.end_at),
+    color: lesson.color,
   }});
 
   const addNewEventModal = () => {
@@ -64,7 +75,7 @@ const Calender: React.FC<Props> = (props) => {
         // onSelectEvent={event => alert(event.title)}
         onSelectEvent={() => addNewEventModal() }
         messages={messages}
-        // eventPropGetter={eventColors}
+        eventPropGetter={eventStyleGetter}
       />
       <Modal
         open={openModal}

@@ -18,10 +18,13 @@ export interface Plan {
   for_children:         boolean;
 }
 
+export type LessonColor = 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
+
 export interface Lesson {
   id:         number;
   class_name: string;
   start_at:   Date;
   end_at:     Date;
-  users:      User[]
+  users:      User[];
+  color:      LessonColor;
 }
