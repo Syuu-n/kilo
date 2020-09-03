@@ -23,19 +23,10 @@ const messages:Messages ={
   month: '月',
   week: '週',
   day: '日',
+  showMore: (number) => { return '+ 他 ' + number + '個'},
 };
 
-// const eventColors = (event:Event) => {
-//   var backgroundColor = "event-";
-//   event.color
-//     ? (backgroundColor = backgroundColor + event.color)
-//     : (backgroundColor = backgroundColor + "default");
-//   return {
-//     className: backgroundColor
-//   };
-// };
-
-const eventStyleGetter = (event:any) => {
+const eventColors = (event:any) => {
   var backgroundColor = "event-";
   event.color
     ? (backgroundColor = backgroundColor + event.color)
@@ -75,7 +66,7 @@ const Calender: React.FC<Props> = (props) => {
         // onSelectEvent={event => alert(event.title)}
         onSelectEvent={() => addNewEventModal() }
         messages={messages}
-        eventPropGetter={eventStyleGetter}
+        eventPropGetter={eventColors}
       />
       <Modal
         open={openModal}

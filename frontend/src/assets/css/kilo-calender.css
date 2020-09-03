@@ -259,6 +259,20 @@
   border-left: 1px solid #ddd;
 }
 
+.rbc-show-more {
+  background-color: hsla(0,0%,100%,.3);
+  z-index: 4;
+  font-weight: 700;
+  font-size: 85%;
+  height: auto;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.rbc-show-more:hover {
+  color: #717171;
+}
+
 /* 月表示 */
 .rbc-month-view {
   position: relative;
