@@ -12,7 +12,7 @@ import {
 const cardIconStyle = makeStyles(() =>
 createStyles({
   cardIcon: {
-    "&$warningCardHeader,&$successCardHeader,&$dangerCardHeader,&$infoCardHeader,&$primaryCardHeader,&$roseCardHeader": {
+    "&$orangeCardHeader,&$greenCardHeader,&$redCardHeader,&$blueCardHeader,&$purpleCardHeader,&$roseCardHeader": {
       borderRadius: "3px",
       backgroundColor: grayColor[0],
       padding: "15px",

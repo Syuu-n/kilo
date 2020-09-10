@@ -7,12 +7,12 @@ import cardIconStyles from "assets/jss/material-dashboard-react/cardIconStyle";
 interface Props {
   className: string;
   color:
-    "warning"|
-    "success"|
-    "danger"|
-    "info"|
-    "primary"|
-    "rose",
+    "orange"|
+    "green"|
+    "red"|
+    "blue"|
+    "purple"|
+    "rose"
   children: React.ReactNode;
 }
 

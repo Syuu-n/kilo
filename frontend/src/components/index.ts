@@ -15,6 +15,7 @@ import CardBody from './Cards/CardBody';
 import CardFooter from './Cards/CardFooter';
 import CardIcon from './Cards/CardIcon';
 import CardAvatar from './Cards/CardAvatar';
+import CardHeader from './Cards/CardHeader';
 
 // ##############################
 // // // CustomButtons
@@ -120,6 +121,7 @@ export {
   CardFooter,
   CardIcon,
   CardAvatar,
+  CardHeader,
   // CustomButtons
   Button,
   IconButton,
