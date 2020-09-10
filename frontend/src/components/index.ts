@@ -10,6 +10,11 @@ import TasksCard from './Cards/TasksCard';
 import LoginCard from './Cards/LoginCard';
 import MyProfileCard from './Cards/MyProfileCard';
 import CalenderCard from './Cards/CalenderCard';
+import Card from './Cards/Card';
+import CardBody from './Cards/CardBody';
+import CardFooter from './Cards/CardFooter';
+import CardIcon from './Cards/CardIcon';
+import CardAvatar from './Cards/CardAvatar';
 
 // ##############################
 // // // CustomButtons
@@ -110,6 +115,11 @@ export {
   LoginCard,
   MyProfileCard,
   CalenderCard,
+  Card,
+  CardBody,
+  CardFooter,
+  CardIcon,
+  CardAvatar,
   // CustomButtons
   Button,
   IconButton,
