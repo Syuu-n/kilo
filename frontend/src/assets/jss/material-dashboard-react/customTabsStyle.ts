@@ -51,7 +51,7 @@ createStyles({
     height: "unset !important",
     maxWidth: "unset !important",
     maxHeight: "unset !important",
-    fontWeight: "500",
+    fontWeight: 600,
     fontSize: "12px",
     marginTop: "1px",
     "& > svg,& > .material-icons": {

@@ -37,6 +37,8 @@ import CustomInput from './CustomInput/CustomInput';
 
 import CustomCheckbox from './CustomCheckBoxRadioSwitch/CustomCheckbox';
 
+import CustomTabs from './CustomTabs/CustomTabs';
+
 // ##############################
 // // // Footer
 // #############################
@@ -130,6 +132,7 @@ export {
   CustomInput,
   // CustomCheckBoxRadioSwitch
   CustomCheckbox,
+  CustomTabs,
   // Footer
   Footer,
   // Grid
