@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Calendar, momentLocalizer, Formats, Messages, Event } from 'react-big-calendar';
 import * as moment from 'moment';
 import '../../assets/css/kilo-calender.css';
-import { Modal } from 'components';
+import { Modal, Table } from 'components';
 import { Lesson } from 'responses/responseStructs';
 
 const localizer = momentLocalizer(moment);
@@ -44,6 +44,7 @@ interface Props {
 const Calender: React.FC<Props> = (props) => {
   const { isAdmin, lessons } = props;
   const [openModal, setOpenModal] = React.useState(false);
+  const [selectedEvent, setSelectedEvent] = React.useState<Event|undefined>();
   const eventList:Event[] = lessons.map(lesson => {return {
     title: lesson.class_name,
     start: new Date(lesson.start_at),
@@ -51,8 +52,9 @@ const Calender: React.FC<Props> = (props) => {
     color: lesson.color,
   }});
 
-  const addNewEventModal = () => {
+  const showEventDetail = (event:Event) => {
     setOpenModal(true);
+    setSelectedEvent(event);
   };
 
   return(
@@ -63,16 +65,23 @@ const Calender: React.FC<Props> = (props) => {
         timeslots={2}
         views={['month', 'week', 'day']}
         formats={formats}
-        // onSelectEvent={event => alert(event.title)}
-        onSelectEvent={() => addNewEventModal() }
+        onSelectEvent={(event) => showEventDetail(event) }
         messages={messages}
         eventPropGetter={eventColors}
       />
       <Modal
         open={openModal}
-        headerTitle="パスワード変更"
-        content={<p>テスト</p>}
-        submitText="変更"
+        headerTitle="レッスン詳細"
+        content={
+          <Table
+            tableData={[
+              ["クラス名", selectedEvent?.title],
+              ["開始時間", moment(selectedEvent?.start).format("YYYY年 MM月 DD日 HH時 mm分")],
+              ["終了時間", moment(selectedEvent?.end).format("YYYY年 MM月 DD日 HH時 mm分")],
+            ]}
+          />
+        }
+        submitText="参加"
         submitFunc={() => {console.log(isAdmin)}}
         closeFunc={() => {setOpenModal(false)}}
       />
