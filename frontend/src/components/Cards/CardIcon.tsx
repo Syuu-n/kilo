@@ -5,20 +5,24 @@ import classNames from "classnames";
 import cardIconStyles from "assets/jss/material-dashboard-react/cardIconStyle";
 
 interface Props {
-  className: string;
-  color:
+  className?: string;
+  color?:
     "orange"|
     "green"|
     "red"|
     "blue"|
     "purple"|
     "rose"
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const CardIcon: React.SFC<Props> = (props) => {
   const classes = cardIconStyles();
-  const { className, children, color, ...rest } = props;
+  const { children, color, ...rest } = props;
+  let { className } = props;
+  if (className === undefined) {
+    className = ''
+  }
   const cardIconClasses = classNames({
     [classes.cardIcon]: true,
     [classes[color + "CardHeader"]]: color,
