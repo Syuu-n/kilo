@@ -24,7 +24,10 @@ createStyles({
   },
   submitButton: {
     minWidth: '120px',
-    marginRight: '10px',
+  },
+  buttonContainer: {
+    marginRight: 'auto',
+    marginLeft: 'auto',
   },
 }));
 

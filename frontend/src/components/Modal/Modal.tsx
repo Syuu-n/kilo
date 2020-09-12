@@ -63,7 +63,7 @@ const Modal: React.FC<Props> = (props) => {
         >
           {content}
         </DialogContent>
-        <DialogActions>
+        <DialogActions className={classes.buttonContainer}>
           <Button
             customClass={classes.cancelButton}
             onClick={() => closeFunc()}
