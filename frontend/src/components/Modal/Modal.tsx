@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
   Button,
   IconButton,
+  KSpinner,
 } from 'components';
 import {
   Dialog,
@@ -17,16 +18,20 @@ interface Props {
   headerTitle?: string;
   content?: React.ReactNode;
   submitText?: string;
-  submitFunc?: any;
-  closeFunc?: any;
+  submitFunc: Function;
+  closeFunc: Function;
 }
 
 const Modal: React.FC<Props> = (props) => {
   const { open, headerTitle, content, submitText, submitFunc, closeFunc } = props;
   const [openModal, setOpenModal] = React.useState(false);
+  const [isLoaded, setIsLoaded] = React.useState(true);
   const classes = modalStyle();
-  const doSubmit = () => {
-    submitFunc();
+
+  const doSubmit = async () => {
+    setIsLoaded(false);
+    await submitFunc();
+    setIsLoaded(true);
     closeFunc();
   }
 
@@ -64,19 +69,25 @@ const Modal: React.FC<Props> = (props) => {
           {content}
         </DialogContent>
         <DialogActions className={classes.buttonContainer}>
-          <Button
-            customClass={classes.cancelButton}
-            onClick={() => closeFunc()}
-          >
-            キャンセル
-          </Button>
-          <Button
-            customClass={classes.submitButton}
-            color='primary'
-            onClick={() => doSubmit()}
-          >
-            {submitText}
-          </Button>
+          { isLoaded ? (
+            <div>
+              <Button
+                customClass={classes.cancelButton}
+                onClick={() => closeFunc()}
+              >
+                キャンセル
+              </Button>
+              <Button
+                customClass={classes.submitButton}
+                color='primary'
+                onClick={() => doSubmit()}
+              >
+                {submitText}
+              </Button>
+            </div>
+          ) : (
+            <KSpinner/>
+          )}
         </DialogActions>
       </Dialog>
     </div>

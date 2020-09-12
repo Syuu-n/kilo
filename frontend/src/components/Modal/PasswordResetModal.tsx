@@ -49,7 +49,7 @@ const PasswordResetModal: React.FC<Props> = (props) => {
       headerTitle="パスワード変更"
       content={content}
       submitText="変更"
-      submitFunc={() => {handleSubmit()}}
+      submitFunc={async () => {await handleSubmit()}}
       closeFunc={closeFunc}
     />
   );

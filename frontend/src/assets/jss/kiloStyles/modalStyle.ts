@@ -24,10 +24,13 @@ createStyles({
   },
   submitButton: {
     minWidth: '120px',
+    marginLeft: '8px',
   },
   buttonContainer: {
-    marginRight: 'auto',
-    marginLeft: 'auto',
+    margin: '8px auto',
+    maxHeight: '61px',
+    height: '61px',
+    padding: 0,
   },
 }));
 
