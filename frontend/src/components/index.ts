@@ -107,6 +107,7 @@ import Calender from './Calender/Calender';
 // Modals
 import Modal from './Modal/Modal';
 import PasswordResetModal from './Modal/PasswordResetModal';
+import ShowEventModal from './Modal/ShowEventModal';
 
 export {
   // Cards
@@ -167,4 +168,5 @@ export {
   // Modal
   Modal,
   PasswordResetModal,
+  ShowEventModal,
 };

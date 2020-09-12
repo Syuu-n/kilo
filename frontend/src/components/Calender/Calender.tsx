@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Calendar, momentLocalizer, Formats, Messages, Event } from 'react-big-calendar';
 import * as moment from 'moment';
 import '../../assets/css/kilo-calender.css';
-import { Modal, Table } from 'components';
 import { Lesson } from 'responses/responseStructs';
+import { ShowEventModal } from 'components';
 
 const localizer = momentLocalizer(moment);
 
@@ -53,8 +53,8 @@ const Calender: React.FC<Props> = (props) => {
   }});
 
   const showEventDetail = (event:Event) => {
-    setOpenModal(true);
     setSelectedEvent(event);
+    setOpenModal(true);
   };
 
   return(
@@ -65,25 +65,15 @@ const Calender: React.FC<Props> = (props) => {
         timeslots={2}
         views={['month', 'week', 'day']}
         formats={formats}
-        onSelectEvent={(event) => showEventDetail(event) }
+        onSelectEvent={(event) => showEventDetail(event)}
         messages={messages}
         eventPropGetter={eventColors}
       />
-      <Modal
+      <ShowEventModal
         open={openModal}
-        headerTitle="レッスン詳細"
-        content={
-          <Table
-            tableData={[
-              ["クラス名", selectedEvent?.title],
-              ["開始時間", moment(selectedEvent?.start).format("YYYY年 MM月 DD日 HH時 mm分")],
-              ["終了時間", moment(selectedEvent?.end).format("YYYY年 MM月 DD日 HH時 mm分")],
-            ]}
-          />
-        }
-        submitText="参加"
-        submitFunc={() => {console.log(isAdmin)}}
-        closeFunc={() => {setOpenModal(false)}}
+        selectedEvent={selectedEvent}
+        isAdmin={isAdmin}
+        closeFunc={() => setOpenModal(false)}
       />
     </div>
   );
