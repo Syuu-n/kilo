@@ -38,36 +38,14 @@ const ScheduleView: React.FC = () => {
     }
   }
 
-  const getMyLessons = async () => {
-    if (!accessToken) {
-      return null;
-    }
-
-    const res = await fetchApp(
-      '/v1/my_lessons',
-      'GET',
-      accessToken
-    )
-
-    if (res instanceof NetworkError) {
-      console.log('ServerError')
-      return null;
-    }
-
-    if (res.ok) {
-      const json = await res.json();
-      return json;
-    } else {
-      return null;
-    }
-  }
-
   React.useEffect(() => {
     getLessons().then((result) => {
       setLessons(result);
-    });
-    getMyLessons().then((result) => {
-      setMyLessons(result);
+      // 自身が参加しているレッスンのみ取得
+      const myLessons:Lesson[] = result.filter((lesson:Lesson) =>
+        lesson.joined
+      );
+      setMyLessons(myLessons);
     });
   }, []);
 

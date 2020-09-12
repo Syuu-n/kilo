@@ -28,4 +28,5 @@ export interface Lesson {
   end_at:     Date;
   users:      User[];
   color:      LessonColor;
+  joined:     boolean;
 }
