@@ -50,6 +50,7 @@ const Calender: React.FC<Props> = (props) => {
     start: new Date(lesson.start_at),
     end:   new Date(lesson.end_at),
     color: lesson.color,
+    joined: lesson.joined,
     memo: lesson.class_memo ? lesson.class_memo : null,
     users: lesson.users ? lesson.users : null,
   }});

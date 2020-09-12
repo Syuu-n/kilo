@@ -45,8 +45,9 @@ const ShowEventModal: React.FC<Props> = (props) => {
         </div>
       }
       submitText="参加"
-      submitFunc={() => {console.log(isAdmin)}}
+      submitFunc={() => {console.log('参加しました。')}}
       closeFunc={() => {closeFunc()}}
+      disabled={selectedEvent?.joined}
     />
   );
 };

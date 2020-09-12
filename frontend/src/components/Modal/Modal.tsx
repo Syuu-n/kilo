@@ -20,10 +20,11 @@ interface Props {
   submitText?: string;
   submitFunc: Function;
   closeFunc: Function;
+  disabled?: boolean;
 }
 
 const Modal: React.FC<Props> = (props) => {
-  const { open, headerTitle, content, submitText, submitFunc, closeFunc } = props;
+  const { open, headerTitle, content, submitText, submitFunc, closeFunc, disabled } = props;
   const [openModal, setOpenModal] = React.useState(false);
   const [isLoaded, setIsLoaded] = React.useState(true);
   const classes = modalStyle();
@@ -81,6 +82,7 @@ const Modal: React.FC<Props> = (props) => {
                 customClass={classes.submitButton}
                 color='primary'
                 onClick={() => doSubmit()}
+                disabled={disabled}
               >
                 {submitText}
               </Button>
