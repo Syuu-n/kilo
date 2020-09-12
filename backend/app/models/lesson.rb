@@ -12,6 +12,12 @@ class Lesson < ApplicationRecord
     end
   end
 
+  def class_memo
+    if lesson_class
+      lesson_class.description
+    end
+  end
+
   def joined?(user)
     users.include? user
   end

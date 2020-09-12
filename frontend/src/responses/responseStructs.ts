@@ -23,6 +23,7 @@ export type LessonColor = 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose
 export interface Lesson {
   id:         number;
   class_name: string;
+  class_memo: string;
   start_at:   Date;
   end_at:     Date;
   users:      User[];

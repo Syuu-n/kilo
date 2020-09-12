@@ -45,6 +45,12 @@ describe Lesson, type: :model do
         end
       end
 
+      context '#class_memo' do
+        it '指定したレッスンの説明を取得できる' do
+          expect(lesson.class_memo).to eq lesson.lesson_class.description
+        end
+      end
+
       context '#joined?' do
         before do
           lesson.join(user)
