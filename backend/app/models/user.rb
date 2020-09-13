@@ -52,4 +52,12 @@ class User < ApplicationRecord
     # 現在の年齢
     (Date.today.strftime('%Y%m%d').to_i - birthday.strftime('%Y%m%d').to_i) / 10000
   end
+
+  def current_monthly_count
+    self.lessons.count
+  end
+
+  def remaining_monthly_count
+    self.plan.monthly_lesson_count - self.current_monthly_count
+  end
 end

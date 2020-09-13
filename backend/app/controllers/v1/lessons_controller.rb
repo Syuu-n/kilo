@@ -48,6 +48,10 @@ module V1
         render json: { code: 'user_already_joined' }, status: :bad_request and return
       end
 
+      if current_user.remaining_monthly_count < 1
+        render json: { code: 'user_monthly_limit_error' }, status: :bad_request and return
+      end
+
       if @lesson.join(current_user)
         render json: { message: 'User join success.' }, status: :ok
       else

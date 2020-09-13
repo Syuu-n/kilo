@@ -32,12 +32,17 @@ describe 'Lessons API', type: :request do
 
     context 'ユーザがレッスン一覧を取得した場合' do
       login_user
+      let(:last_lesson){ Lesson.last }
       let(:access_token){ user.access_token }
-      it '403 Forbidden を返す' do
+      it '200 OK を返す' do
         subject
 
-        expect(response.status).to eq 403
-        expect(json['code']).to eq 'not_permitted'
+        expect(response.status).to eq 200
+        expect(json.is_a?(Array)).to eq true
+        expect(json.last['id']).to eq last_lesson.id
+        expect(json.last['class_name']).to eq last_lesson.lesson_class.name
+        expect(Time.zone.parse(json.last['start_at'])).to eq last_lesson.start_at
+        expect(Time.zone.parse(json.last['end_at'])).to eq last_lesson.end_at
       end
     end
   end
@@ -263,6 +268,21 @@ describe 'Lessons API', type: :request do
           expect{subject}.to change{UserLesson.count}.by(0)
           expect(response.status).to eq 400
           expect(json['code']).to eq 'user_already_joined'
+        end
+      end
+
+      context '今月の残り回数がない状態で参加した場合' do
+        login_admin
+        before do
+          admin.plan = Plan.last
+          admin.save!
+        end
+        let(:access_token){ admin.access_token }
+        let(:lesson_id){ Lesson.last.id }
+        it '400 Bad Request を返す' do
+          expect{subject}.to change{UserLesson.count}.by(0)
+          expect(response.status).to eq 400
+          expect(json['code']).to eq 'user_monthly_limit_error'
         end
       end
     end

@@ -117,6 +117,20 @@ describe User, type: :model do
           expect(user.age).to eq userAge
         end
       end
+
+      context '#current_monthly_count' do
+        let(:count){ user.lessons.count }
+        it 'ユーザの現在のレッスン参加数を取得できる' do
+          expect(user.current_monthly_count).to eq count
+        end
+      end
+
+      context '#remaining_monthly_count' do
+        let(:count){ user.plan.monthly_lesson_count - user.current_monthly_count }
+        it 'ユーザの残りレッスン参加数を取得できる' do
+          expect(user.remaining_monthly_count).to eq count
+        end
+      end
     end
   end
 end

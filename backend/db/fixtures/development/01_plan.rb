@@ -10,3 +10,11 @@ Faker::Config.locale = 'ja'
             }
   )
 end
+
+Plan.seed(:id,
+  { name: Faker::Space.galaxy,
+    price: rand(100..5000),
+    monthly_lesson_count: 0,
+    for_children: Faker::Boolean.boolean
+  }
+)
