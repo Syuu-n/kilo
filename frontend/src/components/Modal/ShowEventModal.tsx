@@ -20,6 +20,7 @@ const ShowEventModal: React.SFC<Props> = (props) => {
   const { open, selectedEvent, isAdmin, closeFunc, updateEventFunc } = props;
   const { enqueueSnackbar } = useSnackbar();
   const lessonId = selectedEvent?.lessonId;
+  const accessToken = localStorage.getItem('kiloToken');
 
   const joinEvent = () => {
     if (selectedEvent) {
@@ -37,9 +38,23 @@ const ShowEventModal: React.SFC<Props> = (props) => {
     }
   };
 
-  const handleSubmit = async () => {
-    const accessToken = localStorage.getItem('kiloToken');
+  const leaveEvent = () => {
+    if (selectedEvent) {
+      const newEvent:CEvent = {
+        title:    selectedEvent.title,
+        start:    selectedEvent.start,
+        end:      selectedEvent.end,
+        lessonId: selectedEvent.lessonId,
+        color:    selectedEvent.color,
+        joined:   false,
+        memo:     selectedEvent.memo,
+        users:    selectedEvent.users,
+      }
+      updateEventFunc(newEvent);
+    }
+  };
 
+  const handleSubmitJoin = async () => {
     if (!accessToken) {
       return;
     }
@@ -62,7 +77,7 @@ const ShowEventModal: React.SFC<Props> = (props) => {
         const json = await res.json();
         switch (json.code) {
           case 'user_already_joined':
-            enqueueSnackbar('既に参加済みのレッスンのため参加できませんでした。', { variant: 'error' });
+            enqueueSnackbar('既に参加済みのレッスンへは参加できません。', { variant: 'error' });
             break;
           case 'user_monthly_limit_error':
             enqueueSnackbar('今月の参加可能数を超えているため参加できませんでした。', { variant: 'error' });
@@ -73,6 +88,40 @@ const ShowEventModal: React.SFC<Props> = (props) => {
         break;
       default:
         enqueueSnackbar('レッスンへの参加に失敗しました。', { variant: 'error' });
+    }
+  };
+
+  const handleSubmitLeave = async () => {
+    if (!accessToken) {
+      return;
+    }
+    const res = await fetchApp(
+      `/v1/lessons/${lessonId}/leave`,
+      'DELETE',
+      accessToken,
+    )
+    if (res instanceof NetworkError) {
+      console.log('ServerError');
+      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
+      return;
+    }
+    switch (res.status) {
+      case 200:
+        leaveEvent();
+        enqueueSnackbar('レッスンからの辞退が成功しました。', { variant: 'success' });
+        break;
+      case 400:
+        const json = await res.json();
+        switch (json.code) {
+          case 'user_not_joined':
+            enqueueSnackbar('参加していないレッスンから辞退することはできません。', { variant: 'error' });
+            break;
+          default:
+            enqueueSnackbar('レッスンからの辞退に失敗しました。', { variant: 'error' });
+        };
+        break;
+      default:
+        enqueueSnackbar('レッスンからの辞退に失敗しました。', { variant: 'error' });
     }
   };
 
@@ -103,10 +152,12 @@ const ShowEventModal: React.SFC<Props> = (props) => {
           ) : (null) }
         </div>
       }
-      submitText="参加"
-      submitFunc={async () => {await handleSubmit()}}
+      submitText={selectedEvent?.joined ? "辞退" : "参加"}
+      submitFunc={selectedEvent?.joined ?
+        async () => {await handleSubmitLeave()} :
+        async () => {await handleSubmitJoin()}
+      }
       closeFunc={() => {closeFunc()}}
-      disabled={selectedEvent?.joined}
     />
   );
 };
