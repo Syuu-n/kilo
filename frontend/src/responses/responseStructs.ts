@@ -1,3 +1,5 @@
+import { Event } from 'react-big-calendar';
+
 export interface User {
   id:           number;
   email:        string;
@@ -29,4 +31,12 @@ export interface Lesson {
   users:      User[];
   color:      LessonColor;
   joined:     boolean;
+}
+
+export interface CEvent extends Event {
+  lessonId: number;
+  color:    LessonColor;
+  joined:   boolean;
+  memo:     string;
+  users:    User[];
 }

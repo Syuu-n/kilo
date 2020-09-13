@@ -1,21 +1,75 @@
 import * as React from 'react';
-// import { Event } from 'react-big-calendar';
 import * as moment from 'moment';
 import {
   Modal,
   Table,
 } from 'components';
-import { User } from 'responses/responseStructs';
+import { User, CEvent } from 'responses/responseStructs';
+import { fetchApp, NetworkError } from 'request/fetcher';
+import { useSnackbar } from 'notistack';
 
 interface Props {
   open: boolean;
-  selectedEvent: any;
+  selectedEvent: CEvent|undefined;
   isAdmin: boolean;
   closeFunc: Function;
+  updateEventFunc: Function;
 }
 
-const ShowEventModal: React.FC<Props> = (props) => {
-  const { open, selectedEvent, isAdmin, closeFunc } = props;
+const ShowEventModal: React.SFC<Props> = (props) => {
+  const { open, selectedEvent, isAdmin, closeFunc, updateEventFunc } = props;
+  const { enqueueSnackbar } = useSnackbar();
+  const lessonId = selectedEvent?.lessonId;
+
+  const joinEvent = () => {
+    if (selectedEvent) {
+      const newEvent:CEvent = {
+        title:    selectedEvent.title,
+        start:    selectedEvent.start,
+        end:      selectedEvent.end,
+        lessonId: selectedEvent.lessonId,
+        color:    selectedEvent.color,
+        joined:   true,
+        memo:     selectedEvent.memo,
+        users:    selectedEvent.users,
+      }
+      updateEventFunc(newEvent);
+    }
+  };
+
+  const handleSubmit = async () => {
+    const accessToken = localStorage.getItem('kiloToken');
+
+    if (!accessToken) {
+      return;
+    }
+    const res = await fetchApp(
+      `/v1/lessons/${lessonId}/join`,
+      'POST',
+      accessToken,
+    )
+    if (res instanceof NetworkError) {
+      console.log('ServerError');
+      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
+      return;
+    }
+    switch (res.status) {
+      case 200:
+        joinEvent();
+        enqueueSnackbar('レッスンへの参加が成功しました。', { variant: 'success' });
+        break;
+      case 400:
+        const json = await res.json();
+        if (json.code == 'user_already_joined') {
+          enqueueSnackbar('既に参加済みのレッスンのため参加できませんでした。', { variant: 'error' });
+        } else {
+          enqueueSnackbar('レッスンへの参加に失敗しました。', { variant: 'error' });
+        };
+        break;
+      default:
+        enqueueSnackbar('レッスンへの参加に失敗しました。', { variant: 'error' });
+    }
+  };
 
   return(
     <Modal
@@ -45,7 +99,7 @@ const ShowEventModal: React.FC<Props> = (props) => {
         </div>
       }
       submitText="参加"
-      submitFunc={() => {console.log('参加しました。')}}
+      submitFunc={async () => {await handleSubmit()}}
       closeFunc={() => {closeFunc()}}
       disabled={selectedEvent?.joined}
     />

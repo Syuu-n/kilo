@@ -1,20 +1,28 @@
 import * as React from 'react';
-import { ItemGrid, Calender, KSpinner, CustomTabs } from 'components';
+import { ItemGrid, KSpinner, CustomTabs, Calender } from 'components';
 import { Grid,} from '@material-ui/core';
 import { AuthContext } from 'Auth';
 import { fetchApp, NetworkError } from 'request/fetcher';
-import { Lesson } from 'responses/responseStructs';
+import { Lesson, CEvent } from 'responses/responseStructs';
 import scheduleViewStyle from 'assets/jss/kiloStyles/scheduleViewStyle';
 import { Event, EventAvailable } from '@material-ui/icons';
 
 const ScheduleView: React.FC = () => {
   const { currentUser } = React.useContext(AuthContext);
-  const [lessons, setLessons] = React.useState<Lesson[] | null>(null);
-  const [myLessons, setMyLessons] = React.useState<Lesson[] | null>(null);
+  const [lessons, setLessons] = React.useState<CEvent[] | null>(null);
+  const [myLessons, setMyLessons] = React.useState<CEvent[] | null>(null);
   const classes = scheduleViewStyle();
-  const accessToken = localStorage.getItem('kiloToken');
+
+  // 自身が参加しているレッスンのみ取得
+  const getMyLessons = (lessons:CEvent[]) => {
+    const myLessons:CEvent[] = lessons.filter((lesson:CEvent) =>
+      lesson.joined
+    );
+    setMyLessons(myLessons);
+  };
 
   const getLessons = async () => {
+    const accessToken = localStorage.getItem('kiloToken');
     if (!accessToken) {
       return null;
     }
@@ -38,16 +46,36 @@ const ScheduleView: React.FC = () => {
     }
   }
 
+  const updateEvent = (event:CEvent) => {
+    if (!lessons) {
+      console.log('LessonNotFoundError');
+      return
+    };
+
+    const newLessons = lessons.slice();
+    const selectedIndex = lessons.findIndex(({lessonId}) => lessonId === event.lessonId);
+    newLessons[selectedIndex] = event;
+    setLessons(newLessons);
+  };
+
   React.useEffect(() => {
-    getLessons().then((result) => {
-      setLessons(result);
-      // 自身が参加しているレッスンのみ取得
-      const myLessons:Lesson[] = result.filter((lesson:Lesson) =>
-        lesson.joined
-      );
-      setMyLessons(myLessons);
+    getLessons().then((result:Lesson[]) => {
+      setLessons(result.map(lesson => ({
+        lessonId: lesson.id,
+        title: lesson.class_name,
+        start: new Date(lesson.start_at),
+        end:   new Date(lesson.end_at),
+        color: lesson.color,
+        joined: lesson.joined,
+        memo: lesson.class_memo ? lesson.class_memo : null,
+        users: lesson.users ? lesson.users : null,
+      } as CEvent)));
     });
   }, []);
+
+  React.useEffect(() => {
+    lessons ? getMyLessons(lessons) : null;
+  }, [lessons]);
 
   return (
     <div>
@@ -65,6 +93,7 @@ const ScheduleView: React.FC = () => {
                     <Calender
                       isAdmin={currentUser.role === 'admin'}
                       lessons={lessons}
+                      updateEventFunc={(event:CEvent) => updateEvent(event)}
                     />
                   ),
                 },
@@ -75,6 +104,7 @@ const ScheduleView: React.FC = () => {
                     <Calender
                       isAdmin={currentUser.role === 'admin'}
                       lessons={myLessons}
+                      updateEventFunc={(event:CEvent) => updateEvent(event)}
                     />
                   ),
                 },

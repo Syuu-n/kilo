@@ -1,70 +1,64 @@
 import * as React from 'react';
-import { Calendar, momentLocalizer, Formats, Messages, Event } from 'react-big-calendar';
+import { Calendar, momentLocalizer, Formats, Messages } from 'react-big-calendar';
 import * as moment from 'moment';
 import '../../assets/css/kilo-calender.css';
-import { Lesson } from 'responses/responseStructs';
+import { CEvent } from 'responses/responseStructs';
 import { ShowEventModal } from 'components';
 
-const localizer = momentLocalizer(moment);
-
-const formats:Formats = {
-  dateFormat: 'D',
-  dayFormat: 'D (ddd)',
-  monthHeaderFormat: 'YYYY年M月',
-  dayHeaderFormat: 'M月D日 (ddd)',
-};
-
-const messages:Messages ={
-  today: '今日',
-  yesterday: '昨日',
-  tomorrow: '明日',
-  previous: '←',
-  next: '→',
-  month: '月',
-  week: '週',
-  day: '日',
-  showMore: (number) => { return '+ 他 ' + number + '個'},
-};
-
-const eventColors = (event:any) => {
-  var backgroundColor = "event-";
-  event.color
-    ? (backgroundColor = backgroundColor + event.color)
-    : (backgroundColor = backgroundColor + "default");
-  return {
-    className: backgroundColor
-  };
-};
-
 interface Props {
-  isAdmin: boolean;
-  lessons: Lesson[];
+  isAdmin:         boolean;
+  lessons:         CEvent[];
+  updateEventFunc: Function;
 }
 
 const Calender: React.FC<Props> = (props) => {
-  const { isAdmin, lessons } = props;
+  const { isAdmin, lessons, updateEventFunc } = props;
   const [openModal, setOpenModal] = React.useState(false);
-  const [selectedEvent, setSelectedEvent] = React.useState<Event|undefined>();
-  const eventList:Event[] = lessons.map(lesson => {return {
-    title: lesson.class_name,
-    start: new Date(lesson.start_at),
-    end:   new Date(lesson.end_at),
-    color: lesson.color,
-    joined: lesson.joined,
-    memo: lesson.class_memo ? lesson.class_memo : null,
-    users: lesson.users ? lesson.users : null,
-  }});
+  const [selectedEvent, setSelectedEvent] = React.useState<CEvent|undefined>();
+  const localizer = momentLocalizer(moment);
+  const formats:Formats = {
+    dateFormat: 'D',
+    dayFormat: 'D (ddd)',
+    monthHeaderFormat: 'YYYY年M月',
+    dayHeaderFormat: 'M月D日 (ddd)',
+  };
+  const messages:Messages ={
+    today: '今日',
+    yesterday: '昨日',
+    tomorrow: '明日',
+    previous: '←',
+    next: '→',
+    month: '月',
+    week: '週',
+    day: '日',
+    showMore: (number) => { return '+ 他 ' + number + '個'},
+  };
 
-  const showEventDetail = (event:Event) => {
+  const eventColors = (event:any) => {
+    var backgroundColor = "event-";
+    event.color
+      ? (backgroundColor = backgroundColor + event.color)
+      : (backgroundColor = backgroundColor + "default");
+    return {
+      className: backgroundColor
+    };
+  };
+
+  const showEventDetail = (event:CEvent) => {
     setSelectedEvent(event);
     setOpenModal(true);
+  };
+
+  const updateEvent = (event:CEvent) => {
+    // イベント更新があったときに更新する
+    updateEventFunc(event);
   };
 
   return(
     <div>
       <Calendar
         localizer={localizer}
-        events={eventList}
+        events={lessons}
         timeslots={2}
         views={['month', 'week', 'day']}
         formats={formats}
@@ -77,6 +71,7 @@ const Calender: React.FC<Props> = (props) => {
         selectedEvent={selectedEvent}
         isAdmin={isAdmin}
         closeFunc={() => setOpenModal(false)}
+        updateEventFunc={(event:CEvent) => updateEvent(event)}
       />
     </div>
   );

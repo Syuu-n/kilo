@@ -7,16 +7,17 @@ import {
 import { Event } from '@material-ui/icons';
 import calenderCardStyle from 'assets/jss/kiloStyles/calenderCardStyle';
 import { Calender } from 'components';
-import { Lesson } from 'responses/responseStructs';
+import { CEvent } from 'responses/responseStructs';
 
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
   cardTitle?: React.ReactNode;
-  lessons: Lesson[];
+  lessons: CEvent[];
   isAdmin: boolean;
+  updateEventFunc: Function;
 }
 
-const CalenderCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, lessons, isAdmin }) => {
+const CalenderCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, lessons, isAdmin, updateEventFunc }) => {
   const classes = calenderCardStyle();
 
   return(
@@ -39,6 +40,7 @@ const CalenderCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, les
           <Calender
             isAdmin={isAdmin}
             lessons={lessons}
+            updateEventFunc={(event:CEvent) => updateEventFunc(event)}
           />
         </CardContent>
       </Card>
