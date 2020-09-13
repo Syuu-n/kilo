@@ -60,10 +60,15 @@ const ShowEventModal: React.SFC<Props> = (props) => {
         break;
       case 400:
         const json = await res.json();
-        if (json.code == 'user_already_joined') {
-          enqueueSnackbar('既に参加済みのレッスンのため参加できませんでした。', { variant: 'error' });
-        } else {
-          enqueueSnackbar('レッスンへの参加に失敗しました。', { variant: 'error' });
+        switch (json.code) {
+          case 'user_already_joined':
+            enqueueSnackbar('既に参加済みのレッスンのため参加できませんでした。', { variant: 'error' });
+            break;
+          case 'user_monthly_limit_error':
+            enqueueSnackbar('今月の参加可能数を超えているため参加できませんでした。', { variant: 'error' });
+            break;
+          default:
+            enqueueSnackbar('レッスンへの参加に失敗しました。', { variant: 'error' });
         };
         break;
       default:
