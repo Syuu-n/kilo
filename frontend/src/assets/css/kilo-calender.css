@@ -245,6 +245,7 @@
   color: #fff;
   padding: 0 5px;
   font-size: .85em;
+  cursor: pointer;
 }
 
 .rbc-event-label {
