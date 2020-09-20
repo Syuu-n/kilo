@@ -109,6 +109,9 @@ import Modal from './Modal/Modal';
 import PasswordResetModal from './Modal/PasswordResetModal';
 import ShowEventModal from './Modal/ShowEventModal';
 
+// Badge
+import Badge from './Badge/Badge';
+
 export {
   // Cards
   ChartCard,
@@ -169,4 +172,6 @@ export {
   Modal,
   PasswordResetModal,
   ShowEventModal,
+  // Badge
+  Badge,
 };
