@@ -91,19 +91,19 @@ const ShowEventModal: React.SFC<Props> = (props) => {
     switch (res.status) {
       case 200:
         updateEvent(json);
-        enqueueSnackbar('レッスンからの辞退が成功しました。', { variant: 'success' });
+        enqueueSnackbar('レッスンへの参加取り消しが成功しました。', { variant: 'success' });
         break;
       case 400:
         switch (json.code) {
           case 'user_not_joined':
-            enqueueSnackbar('参加していないレッスンから辞退することはできません。', { variant: 'error' });
+            enqueueSnackbar('参加していないレッスンを取り消すことはできません。', { variant: 'error' });
             break;
           default:
-            enqueueSnackbar('レッスンからの辞退に失敗しました。', { variant: 'error' });
+            enqueueSnackbar('レッスンへの参加取り消しに失敗しました。', { variant: 'error' });
         };
         break;
       default:
-        enqueueSnackbar('レッスンからの辞退に失敗しました。', { variant: 'error' });
+        enqueueSnackbar('レッスンへの参加取り消しに失敗しました。', { variant: 'error' });
     }
   };
 
@@ -134,7 +134,7 @@ const ShowEventModal: React.SFC<Props> = (props) => {
           ) : (null) }
         </div>
       }
-      submitText={selectedEvent?.joined ? "辞退" : "参加"}
+      submitText={selectedEvent?.joined ? "参加取り消し" : "参加"}
       submitFunc={selectedEvent?.joined ?
         async () => {await handleSubmitLeave()} :
         async () => {await handleSubmitJoin()}
