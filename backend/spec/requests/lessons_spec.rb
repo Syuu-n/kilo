@@ -227,22 +227,30 @@ describe 'Lessons API', type: :request do
       context '管理者が指定したレッスンに参加した場合' do
         login_admin
         let(:access_token){ admin.access_token }
-        let(:lesson_id){ Lesson.last.id }
+        let(:last_lesson){ Lesson.last }
+        let(:lesson_id){ last_lesson.id }
         it '200 OK を返す' do
           expect{subject}.to change{UserLesson.count}.by(1)
           expect(response.status).to eq 200
-          expect(json['message']).to eq 'User join success.'
+          expect(json['id']).to eq last_lesson.id
+          expect(json['class_name']).to eq last_lesson.lesson_class.name
+          expect(Time.zone.parse(json['start_at'])).to eq last_lesson.start_at
+          expect(Time.zone.parse(json['end_at'])).to eq last_lesson.end_at
         end
       end
 
       context 'ユーザが指定したレッスンに参加した場合' do
         login_user
         let(:access_token){ user.access_token }
-        let(:lesson_id){ Lesson.last.id }
+        let(:last_lesson){ Lesson.last }
+        let(:lesson_id){ last_lesson.id }
         it '200 OK を返す' do
           expect{subject}.to change{UserLesson.count}.by(1)
           expect(response.status).to eq 200
-          expect(json['message']).to eq 'User join success.'
+          expect(json['id']).to eq last_lesson.id
+          expect(json['class_name']).to eq last_lesson.lesson_class.name
+          expect(Time.zone.parse(json['start_at'])).to eq last_lesson.start_at
+          expect(Time.zone.parse(json['end_at'])).to eq last_lesson.end_at
         end
       end
 
@@ -300,11 +308,15 @@ describe 'Lessons API', type: :request do
         end
         login_admin
         let(:access_token){ admin.access_token }
-        let(:lesson_id){ Lesson.last.id }
+        let(:last_lesson){ Lesson.last }
+        let(:lesson_id){ last_lesson.id }
         it '200 OK を返す' do
           expect{subject}.to change{UserLesson.count}.by(-1)
           expect(response.status).to eq 200
-          expect(json['message']).to eq 'User leave success.'
+          expect(json['id']).to eq last_lesson.id
+          expect(json['class_name']).to eq last_lesson.lesson_class.name
+          expect(Time.zone.parse(json['start_at'])).to eq last_lesson.start_at
+          expect(Time.zone.parse(json['end_at'])).to eq last_lesson.end_at
         end
       end
 
@@ -314,11 +326,15 @@ describe 'Lessons API', type: :request do
         end
         login_user
         let(:access_token){ user.access_token }
-        let(:lesson_id){ Lesson.last.id }
+        let(:last_lesson){ Lesson.last }
+        let(:lesson_id){ last_lesson.id }
         it '200 OK を返す' do
           expect{subject}.to change{UserLesson.count}.by(-1)
           expect(response.status).to eq 200
-          expect(json['message']).to eq 'User leave success.'
+          expect(json['id']).to eq last_lesson.id
+          expect(json['class_name']).to eq last_lesson.lesson_class.name
+          expect(Time.zone.parse(json['start_at'])).to eq last_lesson.start_at
+          expect(Time.zone.parse(json['end_at'])).to eq last_lesson.end_at
         end
       end
 

@@ -53,7 +53,7 @@ module V1
       end
 
       if @lesson.join(current_user)
-        render json: { message: 'User join success.' }, status: :ok
+        render json: @lesson, status: :ok
       else
         render json: { code: 'user_join_failed' }, status: :bad_request
       end
@@ -66,7 +66,7 @@ module V1
       end
 
       if @lesson.leave(current_user)
-        render json: { message: 'User leave success.' }, status: :ok
+        render json: @lesson, status: :ok
       else
         render json: { code: 'user_leave_failed' }, status: :bad_request
       end
