@@ -4,7 +4,7 @@ import {
   Modal,
   Table,
 } from 'components';
-import { User, CEvent } from 'responses/responseStructs';
+import { User, CEvent, Lesson } from 'responses/responseStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 
@@ -19,39 +19,21 @@ interface Props {
 const ShowEventModal: React.SFC<Props> = (props) => {
   const { open, selectedEvent, isAdmin, closeFunc, updateEventFunc } = props;
   const { enqueueSnackbar } = useSnackbar();
-  const lessonId = selectedEvent?.lessonId;
+  const lessonId = selectedEvent?.id;
   const accessToken = localStorage.getItem('kiloToken');
 
-  const joinEvent = () => {
-    if (selectedEvent) {
-      const newEvent:CEvent = {
-        title:    selectedEvent.title,
-        start:    selectedEvent.start,
-        end:      selectedEvent.end,
-        lessonId: selectedEvent.lessonId,
-        color:    selectedEvent.color,
-        joined:   true,
-        memo:     selectedEvent.memo,
-        users:    selectedEvent.users,
-      }
-      updateEventFunc(newEvent);
+  const updateEvent = (lesson:Lesson) => {
+    const newEvent:CEvent = {
+      id: lesson.id,
+      title: lesson.class_name,
+      start: new Date(lesson.start_at),
+      end:   new Date(lesson.end_at),
+      color: lesson.color,
+      joined: lesson.joined,
+      memo: lesson.class_memo ? lesson.class_memo : "",
+      users: lesson.users ? lesson.users : undefined,
     }
-  };
-
-  const leaveEvent = () => {
-    if (selectedEvent) {
-      const newEvent:CEvent = {
-        title:    selectedEvent.title,
-        start:    selectedEvent.start,
-        end:      selectedEvent.end,
-        lessonId: selectedEvent.lessonId,
-        color:    selectedEvent.color,
-        joined:   false,
-        memo:     selectedEvent.memo,
-        users:    selectedEvent.users,
-      }
-      updateEventFunc(newEvent);
-    }
+    updateEventFunc(newEvent);
   };
 
   const handleSubmitJoin = async () => {
@@ -68,13 +50,13 @@ const ShowEventModal: React.SFC<Props> = (props) => {
       enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
       return;
     }
+    const json = await res.json();
     switch (res.status) {
       case 200:
-        joinEvent();
+        updateEvent(json);
         enqueueSnackbar('レッスンへの参加が成功しました。', { variant: 'success' });
         break;
       case 400:
-        const json = await res.json();
         switch (json.code) {
           case 'user_already_joined':
             enqueueSnackbar('既に参加済みのレッスンへは参加できません。', { variant: 'error' });
@@ -105,13 +87,13 @@ const ShowEventModal: React.SFC<Props> = (props) => {
       enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
       return;
     }
+    const json = await res.json();
     switch (res.status) {
       case 200:
-        leaveEvent();
+        updateEvent(json);
         enqueueSnackbar('レッスンからの辞退が成功しました。', { variant: 'success' });
         break;
       case 400:
-        const json = await res.json();
         switch (json.code) {
           case 'user_not_joined':
             enqueueSnackbar('参加していないレッスンから辞退することはできません。', { variant: 'error' });

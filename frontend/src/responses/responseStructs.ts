@@ -20,7 +20,7 @@ export interface Plan {
   for_children:         boolean;
 }
 
-export type LessonColor = 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
+export type LessonColor = '' | 'orange' | 'green' | 'azure' | 'rose';
 
 export interface Lesson {
   id:         number;
@@ -28,15 +28,15 @@ export interface Lesson {
   class_memo: string;
   start_at:   Date;
   end_at:     Date;
-  users:      User[];
+  users:      User[] | undefined;
   color:      LessonColor;
   joined:     boolean;
 }
 
 export interface CEvent extends Event {
-  lessonId: number;
+  id:       number;
   color:    LessonColor;
   joined:   boolean;
   memo:     string;
-  users:    User[];
+  users:    User[] | undefined;
 }

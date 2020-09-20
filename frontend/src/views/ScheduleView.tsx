@@ -53,7 +53,7 @@ const ScheduleView: React.FC = () => {
     };
 
     const newLessons = lessons.slice();
-    const selectedIndex = lessons.findIndex(({lessonId}) => lessonId === event.lessonId);
+    const selectedIndex = lessons.findIndex(({id}) => id === event.id);
     newLessons[selectedIndex] = event;
     setLessons(newLessons);
   };
@@ -61,14 +61,14 @@ const ScheduleView: React.FC = () => {
   React.useEffect(() => {
     getLessons().then((result:Lesson[]) => {
       setLessons(result.map(lesson => ({
-        lessonId: lesson.id,
+        id: lesson.id,
         title: lesson.class_name,
         start: new Date(lesson.start_at),
         end:   new Date(lesson.end_at),
         color: lesson.color,
         joined: lesson.joined,
-        memo: lesson.class_memo ? lesson.class_memo : null,
-        users: lesson.users ? lesson.users : null,
+        memo: lesson.class_memo ? lesson.class_memo : '',
+        users: lesson.users ? lesson.users : undefined,
       } as CEvent)));
     });
   }, []);
