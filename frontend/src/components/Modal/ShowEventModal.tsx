@@ -140,6 +140,8 @@ const ShowEventModal: React.SFC<Props> = (props) => {
         async () => {await handleSubmitJoin()}
       }
       closeFunc={() => {closeFunc()}}
+      // 選択したレッスンが過去の場合はボタンを無効に
+      disabled={moment(new Date).isAfter(moment(selectedEvent?.start))}
     />
   );
 };
