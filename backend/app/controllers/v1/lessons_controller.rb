@@ -44,10 +44,17 @@ module V1
 
     # POST /lessons/:id/join
     def user_join
+      # 参加済みのレッスンへ再度参加した場合
       if @lesson.joined?(current_user)
         render json: { code: 'user_already_joined' }, status: :bad_request and return
       end
 
+      # 参加しようとしているレッスンの開始時刻が過去である場合
+      if Time.current > @lesson.start_at
+        render json: { code: 'cant_join_to_post_lesson' }, status: :bad_request and return
+      end
+
+      # 今月の参加可能数が 0 である場合
       if current_user.remaining_monthly_count < 1
         render json: { code: 'user_monthly_limit_error' }, status: :bad_request and return
       end
@@ -61,8 +68,14 @@ module V1
 
     # DELETE /lessons/:id/leave
     def user_leave
+      # 参加取り消し済みのレッスンへ再度参加取り消しをした場合
       unless @lesson.joined?(current_user)
         render json: { code: 'user_not_joined' }, status: :bad_request and return
+      end
+
+      # 参加取り消ししようとしているレッスンの開始時刻が過去である場合
+      if Time.current > @lesson.start_at
+        render json: { code: 'cant_leave_to_post_lesson' }, status: :bad_request and return
       end
 
       if @lesson.leave(current_user)

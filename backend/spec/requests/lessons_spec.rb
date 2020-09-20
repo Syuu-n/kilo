@@ -293,6 +293,23 @@ describe 'Lessons API', type: :request do
           expect(json['code']).to eq 'user_monthly_limit_error'
         end
       end
+
+      context '過去のレッスンへ参加しようとした場合' do
+        login_admin
+        before do
+          last_lesson = Lesson.last
+          last_lesson.start_at = last_lesson.start_at - 1.month
+          last_lesson.end_at = last_lesson.end_at - 1.month
+          last_lesson.save!
+        end
+        let(:access_token){ admin.access_token }
+        let(:lesson_id){ Lesson.last.id }
+        it '400 Bad Request を返す' do
+          expect{subject}.to change{UserLesson.count}.by(0)
+          expect(response.status).to eq 400
+          expect(json['code']).to eq 'cant_join_to_post_lesson'
+        end
+      end
     end
 
     describe 'POST /users/:id/leave' do
@@ -357,6 +374,24 @@ describe 'Lessons API', type: :request do
           expect{subject}.to change{UserLesson.count}.by(0)
           expect(response.status).to eq 400
           expect(json['code']).to eq 'user_not_joined'
+        end
+      end
+
+      context '過去のレッスンへ参加取り消ししようとした場合' do
+        login_admin
+        before do
+          last_lesson = Lesson.last
+          last_lesson.start_at = last_lesson.start_at - 1.month
+          last_lesson.end_at = last_lesson.end_at - 1.month
+          last_lesson.save!
+          last_lesson.join(admin)
+        end
+        let(:access_token){ admin.access_token }
+        let(:lesson_id){ Lesson.last.id }
+        it '400 Bad Request を返す' do
+          expect{subject}.to change{UserLesson.count}.by(0)
+          expect(response.status).to eq 400
+          expect(json['code']).to eq 'cant_leave_to_post_lesson'
         end
       end
     end
