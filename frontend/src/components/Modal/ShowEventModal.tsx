@@ -3,10 +3,12 @@ import * as moment from 'moment';
 import {
   Modal,
   Table,
+  Badge,
 } from 'components';
 import { User, CEvent, Lesson } from 'responses/responseStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
+import showEventModalStyle from 'assets/jss/kiloStyles/showEventModalStyle';
 
 interface Props {
   open: boolean;
@@ -21,6 +23,8 @@ const ShowEventModal: React.SFC<Props> = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const lessonId = selectedEvent?.id;
   const accessToken = localStorage.getItem('kiloToken');
+  const classes = showEventModalStyle();
+  console.log(selectedEvent?.users)
 
   const updateEvent = (lesson:Lesson) => {
     const newEvent:CEvent = {
@@ -113,6 +117,9 @@ const ShowEventModal: React.SFC<Props> = (props) => {
       headerTitle="レッスン詳細"
       content={
         <div>
+          { selectedEvent?.joined ? (
+              <Badge color="primary">参加中のレッスン</Badge>
+          ) : (null)}
           <Table
             tableData={[
               ["クラス名", selectedEvent?.title],
@@ -124,11 +131,17 @@ const ShowEventModal: React.SFC<Props> = (props) => {
           <p>{selectedEvent?.memo}</p>
           { isAdmin && selectedEvent?.users ? (
             <div>
-              <p>ユーザ一覧</p>
-              <ul>
-                { selectedEvent.users.map((user:User) => {
-                  return <li key={user.id}>{user.name}</li>
-                })}
+              <p>参加中のユーザ一</p>
+              <ul className={classes.usersContainer}>
+                { selectedEvent.users.length == 0 ? (
+                  <li>なし</li>
+                ) : (
+                  <div>
+                    { selectedEvent.users.map((user:User) => {
+                      return <li key={user.id}>{user.name}</li>
+                    })}
+                  </div>
+                )}
               </ul>
             </div>
           ) : (null) }
