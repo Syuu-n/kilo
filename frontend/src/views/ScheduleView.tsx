@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ItemGrid, KSpinner, CustomTabs, Calender } from 'components';
+import { ItemGrid, KSpinner, CustomTabs, Calender, LessonCounter } from 'components';
 import { Grid,} from '@material-ui/core';
 import { AuthContext } from 'Auth';
 import { fetchApp, NetworkError } from 'request/fetcher';
@@ -90,22 +90,28 @@ const ScheduleView: React.FC = () => {
                   tabName: "全てのスケジュール",
                   tabIcon: Event,
                   tabContent: (
-                    <Calender
-                      isAdmin={currentUser.role === 'admin'}
-                      lessons={lessons}
-                      updateEventFunc={(event:CEvent) => updateEvent(event)}
-                    />
+                    <div>
+                      <Calender
+                        isAdmin={currentUser.role === 'admin'}
+                        lessons={lessons}
+                        updateEventFunc={(event:CEvent) => updateEvent(event)}
+                      />
+                      <LessonCounter user={currentUser}/>
+                    </div>
                   ),
                 },
                 {
                   tabName: "自分のスケジュール",
                   tabIcon: EventAvailable,
                   tabContent: (
-                    <Calender
-                      isAdmin={currentUser.role === 'admin'}
-                      lessons={myLessons}
-                      updateEventFunc={(event:CEvent) => updateEvent(event)}
-                    />
+                    <div>
+                      <Calender
+                        isAdmin={currentUser.role === 'admin'}
+                        lessons={myLessons}
+                        updateEventFunc={(event:CEvent) => updateEvent(event)}
+                      />
+                      <LessonCounter user={currentUser}/>
+                    </div>
                   ),
                 },
               ]}
