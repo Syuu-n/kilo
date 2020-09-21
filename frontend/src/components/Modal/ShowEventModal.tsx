@@ -24,7 +24,6 @@ const ShowEventModal: React.SFC<Props> = (props) => {
   const lessonId = selectedEvent?.id;
   const accessToken = localStorage.getItem('kiloToken');
   const classes = showEventModalStyle();
-  console.log(selectedEvent?.users)
 
   const updateEvent = (lesson:Lesson) => {
     const newEvent:CEvent = {
