@@ -54,7 +54,8 @@ class User < ApplicationRecord
   end
 
   def current_monthly_count
-    self.lessons.count
+    # 今月のレッスン参加数
+    self.lessons.where(start_at: Time.current.all_month).count
   end
 
   def remaining_monthly_count

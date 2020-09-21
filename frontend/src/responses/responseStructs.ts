@@ -1,15 +1,17 @@
 import { Event } from 'react-big-calendar';
 
 export interface User {
-  id:           number;
-  email:        string;
-  name:         string;
-  name_kana:    string;
-  age:          number;
-  birthday:     string;
-  phone_number: string;
-  role:         string;
-  plan:         Plan;
+  id:                      number;
+  email:                   string;
+  name:                    string;
+  name_kana:               string;
+  age:                     number;
+  birthday:                string;
+  phone_number:            string;
+  role:                    string;
+  plan:                    Plan;
+  current_monthly_count:   number;
+  remaining_monthly_count: number;
 }
 
 export interface Plan {
