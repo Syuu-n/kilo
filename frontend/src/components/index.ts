@@ -112,9 +112,6 @@ import ShowEventModal from './Modal/ShowEventModal';
 // Badge
 import Badge from './Badge/Badge';
 
-// LessonCounter
-import LessonCounter from './LessonCounter/LessonCounter';
-
 export {
   // Cards
   ChartCard,
@@ -177,6 +174,4 @@ export {
   ShowEventModal,
   // Badge
   Badge,
-  // LessonCounter
-  LessonCounter,
 };
