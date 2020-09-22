@@ -1,24 +1,37 @@
 import * as React from 'react';
-import { ItemGrid, KSpinner, CustomTabs, Calender, LessonCounter } from 'components';
+import { ItemGrid, KSpinner, CustomTabs, Calender, MyProfileCard } from 'components';
 import { Grid,} from '@material-ui/core';
 import { AuthContext } from 'Auth';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { Lesson, CEvent } from 'responses/responseStructs';
 import scheduleViewStyle from 'assets/jss/kiloStyles/scheduleViewStyle';
-import { Event, EventAvailable } from '@material-ui/icons';
+import { Event, EventAvailable, ControlPointDuplicate, FormatListBulletedRounded } from '@material-ui/icons';
+import * as moment from 'moment';
 
 const ScheduleView: React.FC = () => {
   const { currentUser } = React.useContext(AuthContext);
   const [lessons, setLessons] = React.useState<CEvent[] | null>(null);
   const [myLessons, setMyLessons] = React.useState<CEvent[] | null>(null);
+  const [recentLesson, setRecentLesson] = React.useState<CEvent[] | null>(null);
   const classes = scheduleViewStyle();
 
   // 自身が参加しているレッスンのみ取得
   const getMyLessons = (lessons:CEvent[]) => {
-    const myLessons:CEvent[] = lessons.filter((lesson:CEvent) =>
+    const myLessonsArray:CEvent[] = lessons.filter((lesson) =>
       lesson.joined
     );
-    setMyLessons(myLessons);
+    setMyLessons(myLessonsArray);
+
+    const recentLessonArray:CEvent[] = myLessonsArray.filter((lesson) =>
+      moment(lesson.start).isBetween(new Date, moment(new Date).endOf('month'))
+    );
+    // 直近のレッスンを昇順にソート
+    recentLessonArray.sort((a, b) => {
+      return (a?.start > b.start ? 1 : -1);
+    });
+    // 直近のレッスンから４つまでに絞る
+    recentLessonArray.splice(4);
+    setRecentLesson(recentLessonArray);
   };
 
   const getLessons = async () => {
@@ -79,45 +92,69 @@ const ScheduleView: React.FC = () => {
 
   return (
     <div>
-      { lessons && myLessons && currentUser ? (
-        <Grid container>
-          <ItemGrid xs={12}>
-            <CustomTabs
-              title="表示:"
-              headerColor="orange"
-              tabs={[
-                {
-                  tabName: "全てのスケジュール",
-                  tabIcon: Event,
-                  tabContent: (
-                    <div>
+      { lessons && myLessons && recentLesson && currentUser ? (
+        <div>
+          <Grid container>
+            <ItemGrid xs={12}>
+              <CustomTabs
+                title="表示:"
+                headerColor="orange"
+                tabs={[
+                  {
+                    tabName: "全てのスケジュール",
+                    tabIcon: Event,
+                    tabContent: (
                       <Calender
                         isAdmin={currentUser.role === 'admin'}
                         lessons={lessons}
                         updateEventFunc={(event:CEvent) => updateEvent(event)}
                       />
-                      <LessonCounter user={currentUser}/>
-                    </div>
-                  ),
-                },
-                {
-                  tabName: "自分のスケジュール",
-                  tabIcon: EventAvailable,
-                  tabContent: (
-                    <div>
+                    ),
+                  },
+                  {
+                    tabName: "自分のスケジュール",
+                    tabIcon: EventAvailable,
+                    tabContent: (
                       <Calender
                         isAdmin={currentUser.role === 'admin'}
                         lessons={myLessons}
                         updateEventFunc={(event:CEvent) => updateEvent(event)}
                       />
-                      <LessonCounter user={currentUser}/>
-                    </div>
-                  ),
-                },
-              ]}
-            />
-          </ItemGrid>
-        </Grid>
+                    ),
+                  },
+                ]}
+              />
+            </ItemGrid>
+          </Grid>
+          <Grid container>
+            {/* レッスン数カウント */}
+            <ItemGrid xs={12} md={5}>
+              <MyProfileCard
+                  headerColor="orange"
+                  cardTitle="今月の参加状況"
+                  icon={ControlPointDuplicate}
+                  tableData={[
+                    ["参加中のレッスン", `${currentUser.current_monthly_count} 回`],
+                    ["毎月の参加可能数", `${currentUser.plan.monthly_lesson_count} 回`],
+                    ["残り参加可能数", `${currentUser.remaining_monthly_count} 回`],
+                  ]}
+                />
+            </ItemGrid>
+            {/* 直近のレッスン */}
+            <ItemGrid xs={12} md={7}>
+              <MyProfileCard
+                  headerColor="orange"
+                  cardTitle="直近のレッスン"
+                  icon={FormatListBulletedRounded}
+                  tableData={
+                    recentLesson.length == 0 ?
+                    [["なし"]] :
+                    recentLesson.map((lesson) => [lesson.title, moment(lesson.start).format("YYYY年 MM月 DD日 HH時 mm分")])
+                  }
+                />
+            </ItemGrid>
+          </Grid>
+        </div>
       ) : (
         <div className={classes.spinnerWrap}>
           <KSpinner/>

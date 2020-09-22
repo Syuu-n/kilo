@@ -41,4 +41,6 @@ export interface CEvent extends Event {
   joined:   boolean;
   memo:     string;
   users:    User[] | undefined;
+  start:    Date;
+  end:      Date;
 }
