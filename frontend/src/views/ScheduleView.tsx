@@ -27,7 +27,7 @@ const ScheduleView: React.FC = () => {
     );
     // 直近のレッスンを昇順にソート
     recentLessonArray.sort((a, b) => {
-      return (a?.start > b.start ? 1 : -1);
+      return (a.start > b.start ? 1 : -1);
     });
     // 直近のレッスンから４つまでに絞る
     recentLessonArray.splice(4);

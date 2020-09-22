@@ -9,6 +9,7 @@ import { User, CEvent, Lesson } from 'responses/responseStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 import showEventModalStyle from 'assets/jss/kiloStyles/showEventModalStyle';
+import { fetchCurrentUser, AuthContext } from 'Auth';
 
 interface Props {
   open: boolean;
@@ -24,6 +25,7 @@ const ShowEventModal: React.SFC<Props> = (props) => {
   const lessonId = selectedEvent?.id;
   const accessToken = localStorage.getItem('kiloToken');
   const classes = showEventModalStyle();
+  const ctx = React.useContext(AuthContext);
 
   const updateEvent = (lesson:Lesson) => {
     const newEvent:CEvent = {
@@ -56,6 +58,7 @@ const ShowEventModal: React.SFC<Props> = (props) => {
     const json = await res.json();
     switch (res.status) {
       case 200:
+        await fetchCurrentUser(ctx);
         updateEvent(json);
         enqueueSnackbar('レッスンへの参加が成功しました。', { variant: 'success' });
         break;
@@ -93,6 +96,7 @@ const ShowEventModal: React.SFC<Props> = (props) => {
     const json = await res.json();
     switch (res.status) {
       case 200:
+        await fetchCurrentUser(ctx);
         updateEvent(json);
         enqueueSnackbar('レッスンへの参加取り消しが成功しました。', { variant: 'success' });
         break;
