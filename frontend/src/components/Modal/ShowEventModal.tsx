@@ -41,6 +41,22 @@ const ShowEventModal: React.SFC<Props> = (props) => {
     updateEventFunc(newEvent);
   };
 
+  const isButtonDisable = () => {
+    // 現在のユーザが存在しない場合
+    if (!ctx.currentUser) {
+      return true;
+    }
+    // 過去のイベントに対してのアクションの場合
+    if (moment(new Date).isAfter(moment(selectedEvent?.start))) {
+      return true;
+    }
+    // 今月の残り参加可能数が 0 の場合に参加しようとした場合
+    if (ctx.currentUser.remaining_monthly_count < 1 && !selectedEvent?.joined) {
+      return  true;
+    }
+    return false;
+  };
+
   const handleSubmitJoin = async () => {
     if (!accessToken) {
       return;
@@ -157,7 +173,7 @@ const ShowEventModal: React.SFC<Props> = (props) => {
       }
       closeFunc={() => {closeFunc()}}
       // 選択したレッスンが過去の場合はボタンを無効に
-      disabled={moment(new Date).isAfter(moment(selectedEvent?.start))}
+      disabled={isButtonDisable()}
     />
   );
 };
