@@ -8,7 +8,7 @@ import { Menu } from '@material-ui/icons';
 import headerStyle from 'assets/jss/material-dashboard-react/headerStyle';
 import * as cx from 'classnames';
 import * as React from 'react';
-import { Route } from 'routes/dashboard';
+import { Route } from 'routes/mainPageRoutes';
 import HeaderLinks from './HeaderLinks';
 import { RouteProps } from 'react-router';
 

@@ -15,6 +15,12 @@ const switchRoutes = (
       if (props.redirect) {
         return <Redirect from={props.path} to={props.to} key={key}/>;
       }
+      if (props.nestedRoot) {
+        return
+      }
+      if (props.childRoute) {
+        return <Route path={props.path} component={props.component} key={key} />;
+      }
       return <Route path={props.path} component={props.component} key={key} />;
     })}
   </Switch>

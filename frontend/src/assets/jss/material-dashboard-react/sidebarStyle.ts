@@ -106,8 +106,10 @@ createStyles({
   },
   item: {
     position: 'relative',
-    display: 'block',
+    display: 'flex',
     textDecoration: 'none',
+    padding: '10px 15px',
+    alignItems: 'center',
   },
   itemLink: {
     width: 'auto',
@@ -116,7 +118,7 @@ createStyles({
     borderRadius: '3px',
     position: 'relative',
     display: 'block',
-    padding: '10px 15px',
+    padding: 0,
     backgroundColor: 'transparent',
     ...defaultFont,
   },
@@ -126,6 +128,16 @@ createStyles({
     height: '30px',
     float: 'left',
     marginRight: '15px',
+    textAlign: 'center',
+    verticalAlign: 'middle',
+    color: '#555555',
+  },
+  nestedItemIcon: {
+    width: '24px',
+    minWidth: '24px',
+    height: '30px',
+    float: 'left',
+    margin: '0 15px',
     textAlign: 'center',
     verticalAlign: 'middle',
     color: '#555555',
@@ -195,6 +207,12 @@ createStyles({
     width: '260px',
     zIndex: 4,
     overflowScrolling: 'touch',
+  },
+  arrowIcon: {
+    color: '#555555',
+  },
+  divider: {
+    margin: '0 .5rem',
   },
 }),
 );
