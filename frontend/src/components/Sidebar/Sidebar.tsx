@@ -136,7 +136,7 @@ const Sidebar: React.FC<Props & RouteProps> = props => {
 
   var brand = (
     <div className={classes.logo}>
-      <a href="#" className={classes.logoLink}>
+      <a href="/schedule" className={classes.logoLink}>
         <img src={logoImg} alt="logo" className={classes.img} />
       </a>
     </div>
