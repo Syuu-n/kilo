@@ -25,10 +25,11 @@ interface Props {
   open: boolean;
   color: string;
   routes: Route[];
+  isAdmin: boolean;
 }
 
 const Sidebar: React.FC<Props & RouteProps> = props => {
-  const { color, routes } = props;
+  const { color, routes, isAdmin } = props;
   const classes = sidebarStyle();
   const [open, setOpen] = React.useState(true);
   const nestedTopRoute = routes.filter((route) => route.nestedRoot)[0];
@@ -77,55 +78,59 @@ const Sidebar: React.FC<Props & RouteProps> = props => {
           )
         );
       })}
-      <Divider className={classes.divider} />
-      <ListItem button onClick={handleClick} className={classes.itemLink}>
-        <div className={classes.item}>
-        { nestedTopRoute.icon && (
-          <ListItemIcon className={classes.itemIcon}>
-            <nestedTopRoute.icon />
-          </ListItemIcon>
-        )}
-          <ListItemText
-            primary={nestedTopRoute.sidebarName}
-            className={classes.itemText}
-            disableTypography={true}
-          />
-          {open ? <ExpandLess className={classes.arrowIcon}/> : <ExpandMore className={classes.arrowIcon}/>}
+      { isAdmin && (
+        <div>
+          <Divider className={classes.divider} />
+          <ListItem button onClick={handleClick} className={classes.itemLink}>
+            <div className={classes.item}>
+            { nestedTopRoute.icon && (
+              <ListItemIcon className={classes.itemIcon}>
+                <nestedTopRoute.icon />
+              </ListItemIcon>
+            )}
+              <ListItemText
+                primary={nestedTopRoute.sidebarName}
+                className={classes.itemText}
+                disableTypography={true}
+              />
+              {open ? <ExpandLess className={classes.arrowIcon}/> : <ExpandMore className={classes.arrowIcon}/>}
+            </div>
+          </ListItem>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              {nestedRoutes.map((p, k) => {
+                const listItemClasses = cx({
+                  [' ' + classes[color]]: activeRoute(p.path),
+                });
+        
+                const whiteFontClasses = cx({
+                  [' ' + classes.whiteFont]: activeRoute(p.path),
+                });
+                return (
+                  <ListItem button className={classes.itemLink + listItemClasses}  key={k}>
+                    <NavLink
+                      to={p.path}
+                      className={classes.item}
+                      activeClassName="active"
+                    >
+                      { p.icon && (
+                        <ListItemIcon className={classes.nestedItemIcon + whiteFontClasses}>
+                          <p.icon />
+                        </ListItemIcon>
+                      )}
+                      <ListItemText
+                        primary={p.sidebarName}
+                        className={classes.itemText + whiteFontClasses}
+                        disableTypography={true}
+                      />
+                    </NavLink>
+                  </ListItem>
+                )
+              })}
+            </List>
+          </Collapse>
         </div>
-      </ListItem>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          {nestedRoutes.map((p, k) => {
-            const listItemClasses = cx({
-              [' ' + classes[color]]: activeRoute(p.path),
-            });
-    
-            const whiteFontClasses = cx({
-              [' ' + classes.whiteFont]: activeRoute(p.path),
-            });
-            return (
-              <ListItem button className={classes.itemLink + listItemClasses}  key={k}>
-                <NavLink
-                  to={p.path}
-                  className={classes.item}
-                  activeClassName="active"
-                >
-                  { p.icon && (
-                    <ListItemIcon className={classes.nestedItemIcon + whiteFontClasses}>
-                      <p.icon />
-                    </ListItemIcon>
-                  )}
-                  <ListItemText
-                    primary={p.sidebarName}
-                    className={classes.itemText + whiteFontClasses}
-                    disableTypography={true}
-                  />
-                </NavLink>
-              </ListItem>
-            )
-          })}
-        </List>
-      </Collapse>
+      )}
     </List>
   );
 

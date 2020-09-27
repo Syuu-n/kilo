@@ -16,7 +16,6 @@ type ColorType = 'primary' | 'info' | 'success' | 'warning' | 'danger';
 
 interface Props {
   color?: ColorType;
-
   handleDrawerToggle?: () => void;
   routes: Route[];
 }

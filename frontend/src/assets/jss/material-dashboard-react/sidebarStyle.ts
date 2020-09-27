@@ -212,7 +212,7 @@ createStyles({
     color: '#555555',
   },
   divider: {
-    margin: '0 .5rem',
+    margin: '0 1rem',
   },
 }),
 );
