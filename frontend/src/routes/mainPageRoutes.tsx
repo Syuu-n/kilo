@@ -3,6 +3,9 @@ import {
   AccountCircle,
   People,
   VerifiedUser,
+  LibraryBooks,
+  LocalAtm,
+  EventNote,
 } from '@material-ui/icons';
 import ScheduleView from 'views/ScheduleView';
 import ProfileView from 'views/ProfileView';
@@ -43,7 +46,23 @@ const mainPageRoutes = [
     path: '/classes',
     sidebarName: 'クラス',
     navbarName: 'クラス',
-    icon: People,
+    icon: LibraryBooks,
+    component: UsersView,
+    childRoute: true,
+  },
+  {
+    path: '/courses',
+    sidebarName: 'コース',
+    navbarName: 'コース',
+    icon: LocalAtm,
+    component: UsersView,
+    childRoute: true,
+  },
+  {
+    path: '/lessons',
+    sidebarName: 'レッスン',
+    navbarName: 'レッスン',
+    icon: EventNote,
     component: UsersView,
     childRoute: true,
   },

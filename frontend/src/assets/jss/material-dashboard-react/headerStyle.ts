@@ -51,7 +51,7 @@ createStyles({
   highlighter: {
     margin: 0,
     borderTop: "2px solid",
-    color: primaryColor,
+    // color: primaryColor,
   },
   appResponsive: {
     top: '8px',
