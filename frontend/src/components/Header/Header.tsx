@@ -42,6 +42,7 @@ const Header: React.SFC<Props & RouteProps> = (props) => {
         // 現在の route が管理者コンソールだった場合にヘッダーの色を変更する
         if (prop.childRoute) {
           hrColor = successColor;
+          name = routes.find((route) => route.nestedRoot)?.navbarName;
         }
       }
 
