@@ -11,6 +11,7 @@ const UsersView: React.SFC = () => {
     <RichTableCard
       icon={People}
       headerColor="green"
+      tableHeaderColor="success"
       cardTitle="ユーザー"
       tableHead={["aa", "bb"]}
       tableData={[["cc", "dd"], ["ee", "ff"]]}

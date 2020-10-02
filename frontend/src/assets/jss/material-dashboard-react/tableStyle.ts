@@ -17,25 +17,25 @@ import {
 const tableStyle = makeStyles((theme: Theme) =>
 createStyles({
   warningTableHeader: {
-    color: warningColor,
+    color: `${warningColor} !important`,
   },
   primaryTableHeader: {
-    color: primaryColor,
+    color: `${primaryColor} !important`,
   },
   dangerTableHeader: {
-    color: dangerColor,
+    color: `${dangerColor} !important`,
   },
   successTableHeader: {
-    color: successColor,
+    color: `${successColor} !important`,
   },
   infoTableHeader: {
-    color: infoColor,
+    color: `${infoColor} !important`,
   },
   roseTableHeader: {
-    color: roseColor,
+    color: `${roseColor} !important`,
   },
   grayTableHeader: {
-    color: grayColor,
+    color: `${grayColor} !important`,
   },
   table: {
     marginBottom: '0',

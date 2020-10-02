@@ -41,11 +41,11 @@ const CustomTable: React.SFC<Props> = props => {
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
         {tableHead && (
-          <TableHead className={classes[tableHeaderColor + 'TableHeader']}>
+          <TableHead>
             <TableRow>
               {tableHead.map((prop, key) => (
                 <TableCell
-                  className={classes.tableCell + ' ' + classes.tableHeadCell}
+                  className={classes.tableCell + ' ' + classes.tableHeadCell + ' ' + classes[tableHeaderColor + 'TableHeader']}
                   key={key}
                 >
                   {prop}
