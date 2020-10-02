@@ -25,6 +25,7 @@ import RichTableCard from './Cards/RichTableCard';
 import Button from './CustomButtons/Button';
 import IconButton from './CustomButtons/IconButton';
 import PasswordResetButton from './CustomButtons/PasswordResetButton';
+import TooltipButton from './CustomButtons/TooltipButton';
 
 // ##############################
 // // // CustomInput
@@ -134,6 +135,7 @@ export {
   Button,
   IconButton,
   PasswordResetButton,
+  TooltipButton,
   // CustomInput
   CustomInput,
   // CustomCheckBoxRadioSwitch
