@@ -79,6 +79,7 @@ const RichTable: React.FC<Props> = ({ tableHead, rows, tableHeaderColor="primary
               colSpan={6}
               count={rows.length}
               labelRowsPerPage={"ページごとの表示数"}
+              labelDisplayedRows={({from, to, count }) => `${count} 個中 ${from}-${to} 個を表示中`}
               rowsPerPage={rowsPerPage}
               page={page}
               SelectProps={{
