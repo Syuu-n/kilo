@@ -13,6 +13,7 @@ interface Props {
   formControlProps?: FormControlProps;
   error?: boolean;
   success?: boolean;
+  noIcon?: boolean;
 }
 
 const CustomInput: React.SFC<Props> = props => {
@@ -24,6 +25,7 @@ const CustomInput: React.SFC<Props> = props => {
     inputProps,
     error,
     success,
+    noIcon,
   } = props;
 
   const classes = customInputStyle();
@@ -68,9 +70,9 @@ const CustomInput: React.SFC<Props> = props => {
         id={id}
         {...inputProps}
       />
-      {error ? (
+      {error && !noIcon ? (
         <Clear className={classes.feedback + ' ' + classes.labelRootError} />
-      ) : success ? (
+      ) : success && !noIcon ? (
         <Check className={classes.feedback + ' ' + classes.labelRootSuccess} />
       ) : null}
     </FormControl>

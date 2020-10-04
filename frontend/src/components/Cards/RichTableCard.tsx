@@ -4,6 +4,7 @@ import {
   Person,
   Edit,
   Close,
+  PersonAdd,
 } from '@material-ui/icons';
 import richTableCardStyle from 'assets/jss/kiloStyles/richTableCardStyle';
 import {
@@ -13,6 +14,7 @@ import {
   CardBody,
   TooltipButton,
   RichTable,
+  TableToolbar,
 } from 'components';
 import { User } from 'responses/responseStructs';
 
@@ -82,6 +84,10 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
         <h4 className={classes.cardTitle}>{cardTitle}</h4>
       </CardHeader>
       <CardBody>
+        <TableToolbar
+          buttonTitle={"ユーザ追加"}
+          buttonIcon={PersonAdd}
+        />
         <RichTable
           tableHead={customTableHead}
           rows={customTableData}

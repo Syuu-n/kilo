@@ -80,6 +80,7 @@ import SnackbarContent from './Snackbar/SnackbarContent';
 import Table from './Table/Table';
 import RichTable from './Table/RichTable';
 import RichTableActions from './Table/RichTableActions';
+import TableToolbar from './Table/TableToolbar';
 
 // ##############################
 // // // Tasks
@@ -159,6 +160,7 @@ export {
   Table,
   RichTable,
   RichTableActions,
+  TableToolbar,
   // Tasks
   Tasks,
   // Typography
