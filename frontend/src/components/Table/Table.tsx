@@ -34,15 +34,15 @@ const CustomTable: React.SFC<Props> = props => {
         </TableCell>
       ));
 
-      return <TableRow key={rowKey}>{rowCells}</TableRow>;
+      return <TableRow key={rowKey} className={classes.tableBodyRow}>{rowCells}</TableRow>;
     });
 
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
         {tableHead && (
-          <TableHead>
-            <TableRow>
+          <TableHead className={classes[tableHeaderColor + "TableHeader"]}>
+            <TableRow className={classes.tableHeadRow}>
               {tableHead.map((prop, key) => (
                 <TableCell
                   className={classes.tableCell + ' ' + classes.tableHeadCell + ' ' + classes[tableHeaderColor + 'TableHeader']}
