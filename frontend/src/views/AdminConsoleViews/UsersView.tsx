@@ -11,10 +11,10 @@ import { User } from 'responses/responseStructs';
 import usersViewStyle from 'assets/jss/kiloStyles/usersViewStyle';
 
 const UsersView: React.FC = () => {
-  const [users, setUsers] = React.useState<User[] | null>();
+  const [users, setUsers] = React.useState<User[]>();
   const classes = usersViewStyle();
 
-  const getUsers = async () => {
+  const getUsers = async (): Promise<User[] | null> => {
     const accessToken = localStorage.getItem('kiloToken');
     if (!accessToken) {
       return null;
@@ -39,25 +39,12 @@ const UsersView: React.FC = () => {
     }
   }
 
-  const translateRoleName = (role:string) => {
-    let roleName = "";
-    switch (role) {
-      case "admin":
-        roleName = "管理者";
-        break;
-      case "normal":
-        roleName = "会員";
-        break;
-      case "trial":
-        roleName = "体験";
-        break;
-    }
-    return roleName;
-  }
-
   React.useEffect(() => {
     const f = async () => {
-      setUsers(await getUsers());
+      const users = await getUsers();
+      if (users) {
+        setUsers(users);
+      }
     };
     f();
   }, []);
@@ -70,12 +57,8 @@ const UsersView: React.FC = () => {
           headerColor="green"
           tableHeaderColor="success"
           cardTitle="ユーザー"
-          tableHead={["名前", "名前（カナ）", "年齢", "メールアドレス", "ステータス"]}
-          tableData={
-            users.map((user) => {
-              return [user.name, user.name_kana, user.age, user.email, translateRoleName(user.role)]
-            })
-          }
+          tableHead={["ID", "名前", "名前（カナ）", "メールアドレス", "ステータス"]}
+          tableSources={users}
         >
         </RichTableCard>
       ) : (

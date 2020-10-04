@@ -7,13 +7,14 @@ import {
 } from '@material-ui/icons';
 import richTableCardStyle from 'assets/jss/kiloStyles/richTableCardStyle';
 import {
-  Table,
   Card,
   CardHeader,
   CardIcon,
   CardBody,
   TooltipButton,
+  RichTable,
 } from 'components';
+import { User } from 'responses/responseStructs';
 
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
@@ -21,12 +22,12 @@ interface Props {
   icon: typeof SvgIcon;
   tableHeaderColor?: 'warning' | 'primary' | 'danger' | 'success' | 'info' | 'rose' | 'gray';
   tableHead?: string[];
-  tableData?: any[][];
+  tableSources: User[];
 }
 
 type buttonColors = 'warning' | 'primary' | 'danger' | 'success' | 'info' | 'rose' | 'white' | 'simple';
 
-const RichTableCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, icon, tableHeaderColor = 'primary', tableHead, tableData }) => {
+const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, icon, tableHeaderColor = 'primary', tableHead, tableSources }) => {
   const classes = richTableCardStyle();
   const Icon = icon;
   const buttons = [
@@ -41,12 +42,35 @@ const RichTableCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, ic
     );
   });
 
-  // tableHead と tableData へそれぞれ操作用項目を追加する
+  const translateRoleName = (role:string) => {
+    let roleName = "";
+    switch (role) {
+      case "admin":
+        roleName = "管理者";
+        break;
+      case "normal":
+        roleName = "会員";
+        break;
+      case "trial":
+        roleName = "体験";
+        break;
+    }
+    return roleName;
+  };
+
+  // tableHead と tableSources へそれぞれ操作用項目を追加する
   const customTableHead = tableHead?.slice();
-  const customTableData = tableData?.slice();
   customTableHead?.push("操作");
-  customTableData?.map((data) => {
-    data.push(buttons);
+
+  const customTableData = tableSources.slice().map((user) => {
+    return [
+      user.id,
+      user.name,
+      user.name_kana,
+      user.email,
+      translateRoleName(user.role),
+      buttons,
+    ]
   });
 
   return (
@@ -58,10 +82,10 @@ const RichTableCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, ic
         <h4 className={classes.cardTitle}>{cardTitle}</h4>
       </CardHeader>
       <CardBody>
-        <Table
-          tableHeaderColor={tableHeaderColor}
+        <RichTable
           tableHead={customTableHead}
-          tableData={customTableData}
+          rows={customTableData}
+          tableHeaderColor="success"
         />
       </CardBody>
     </Card>

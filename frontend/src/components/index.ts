@@ -78,6 +78,8 @@ import SnackbarContent from './Snackbar/SnackbarContent';
 // #############################
 
 import Table from './Table/Table';
+import RichTable from './Table/RichTable';
+import RichTableActions from './Table/RichTableActions';
 
 // ##############################
 // // // Tasks
@@ -155,6 +157,8 @@ export {
   SnackbarContent,
   // Table
   Table,
+  RichTable,
+  RichTableActions,
   // Tasks
   Tasks,
   // Typography

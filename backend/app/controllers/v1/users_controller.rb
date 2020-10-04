@@ -6,7 +6,8 @@ module V1
 
     # GET /users
     def index
-      render json: User.all, each_serializer: UserSerializer
+      users = User.all
+      render json: users, each_serializer: UserSerializer
     end
 
     # POST /users
