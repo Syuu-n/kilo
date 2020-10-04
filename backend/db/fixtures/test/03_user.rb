@@ -13,16 +13,18 @@ User.seed(:id,
             plan: Plan.default_plan,
             role: Role.admin,
             password: 'password',
-            confirmed_at: Time.current
+            confirmed_at: Time.current,
           }
 )
 
 roles = ['normal', 'trial']
-roles.each_with_index do |role, i|
+
+30.times do |i|
+  role = roles.sample
   User.seed(:id,
             {
               id: i + 2,
-              email: "#{role}@example.com",
+              email: "#{role}_#{i}@example.com",
               first_name: Faker::Name.first_name,
               last_name: Faker::Name.last_name,
               first_name_kana: Faker::Ancient.god,
@@ -32,7 +34,7 @@ roles.each_with_index do |role, i|
               plan: Plan.default_plan,
               role: Role.send(role),
               password: 'password',
-              confirmed_at: Time.current
+              confirmed_at: Time.current,
             }
   )
 end

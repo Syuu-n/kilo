@@ -1,7 +1,7 @@
 Faker::Config.locale = 'ja'
 
 30.times do |i|
-  user = User.find_by(id: rand(1..3))
+  user = User.find_by(id: rand(1..30))
   lesson = Lesson.find_by(id: rand(1..15))
   unless lesson.joined?(user)
     if user.remaining_monthly_count >= 1
