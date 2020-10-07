@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     resource :login, only: [:create], controller: :sessions
     get 'me' => 'sessions#me'
     get 'my_lessons' => 'sessions#my_lessons'
-    get 'my_plan' => 'sessions#my_plan'
+    get 'roles' => 'sessions#roles'
 
     resources :users, except: [:new, :edit] do
       member do

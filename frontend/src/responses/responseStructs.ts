@@ -22,6 +22,11 @@ export interface Plan {
   for_children:         boolean;
 }
 
+export interface Role {
+  id:   number;
+  name: string;
+}
+
 export type LessonColor = '' | 'orange' | 'green' | 'azure' | 'rose';
 
 export interface Lesson {
