@@ -1,44 +1,53 @@
 import * as React from 'react';
-import { IconButton, Button } from 'components';
+import { Button, AdminAddUserModal } from 'components';
 import { SvgIcon } from '@material-ui/core';
-import { Search } from '@material-ui/icons';
+// import { Search } from '@material-ui/icons';
 import tableToolbarStyle from 'assets/jss/kiloStyles/tableToolbarStyle';
-import { CustomInput } from 'components';
+// import { CustomInput } from 'components';
 
 interface Props {
   buttonTitle?: string;
   buttonIcon?: typeof SvgIcon;
 }
 
-const TableToolbar: React.SFC<Props> = (props) => {
+const TableToolbar: React.FC<Props> = (props) => {
   const { buttonTitle } = props;
   const classes = tableToolbarStyle();
+  const [openAddModal, setOpenAddModal] = React.useState(false);
 
   return (
-    <div className={classes.toolbarContainer}>
-      <Button
-        color="success"
-        round
-        customClass={classes.addButton}
-      >
-        { props.buttonIcon && (
-          <props.buttonIcon className={classes.buttonIcon}/>
-        )}
-        {buttonTitle}
-      </Button>
-      <div className={classes.searchContainer}>
-        <CustomInput
-          labelText="検索"
-          success
-          noIcon
-          formControlProps={{className: classes.inputForm}}
-        />
-        <IconButton
+    <div>
+      <div className={classes.toolbarContainer}>
+        <Button
           color="success"
+          round
+          customClass={classes.addButton}
+          onClick={() => setOpenAddModal(true)}
         >
-          <Search className={classes.searchIcon}/>
-        </IconButton>
+          { props.buttonIcon && (
+            <props.buttonIcon className={classes.buttonIcon}/>
+          )}
+          {buttonTitle}
+        </Button>
+        {/* TODO: 検索機能の実装 */}
+        {/* <div className={classes.searchContainer}>
+          <CustomInput
+            labelText="検索"
+            success
+            noIcon
+            formControlProps={{className: classes.inputForm}}
+          />
+          <IconButton
+            color="success"
+          >
+            <Search className={classes.searchIcon}/>
+          </IconButton>
+        </div> */}
       </div>
+        <AdminAddUserModal
+          open={openAddModal}
+          closeFunc={() => setOpenAddModal(false)}
+        />
     </div>
   );
 };

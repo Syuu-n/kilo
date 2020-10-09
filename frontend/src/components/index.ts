@@ -47,6 +47,10 @@ import CustomTabs from './CustomTabs/CustomTabs';
 
 import Footer from './Footer/Footer';
 
+// Form
+
+import AdminFormInput from './Forms/AdminFormInput';
+
 // ##############################
 // // // Grid
 // #############################
@@ -113,6 +117,8 @@ import Calender from './Calender/Calender';
 import Modal from './Modal/Modal';
 import PasswordResetModal from './Modal/PasswordResetModal';
 import ShowEventModal from './Modal/ShowEventModal';
+import AdminAddUserModal from './Modal/AdminConsole/AdminAddUserModal';
+import AdminConfirmUserModal from "./Modal/AdminConsole/AdminConfirmUserModal";
 
 // Badge
 import Badge from './Badge/Badge';
@@ -146,6 +152,8 @@ export {
   CustomTabs,
   // Footer
   Footer,
+  // Form
+  AdminFormInput,
   // Grid
   ItemGrid,
   // Header
@@ -182,6 +190,8 @@ export {
   Modal,
   PasswordResetModal,
   ShowEventModal,
+  AdminAddUserModal,
+  AdminConfirmUserModal,
   // Badge
   Badge,
 };

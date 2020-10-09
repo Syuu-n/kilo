@@ -17,12 +17,13 @@ createStyles({
     display: "flex",
     margin: "0 0 0 15px",
   },
-  inputForm: {
-    margin: "0 7px 0 0",
-  },
-  searchIcon: {
-    color: "#fff"
-  }
+  // TODO: 検索機能の実装
+  // inputForm: {
+  //   margin: "0 7px 0 0",
+  // },
+  // searchIcon: {
+  //   color: "#fff"
+  // },
 }),
 );
 
