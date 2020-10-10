@@ -11,6 +11,7 @@ interface Props {
 
 const AdminFormInput: React.SFC<Props> = (props) => {
   const { inputType, labelText, onChangeFunc, value, confirm } = props;
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChangeFunc) {
       onChangeFunc(event.currentTarget.value);
@@ -19,21 +20,18 @@ const AdminFormInput: React.SFC<Props> = (props) => {
 
   return (
     <div>
-      <p>{labelText}</p>
-      { confirm ? (
-        <p>{value}</p>
-      ) : (
-        <CustomInput
-          // formControlProps={{
-          //   className: `${labelText}-${inputType}-input`
-          // }}
-          inputProps={{
-            type: inputType,
-            onChange: handleChange,
-            value: value,
-          }}
-        />
-      )}
+      <CustomInput
+        labelText={labelText}
+        inputProps={{
+          type: inputType,
+          onChange: handleChange,
+          value: value,
+        }}
+        formControlProps={{
+          disabled: confirm ? true : false,
+          fullWidth: true,
+        }}
+      />
     </div>
   );
 };
