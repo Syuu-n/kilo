@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { fetchApp, NetworkError } from 'request/fetcher';
-import { User } from 'responses/responseStructs';
+import { User, Role } from 'responses/responseStructs';
 import { Redirect } from 'react-router-dom';
 import { KSpinner } from 'components';
 import authStyle from 'assets/jss/kiloStyles/authStyle';
@@ -33,16 +33,43 @@ const getMe = async () => {
   }
 };
 
+const getRoles = async () => {
+  const accessToken = localStorage.getItem('kiloToken');
+  if (!accessToken) {
+    return null;
+  }
+
+  const res = await fetchApp(
+    '/v1/roles',
+    'GET',
+    accessToken,
+  )
+
+  if (res instanceof NetworkError) {
+    console.log("ServerError");
+    return null;
+  }
+
+  if (res.ok) {
+    const json = await res.json();
+    return json;
+  } else {
+    return null;
+  }
+};
+
 // Context の型
 interface IAuthContext {
   currentUser: User | null;
   setUser: (user:User) => void;
+  roles: Role[] | null;
+  setRoleList: (roleList:Role[]) => void;
 }
 
 // Context の宣言
 // null: 未ログインの場合
 // JSON: ユーザが存在する場合
-const AuthContext = React.createContext<IAuthContext>({ currentUser: null, setUser: () => {} });
+const AuthContext = React.createContext<IAuthContext>({ currentUser: null, setUser: () => {}, roles: null, setRoleList: () => {} });
 
 const AuthProvider = (props: any) => {
   const classes = authStyle();
@@ -53,18 +80,33 @@ const AuthProvider = (props: any) => {
     const setUser = React.useCallback((current: User): void => {
       setCurrentUser(current);
     }, []);
+    const [roles, setRoles] = React.useState<Role[]| null>(null);
+    const setRoleList = React.useCallback((roleList: Role[]): void => {
+      setRoles(roleList);
+    }, []);
     return {
       currentUser,
       setUser,
+      roles,
+      setRoleList,
     };
   };
   const ctx = useCurrentUser();
 
   React.useEffect(() => {
-    getMe().then((result) => {
-      ctx.setUser(result);
+    const f = async () => {
+      const getMeFunc = async () => {
+        ctx.setUser(await getMe());
+      };
+
+      const getRolesFunc = async () => {
+        ctx.setRoleList(await getRoles());
+      };
+
+      await Promise.all([getMeFunc(), getRolesFunc()]);
       setIsLoaded(true);
-    });
+    };
+    f();
   }, []);
 
   // トークンから自身の情報を取得し以下の状態によって分岐させる

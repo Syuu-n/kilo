@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { AdminFormInput, Modal, AdminConfirmUserModal } from 'components';
-import { fetchApp, NetworkError } from 'request/fetcher';
-import { Role } from 'responses/responseStructs';
+import { AuthContext } from 'Auth';
 
 interface Props {
   open: boolean;
@@ -10,7 +9,7 @@ interface Props {
 
 const AdminAddUserModal: React.FC<Props> = (props) => {
   const { open, closeFunc } = props;
-  const [roles, setRoles] = React.useState<Role[]>();
+  const { roles } = React.useContext(AuthContext);
   const [name, setName] = React.useState("");
   const [user, setUser] = React.useState<any>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
@@ -22,31 +21,6 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
       onChangeFunc={setName}
       value={name}
     />;
-  
-  const getRoles = async (): Promise<Role[] | null> => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return null;
-    }
-
-    const res = await fetchApp(
-      '/v1/roles',
-      'GET',
-      accessToken,
-    )
-
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      return null;
-    }
-
-    if (res.ok) {
-      const json = await res.json();
-      return json;
-    } else {
-      return null;
-    }
-  };
 
   const handleSubmit = () => {
     const user = {
@@ -62,16 +36,6 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
     setUser(user);
     setOpenConfirm(true);
   };
-
-  React.useEffect(() => {
-    const f = async () => {
-      const roles = await getRoles();
-      if (roles) {
-        setRoles(roles);
-      };
-    };
-    f();
-  }, []);
 
   return (
     <div>
