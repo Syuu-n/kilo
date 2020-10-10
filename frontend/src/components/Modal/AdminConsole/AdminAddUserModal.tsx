@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AdminFormInput, Modal, AdminConfirmUserModal } from 'components';
+import { AdminFormInput, Modal, AdminConfirmUserModal, CustomDropDown } from 'components';
 import { AuthContext } from 'Auth';
 import adminAddUserModalStyle from 'assets/jss/kiloStyles/adminAddUserModalStyle';
 import { CreateUserRequest } from 'request/requestStructs';
@@ -80,6 +80,14 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
         onChangeFunc={setPhoneNumber}
         value={phoneNumber}
       />
+      { roles && (
+        <CustomDropDown
+          dropdownList={roles}
+          buttonText="選択"
+          dropdownHeader="選択"
+          onClick={console.log}
+        />
+      )}
     </div>;
 
   const handleSubmit = () => {
@@ -99,17 +107,15 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
 
   return (
     <div>
-      { roles && (
-        <Modal
-          open={open}
-          headerTitle="ユーザー新規作成"
-          submitText="確認"
-          submitFunc={async () => {await handleSubmit()}}
-          content={content}
-          closeFunc={closeFunc}
-          color="success"
-        />
-      )}
+      <Modal
+        open={open}
+        headerTitle="ユーザー新規作成"
+        submitText="確認"
+        submitFunc={async () => {await handleSubmit()}}
+        content={content}
+        closeFunc={closeFunc}
+        color="success"
+      />
       { user && (
         <AdminConfirmUserModal
           open={openConfirm}

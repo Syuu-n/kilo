@@ -39,7 +39,7 @@ createStyles({
     padding: "0"
   },
   popperResponsive: {
-    zIndex: 1200,
+    zIndex: 1400,
     [theme.breakpoints.down("sm")]: {
       zIndex: "1640",
       position: "static",

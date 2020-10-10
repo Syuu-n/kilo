@@ -41,6 +41,10 @@ import CustomCheckbox from './CustomCheckBoxRadioSwitch/CustomCheckbox';
 
 import CustomTabs from './CustomTabs/CustomTabs';
 
+// CustomDropDown
+
+import CustomDropDown from './CustomDropdown/CustomDropdown';
+
 // ##############################
 // // // Footer
 // #############################
@@ -150,6 +154,8 @@ export {
   // CustomCheckBoxRadioSwitch
   CustomCheckbox,
   CustomTabs,
+  // CustomDropDown
+  CustomDropDown,
   // Footer
   Footer,
   // Form
