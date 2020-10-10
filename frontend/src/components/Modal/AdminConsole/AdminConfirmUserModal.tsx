@@ -2,9 +2,11 @@ import * as React from 'react';
 import { Modal, AdminFormInput } from 'components';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
+import adminAddUserModalStyle from 'assets/jss/kiloStyles/adminAddUserModalStyle';
+import { CreateUserRequest } from 'request/requestStructs';
 
 interface Props {
-  user: any;
+  user: CreateUserRequest;
   open: boolean;
   closeFunc: Function;
   type: "add" | "edit" | "show";
@@ -13,6 +15,7 @@ interface Props {
 const AdminConfirmUserModal: React.SFC<Props> = (props) => {
   const { user, open, closeFunc, type } = props;
   const { enqueueSnackbar } = useSnackbar();
+  const classes = adminAddUserModalStyle();
 
   const addUser = async () => {
     const accessToken = localStorage.getItem('kiloToken');
@@ -49,11 +52,62 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
   };
 
   const content =
+  <div>
+    <div className={classes.flexContainer}>
+      <AdminFormInput
+        labelText="名字"
+        inputType="text"
+        value={user.last_name}
+        customClass={classes.flexContainerFirst}
+        confirm
+      />
+      <AdminFormInput
+        labelText="名前"
+        inputType="text"
+        value={user.first_name}
+        confirm
+      />
+    </div>
+    <div className={classes.flexContainer}>
+      <AdminFormInput
+        labelText="名字（カナ）"
+        inputType="text"
+        value={user.last_name_kana}
+        customClass={classes.flexContainerFirst}
+        confirm
+      />
+      <AdminFormInput
+        labelText="名前（カナ）"
+        inputType="text"
+        value={user.first_name_kana}
+        confirm
+      />
+    </div>
     <AdminFormInput
-      labelText="名前"
-      value={user.first_name}
+      labelText="メールアドレス"
+      inputType="email"
+      value={user.email}
       confirm
-    />;
+    />
+    <AdminFormInput
+      labelText="パスワード"
+      inputType="text"
+      value={user.password}
+      confirm
+    />
+    <AdminFormInput
+      labelText="生年月日"
+      inputType="text"
+      value={user.birthday}
+      confirm
+    />
+    <AdminFormInput
+      labelText="電話番号"
+      inputType="text"
+      value={user.phone_number}
+      confirm
+    />
+  </div>;
 
   return (
     <div>
@@ -65,6 +119,7 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
           submitFunc={async () => {await addUser()}}
           content={content}
           closeFunc={closeFunc}
+          color="success"
         />
       )}
       { type === "edit" && (
@@ -75,6 +130,7 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
           submitFunc={async () => {await closeFunc()}}
           content={content}
           closeFunc={closeFunc}
+          color="success"
         />
       )}
       { type === "show" && (
@@ -85,6 +141,7 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
           submitFunc={async () => {await closeFunc()}}
           content={content}
           closeFunc={closeFunc}
+          color="success"
         />
       )}
     </div>

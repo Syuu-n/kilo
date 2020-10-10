@@ -7,10 +7,11 @@ interface Props {
   onChangeFunc?: Function;
   value?: any;
   confirm?: boolean;
+  customClass?: string;
 };
 
 const AdminFormInput: React.SFC<Props> = (props) => {
-  const { inputType, labelText, onChangeFunc, value, confirm } = props;
+  const { inputType, labelText, onChangeFunc, value, confirm, customClass } = props;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChangeFunc) {
@@ -19,7 +20,7 @@ const AdminFormInput: React.SFC<Props> = (props) => {
   };
 
   return (
-    <div>
+    <div className={customClass ? ' ' + customClass : ''}>
       <CustomInput
         labelText={labelText}
         inputProps={{
@@ -31,6 +32,8 @@ const AdminFormInput: React.SFC<Props> = (props) => {
           disabled: confirm ? true : false,
           fullWidth: true,
         }}
+        success
+        noIcon
       />
     </div>
   );
