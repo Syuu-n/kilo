@@ -8,4 +8,5 @@ export interface CreateUserRequest {
   birthday:                string;
   phone_number:            string;
   role_id:                 number;
+  plan_id:                 number;
 }

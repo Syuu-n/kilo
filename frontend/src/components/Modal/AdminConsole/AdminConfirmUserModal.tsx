@@ -4,7 +4,7 @@ import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 import adminAddUserModalStyle from 'assets/jss/kiloStyles/adminAddUserModalStyle';
 import { CreateUserRequest } from 'request/requestStructs';
-import { Role } from 'responses/responseStructs';
+import { Role, Plan } from 'responses/responseStructs';
 
 interface Props {
   user: CreateUserRequest;
@@ -12,10 +12,11 @@ interface Props {
   closeFunc: Function;
   type: "add" | "edit" | "show";
   selectedRole: Role;
+  selectedPlan: Plan;
 };
 
 const AdminConfirmUserModal: React.SFC<Props> = (props) => {
-  const { user, open, closeFunc, type, selectedRole } = props;
+  const { user, open, closeFunc, type, selectedRole, selectedPlan } = props;
   const { enqueueSnackbar } = useSnackbar();
   const classes = adminAddUserModalStyle();
 
@@ -48,7 +49,7 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
         enqueueSnackbar('既に使用されているメールアドレスです。', { variant: 'error' });
         break; 
       case 422:
-        enqueueSnackbar('ユーザーの作成に失敗しました', { variant: 'error' });
+        enqueueSnackbar('ユーザーの作成に失敗しました。時間をおいて再度お試しください。', { variant: 'error' });
         break;
     }
   };
@@ -113,6 +114,12 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
       labelText="ステータス"
       inputType="text"
       value={selectedRole.display_name}
+      confirm
+    />
+    <AdminFormInput
+      labelText="コース"
+      inputType="text"
+      value={selectedPlan.name}
       confirm
     />
   </div>;

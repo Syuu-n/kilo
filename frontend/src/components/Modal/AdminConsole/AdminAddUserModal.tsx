@@ -3,7 +3,7 @@ import { AdminFormInput, Modal, AdminConfirmUserModal, CustomDropDown } from 'co
 import adminAddUserModalStyle from 'assets/jss/kiloStyles/adminAddUserModalStyle';
 import { CreateUserRequest } from 'request/requestStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
-import { Role } from 'responses/responseStructs';
+import { Role, Plan } from 'responses/responseStructs';
 
 interface Props {
   open: boolean;
@@ -22,6 +22,8 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [roles, setRoles] = React.useState<Role[]>()
   const [selectedRole, setSelectedRole] = React.useState({id: 0, name: 'none', display_name: 'ステータスを選択'} as Role);
+  const [plans, setPlans] = React.useState<Plan[]>()
+  const [selectedPlan, setSelectedPlan] = React.useState({id: 0, name: 'コースを選択'} as Plan);
   const [user, setUser] = React.useState<CreateUserRequest>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const classes = adminAddUserModalStyle();
@@ -29,7 +31,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
   const getRoles = async () => {
     const accessToken = localStorage.getItem('kiloToken');
     if (!accessToken) {
-      return null;
+      return;
     }
   
     const res = await fetchApp(
@@ -40,14 +42,39 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
   
     if (res instanceof NetworkError) {
       console.log("ServerError");
-      return null;
+      return;
     }
   
     if (res.ok) {
       const json = await res.json();
       return json;
     } else {
-      return null;
+      return;
+    }
+  };
+
+  const getPlans = async () => {
+    const accessToken = localStorage.getItem('kiloToken');
+    if (!accessToken) {
+      return;
+    }
+  
+    const res = await fetchApp(
+      '/v1/plans',
+      'GET',
+      accessToken,
+    )
+  
+    if (res instanceof NetworkError) {
+      console.log("ServerError");
+      return;
+    }
+  
+    if (res.ok) {
+      const json = await res.json();
+      return json;
+    } else {
+      return;
     }
   };
 
@@ -117,6 +144,16 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
           fullWidth
         />
       )}
+      { plans && (
+        <CustomDropDown
+          dropdownList={plans}
+          hoverColor="success"
+          buttonText={selectedPlan.name}
+          onClick={setSelectedPlan}
+          buttonProps={{color: "success", fullWidth: true}}
+          fullWidth
+        />
+      )}
     </div>;
 
   const handleSubmit = () => {
@@ -130,14 +167,18 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
       birthday: birthday,
       phone_number: phoneNumber,
       role_id: selectedRole.id,
-    };
+      plan_id: selectedPlan.id,
+    } as CreateUserRequest;
     setUser(user);
     setOpenConfirm(true);
   };
 
   React.useEffect(() => {
     const f = async () => {
-      setRoles(await getRoles());
+      await Promise.all([
+        setRoles(await getRoles()),
+        setPlans(await getPlans()),
+      ])
     };
     f();
   }, [])
@@ -158,6 +199,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
           open={openConfirm}
           user={user}
           selectedRole={selectedRole}
+          selectedPlan={selectedPlan}
           closeFunc={() => setOpenConfirm(false)}
           type="add"
         />

@@ -19,8 +19,6 @@ module V1
         return
       end
 
-      @user.plan = Plan.default_plan
-
       @user.skip_confirmation!
       if @user.save
         render json: @user, status: :created
@@ -77,7 +75,7 @@ module V1
     end
 
     def create_params
-      params.require(:user).permit(:email, :password, :first_name, :last_name, :first_name_kana, :last_name_kana, :birthday, :phone_number, :role_id)
+      params.require(:user).permit(:email, :password, :first_name, :last_name, :first_name_kana, :last_name_kana, :birthday, :phone_number, :role_id, :plan_id)
     end
 
     def update_params
