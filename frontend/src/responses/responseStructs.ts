@@ -8,10 +8,11 @@ export interface User {
   age:                     number;
   birthday:                string;
   phone_number:            string;
-  role:                    string;
+  role:                    Role;
   plan:                    Plan;
   current_monthly_count:   number;
   remaining_monthly_count: number;
+  is_admin:                boolean;
 }
 
 export interface Plan {
@@ -25,6 +26,7 @@ export interface Plan {
 export interface Role {
   id:   number;
   name: string;
+  display_name: string;
 }
 
 export type LessonColor = '' | 'orange' | 'green' | 'azure' | 'rose';

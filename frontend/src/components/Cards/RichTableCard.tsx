@@ -44,22 +44,6 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
     );
   });
 
-  const translateRoleName = (role:string) => {
-    let roleName = "";
-    switch (role) {
-      case "admin":
-        roleName = "管理者";
-        break;
-      case "normal":
-        roleName = "会員";
-        break;
-      case "trial":
-        roleName = "体験";
-        break;
-    }
-    return roleName;
-  };
-
   // tableHead と tableSources へそれぞれ操作用項目を追加する
   const customTableHead = tableHead?.slice();
   customTableHead?.push("操作");
@@ -70,7 +54,7 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
       user.name,
       user.name_kana,
       user.email,
-      translateRoleName(user.role),
+      user.role.display_name,
       buttons,
     ]
   });

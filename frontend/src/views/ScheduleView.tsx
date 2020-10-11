@@ -105,7 +105,7 @@ const ScheduleView: React.FC = () => {
                     tabIcon: Event,
                     tabContent: (
                       <Calender
-                        isAdmin={currentUser.role === 'admin'}
+                        isAdmin={currentUser.is_admin}
                         lessons={lessons}
                         updateEventFunc={(event:CEvent) => updateEvent(event)}
                       />
@@ -116,7 +116,7 @@ const ScheduleView: React.FC = () => {
                     tabIcon: EventAvailable,
                     tabContent: (
                       <Calender
-                        isAdmin={currentUser.role === 'admin'}
+                        isAdmin={currentUser.is_admin}
                         lessons={myLessons}
                         updateEventFunc={(event:CEvent) => updateEvent(event)}
                       />

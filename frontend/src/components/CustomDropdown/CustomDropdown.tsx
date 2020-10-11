@@ -24,72 +24,33 @@ interface Props {
   buttonIcon?: Object | string;
   dropdownList: Array<any>;
   buttonProps?: Object;
-  // dropup?: boolean;
-  dropdownHeader?: string;
   caret?: boolean;
   left?: boolean;
   noLiPadding?: boolean;
   onClick?: Function;
+  fullWidth?: boolean;
 }
-
-// CustomDropdown.defaultProps = {
-//   caret: true,
-//   hoverColor: "primary"
-// };
-
-// CustomDropdown.propTypes = {
-//   hoverColor: PropTypes.oneOf([
-//     "black",
-//     "primary",
-//     "info",
-//     "success",
-//     "warning",
-//     "danger",
-//     "rose"
-//   ]),
-//   buttonText: PropTypes.node,
-//   buttonIcon: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-//   dropdownList: PropTypes.array,
-//   buttonProps: PropTypes.object,
-//   dropup: PropTypes.bool,
-//   dropdownHeader: PropTypes.node,
-//   rtlActive: PropTypes.bool,
-//   caret: PropTypes.bool,
-//   left: PropTypes.bool,
-//   noLiPadding: PropTypes.bool,
-//   // function that retuns the selected item
-//   onClick: PropTypes.func
-// };
 
 const CustomDropdown: React.FC<Props> = (props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { hoverColor, buttonText, buttonIcon, dropdownList, buttonProps, caret, noLiPadding, onClick } = props;
+  const { hoverColor, buttonText, buttonIcon, dropdownList, buttonProps, caret, noLiPadding, onClick, fullWidth } = props;
   const classes = customDropdownStyle();
 
   const handleClick = (event:any) => {
-    // if (anchorEl !== null) {
-    //   if (anchorEl && anchorEl.contains(event.target)) {
-    //     setAnchorEl(null);
-    //   } else {
-    //     setAnchorEl(event.currentTarget);
-    //   }
-    // }
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
+
   const handleClose = (param:any) => {
     setAnchorEl(null);
     if (onClick) {
       onClick(param);
     }
   };
-  // const handleCloseAway = (event:any) => {
-  //   if (anchorEl !== null) {
-  //     if (anchorEl.contains(event.target)) {
-  //       return;
-  //     }
-  //   }
-  //   setAnchorEl(null);
-  // };
+
+  const handleClickAway = () => {
+    setAnchorEl(null);
+  };
+
   const caretClasses = cx({
     [classes.caret]: true,
     [classes.caretActive]: Boolean(anchorEl),
@@ -101,9 +62,6 @@ const CustomDropdown: React.FC<Props> = (props) => {
   });
   let icon = null;
   switch (typeof buttonIcon) {
-    // case "object":
-    //   icon = <buttonIcon className={classes.buttonIcon} />;
-    //   break;
     case "string":
       icon = <Icon className={classes.buttonIcon}>{buttonIcon}</Icon>;
       break;
@@ -113,7 +71,7 @@ const CustomDropdown: React.FC<Props> = (props) => {
   };
   
   return (
-    <div>
+    <div className={fullWidth ? classes.fullWidth : ''}>
       <Button
         aria-label="DropDown"
         aria-owns={anchorEl ? "menu-list" : undefined}
@@ -136,7 +94,7 @@ const CustomDropdown: React.FC<Props> = (props) => {
       >
         <Grow in={Boolean(anchorEl)} style={{ transformOrigin: '0 0 0' }}>
           <Paper className={classes.dropdown}>
-            <ClickAwayListener onClickAway={handleClose}>
+            <ClickAwayListener onClickAway={handleClickAway}>
               <MenuList role="menu">
                 {dropdownList.map((prop, key) => (
                   <MenuItem
@@ -144,7 +102,7 @@ const CustomDropdown: React.FC<Props> = (props) => {
                     onClick={() => handleClose(prop)}
                     className={dropdownItem}
                   >
-                    ログアウト
+                    {prop.display_name ? prop.display_name : prop.name}
                   </MenuItem>
                 ))}
               </MenuList>

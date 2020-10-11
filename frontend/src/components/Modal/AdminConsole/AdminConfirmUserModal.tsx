@@ -4,16 +4,18 @@ import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 import adminAddUserModalStyle from 'assets/jss/kiloStyles/adminAddUserModalStyle';
 import { CreateUserRequest } from 'request/requestStructs';
+import { Role } from 'responses/responseStructs';
 
 interface Props {
   user: CreateUserRequest;
   open: boolean;
   closeFunc: Function;
   type: "add" | "edit" | "show";
+  selectedRole: Role;
 };
 
 const AdminConfirmUserModal: React.SFC<Props> = (props) => {
-  const { user, open, closeFunc, type } = props;
+  const { user, open, closeFunc, type, selectedRole } = props;
   const { enqueueSnackbar } = useSnackbar();
   const classes = adminAddUserModalStyle();
 
@@ -105,6 +107,12 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
       labelText="電話番号"
       inputType="text"
       value={user.phone_number}
+      confirm
+    />
+    <AdminFormInput
+      labelText="ステータス"
+      inputType="text"
+      value={selectedRole.display_name}
       confirm
     />
   </div>;

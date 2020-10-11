@@ -27,7 +27,7 @@ const MainPageLayout: React.FC<RouteProps> = (props) => {
           return
         }
         if (props.childRoute) {
-          if (currentUser?.role === 'admin') {
+          if (currentUser?.is_admin) {
             return <Route path={props.path} component={props.component} key={key} />;
           } else {
             return
@@ -64,7 +64,7 @@ const MainPageLayout: React.FC<RouteProps> = (props) => {
         handleDrawerToggle={handleDrawerToggle}
         open={mobileOpen}
         color='purple'
-        isAdmin={currentUser?.role === 'admin'}
+        isAdmin={currentUser?.is_admin ? true : false }
         {...rest}
       />
       <div className={classes.mainPanel} ref={ref => (mainPanel = ref)}>

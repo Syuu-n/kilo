@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { AdminFormInput, Modal, AdminConfirmUserModal, CustomDropDown } from 'components';
-import { AuthContext } from 'Auth';
 import adminAddUserModalStyle from 'assets/jss/kiloStyles/adminAddUserModalStyle';
 import { CreateUserRequest } from 'request/requestStructs';
+import { fetchApp, NetworkError } from 'request/fetcher';
+import { Role } from 'responses/responseStructs';
 
 interface Props {
   open: boolean;
@@ -11,7 +12,6 @@ interface Props {
 
 const AdminAddUserModal: React.FC<Props> = (props) => {
   const { open, closeFunc } = props;
-  const { roles } = React.useContext(AuthContext);
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [firstNameKana, setFirstNameKana] = React.useState("");
@@ -20,9 +20,36 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
   const [password, setPassword] = React.useState("");
   const [birthday, setBirthday] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [roles, setRoles] = React.useState<Role[]>()
+  const [selectedRole, setSelectedRole] = React.useState({id: 0, name: 'none', display_name: 'ステータスを選択'} as Role);
   const [user, setUser] = React.useState<CreateUserRequest>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const classes = adminAddUserModalStyle();
+
+  const getRoles = async () => {
+    const accessToken = localStorage.getItem('kiloToken');
+    if (!accessToken) {
+      return null;
+    }
+  
+    const res = await fetchApp(
+      '/v1/roles',
+      'GET',
+      accessToken,
+    )
+  
+    if (res instanceof NetworkError) {
+      console.log("ServerError");
+      return null;
+    }
+  
+    if (res.ok) {
+      const json = await res.json();
+      return json;
+    } else {
+      return null;
+    }
+  };
 
   const content =
     <div>
@@ -83,9 +110,11 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
       { roles && (
         <CustomDropDown
           dropdownList={roles}
-          buttonText="選択"
-          dropdownHeader="選択"
-          onClick={console.log}
+          hoverColor="success"
+          buttonText={selectedRole.display_name}
+          onClick={setSelectedRole}
+          buttonProps={{color: "success", fullWidth: true}}
+          fullWidth
         />
       )}
     </div>;
@@ -100,10 +129,18 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
       password: password,
       birthday: birthday,
       phone_number: phoneNumber,
+      role_id: selectedRole.id,
     };
     setUser(user);
     setOpenConfirm(true);
   };
+
+  React.useEffect(() => {
+    const f = async () => {
+      setRoles(await getRoles());
+    };
+    f();
+  }, [])
 
   return (
     <div>
@@ -120,6 +157,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
         <AdminConfirmUserModal
           open={openConfirm}
           user={user}
+          selectedRole={selectedRole}
           closeFunc={() => setOpenConfirm(false)}
           type="add"
         />

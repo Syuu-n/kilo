@@ -136,11 +136,11 @@ createStyles({
     display: "inline-block",
     width: "0",
     height: "0",
-    marginLeft: "4px",
     verticalAlign: "middle",
     borderTop: "4px solid",
     borderRight: "4px solid transparent",
-    borderLeft: "4px solid transparent"
+    borderLeft: "4px solid transparent",
+    margin: '0 0 0 10px',
   },
   caretActive: {
     transform: "rotate(180deg)"
@@ -165,6 +165,9 @@ createStyles({
   },
   noLiPadding: {
     padding: "0"
+  },
+  fullWidth: {
+    width: '100%',
   }
 }),
 );
