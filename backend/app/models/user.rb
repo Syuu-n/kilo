@@ -20,6 +20,8 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: { case_sensitive: true }, format: { with: VALID_EMAIL_REGEX }
   validates :birthday, presence: true
   validates :phone_number, presence: true
+  validates :role, presence: true
+  validates :plan, presence: true
 
   def update_access_token!
     # 有効期限 14 日の access_token 作成
