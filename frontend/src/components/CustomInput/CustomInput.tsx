@@ -1,4 +1,4 @@
-import { FormControl, Input, InputLabel } from '@material-ui/core';
+import { FormControl, Input, InputLabel, FormHelperText } from '@material-ui/core';
 import { FormControlProps } from '@material-ui/core/FormControl';
 import { Check, Clear } from '@material-ui/icons';
 import customInputStyle from 'assets/jss/material-dashboard-react/customInputStyle';
@@ -14,6 +14,7 @@ interface Props {
   error?: boolean;
   success?: boolean;
   noIcon?: boolean;
+  errorText?: string;
 }
 
 const CustomInput: React.SFC<Props> = props => {
@@ -26,6 +27,7 @@ const CustomInput: React.SFC<Props> = props => {
     error,
     success,
     noIcon,
+    errorText,
   } = props;
 
   const classes = customInputStyle();
@@ -75,6 +77,11 @@ const CustomInput: React.SFC<Props> = props => {
       ) : success && !noIcon ? (
         <Check className={classes.feedback + ' ' + classes.labelRootSuccess} />
       ) : null}
+      {error && (
+        <FormHelperText>
+          {errorText}
+        </FormHelperText>
+      )}
     </FormControl>
   );
 };

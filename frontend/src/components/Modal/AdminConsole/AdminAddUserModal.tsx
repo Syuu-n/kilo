@@ -4,6 +4,7 @@ import adminAddUserModalStyle from 'assets/jss/kiloStyles/adminAddUserModalStyle
 import { CreateUserRequest } from 'request/requestStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { Role, Plan } from 'responses/responseStructs';
+import { nameValidation } from 'assets/lib/validations';
 
 interface Props {
   open: boolean;
@@ -13,7 +14,7 @@ interface Props {
 const AdminAddUserModal: React.FC<Props> = (props) => {
   const { open, closeFunc } = props;
   const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
+  const [lastName, setLastName] = React.useState({value: '', error: ''});
   const [firstNameKana, setFirstNameKana] = React.useState("");
   const [lastNameKana, setLastNameKana] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -84,9 +85,11 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
         <AdminFormInput
           labelText="名字"
           inputType="text"
-          onChangeFunc={setLastName}
-          value={lastName}
+          onChangeFunc={(value:string) => {setLastName({value: value, error: nameValidation(value)})}}
+          value={lastName.value}
           customClass={classes.flexContainerFirst}
+          required
+          errorText={lastName.error}
         />
         <AdminFormInput
           labelText="名前"
@@ -159,7 +162,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
   const handleSubmit = () => {
     const user = {
       first_name: firstName,
-      last_name: lastName,
+      last_name: lastName.value,
       first_name_kana: firstNameKana,
       last_name_kana: lastNameKana,
       email: email,
