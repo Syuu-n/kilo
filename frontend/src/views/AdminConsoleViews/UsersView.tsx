@@ -37,16 +37,15 @@ const UsersView: React.FC = () => {
     } else {
       return null;
     }
-  }
+  };
+
+  const usersUpdateFunc = async () => {
+    const users = await getUsers();
+    if (users) setUsers(users);
+  };
 
   React.useEffect(() => {
-    const f = async () => {
-      const users = await getUsers();
-      if (users) {
-        setUsers(users);
-      }
-    };
-    f();
+    usersUpdateFunc();
   }, []);
 
   return(
@@ -59,6 +58,7 @@ const UsersView: React.FC = () => {
           cardTitle="ユーザー"
           tableHead={["ID", "名前", "名前（カナ）", "メールアドレス", "ステータス"]}
           tableSources={users}
+          updateFunc={usersUpdateFunc}
         >
         </RichTableCard>
       ) : (

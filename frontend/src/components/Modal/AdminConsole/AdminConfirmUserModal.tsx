@@ -13,10 +13,11 @@ interface Props {
   type: "add" | "edit" | "show";
   selectedRole: Role;
   selectedPlan: Plan;
+  updateFunc?: Function;
 };
 
 const AdminConfirmUserModal: React.SFC<Props> = (props) => {
-  const { user, open, closeFunc, type, selectedRole, selectedPlan } = props;
+  const { user, open, closeFunc, type, selectedRole, selectedPlan, updateFunc } = props;
   const { enqueueSnackbar } = useSnackbar();
   const classes = adminAddUserModalStyle();
 
@@ -52,6 +53,11 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
         enqueueSnackbar('ユーザーの作成に失敗しました。時間をおいて再度お試しください。', { variant: 'error' });
         break;
     }
+  };
+
+  const addUserFunc = async () => {
+    await addUser();
+    if (updateFunc) updateFunc();
   };
 
   const content =
@@ -131,7 +137,7 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
           open={open}
           headerTitle="ユーザー新規作成"
           submitText="確定"
-          submitFunc={async () => {await addUser()}}
+          submitFunc={async () => {await addUserFunc()}}
           content={content}
           closeFunc={closeFunc}
           color="success"

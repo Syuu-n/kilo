@@ -25,11 +25,12 @@ interface Props {
   tableHeaderColor?: 'warning' | 'primary' | 'danger' | 'success' | 'info' | 'rose' | 'gray';
   tableHead?: string[];
   tableSources: User[];
+  updateFunc?: Function;
 }
 
 type buttonColors = 'warning' | 'primary' | 'danger' | 'success' | 'info' | 'rose' | 'white' | 'simple';
 
-const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, icon, tableHeaderColor = 'primary', tableHead, tableSources }) => {
+const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, icon, tableHeaderColor = 'primary', tableHead, tableSources, updateFunc }) => {
   const classes = richTableCardStyle();
   const Icon = icon;
   const buttons = [
@@ -71,6 +72,7 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
         <TableToolbar
           buttonTitle={"ユーザ追加"}
           buttonIcon={PersonAdd}
+          updateFunc={updateFunc}
         />
         <RichTable
           tableHead={customTableHead}

@@ -9,10 +9,11 @@ import { ValidationReturn, nameValidation, emailValidation, passwordValidation, 
 interface Props {
   open: boolean;
   closeFunc: Function;
+  updateFunc?: Function;
 };
 
 const AdminAddUserModal: React.FC<Props> = (props) => {
-  const { open, closeFunc } = props;
+  const { open, closeFunc, updateFunc } = props;
   const [firstName, setFirstName] = React.useState<ValidationReturn>({value: '', error: ''});
   const [lastName, setLastName] = React.useState<ValidationReturn>({value: '', error: ''});
   const [firstNameKana, setFirstNameKana] = React.useState<ValidationReturn>({value: '', error: ''});
@@ -243,6 +244,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
           selectedPlan={selectedPlan}
           closeFunc={() => setOpenConfirm(false)}
           type="add"
+          updateFunc={updateFunc}
         />
       )}
     </div>

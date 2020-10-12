@@ -8,10 +8,11 @@ import tableToolbarStyle from 'assets/jss/kiloStyles/tableToolbarStyle';
 interface Props {
   buttonTitle?: string;
   buttonIcon?: typeof SvgIcon;
+  updateFunc?: Function;
 }
 
 const TableToolbar: React.FC<Props> = (props) => {
-  const { buttonTitle } = props;
+  const { buttonTitle, updateFunc } = props;
   const classes = tableToolbarStyle();
   const [openAddModal, setOpenAddModal] = React.useState(false);
 
@@ -47,6 +48,7 @@ const TableToolbar: React.FC<Props> = (props) => {
         <AdminAddUserModal
           open={openAddModal}
           closeFunc={() => setOpenAddModal(false)}
+          updateFunc={updateFunc}
         />
     </div>
   );
