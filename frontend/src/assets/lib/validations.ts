@@ -13,7 +13,7 @@ export const emailValidation = (email:string) => {
   if (!email) return "必須項目です";
   if (email.length > 191) return "191文字以下で入力してください";
   const regexp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-  if (!regexp.exec(email)) return "正しい形式で入力してください";
+  if (!email.match(regexp)) return "正しい形式で入力してください";
   return;
 };
 
@@ -27,7 +27,9 @@ export const passwordValidation = (password:string) => {
 export const birthdayValidation = (birthday:string) => {
   if (!birthday) return "必須項目です";
   const regexp = /[0-9]{8}/;
-  if (!regexp.exec(birthday)) return "正しい形式で入力してください";
+  if (!birthday.match(regexp)) return "正しい形式で入力してください";
+  // 19970216 の形式で入力すると8文字となるため
+  if (birthday.length > 8) return "正しい形式で入力してください";
   return;
 };
 
