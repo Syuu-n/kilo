@@ -4,7 +4,7 @@ import adminAddUserModalStyle from 'assets/jss/kiloStyles/adminAddUserModalStyle
 import { CreateUserRequest } from 'request/requestStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { Role, Plan } from 'responses/responseStructs';
-import { nameValidation } from 'assets/lib/validations';
+import { ValidationReturn, nameValidation, emailValidation, passwordValidation, birthdayValidation, phoneNumberValidation } from 'assets/lib/validations';
 
 interface Props {
   open: boolean;
@@ -13,20 +13,21 @@ interface Props {
 
 const AdminAddUserModal: React.FC<Props> = (props) => {
   const { open, closeFunc } = props;
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState({value: '', error: ''});
-  const [firstNameKana, setFirstNameKana] = React.useState("");
-  const [lastNameKana, setLastNameKana] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [birthday, setBirthday] = React.useState("");
-  const [phoneNumber, setPhoneNumber] = React.useState("");
-  const [roles, setRoles] = React.useState<Role[]>()
-  const [selectedRole, setSelectedRole] = React.useState({id: 0, name: 'none', display_name: 'ステータスを選択'} as Role);
-  const [plans, setPlans] = React.useState<Plan[]>()
+  const [firstName, setFirstName] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [lastName, setLastName] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [firstNameKana, setFirstNameKana] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [lastNameKana, setLastNameKana] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [email, setEmail] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [password, setPassword] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [birthday, setBirthday] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [phoneNumber, setPhoneNumber] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [roles, setRoles] = React.useState<Role[]>();
+  const [selectedRole, setSelectedRole] = React.useState({id: 0, name: 'none', display_name: 'ステータスを選択', error: ''} as Role);
+  const [plans, setPlans] = React.useState<Plan[]>();
   const [selectedPlan, setSelectedPlan] = React.useState({id: 0, name: 'コースを選択'} as Plan);
   const [user, setUser] = React.useState<CreateUserRequest>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
+  const [buttonDisabled, setButtonDisabled] = React.useState(true);
   const classes = adminAddUserModalStyle();
 
   const getRoles = async () => {
@@ -94,48 +95,64 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
         <AdminFormInput
           labelText="名前"
           inputType="text"
-          onChangeFunc={setFirstName}
-          value={firstName}
+          onChangeFunc={(value:string) => {setFirstName({value: value, error: nameValidation(value)})}}
+          value={firstName.value}
+          required
+          errorText={firstName.error}
         />
       </div>
       <div className={classes.flexContainer}>
         <AdminFormInput
           labelText="名字（カナ）"
           inputType="text"
-          onChangeFunc={setLastNameKana}
-          value={lastNameKana}
+          onChangeFunc={(value:string) => {setLastNameKana({value: value, error: nameValidation(value)})}}
+          value={lastNameKana.value}
           customClass={classes.flexContainerFirst}
+          required
+          errorText={lastNameKana.error}
         />
         <AdminFormInput
           labelText="名前（カナ）"
           inputType="text"
-          onChangeFunc={setFirstNameKana}
-          value={firstNameKana}
+          onChangeFunc={(value:string) => {setFirstNameKana({value: value, error: nameValidation(value)})}}
+          value={firstNameKana.value}
+          required
+          errorText={firstNameKana.error}
         />
       </div>
       <AdminFormInput
         labelText="メールアドレス"
         inputType="email"
-        onChangeFunc={setEmail}
-        value={email}
+        onChangeFunc={(value:string) => {setEmail({value: value, error: emailValidation(value)})}}
+        value={email.value}
+        required
+        errorText={email.error}
       />
       <AdminFormInput
         labelText="パスワード"
         inputType="text"
-        onChangeFunc={setPassword}
-        value={password}
+        onChangeFunc={(value:string) => {setPassword({value: value, error: passwordValidation(value)})}}
+        value={password.value}
+        required
+        errorText={password.error}
       />
       <AdminFormInput
         labelText="生年月日"
         inputType="text"
-        onChangeFunc={setBirthday}
-        value={birthday}
+        onChangeFunc={(value:string) => {setBirthday({value: value, error: birthdayValidation(value)})}}
+        value={birthday.value}
+        placeholder="例：19970216"
+        required
+        errorText={birthday.error}
       />
       <AdminFormInput
-        labelText="電話番号"
+        labelText="電話番号（ハイフンなし）"
         inputType="text"
-        onChangeFunc={setPhoneNumber}
-        value={phoneNumber}
+        onChangeFunc={(value:string) => {setPhoneNumber({value: value, error: phoneNumberValidation(value)})}}
+        value={phoneNumber.value}
+        placeholder="例：00000000000"
+        required
+        errorText={phoneNumber.error}
       />
       { roles && (
         <CustomDropDown
@@ -161,14 +178,14 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
 
   const handleSubmit = () => {
     const user = {
-      first_name: firstName,
+      first_name: firstName.value,
       last_name: lastName.value,
-      first_name_kana: firstNameKana,
-      last_name_kana: lastNameKana,
-      email: email,
-      password: password,
-      birthday: birthday,
-      phone_number: phoneNumber,
+      first_name_kana: firstNameKana.value,
+      last_name_kana: lastNameKana.value,
+      email: email.value,
+      password: password.value,
+      birthday: birthday.value,
+      phone_number: phoneNumber.value,
       role_id: selectedRole.id,
       plan_id: selectedPlan.id,
     } as CreateUserRequest;
@@ -186,6 +203,26 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
     f();
   }, [])
 
+  React.useEffect(() => {
+    // 全てのバリデーションが正しければボタンを有効にする
+    if (
+      lastName.error == undefined &&
+      firstName.error == undefined &&
+      lastNameKana.error == undefined &&
+      firstNameKana.error == undefined &&
+      email.error == undefined &&
+      password.error == undefined &&
+      birthday.error == undefined &&
+      phoneNumber.error == undefined &&
+      selectedRole.id != 0 &&
+      selectedPlan.id != 0
+      ) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [lastName, firstName, firstNameKana, lastNameKana, email, password, birthday, phoneNumber, selectedRole, selectedPlan])
+
   return (
     <div>
       <Modal
@@ -196,6 +233,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
         content={content}
         closeFunc={closeFunc}
         color="success"
+        disabled={buttonDisabled}
       />
       { user && (
         <AdminConfirmUserModal

@@ -7,6 +7,7 @@ interface Props {
   inputType?: "email" | "password" | "tel" | "text";
   onChangeFunc?: Function;
   value?: any;
+  placeholder?: string;
   confirm?: boolean;
   customClass?: string;
   formControlProps?: FormControlProps;
@@ -15,7 +16,7 @@ interface Props {
 };
 
 const AdminFormInput: React.SFC<Props> = (props) => {
-  const { inputType, labelText, onChangeFunc, value, confirm, customClass, formControlProps, required, errorText } = props;
+  const { inputType, labelText, onChangeFunc, value, placeholder, confirm, customClass, formControlProps, required, errorText } = props;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChangeFunc) {
@@ -31,6 +32,7 @@ const AdminFormInput: React.SFC<Props> = (props) => {
           type: inputType,
           onChange: handleChange,
           value: value,
+          placeholder: placeholder,
         }}
         formControlProps={{
           disabled: confirm ? true : false,
@@ -40,7 +42,7 @@ const AdminFormInput: React.SFC<Props> = (props) => {
           ...formControlProps,
         }}
         success
-        noIcon={errorText ? false : true}
+        noIcon={true}
         error={errorText ? true : false}
         errorText={errorText}
       />

@@ -11,13 +11,18 @@ class User < ApplicationRecord
 
   after_create :update_access_token!
 
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  VALID_EMAIL_REGEX = /\A[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\z/
 
-  validates :first_name, presence: true
-  validates :last_name, presence: true
-  validates :first_name_kana, presence: true
-  validates :last_name_kana, presence: true
-  validates :email, presence: true, uniqueness: { case_sensitive: true }, format: { with: VALID_EMAIL_REGEX }
+  validates :first_name, presence: true, length: { maximum: 20 }
+  validates :last_name, presence: true, length: { maximum: 20 }
+  validates :first_name_kana, presence: true, length: { maximum: 20 }
+  validates :last_name_kana, presence: true, length: { maximum: 20 }
+  validates :email, {
+    presence: true,
+    uniqueness: { case_sensitive: true },
+    format: { with: VALID_EMAIL_REGEX },
+    length: { maximum: 191 },
+  }
   validates :birthday, presence: true
   validates :phone_number, presence: true
   validates :role, presence: true
