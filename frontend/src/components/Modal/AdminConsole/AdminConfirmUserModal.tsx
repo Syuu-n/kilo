@@ -10,6 +10,7 @@ interface Props {
   user: CreateUserRequest;
   open: boolean;
   closeFunc: Function;
+  cancelFunc?: Function;
   type: "add" | "edit" | "show";
   selectedRole: Role;
   selectedPlan: Plan;
@@ -17,7 +18,7 @@ interface Props {
 };
 
 const AdminConfirmUserModal: React.SFC<Props> = (props) => {
-  const { user, open, closeFunc, type, selectedRole, selectedPlan, updateFunc } = props;
+  const { user, open, closeFunc, cancelFunc, type, selectedRole, selectedPlan, updateFunc } = props;
   const { enqueueSnackbar } = useSnackbar();
   const classes = adminAddUserModalStyle();
 
@@ -138,6 +139,8 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
           headerTitle="ユーザー新規作成"
           submitText="確定"
           submitFunc={async () => {await addUserFunc()}}
+          cancelText="修正"
+          cancelFunc={cancelFunc}
           content={content}
           closeFunc={closeFunc}
           color="success"

@@ -9,11 +9,12 @@ import { ValidationReturn, nameValidation, emailValidation, passwordValidation, 
 interface Props {
   open: boolean;
   closeFunc: Function;
+  openFunc: Function;
   updateFunc?: Function;
 };
 
 const AdminAddUserModal: React.FC<Props> = (props) => {
-  const { open, closeFunc, updateFunc } = props;
+  const { open, closeFunc, openFunc, updateFunc } = props;
   const [firstName, setFirstName] = React.useState<ValidationReturn>({value: '', error: ''});
   const [lastName, setLastName] = React.useState<ValidationReturn>({value: '', error: ''});
   const [firstNameKana, setFirstNameKana] = React.useState<ValidationReturn>({value: '', error: ''});
@@ -194,6 +195,12 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
     setOpenConfirm(true);
   };
 
+  const doCancelFunc = () => {
+    // confirm で修正を押したときに Confirm を閉じてから Add を開き直す
+    setOpenConfirm(false);
+    openFunc();
+  };
+
   React.useEffect(() => {
     const f = async () => {
       await Promise.all([
@@ -243,6 +250,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
           selectedRole={selectedRole}
           selectedPlan={selectedPlan}
           closeFunc={() => setOpenConfirm(false)}
+          cancelFunc={() => doCancelFunc()}
           type="add"
           updateFunc={updateFunc}
         />

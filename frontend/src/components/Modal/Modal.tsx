@@ -19,6 +19,8 @@ interface Props {
   content?: React.ReactNode;
   submitText?: string;
   submitFunc: Function;
+  cancelText?: string;
+  cancelFunc?: Function;
   closeFunc: Function;
   disabled?: boolean;
   color?:
@@ -32,7 +34,7 @@ interface Props {
 }
 
 const Modal: React.FC<Props> = (props) => {
-  const { open, headerTitle, content, submitText, submitFunc, closeFunc, disabled, color } = props;
+  const { open, headerTitle, content, submitText, submitFunc, cancelText, cancelFunc, closeFunc, disabled, color } = props;
   const [openModal, setOpenModal] = React.useState(false);
   const [isLoaded, setIsLoaded] = React.useState(true);
   const classes = modalStyle();
@@ -82,9 +84,9 @@ const Modal: React.FC<Props> = (props) => {
             <div>
               <Button
                 customClass={classes.cancelButton}
-                onClick={() => closeFunc()}
+                onClick={()=> {cancelFunc ? cancelFunc() : closeFunc()}}
               >
-                キャンセル
+                {cancelText ? cancelText : "キャンセル"}
               </Button>
               <Button
                 customClass={classes.submitButton}
