@@ -4,6 +4,8 @@ import { Person, Edit, Close, PersonAdd } from '@material-ui/icons';
 import richTableCardStyle from 'assets/jss/kiloStyles/richTableCardStyle';
 import { Card, CardHeader, CardIcon, CardBody, TooltipButton, RichTable, TableToolbar, AdminConfirmUserModal } from 'components';
 import { User } from 'responses/responseStructs';
+import { fetchApp, NetworkError } from 'request/fetcher';
+import { useSnackbar } from 'notistack';
 
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
@@ -25,6 +27,7 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
   const [openShowModal, setOpenShowModal] = React.useState(false);
   // const [openEditModal, setOpenEditModal] = React.useState(false);
   const [selectedData, setSelectedData] = React.useState<User>(tableSources[0]);
+  const { enqueueSnackbar } = useSnackbar();
 
   const buttons = (id:number) => {
     return (
@@ -57,9 +60,10 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
     ]
   });
 
+  // アクションメニューをクリック時の動作
   const handleActionClick = (dataType:dataType, actionType:string, dataId:number) => {
-    console.log(`You Clicked Action:${actionType} ID:${dataId}`);
     let data = undefined;
+
     switch (dataType) {
       case "users":
         data = tableSources.filter((user) => (user.id == dataId))[0];
@@ -67,8 +71,53 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
     };
     if (data) {
       setSelectedData(data);
-      setOpenShowModal(true);
     };
+
+    switch (actionType) {
+      case "確認":
+        setOpenShowModal(true);
+        break;
+      case "編集":
+        // setOpenEditModal(true);
+        break;
+      case "削除":
+        if (confirm(`選択中の（種類:${dataType} ID:${dataId}）を本当に削除しますか？`)) {
+          deleteData(dataId);
+        };
+        break;
+    }
+  };
+
+  const deleteData = async (dataId:number) => {
+    const accessToken = localStorage.getItem('kiloToken');
+    if (!accessToken) {
+      return;
+    }
+
+    const res = await fetchApp(
+      `/v1/${dataType}/${dataId}`,
+      'DELETE',
+      accessToken
+    )
+
+    if (res instanceof NetworkError) {
+      console.log("ServerError");
+      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
+      return;
+    }
+
+    switch (res.status) {
+      case 200:
+        enqueueSnackbar(`種類:${dataType} ID:${dataId}の削除が成功しました。`, { variant: 'success' });
+        if (updateFunc) updateFunc();
+        break;
+      case 404:
+        enqueueSnackbar(`種類:${dataType} ID:${dataId}が存在しないため削除に失敗しました。`, { variant: 'error' });
+        break;
+      case 400:
+        enqueueSnackbar(`種類:${dataType} ID:${dataId}の削除に失敗しました。`, { variant: 'error' });
+        break;
+    }
   };
 
   return (
