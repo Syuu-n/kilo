@@ -45,12 +45,12 @@ const TableToolbar: React.FC<Props> = (props) => {
           </IconButton>
         </div> */}
       </div>
-        <AdminAddUserModal
-          open={openAddModal}
-          closeFunc={() => setOpenAddModal(false)}
-          openFunc={() => setOpenAddModal(true)}
-          updateFunc={updateFunc}
-        />
+      <AdminAddUserModal
+        open={openAddModal}
+        closeFunc={() => setOpenAddModal(false)}
+        openFunc={() => setOpenAddModal(true)}
+        updateFunc={updateFunc}
+      />
     </div>
   );
 };

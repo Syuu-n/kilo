@@ -3,8 +3,10 @@ import { Event } from 'react-big-calendar';
 export interface User {
   id:                      number;
   email:                   string;
-  name:                    string;
-  name_kana:               string;
+  first_name:              string;
+  last_name:               string;
+  first_name_kana:         string;
+  last_name_kana:          string;
   age:                     number;
   birthday:                string;
   phone_number:            string;
@@ -13,6 +15,7 @@ export interface User {
   current_monthly_count:   number;
   remaining_monthly_count: number;
   is_admin:                boolean;
+  password?:               string;
 }
 
 export interface Plan {

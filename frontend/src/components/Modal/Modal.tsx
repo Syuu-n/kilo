@@ -31,10 +31,11 @@ interface Props {
   | 'danger'
   | 'rose'
   | 'white'
+  noSubmit?: boolean;
 }
 
 const Modal: React.FC<Props> = (props) => {
-  const { open, headerTitle, content, submitText, submitFunc, cancelText, cancelFunc, closeFunc, disabled, color } = props;
+  const { open, headerTitle, content, submitText, submitFunc, cancelText, cancelFunc, closeFunc, disabled, color, noSubmit } = props;
   const [openModal, setOpenModal] = React.useState(false);
   const [isLoaded, setIsLoaded] = React.useState(true);
   const classes = modalStyle();
@@ -88,14 +89,16 @@ const Modal: React.FC<Props> = (props) => {
               >
                 {cancelText ? cancelText : "キャンセル"}
               </Button>
-              <Button
-                customClass={classes.submitButton}
-                color={color ? color : 'primary'}
-                onClick={() => doSubmit()}
-                disabled={disabled}
-              >
-                {submitText}
-              </Button>
+              { !noSubmit && (
+                <Button
+                  customClass={classes.submitButton}
+                  color={color ? color : 'primary'}
+                  onClick={() => doSubmit()}
+                  disabled={disabled}
+                >
+                  {submitText}
+                </Button>
+              )}
             </div>
           ) : (
             <KSpinner color={color ? color : 'primary'}/>

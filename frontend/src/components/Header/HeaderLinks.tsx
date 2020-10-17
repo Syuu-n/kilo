@@ -61,7 +61,7 @@ const HeaderLinks: React.FC = () => {
             <Person className={classes.links} />
             <Hidden mdUp>
               { currentUser ? (
-                <p className={classes.linkText}>{currentUser.name} 様</p>
+                <p className={classes.linkText}>{currentUser.last_name + " " + currentUser.first_name} 様</p>
               ) : (
                 <p className={classes.linkText}>ロード中...</p>
               )
@@ -70,7 +70,7 @@ const HeaderLinks: React.FC = () => {
           </IconButton>
           <Hidden smDown>
             { currentUser ? (
-              <span>{currentUser.name} 様</span>
+              <span>{currentUser.last_name + " " + currentUser.first_name} 様</span>
             ) : (
               <span>ロード中...</span>
             )

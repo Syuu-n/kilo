@@ -157,7 +157,7 @@ const ShowEventModal: React.SFC<Props> = (props) => {
                 ) : (
                   <div>
                     { selectedEvent.users.map((user:User) => {
-                      return <li key={user.id}>{user.name}</li>
+                      return <li key={user.id}>{user.last_name + " " + user.first_name}</li>
                     })}
                   </div>
                 )}

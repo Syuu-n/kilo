@@ -1,19 +1,20 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import { Modal, AdminFormInput } from 'components';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 import adminAddUserModalStyle from 'assets/jss/kiloStyles/adminAddUserModalStyle';
 import { CreateUserRequest } from 'request/requestStructs';
-import { Role, Plan } from 'responses/responseStructs';
+import { Role, Plan, User } from 'responses/responseStructs';
 
 interface Props {
-  user: CreateUserRequest;
+  user?: CreateUserRequest | User;
   open: boolean;
   closeFunc: Function;
   cancelFunc?: Function;
   type: "add" | "edit" | "show";
-  selectedRole: Role;
-  selectedPlan: Plan;
+  selectedRole?: Role;
+  selectedPlan?: Plan;
   updateFunc?: Function;
 };
 
@@ -67,14 +68,14 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
       <AdminFormInput
         labelText="名字"
         inputType="text"
-        value={user.last_name}
+        value={user?.last_name}
         customClass={classes.flexContainerFirst}
         confirm
       />
       <AdminFormInput
         labelText="名前"
         inputType="text"
-        value={user.first_name}
+        value={user?.first_name}
         confirm
       />
     </div>
@@ -82,51 +83,51 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
       <AdminFormInput
         labelText="名字（カナ）"
         inputType="text"
-        value={user.last_name_kana}
+        value={user?.last_name_kana}
         customClass={classes.flexContainerFirst}
         confirm
       />
       <AdminFormInput
         labelText="名前（カナ）"
         inputType="text"
-        value={user.first_name_kana}
+        value={user?.first_name_kana}
         confirm
       />
     </div>
     <AdminFormInput
       labelText="メールアドレス"
       inputType="email"
-      value={user.email}
+      value={user?.email}
       confirm
     />
     <AdminFormInput
       labelText="パスワード"
       inputType="text"
-      value={user.password}
+      value={user?.password}
       confirm
     />
     <AdminFormInput
       labelText="生年月日"
       inputType="text"
-      value={user.birthday}
+      value={moment(user?.birthday).format("LL")}
       confirm
     />
     <AdminFormInput
       labelText="電話番号"
       inputType="text"
-      value={user.phone_number}
+      value={user?.phone_number}
       confirm
     />
     <AdminFormInput
       labelText="ステータス"
       inputType="text"
-      value={selectedRole.display_name}
+      value={selectedRole?.display_name}
       confirm
     />
     <AdminFormInput
       labelText="コース"
       inputType="text"
-      value={selectedPlan.name}
+      value={selectedPlan?.name}
       confirm
     />
   </div>;
@@ -166,6 +167,7 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
           content={content}
           closeFunc={closeFunc}
           color="success"
+          noSubmit
         />
       )}
     </div>

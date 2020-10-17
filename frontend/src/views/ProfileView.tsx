@@ -27,8 +27,8 @@ const ProfileView: React.SFC = () => {
                 cardTitle="マイプロフィール"
                 icon={AccountCircle}
                 tableData={[
-                  ["名前", currentUser.name],
-                  ["名前（カナ）", currentUser.name_kana],
+                  ["名前", currentUser.last_name + " " + currentUser.first_name],
+                  ["名前（カナ）", currentUser.last_name_kana + " " + currentUser.first_name_kana],
                   ["電話番号", currentUser.phone_number],
                   ["メールアドレス", currentUser.email],
                   ["年齢", currentUser.age + " 歳"],
