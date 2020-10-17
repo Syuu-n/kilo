@@ -1,7 +1,7 @@
 module V1
   class UsersController < ApplicationController
     skip_before_action :authenticate_user_from_token!, only: []
-    before_action :permission_check, only: [:index, :create, :destroy]
+    before_action :permission_check, only: [:index, :create, :destroy, :update]
     before_action :setup_user, only: [:update, :show, :destroy, :my_lessons, :my_plan]
 
     # GET /users
@@ -79,7 +79,7 @@ module V1
     end
 
     def update_params
-      params.require(:user).permit(:first_name, :last_name, :first_name_kana, :last_name_kana, :phone_number)
+      params.require(:user).permit(:email, :first_name, :last_name, :first_name_kana, :last_name_kana, :birthday, :phone_number, :role_id, :plan_id)
     end
   end
 end

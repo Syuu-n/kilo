@@ -1,9 +1,10 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import { AdminFormInput, Modal, AdminConfirmUserModal, CustomDropDown } from 'components';
 import adminAddUserModalStyle from 'assets/jss/kiloStyles/adminAddUserModalStyle';
 import { CreateUserRequest } from 'request/requestStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
-import { Role, Plan } from 'responses/responseStructs';
+import { Role, Plan, User } from 'responses/responseStructs';
 import { ValidationReturn, nameValidation, emailValidation, passwordValidation, birthdayValidation, phoneNumberValidation } from 'assets/lib/validations';
 
 interface Props {
@@ -11,22 +12,23 @@ interface Props {
   closeFunc: Function;
   openFunc: Function;
   updateFunc?: Function;
+  selectedUser?: User;
 };
 
 const AdminAddUserModal: React.FC<Props> = (props) => {
-  const { open, closeFunc, openFunc, updateFunc } = props;
-  const [firstName, setFirstName] = React.useState<ValidationReturn>({value: '', error: ''});
-  const [lastName, setLastName] = React.useState<ValidationReturn>({value: '', error: ''});
-  const [firstNameKana, setFirstNameKana] = React.useState<ValidationReturn>({value: '', error: ''});
-  const [lastNameKana, setLastNameKana] = React.useState<ValidationReturn>({value: '', error: ''});
-  const [email, setEmail] = React.useState<ValidationReturn>({value: '', error: ''});
-  const [password, setPassword] = React.useState<ValidationReturn>({value: '', error: ''});
-  const [birthday, setBirthday] = React.useState<ValidationReturn>({value: '', error: ''});
-  const [phoneNumber, setPhoneNumber] = React.useState<ValidationReturn>({value: '', error: ''});
+  const { open, closeFunc, openFunc, updateFunc, selectedUser } = props;
+  const [firstName, setFirstName] = React.useState<ValidationReturn>({value: selectedUser ? selectedUser.first_name : '', error: selectedUser ? undefined : ''});
+  const [lastName, setLastName] = React.useState<ValidationReturn>({value: selectedUser ? selectedUser.last_name : '', error: selectedUser ? undefined : ''});
+  const [firstNameKana, setFirstNameKana] = React.useState<ValidationReturn>({value: selectedUser ? selectedUser.first_name_kana : '', error: selectedUser ? undefined : ''});
+  const [lastNameKana, setLastNameKana] = React.useState<ValidationReturn>({value: selectedUser ? selectedUser.last_name_kana : '', error: selectedUser ? undefined : ''});
+  const [email, setEmail] = React.useState<ValidationReturn>({value: selectedUser ? selectedUser.email : '', error: selectedUser ? undefined : ''});
+  const [password, setPassword] = React.useState<ValidationReturn>({value: '', error: selectedUser ? undefined : ''});
+  const [birthday, setBirthday] = React.useState<ValidationReturn>({value: selectedUser ? moment(selectedUser.birthday).format('YYYYMMDD') : '', error: selectedUser ? undefined : ''});
+  const [phoneNumber, setPhoneNumber] = React.useState<ValidationReturn>({value: selectedUser ? selectedUser.phone_number : '', error: selectedUser ? undefined : ''});
   const [roles, setRoles] = React.useState<Role[]>();
-  const [selectedRole, setSelectedRole] = React.useState({id: 0, name: 'none', display_name: 'ステータスを選択', error: ''} as Role);
+  const [selectedRole, setSelectedRole] = React.useState(selectedUser ? selectedUser.role : {id: 0, name: 'none', display_name: 'ステータスを選択', error: ''} as Role);
   const [plans, setPlans] = React.useState<Plan[]>();
-  const [selectedPlan, setSelectedPlan] = React.useState({id: 0, name: 'コースを選択'} as Plan);
+  const [selectedPlan, setSelectedPlan] = React.useState(selectedUser ? selectedUser.plan : {id: 0, name: 'コースを選択'} as Plan);
   const [user, setUser] = React.useState<CreateUserRequest>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
@@ -130,14 +132,16 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
         required
         errorText={email.error}
       />
-      <AdminFormInput
-        labelText="パスワード"
-        inputType="text"
-        onChangeFunc={(value:string) => {setPassword({value: value, error: passwordValidation(value)})}}
-        value={password.value}
-        required
-        errorText={password.error}
-      />
+      { !selectedUser && (
+        <AdminFormInput
+          labelText="パスワード"
+          inputType="text"
+          onChangeFunc={(value:string) => {setPassword({value: value, error: passwordValidation(value)})}}
+          value={password.value}
+          required
+          errorText={password.error}
+        />
+      )}
       <AdminFormInput
         labelText="生年月日"
         inputType="text"
@@ -235,7 +239,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
     <div>
       <Modal
         open={open}
-        headerTitle="ユーザー新規作成"
+        headerTitle={selectedUser ? "ユーザ情報変更" : "ユーザー新規作成"}
         submitText="確認"
         submitFunc={async () => {await handleSubmit()}}
         content={content}
@@ -251,7 +255,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
           selectedPlan={selectedPlan}
           closeFunc={() => setOpenConfirm(false)}
           cancelFunc={() => doCancelFunc()}
-          type="add"
+          type={selectedUser ? "edit" : "add"}
           updateFunc={updateFunc}
         />
       )}
