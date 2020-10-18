@@ -73,11 +73,14 @@ createStyles({
     verticalAlign: "middle"
   },
   tableBodyRow: {
-    height: "48px",
+    height: "51px",
     color: "inherit",
     display: "table-row",
     outline: "none",
-    verticalAlign: "middle"
+    verticalAlign: "middle",
+  },
+  selected: {
+    background: 'rgba(0,0,0,.03) !important',
   },
 }),
 );

@@ -26,22 +26,25 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
   const Icon = icon;
   const [openShowModal, setOpenShowModal] = React.useState(false);
   const [openEditModal, setOpenEditModal] = React.useState(false);
-  const [selectedData, setSelectedData] = React.useState<User>(tableSources[0]);
+  const [selectedData, setSelectedData] = React.useState<User>();
   const { enqueueSnackbar } = useSnackbar();
 
   const buttons = (id:number) => {
+    if (selectedData?.id != id) return;
     return (
-      [
-        { color: "info" as buttonColors, icon: Person, title: "確認", dataType: dataType },
-        { color: "success" as buttonColors, icon: Edit, title: "編集", dataType: dataType },
-        { color: "danger" as buttonColors, icon: Close, title: "削除", dataType: dataType },
-      ].map((prop, key) => {
-        return (
-          <TooltipButton color={prop.color} key={key} tooltipTitle={prop.title} onClick={() => handleActionClick(prop.dataType, prop.title, id)}>
-            <prop.icon />
-          </TooltipButton>
-        );
-      })
+      <div className={classes.buttonContainer}>{
+        [
+          { color: "info" as buttonColors, icon: Person, title: "確認", dataType: dataType },
+          { color: "success" as buttonColors, icon: Edit, title: "編集", dataType: dataType },
+          { color: "danger" as buttonColors, icon: Close, title: "削除", dataType: dataType },
+        ].map((prop, key) => {
+          return (
+            <TooltipButton color={prop.color} key={key} tooltipTitle={prop.title} onClick={() => handleActionClick(prop.dataType, prop.title, id)}>
+              <prop.icon />
+            </TooltipButton>
+          );
+        })
+      }</div>
     );
   };
 
@@ -62,9 +65,6 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
 
   // アクションメニューをクリック時の動作
   const handleActionClick = (dataType:dataType, actionType:string, dataId:number) => {
-    const data = tableSources.find((user) => (user.id == dataId));
-    if (data) setSelectedData(data);
-
     switch (actionType) {
       case "確認":
         setOpenShowModal(true);
@@ -78,6 +78,12 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
         };
         break;
     }
+  };
+
+  // テーブルの項目を選択時の動作
+  const handleSelected = (id:number) => {
+    const data = tableSources.find((d) => d.id == id);
+    data && setSelectedData(data);
   };
 
   const deleteData = async (dataId:number) => {
@@ -131,6 +137,8 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
             tableHead={customTableHead}
             rows={customTableData}
             tableHeaderColor="success"
+            selectedFunc={(id:number) => handleSelected(id)}
+            selectedId={selectedData?.id}
           />
         </CardBody>
       </Card>

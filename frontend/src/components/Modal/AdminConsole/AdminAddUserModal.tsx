@@ -17,18 +17,18 @@ interface Props {
 
 const AdminAddUserModal: React.FC<Props> = (props) => {
   const { open, closeFunc, openFunc, updateFunc, selectedUser } = props;
-  const [firstName, setFirstName] = React.useState<ValidationReturn>({value: selectedUser ? selectedUser.first_name : '', error: selectedUser ? undefined : ''});
-  const [lastName, setLastName] = React.useState<ValidationReturn>({value: selectedUser ? selectedUser.last_name : '', error: selectedUser ? undefined : ''});
-  const [firstNameKana, setFirstNameKana] = React.useState<ValidationReturn>({value: selectedUser ? selectedUser.first_name_kana : '', error: selectedUser ? undefined : ''});
-  const [lastNameKana, setLastNameKana] = React.useState<ValidationReturn>({value: selectedUser ? selectedUser.last_name_kana : '', error: selectedUser ? undefined : ''});
-  const [email, setEmail] = React.useState<ValidationReturn>({value: selectedUser ? selectedUser.email : '', error: selectedUser ? undefined : ''});
-  const [password, setPassword] = React.useState<ValidationReturn>({value: '', error: selectedUser ? undefined : ''});
-  const [birthday, setBirthday] = React.useState<ValidationReturn>({value: selectedUser ? moment(selectedUser.birthday).format('YYYYMMDD') : '', error: selectedUser ? undefined : ''});
-  const [phoneNumber, setPhoneNumber] = React.useState<ValidationReturn>({value: selectedUser ? selectedUser.phone_number : '', error: selectedUser ? undefined : ''});
+  const [firstName, setFirstName] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [lastName, setLastName] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [firstNameKana, setFirstNameKana] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [lastNameKana, setLastNameKana] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [email, setEmail] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [password, setPassword] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [birthday, setBirthday] = React.useState<ValidationReturn>({value: '', error: ''});
+  const [phoneNumber, setPhoneNumber] = React.useState<ValidationReturn>({value: '', error: ''});
   const [roles, setRoles] = React.useState<Role[]>();
-  const [selectedRole, setSelectedRole] = React.useState(selectedUser ? selectedUser.role : {id: 0, name: 'none', display_name: 'ステータスを選択', error: ''} as Role);
+  const [selectedRole, setSelectedRole] = React.useState({id: 0, name: 'none', display_name: 'ステータスを選択', error: ''} as Role);
   const [plans, setPlans] = React.useState<Plan[]>();
-  const [selectedPlan, setSelectedPlan] = React.useState(selectedUser ? selectedUser.plan : {id: 0, name: 'コースを選択'} as Plan);
+  const [selectedPlan, setSelectedPlan] = React.useState({id: 0, name: 'コースを選択'} as Plan);
   const [user, setUser] = React.useState<CreateUserRequest>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
@@ -216,6 +216,21 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
   }, [])
 
   React.useEffect(() => {
+    if (selectedUser) {
+      setFirstName({value: selectedUser.first_name, error: undefined});
+      setLastName({value: selectedUser.last_name, error: undefined});
+      setFirstNameKana({value: selectedUser.first_name_kana, error: undefined});
+      setLastNameKana({value: selectedUser.last_name_kana, error: undefined});
+      setEmail({value: selectedUser.email, error: undefined});
+      setPassword({value: '', error: undefined})
+      setBirthday({value: moment(selectedUser.birthday).format('YYYYMMDD'), error: undefined});
+      setPhoneNumber({value: selectedUser.phone_number, error: undefined});
+      setSelectedRole(selectedUser.role);
+      setSelectedPlan(selectedUser.plan);
+    };
+  }, [selectedUser]);
+
+  React.useEffect(() => {
     // 全てのバリデーションが正しければボタンを有効にする
     if (
       lastName.error == undefined &&
@@ -257,6 +272,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
           cancelFunc={() => doCancelFunc()}
           type={selectedUser ? "edit" : "add"}
           updateFunc={updateFunc}
+          userID={selectedUser ? selectedUser.id : undefined}
         />
       )}
     </div>

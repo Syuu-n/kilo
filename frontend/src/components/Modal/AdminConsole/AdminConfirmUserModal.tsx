@@ -88,7 +88,7 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
     }
 
     switch (res.status) {
-      case 201:
+      case 200:
         enqueueSnackbar('ユーザー情報の変更に成功しました。', { variant: 'success'});
         break;
       case 404:

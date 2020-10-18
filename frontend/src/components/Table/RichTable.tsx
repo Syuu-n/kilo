@@ -8,7 +8,7 @@ import tablePaginationStyle from 'assets/jss/kiloStyles/tablePaginationStyle';
 
 interface Props {
   tableHead?: string[];
-  rows: (string | number | JSX.Element[])[][];
+  rows: (string | number | JSX.Element | undefined)[][];
   tableHeaderColor?:
     | 'warning'
     | 'primary'
@@ -17,9 +17,11 @@ interface Props {
     | 'info'
     | 'rose'
     | 'gray';
+  selectedFunc?: Function;
+  selectedId?: number;
 }
 
-const RichTable: React.FC<Props> = ({ tableHead, rows, tableHeaderColor="primary"}) => {
+const RichTable: React.FC<Props> = ({ tableHead, rows, tableHeaderColor="primary", selectedFunc, selectedId}) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const classes = richTableStyle();
@@ -58,7 +60,14 @@ const RichTable: React.FC<Props> = ({ tableHead, rows, tableHeaderColor="primary
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row, rowKey) =>
-            <TableRow key={rowKey} className={classes.tableBodyRow}>
+            <TableRow
+              key={rowKey}
+              className={classes.tableBodyRow}
+              classes={{selected: classes.selected}}
+              onClick={() => selectedFunc && selectedFunc(row[0])}
+              selected={selectedId == row[0]}
+              hover
+            >
               { row.map((r, cellKey) => (
                 <TableCell key={cellKey} className={classes.tableCell}>
                   {r}
@@ -67,7 +76,7 @@ const RichTable: React.FC<Props> = ({ tableHead, rows, tableHeaderColor="primary
             </TableRow>
           )}
           { emptyRows > 0 && (
-            <TableRow style={{ height: 59 * emptyRows }}>
+            <TableRow style={{ height: 51 * emptyRows }}>
               <TableCell colSpan={6} />
             </TableRow>
           )}

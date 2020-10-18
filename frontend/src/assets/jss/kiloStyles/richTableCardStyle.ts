@@ -25,7 +25,12 @@ createStyles({
     border: 'none',
     lineHeight: '1.42857143',
     fontSize: '14px',
-  }
+  },
+  buttonContainer: {
+    position: 'absolute',
+    right: '30px',
+    transform: 'translateY(-50%)',
+  },
 }));
 
 export default richTableCardStyle;
