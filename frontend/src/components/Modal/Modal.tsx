@@ -36,7 +36,6 @@ interface Props {
 
 const Modal: React.FC<Props> = (props) => {
   const { open, headerTitle, content, submitText, submitFunc, cancelText, cancelFunc, closeFunc, disabled, color, noSubmit } = props;
-  const [openModal, setOpenModal] = React.useState(false);
   const [isLoaded, setIsLoaded] = React.useState(true);
   const classes = modalStyle();
 
@@ -47,15 +46,10 @@ const Modal: React.FC<Props> = (props) => {
     closeFunc();
   }
 
-  React.useEffect(() => {
-    setOpenModal(open)
-  }, [open])
-
   return (
     <div>
       <Dialog
-        open={openModal}
-        keepMounted
+        open={open}
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
         classes={{ paper: classes.modal}}
