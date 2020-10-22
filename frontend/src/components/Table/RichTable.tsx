@@ -23,7 +23,7 @@ interface Props {
 
 const RichTable: React.FC<Props> = ({ tableHead, rows, tableHeaderColor="primary", selectedFunc, selectedId}) => {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const classes = richTableStyle();
   const tablePaginationClasses = tablePaginationStyle();
 
