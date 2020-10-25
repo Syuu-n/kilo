@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_11_082604) do
+ActiveRecord::Schema.define(version: 2020_10_25_070700) do
 
   create_table "lesson_classes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
@@ -32,7 +32,6 @@ ActiveRecord::Schema.define(version: 2020_10_11_082604) do
     t.bigint "lesson_class_id"
     t.datetime "start_at"
     t.datetime "end_at"
-    t.string "color"
     t.index ["lesson_class_id"], name: "index_lessons_on_lesson_class_id"
   end
 

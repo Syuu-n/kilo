@@ -18,6 +18,12 @@ class Lesson < ApplicationRecord
     end
   end
 
+  def color
+    if lesson_class
+      lesson_class.color
+    end
+  end
+
   def joined?(user)
     users.include? user
   end
