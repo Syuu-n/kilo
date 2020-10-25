@@ -10,6 +10,7 @@ import {
 import ScheduleView from 'views/ScheduleView';
 import ProfileView from 'views/ProfileView';
 import UsersView from 'views/AdminConsoleViews/UsersView';
+import ClassesView from 'views/AdminConsoleViews/ClassesView';
 
 export type Route = typeof mainPageRoutes[0];
 const mainPageRoutes = [
@@ -47,7 +48,7 @@ const mainPageRoutes = [
     sidebarName: 'クラス',
     navbarName: 'クラス',
     icon: LibraryBooks,
-    component: UsersView,
+    component: ClassesView,
     childRoute: true,
   },
   {

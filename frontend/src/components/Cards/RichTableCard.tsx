@@ -1,32 +1,35 @@
 import * as React from 'react';
 import { SvgIcon } from '@material-ui/core';
-import { Person, Edit, Close, PersonAdd } from '@material-ui/icons';
+import { Person, Edit, Close } from '@material-ui/icons';
 import richTableCardStyle from 'assets/jss/kiloStyles/richTableCardStyle';
 import { Card, CardHeader, CardIcon, CardBody, TooltipButton, RichTable, TableToolbar, AdminConfirmUserModal, AdminAddUserModal } from 'components';
-import { User } from 'responses/responseStructs';
+import { User, LessonClass, Plan, Lesson, LessonColor } from 'responses/responseStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
+import { implementsUser, implementsLessonClass } from 'assets/lib/typeCheck';
 
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
   cardTitle?: React.ReactNode;
   icon: typeof SvgIcon;
+  addIcon?: typeof SvgIcon;
   tableHeaderColor?: 'warning' | 'primary' | 'danger' | 'success' | 'info' | 'rose' | 'gray';
   tableHead?: string[];
-  tableSources: User[];
+  tableSources: sourceType[];
   updateFunc?: Function;
   dataType: dataType;
 }
 
-type dataType = "users" | "classes" | "plans" | "lessons";
+type sourceType = User | LessonClass | Plan | Lesson;
+type dataType = "users" | "lesson_classes" | "plans" | "lessons";
 type buttonColors = 'warning' | 'primary' | 'danger' | 'success' | 'info' | 'rose' | 'white' | 'simple';
 
-const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, icon, tableHeaderColor = 'primary', tableHead, tableSources, updateFunc, dataType }) => {
+const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, icon, addIcon, tableHeaderColor = 'primary', tableHead, tableSources, updateFunc, dataType }) => {
   const classes = richTableCardStyle();
   const Icon = icon;
   const [openShowModal, setOpenShowModal] = React.useState(false);
   const [openEditModal, setOpenEditModal] = React.useState(false);
-  const [selectedData, setSelectedData] = React.useState<User>();
+  const [selectedData, setSelectedData] = React.useState<sourceType>();
   const { enqueueSnackbar } = useSnackbar();
 
   const buttons = (id:number) => {
@@ -48,19 +51,62 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
     );
   };
 
+  // レッスンカラー用の div を追加する
+  const lessonColorDiv = (color: LessonColor) => {
+    let colorCode = '';
+    switch (color) {
+      case '':
+        colorCode = '#999';
+        break;
+      case 'orange':
+        colorCode = '#ff9800';
+        break;
+      case 'azure':
+        colorCode = '#00bcd4';
+        break;
+      case 'green':
+        colorCode = '#4caf50';
+        break;
+      case 'rose':
+        colorCode = '#e91e63';
+        break;
+    }
+    const style = {
+      backgroundColor: colorCode,
+      borderRadius: '3px',
+      height: '20px',
+      width: '50px'
+    }
+
+    return (
+      <div style={style} />
+    );
+  };
+
   // tableHead と tableSources へそれぞれ操作用項目を追加する
   const customTableHead = tableHead?.slice();
   customTableHead?.push("操作");
 
-  const customTableData = tableSources.slice().map((user) => {
-    return [
-      user.id,
-      user.last_name + " " + user.first_name,
-      user.last_name_kana + " " + user.first_name_kana,
-      user.email,
-      user.role.display_name,
-      buttons(user.id),
-    ]
+  const customTableData = tableSources.slice().map((data:sourceType) => {
+    if (implementsUser(data)) {
+      return [
+        data.id,
+        data.last_name + " " + data.first_name,
+        data.last_name_kana + " " + data.first_name_kana,
+        data.email,
+        data.role.display_name,
+        buttons(data.id),
+      ]
+    } else if (implementsLessonClass(data)) {
+      return [
+        data.id,
+        data.name,
+        data.description,
+        lessonColorDiv(data.color),
+        buttons(data.id),
+      ]
+    }
+    return [];
   });
 
   // アクションメニューをクリック時の動作
@@ -86,6 +132,7 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
     data && setSelectedData(data);
   };
 
+  // 選択した id の項目を削除する
   const deleteData = async (dataId:number) => {
     const accessToken = localStorage.getItem('kiloToken');
     if (!accessToken) {
@@ -129,20 +176,20 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
         </CardHeader>
         <CardBody>
           <TableToolbar
-            buttonTitle={"ユーザ追加"}
-            buttonIcon={PersonAdd}
+            buttonTitle={"新規作成"}
+            buttonIcon={addIcon ? addIcon : icon}
             updateFunc={updateFunc}
           />
           <RichTable
             tableHead={customTableHead}
             rows={customTableData}
-            tableHeaderColor="success"
+            tableHeaderColor={tableHeaderColor}
             selectedFunc={(id:number) => handleSelected(id)}
             selectedId={selectedData?.id}
           />
         </CardBody>
       </Card>
-      { dataType == "users" && (
+      { implementsUser(selectedData) && (
         <div>
           <AdminConfirmUserModal
             user={selectedData}

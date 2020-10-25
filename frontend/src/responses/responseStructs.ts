@@ -54,3 +54,10 @@ export interface CEvent extends Event {
   start:    Date;
   end:      Date;
 }
+
+export interface LessonClass {
+  id:          number;
+  name:        string;
+  description: string;
+  color:       LessonColor;
+}

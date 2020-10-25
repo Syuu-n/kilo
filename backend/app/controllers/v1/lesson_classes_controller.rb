@@ -7,7 +7,8 @@ module V1
 
     # GET /lesson_classes
     def index
-      render json: LessonClass.all, each_serializer: LessonClassSerializer
+      classes = LessonClass.all
+      render json: classes, each_serializer: LessonClassSerializer
     end
 
     # POST /lesson_classes

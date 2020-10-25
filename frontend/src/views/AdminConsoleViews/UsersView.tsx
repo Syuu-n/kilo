@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   People,
+  PersonAdd,
 } from '@material-ui/icons';
 import {
   RichTableCard,
@@ -53,13 +54,14 @@ const UsersView: React.FC = () => {
       { users ? (
         <RichTableCard
           icon={People}
+          addIcon={PersonAdd}
           headerColor="green"
           tableHeaderColor="success"
           cardTitle="ユーザー"
           tableHead={["ID", "名前", "名前（カナ）", "メールアドレス", "ステータス"]}
           tableSources={users}
           updateFunc={usersUpdateFunc}
-          dataType="users"
+          dataType="lesson_classes"
         >
         </RichTableCard>
       ) : (
