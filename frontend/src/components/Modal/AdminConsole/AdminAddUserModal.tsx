@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import { AdminFormInput, Modal, AdminConfirmUserModal, CustomDropDown } from 'components';
-import adminAddUserModalStyle from 'assets/jss/kiloStyles/adminAddUserModalStyle';
+import adminModalStyle from 'assets/jss/kiloStyles/adminModalStyle';
 import { CreateUserRequest } from 'request/requestStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { Role, Plan, User } from 'responses/responseStructs';
@@ -32,7 +32,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
   const [user, setUser] = React.useState<CreateUserRequest>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
-  const classes = adminAddUserModalStyle();
+  const classes = adminModalStyle();
 
   const getRoles = async () => {
     const accessToken = localStorage.getItem('kiloToken');

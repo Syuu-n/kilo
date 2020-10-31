@@ -1,6 +1,6 @@
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 
-const adminAddUserModalStyle = makeStyles(() =>
+const adminModalStyle = makeStyles(() =>
 createStyles({
   flexContainer: {
     display: 'flex',
@@ -8,6 +8,9 @@ createStyles({
   flexContainerFirst: {
     margin: '0 10px 0 0',
   },
+  descriptionContainer: {
+    minWidth: '300px',
+  }
 }));
 
-export default adminAddUserModalStyle;
+export default adminModalStyle;

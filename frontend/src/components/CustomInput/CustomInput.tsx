@@ -15,6 +15,8 @@ interface Props {
   success?: boolean;
   noIcon?: boolean;
   errorText?: string;
+  rowsMin?: number;
+  rowsMax?: number;
 }
 
 const CustomInput: React.SFC<Props> = props => {
@@ -28,6 +30,8 @@ const CustomInput: React.SFC<Props> = props => {
     success,
     noIcon,
     errorText,
+    rowsMin,
+    rowsMax,
   } = props;
 
   const classes = customInputStyle();
@@ -71,6 +75,9 @@ const CustomInput: React.SFC<Props> = props => {
         }}
         id={id}
         {...inputProps}
+        multiline={rowsMin ? true : false}
+        rows={rowsMin}
+        rowsMax={rowsMax}
       />
       {error && !noIcon ? (
         <Clear className={classes.feedback + ' ' + classes.labelRootError} />

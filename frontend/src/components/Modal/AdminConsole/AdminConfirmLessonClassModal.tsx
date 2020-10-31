@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Modal, AdminFormInput } from 'components';
 // import { fetchApp, NetworkError } from 'request/fetcher';
 // import { useSnackbar } from 'notistack';
-import adminAddUserModalStyle from 'assets/jss/kiloStyles/adminAddUserModalStyle';
+import adminModalStyle from 'assets/jss/kiloStyles/adminModalStyle';
 import { CreateLessonClassRequest } from 'request/requestStructs';
 import { LessonClass } from 'responses/responseStructs';
 import { colorCheck } from 'assets/lib/lessonColors';
@@ -20,7 +20,7 @@ interface Props {
 const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
   const { lessonClass, open, closeFunc, cancelFunc, type, updateFunc } = props;
   // const { enqueueSnackbar } = useSnackbar();
-  const classes = adminAddUserModalStyle();
+  const classes = adminModalStyle();
 
   const addLessonClass = async () => {
     // const accessToken = localStorage.getItem('kiloToken');
@@ -117,6 +117,9 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       inputType="text"
       value={lessonClass?.description}
       confirm
+      rowsMin={10}
+      rowsMax={10}
+      customClass={classes.descriptionContainer}
     />
     <AdminFormInput
       labelText="レッスンカラー"

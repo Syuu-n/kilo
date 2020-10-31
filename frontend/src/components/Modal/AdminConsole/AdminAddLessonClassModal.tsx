@@ -2,8 +2,9 @@ import * as React from 'react';
 import { AdminFormInput, Modal, AdminConfirmLessonClassModal, CustomDropDown } from 'components';
 import { CreateLessonClassRequest } from 'request/requestStructs';
 import { LessonClass } from 'responses/responseStructs';
-import { ValidationReturn, nameValidation } from 'assets/lib/validations';
+import { ValidationReturn, nameValidation, requireValidation } from 'assets/lib/validations';
 import { LessonColor, lessonColorSets, colorCheck } from 'assets/lib/lessonColors';
+import adminModalStyle from 'assets/jss/kiloStyles/adminModalStyle';
 
 interface Props {
   open: boolean;
@@ -27,6 +28,7 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
   const [lessonClass, setLessonClass] = React.useState<CreateLessonClassRequest>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
+  const classes = adminModalStyle();
 
   const content =
     <div>
@@ -41,10 +43,13 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
       <AdminFormInput
         labelText="クラス説明"
         inputType="text"
-        onChangeFunc={(value:string) => {setDescription({value: value, error: undefined})}}
+        onChangeFunc={(value:string) => {setDescription({value: value, error: requireValidation(value)})}}
         value={description.value}
         required
         errorText={description.error}
+        rowsMin={10}
+        rowsMax={10}
+        customClass={classes.descriptionContainer}
       />
       <CustomDropDown
         dropdownList={lessonColorSets}

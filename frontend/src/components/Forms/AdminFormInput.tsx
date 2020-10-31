@@ -13,10 +13,12 @@ interface Props {
   formControlProps?: FormControlProps;
   errorText?: string;
   required?: boolean;
+  rowsMin?: number;
+  rowsMax?: number;
 };
 
 const AdminFormInput: React.SFC<Props> = (props) => {
-  const { inputType, labelText, onChangeFunc, value, placeholder, confirm, customClass, formControlProps, required, errorText } = props;
+  const { inputType, labelText, onChangeFunc, value, placeholder, confirm, customClass, formControlProps, required, errorText, rowsMin, rowsMax } = props;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChangeFunc) {
@@ -45,6 +47,8 @@ const AdminFormInput: React.SFC<Props> = (props) => {
         noIcon={true}
         error={errorText ? true : false}
         errorText={errorText}
+        rowsMin={rowsMin}
+        rowsMax={rowsMax}
       />
     </div>
   );

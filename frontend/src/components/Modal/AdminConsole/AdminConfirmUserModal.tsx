@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { Modal, AdminFormInput } from 'components';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
-import adminAddUserModalStyle from 'assets/jss/kiloStyles/adminAddUserModalStyle';
+import adminModalStyle from 'assets/jss/kiloStyles/adminModalStyle';
 import { CreateUserRequest } from 'request/requestStructs';
 import { Role, Plan, User } from 'responses/responseStructs';
 
@@ -22,7 +22,7 @@ interface Props {
 const AdminConfirmUserModal: React.SFC<Props> = (props) => {
   const { user, open, closeFunc, cancelFunc, type, selectedRole, selectedPlan, updateFunc, userID } = props;
   const { enqueueSnackbar } = useSnackbar();
-  const classes = adminAddUserModalStyle();
+  const classes = adminModalStyle();
 
   const addUser = async () => {
     const accessToken = localStorage.getItem('kiloToken');

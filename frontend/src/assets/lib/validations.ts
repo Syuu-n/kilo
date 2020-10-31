@@ -37,3 +37,8 @@ export const phoneNumberValidation = (phoneNumber:string) => {
   if (!phoneNumber) return "必須項目です";
   return;
 };
+
+export const requireValidation = (value:string) => {
+  if (!value) return "必須項目です";
+  return;
+}
