@@ -123,6 +123,8 @@ import PasswordResetModal from './Modal/PasswordResetModal';
 import ShowEventModal from './Modal/ShowEventModal';
 import AdminAddUserModal from './Modal/AdminConsole/AdminAddUserModal';
 import AdminConfirmUserModal from "./Modal/AdminConsole/AdminConfirmUserModal";
+import AdminAddLessonClassModal from "./Modal/AdminConsole/AdminAddLessonClassModal";
+import AdminConfirmLessonClassModal from './Modal/AdminConsole/AdminConfirmLessonClassModal';
 
 // Badge
 import Badge from './Badge/Badge';
@@ -198,6 +200,8 @@ export {
   ShowEventModal,
   AdminAddUserModal,
   AdminConfirmUserModal,
+  AdminAddLessonClassModal,
+  AdminConfirmLessonClassModal,
   // Badge
   Badge,
 };

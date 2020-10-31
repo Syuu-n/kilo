@@ -1,4 +1,5 @@
 import { Event } from 'react-big-calendar';
+import { LessonColor } from 'assets/lib/lessonColors';
 
 export interface User {
   id:                      number;
@@ -31,8 +32,6 @@ export interface Role {
   name: string;
   display_name: string;
 }
-
-export type LessonColor = '' | 'orange' | 'green' | 'azure' | 'rose';
 
 export interface Lesson {
   id:         number;

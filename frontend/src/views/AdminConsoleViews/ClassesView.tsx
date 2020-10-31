@@ -61,7 +61,7 @@ const ClassesView: React.FC = () => {
           tableHead={["ID", "名前", "説明", "カラー"]}
           tableSources={lessonClasses}
           updateFunc={lessonClassesUpdateFunc}
-          dataType="users"
+          dataType="lesson_classes"
         >
         </RichTableCard>
       ) : (

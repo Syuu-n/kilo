@@ -3,10 +3,11 @@ import { SvgIcon } from '@material-ui/core';
 import { Person, Edit, Close } from '@material-ui/icons';
 import richTableCardStyle from 'assets/jss/kiloStyles/richTableCardStyle';
 import { Card, CardHeader, CardIcon, CardBody, TooltipButton, RichTable, TableToolbar, AdminConfirmUserModal, AdminAddUserModal } from 'components';
-import { User, LessonClass, Plan, Lesson, LessonColor } from 'responses/responseStructs';
+import { User, LessonClass, Plan, Lesson } from 'responses/responseStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 import { implementsUser, implementsLessonClass } from 'assets/lib/typeCheck';
+import { LessonColor, colorCheck } from 'assets/lib/lessonColors';
 
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
@@ -53,24 +54,7 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
 
   // レッスンカラー用の div を追加する
   const lessonColorDiv = (color: LessonColor) => {
-    let colorCode = '';
-    switch (color) {
-      case '':
-        colorCode = '#999';
-        break;
-      case 'orange':
-        colorCode = '#ff9800';
-        break;
-      case 'azure':
-        colorCode = '#00bcd4';
-        break;
-      case 'green':
-        colorCode = '#4caf50';
-        break;
-      case 'rose':
-        colorCode = '#e91e63';
-        break;
-    }
+    const colorCode = colorCheck(color).colorCode;
     const style = {
       backgroundColor: colorCode,
       borderRadius: '3px',
@@ -179,6 +163,7 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
             buttonTitle={"新規作成"}
             buttonIcon={addIcon ? addIcon : icon}
             updateFunc={updateFunc}
+            dataType={dataType}
           />
           <RichTable
             tableHead={customTableHead}
