@@ -5,6 +5,10 @@ createStyles({
   flexContainer: {
     display: 'flex',
   },
+  flexMarginBottomContainer: {
+    display: 'flex',
+    margin: '0 0 10px 0',
+  },
   flexContainerFirst: {
     margin: '0 10px 0 0',
   },

@@ -117,8 +117,8 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       inputType="text"
       value={lessonClass?.description}
       confirm
-      rowsMin={10}
-      rowsMax={10}
+      rowsMin={6}
+      rowsMax={6}
       customClass={classes.descriptionContainer}
     />
     <AdminFormInput
