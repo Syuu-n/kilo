@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Modal, AdminFormInput } from 'components';
 // import { fetchApp, NetworkError } from 'request/fetcher';
 // import { useSnackbar } from 'notistack';
-import adminModalStyle from 'assets/jss/kiloStyles/adminModalStyle';
+import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 import { CreateLessonClassRequest } from 'request/requestStructs';
 import { LessonClass } from 'responses/responseStructs';
 import { colorCheck } from 'assets/lib/lessonColors';

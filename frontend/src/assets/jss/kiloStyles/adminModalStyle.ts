@@ -1,4 +1,4 @@
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles, createMuiTheme } from '@material-ui/core/styles';
 
 const adminModalStyle = makeStyles(() =>
 createStyles({
@@ -10,7 +10,16 @@ createStyles({
   },
   descriptionContainer: {
     minWidth: '300px',
-  }
+  },
 }));
 
-export default adminModalStyle;
+const pickerTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#4caf50',
+      contrastText: '#FFFFFF',
+    },
+  },
+});
+
+export { adminModalStyle, pickerTheme};

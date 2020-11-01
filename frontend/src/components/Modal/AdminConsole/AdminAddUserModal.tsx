@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import { AdminFormInput, Modal, AdminConfirmUserModal, CustomDropDown } from 'components';
-import adminModalStyle from 'assets/jss/kiloStyles/adminModalStyle';
+import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 import { CreateUserRequest } from 'request/requestStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { Role, Plan, User } from 'responses/responseStructs';

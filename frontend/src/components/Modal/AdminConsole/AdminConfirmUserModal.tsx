@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { Modal, AdminFormInput } from 'components';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
-import adminModalStyle from 'assets/jss/kiloStyles/adminModalStyle';
+import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 import { CreateUserRequest } from 'request/requestStructs';
 import { Role, Plan, User } from 'responses/responseStructs';
 
