@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { adminModalStyle, pickerTheme } from 'assets/jss/kiloStyles/adminModalStyle';
-import { lessonRuleWeekSets, lessonRuleDotwSets, weekCheck, dotwCheck } from 'assets/lib/lessonRules';
+import { lessonRuleWeekSets, lessonRuleDotwSets, weekCheck, dotwCheck, MomentLessonRule } from 'assets/lib/lessonRules';
 import MomentUtils from '@date-io/moment';
 import * as moment from 'moment';
 import { ThemeProvider } from '@material-ui/core';
@@ -13,13 +13,6 @@ interface Props {
   lessonRules: MomentLessonRule[];
   setLessonRuleFunc?: Function;
   confirm?: boolean;
-};
-
-interface MomentLessonRule {
-  week: number;
-  dotw: number;
-  start_at: moment.Moment;
-  end_at: moment.Moment;
 };
 
 const AdminLessonRuleSetting: React.FC<Props> = (props) => {

@@ -1,3 +1,6 @@
+import * as moment from 'moment';
+import { LessonRule } from 'responses/responseStructs';
+
 export const lessonRuleWeekArray = [0, 1, 2, 3, 4];
 
 export const lessonRuleWeekSets = (
@@ -56,4 +59,35 @@ export function dotwCheck (dotw:number | undefined) {
     default:
       return '';
   }
+};
+
+export interface MomentLessonRule {
+  week: number;
+  dotw: number;
+  start_at: moment.Moment;
+  end_at: moment.Moment;
+};
+
+export const convertLessonRulesToMoment = (lessonRules:LessonRule[]) => {
+  const momentLR = lessonRules.map((lr) => {
+    return {
+      week: lr.week,
+      dotw: lr.dotw,
+      start_at: moment(lr.start_at),
+      end_at: moment(lr.end_at),
+    } as MomentLessonRule;
+  })
+  return momentLR;
+};
+
+export const convertMomentLessonRulesToRequest = (momentLessonRules:MomentLessonRule[]) => {
+  const requestLR = momentLessonRules.map((mlr) => {
+    return {
+      week: mlr.week,
+      dotw: mlr.dotw,
+      start_at: mlr.start_at.toDate(),
+      end_at: mlr.end_at.toDate(),
+    } as LessonRule;
+  })
+  return requestLR;
 };

@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { Modal, AdminFormInput, AdminLessonRuleSetting } from 'components';
-// import { fetchApp, NetworkError } from 'request/fetcher';
-// import { useSnackbar } from 'notistack';
+import { fetchApp, NetworkError } from 'request/fetcher';
+import { useSnackbar } from 'notistack';
 import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 import { CreateLessonClassRequest } from 'request/requestStructs';
 import { LessonClass } from 'responses/responseStructs';
 import { colorCheck } from 'assets/lib/lessonColors';
+import { MomentLessonRule, convertMomentLessonRulesToRequest } from 'assets/lib/lessonRules';
 
 interface Props {
-  lessonClass?: CreateLessonClassRequest | LessonClass;
+  lessonClass: CreateLessonClassRequest | LessonClass;
   open: boolean;
   closeFunc: Function;
   cancelFunc?: Function;
@@ -18,50 +19,58 @@ interface Props {
   momentLessonRules: MomentLessonRule[];
 };
 
-interface MomentLessonRule {
-  week: number;
-  dotw: number;
-  start_at: moment.Moment;
-  end_at: moment.Moment;
-};
-
 const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
   const { lessonClass, open, closeFunc, cancelFunc, type, updateFunc, momentLessonRules } = props;
-  // const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const classes = adminModalStyle();
 
   const addLessonClass = async () => {
-    // const accessToken = localStorage.getItem('kiloToken');
-    // if (!accessToken) {
-    //   return;
-    // }
+    const accessToken = localStorage.getItem('kiloToken');
+    if (!accessToken) {
+      return;
+    }
 
-    // const res = await fetchApp(
-    //   '/v1/users',
-    //   'POST',
-    //   accessToken,
-    //   JSON.stringify({
-    //     user,
-    //   })
-    // )
+    // NOTE: JSON.stringify で key になるため lesson_class という名前になっている
+    const lesson_class = {
+      name: lessonClass.name,
+      description: lessonClass.description,
+      color: lessonClass.color,
+      lesson_rules: convertMomentLessonRulesToRequest(momentLessonRules),
+    };
 
-    // if (res instanceof NetworkError) {
-    //   console.log("ServerError");
-    //   enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    //   return;
-    // }
+    const res = await fetchApp(
+      '/v1/lesson_classes',
+      'POST',
+      accessToken,
+      JSON.stringify({
+        lesson_class,
+      })
+    )
 
-    // switch (res.status) {
-    //   case 201:
-    //     enqueueSnackbar('ユーザーの作成に成功しました。', { variant: 'success'});
-    //     break;
-    //   case 400:
-    //     enqueueSnackbar('既に使用されているメールアドレスです。', { variant: 'error' });
-    //     break; 
-    //   case 422:
-    //     enqueueSnackbar('ユーザーの作成に失敗しました。内容を確かめてください。', { variant: 'error' });
-    //     break;
-    // }
+    if (res instanceof NetworkError) {
+      console.log("ServerError");
+      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
+      return;
+    }
+    const json = await res.json();
+    switch (res.status) {
+      case 201:
+        enqueueSnackbar('クラスの作成に成功しました。', { variant: 'success'});
+        break;
+      case 422:
+        switch (json.code) {
+          case 'no_lesson_rule_error':
+            enqueueSnackbar('レッスンルールが設定されていません。', { variant: 'error' });
+            break;
+          case 'lesson_rule_invalid_error':
+            enqueueSnackbar('クラスの作成に失敗しました。内容が正しくありません。', { variant: 'error' });
+          default:
+            enqueueSnackbar('クラスの作成に失敗しました。内容を確かめてください。', { variant: 'error' });
+        };
+        break;
+      default:
+        enqueueSnackbar('クラスの作成に失敗しました。', { variant: 'error' });
+    }
   };
 
   const addLessonClassFunc = async () => {
@@ -116,14 +125,14 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
     <AdminFormInput
       labelText="クラス名"
       inputType="text"
-      value={lessonClass?.name}
+      value={lessonClass.name}
       customClass={classes.flexContainerFirst}
       confirm
     />
     <AdminFormInput
       labelText="クラス説明"
       inputType="text"
-      value={lessonClass?.description}
+      value={lessonClass.description}
       confirm
       rowsMin={6}
       rowsMax={6}
@@ -131,7 +140,7 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
     <AdminFormInput
       labelText="レッスンカラー"
       inputType="text"
-      value={colorCheck(lessonClass?.color).colorName}
+      value={colorCheck(lessonClass.color).colorName}
       confirm
     />
     <AdminLessonRuleSetting

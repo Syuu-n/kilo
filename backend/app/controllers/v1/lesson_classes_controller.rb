@@ -108,7 +108,7 @@ module V1
 
     def lesson_rule_params
       params.require(:lesson_class).permit(:name, :description, :color,
-                                           { lesson_rules: [:dotw, :start_at, :end_at]}
+                                           { lesson_rules: [:week, :dotw, :start_at, :end_at]}
       )
     end
   end

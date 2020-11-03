@@ -4,6 +4,7 @@ import { CreateLessonClassRequest } from 'request/requestStructs';
 import { LessonClass } from 'responses/responseStructs';
 import { ValidationReturn, nameValidation } from 'assets/lib/validations';
 import { LessonColor, lessonColorSets, colorCheck } from 'assets/lib/lessonColors';
+import { MomentLessonRule, convertLessonRulesToMoment } from 'assets/lib/lessonRules';
 // import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 import * as moment from 'moment';
 
@@ -19,13 +20,6 @@ interface CustomDropDownColor {
   value: LessonColor;
   display_name: string;
   error: string | undefined;
-};
-
-interface MomentLessonRule {
-  week: number;
-  dotw: number;
-  start_at: moment.Moment;
-  end_at: moment.Moment;
 };
 
 const AdminAddLessonClassModal: React.FC<Props> = (props) => {
@@ -63,7 +57,7 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
         dropdownList={lessonColorSets}
         hoverColor="success"
         buttonText={selectedColor.display_name}
-        onClick={setSelectedColor}
+        onClick={(value:any) => setSelectedColor({value: value.name, display_name: value.display_name, error: undefined})}
         buttonProps={{color: "success", fullWidth: true}}
         fullWidth
       />
@@ -95,8 +89,9 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
       setName({value: selectedClass.name, error: undefined});
       setDescription({value: selectedClass.description, error: undefined});
       setSelectedColor({value: selectedClass.color, display_name: colorCheck(selectedClass.color).colorName, error: undefined});
+      setLessonRules(convertLessonRulesToMoment(selectedClass.lesson_rules))
     };
-  }, [setLessonClass]);
+  }, [selectedClass]);
 
   React.useEffect(() => {
     const lessonRulesCheck = () => {

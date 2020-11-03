@@ -18,10 +18,3 @@ export interface CreateLessonClassRequest {
   description: string;
   color:       LessonColor;
 };
-
-export interface CreateLessonRuleRequest {
-  week:     number;
-  dotw:     number;
-  start_at: string;
-  end_at:   string;
-}

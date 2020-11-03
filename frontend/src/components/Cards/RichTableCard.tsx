@@ -2,12 +2,14 @@ import * as React from 'react';
 import { SvgIcon } from '@material-ui/core';
 import { Person, Edit, Close } from '@material-ui/icons';
 import richTableCardStyle from 'assets/jss/kiloStyles/richTableCardStyle';
-import { Card, CardHeader, CardIcon, CardBody, TooltipButton, RichTable, TableToolbar, AdminConfirmUserModal, AdminAddUserModal } from 'components';
+import { Card, CardHeader, CardIcon, CardBody, TooltipButton, RichTable, TableToolbar,
+  AdminConfirmUserModal, AdminAddUserModal, AdminConfirmLessonClassModal, AdminAddLessonClassModal } from 'components';
 import { User, LessonClass, Plan, Lesson } from 'responses/responseStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 import { implementsUser, implementsLessonClass } from 'assets/lib/typeCheck';
 import { LessonColor, colorCheck } from 'assets/lib/lessonColors';
+import { convertLessonRulesToMoment } from 'assets/lib/lessonRules';
 
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
@@ -52,6 +54,23 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
     );
   };
 
+  // アクションメニューをクリック時の動作
+  const handleActionClick = (dataType:dataType, actionType:string, dataId:number) => {
+    switch (actionType) {
+      case "確認":
+        setOpenShowModal(true);
+        break;
+      case "編集":
+        setOpenEditModal(true);
+        break;
+      case "削除":
+        if (confirm(`選択中の（種類:${dataType} ID:${dataId}）を本当に削除しますか？`)) {
+          deleteData(dataId);
+        };
+        break;
+    }
+  };
+
   // レッスンカラー用の div を追加する
   const lessonColorDiv = (color: LessonColor) => {
     const colorCode = colorCheck(color).colorCode;
@@ -92,23 +111,6 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
     }
     return [];
   });
-
-  // アクションメニューをクリック時の動作
-  const handleActionClick = (dataType:dataType, actionType:string, dataId:number) => {
-    switch (actionType) {
-      case "確認":
-        setOpenShowModal(true);
-        break;
-      case "編集":
-        setOpenEditModal(true);
-        break;
-      case "削除":
-        if (confirm(`選択中の（種類:${dataType} ID:${dataId}）を本当に削除しますか？`)) {
-          deleteData(dataId);
-        };
-        break;
-    }
-  };
 
   // テーブルの項目を選択時の動作
   const handleSelected = (id:number) => {
@@ -190,6 +192,24 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
             openFunc={() => setOpenEditModal(true)}
             updateFunc={updateFunc}
             selectedUser={selectedData}
+          />
+        </div>
+      )}
+      { implementsLessonClass(selectedData) && (
+        <div>
+          <AdminConfirmLessonClassModal
+            lessonClass={selectedData}
+            open={openShowModal}
+            closeFunc={() => setOpenShowModal(false)}
+            type="show"
+            momentLessonRules={convertLessonRulesToMoment(selectedData.lesson_rules)}
+          />
+          <AdminAddLessonClassModal
+            open={openEditModal}
+            closeFunc={() => setOpenEditModal(false)}
+            openFunc={() => setOpenEditModal(true)}
+            updateFunc={updateFunc}
+            selectedClass={selectedData}
           />
         </div>
       )}

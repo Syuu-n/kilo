@@ -55,8 +55,17 @@ export interface CEvent extends Event {
 }
 
 export interface LessonClass {
-  id:          number;
-  name:        string;
-  description: string;
-  color:       LessonColor;
+  id:           number;
+  name:         string;
+  description:  string;
+  color:        LessonColor;
+  lesson_rules: LessonRule[];
+}
+
+export interface LessonRule {
+  id?:       number;
+  week:     number;
+  dotw:     number;
+  start_at: Date;
+  end_at:   Date;
 }
