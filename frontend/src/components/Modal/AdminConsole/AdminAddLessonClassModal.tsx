@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AdminFormInput, Modal, AdminConfirmLessonClassModal, CustomDropDown, Card, CardBody, IconButton } from 'components';
 import { CreateLessonClassRequest } from 'request/requestStructs';
 import { LessonClass } from 'responses/responseStructs';
-import { ValidationReturn, nameValidation, requireValidation } from 'assets/lib/validations';
+import { ValidationReturn, nameValidation } from 'assets/lib/validations';
 import { LessonColor, lessonColorSets, colorCheck } from 'assets/lib/lessonColors';
 import { adminModalStyle, pickerTheme } from 'assets/jss/kiloStyles/adminModalStyle';
 import { lessonRuleWeekSets, lessonRuleDotwSets, weekCheck, dotwCheck } from 'assets/lib/lessonRules';
@@ -10,7 +10,7 @@ import { TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import * as moment from 'moment';
 import { ThemeProvider } from '@material-ui/core';
-import { AddCircle } from '@material-ui/icons';
+import { AddCircle, RemoveCircle } from '@material-ui/icons';
 
 interface Props {
   open: boolean;
@@ -57,11 +57,34 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
     setLessonRules(lrs);
   };
 
+  const handleRemoveLessonRule = (index:number) => {
+    const lrs = lessonRules.filter((lr) => true);
+    // 削除ボタンが押された要素を削除する
+    if (lrs[index]) {
+      lrs.splice(index, 1);
+    }
+    setLessonRules(lrs);
+  };
+
   const ruleSettings =
     <div>
       { lessonRules.map((lr, i) => (
         <Card key={i}>
           <CardBody>
+            <div className={classes.ruleSettingTitleContainer}>
+              <p className={classes.ruleSettingTitle}>スケジュール設定</p>
+              {/* 最初のスケジュール設定には削除ボタンを追加しない */}
+              { i != 0 && (
+                <IconButton
+                  color="white"
+                  customClass={classes.ruleSettingCloseButton}
+                  key="Close"
+                  onClick={() => handleRemoveLessonRule(i)}
+                >
+                  <RemoveCircle/>
+                </IconButton>
+              )}
+            </div>
             <div className={classes.flexMarginBottomContainer}>
               <CustomDropDown
                 dropdownList={lessonRuleWeekSets}
@@ -71,6 +94,7 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
                 buttonProps={{color: "success", fullWidth: true}}
                 fullWidth
                 customClass={classes.flexContainerFirst}
+                miniButton
               />
               <CustomDropDown
                 dropdownList={lessonRuleDotwSets}
@@ -79,6 +103,7 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
                 onClick={(value:any) => handleLessonRuleChange(i, undefined, value.name)}
                 buttonProps={{color: "success", fullWidth: true}}
                 fullWidth
+                miniButton
               />
             </div>
             <div className={classes.flexContainer}>
@@ -112,14 +137,15 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
         </Card>
       ))}
       { lessonRules.length < 3 && (
-        <IconButton
-        color="white"
-        // customClass={classes.closeButton}
-        key="Close"
-        onClick={() => handleAddLessonRule()}
-        >
-          <AddCircle />
-        </IconButton>
+        <div className={classes.flexContainer}>
+          <IconButton
+          color="white"
+          key="Close"
+          onClick={() => handleAddLessonRule()}
+          >
+            <AddCircle />
+          </IconButton>
+        </div>
       )}
     </div>;
 
@@ -136,12 +162,11 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
       <AdminFormInput
         labelText="クラス説明"
         inputType="text"
-        onChangeFunc={(value:string) => {setDescription({value: value, error: requireValidation(value)})}}
+        onChangeFunc={(value:string) => {setDescription({value: value, error: undefined})}}
         value={description.value}
         errorText={description.error}
         rowsMin={6}
         rowsMax={6}
-        customClass={classes.descriptionContainer}
       />
       <CustomDropDown
         dropdownList={lessonColorSets}

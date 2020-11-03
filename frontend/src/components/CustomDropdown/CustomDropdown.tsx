@@ -30,11 +30,12 @@ interface Props {
   onClick?: Function;
   fullWidth?: boolean;
   customClass?: string;
+  miniButton?: boolean;
 }
 
 const CustomDropdown: React.FC<Props> = (props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { hoverColor, buttonText, buttonIcon, dropdownList, buttonProps, caret, noLiPadding, onClick, fullWidth, customClass } = props;
+  const { hoverColor, buttonText, buttonIcon, dropdownList, buttonProps, caret, noLiPadding, onClick, fullWidth, customClass, miniButton } = props;
   const classes = customDropdownStyle();
 
   const handleClick = (event:any) => {
@@ -77,6 +78,7 @@ const CustomDropdown: React.FC<Props> = (props) => {
   return (
     <div className={wrapperClasses + (customClass ? ' ' + customClass : ' ')}>
       <Button
+        customClass={miniButton ? classes.buttonPadding : ''}
         aria-label="DropDown"
         aria-owns={anchorEl ? "menu-list" : undefined}
         aria-haspopup="true"

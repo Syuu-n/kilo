@@ -168,7 +168,10 @@ createStyles({
   },
   fullWidth: {
     width: '100%',
-  }
+  },
+  buttonPadding: {
+    padding: '12px 9px',
+  },
 }),
 );
 

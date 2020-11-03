@@ -12,8 +12,17 @@ createStyles({
   flexContainerFirst: {
     margin: '0 10px 0 0',
   },
-  descriptionContainer: {
-    minWidth: '300px',
+  ruleSettingTitle: {
+    margin: 0,
+  },
+  ruleSettingTitleContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    margin: '0 0 5px 0',
+  },
+  ruleSettingCloseButton: {
+    margin: 0,
   },
 }));
 
