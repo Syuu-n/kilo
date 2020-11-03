@@ -4,6 +4,7 @@ Faker::Config.locale = 'ja'
   LessonRule.seed(:id,
                     {
                       id: i + 1,
+                      week: rand(1..4),
                       dotw: rand(0..6),
                       start_at: Time.current.beginning_of_day + i.hours,
                       end_at: Time.current.beginning_of_day + i.hours + 1.hours,
