@@ -24,6 +24,9 @@ createStyles({
   ruleSettingCloseButton: {
     margin: 0,
   },
+  disableTextColor: {
+    color: '#AAAAAA',
+  },
 }));
 
 const pickerTheme = createMuiTheme({

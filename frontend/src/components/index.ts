@@ -125,6 +125,7 @@ import AdminAddUserModal from './Modal/AdminConsole/AdminAddUserModal';
 import AdminConfirmUserModal from "./Modal/AdminConsole/AdminConfirmUserModal";
 import AdminAddLessonClassModal from "./Modal/AdminConsole/AdminAddLessonClassModal";
 import AdminConfirmLessonClassModal from './Modal/AdminConsole/AdminConfirmLessonClassModal';
+import AdminLessonRuleSetting from './Modal/AdminConsole/AdminLessonRuleSetting';
 
 // Badge
 import Badge from './Badge/Badge';
@@ -202,6 +203,7 @@ export {
   AdminConfirmUserModal,
   AdminAddLessonClassModal,
   AdminConfirmLessonClassModal,
+  AdminLessonRuleSetting,
   // Badge
   Badge,
 };

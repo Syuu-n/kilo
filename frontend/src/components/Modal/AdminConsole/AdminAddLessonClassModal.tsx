@@ -1,16 +1,11 @@
 import * as React from 'react';
-import { AdminFormInput, Modal, AdminConfirmLessonClassModal, CustomDropDown, Card, CardBody, IconButton } from 'components';
+import { AdminFormInput, Modal, AdminConfirmLessonClassModal, CustomDropDown, AdminLessonRuleSetting } from 'components';
 import { CreateLessonClassRequest } from 'request/requestStructs';
 import { LessonClass } from 'responses/responseStructs';
 import { ValidationReturn, nameValidation } from 'assets/lib/validations';
 import { LessonColor, lessonColorSets, colorCheck } from 'assets/lib/lessonColors';
-import { adminModalStyle, pickerTheme } from 'assets/jss/kiloStyles/adminModalStyle';
-import { lessonRuleWeekSets, lessonRuleDotwSets, weekCheck, dotwCheck } from 'assets/lib/lessonRules';
-import { TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
+// import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 import * as moment from 'moment';
-import { ThemeProvider } from '@material-ui/core';
-import { AddCircle, RemoveCircle } from '@material-ui/icons';
 
 interface Props {
   open: boolean;
@@ -26,6 +21,13 @@ interface CustomDropDownColor {
   error: string | undefined;
 };
 
+interface MomentLessonRule {
+  week: number;
+  dotw: number;
+  start_at: moment.Moment;
+  end_at: moment.Moment;
+};
+
 const AdminAddLessonClassModal: React.FC<Props> = (props) => {
   const { open, closeFunc, openFunc, updateFunc, selectedClass } = props;
   const [name, setName] = React.useState<ValidationReturn>({value: '', error: ''});
@@ -34,120 +36,9 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
   const [lessonClass, setLessonClass] = React.useState<CreateLessonClassRequest>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
-  const newLessonRule = {week: -1, dotw: -1, start_at: moment(), end_at: moment().add(1, 'hour')};
+  const newLessonRule = {week: -1, dotw: -1, start_at: moment(), end_at: moment().add(1, 'hour')} as MomentLessonRule;
   const [lessonRules, setLessonRules] = React.useState([newLessonRule]);
-  const classes = adminModalStyle();
-
-  const handleLessonRuleChange = (count:number, week?:number, dotw?:number, startAt?:moment.Moment|null, endAt?:moment.Moment|null) => {
-    // lessonRules のディープコピー
-    const lrs = lessonRules.filter((lr) => true);
-    const lr = {
-      week: week != undefined ? week : lrs[count].week,
-      dotw: dotw != undefined ? dotw : lrs[count].dotw,
-      start_at: startAt ? startAt : lrs[count].start_at,
-      end_at: endAt ? endAt : lrs[count].end_at,
-    };
-    lrs[count] = lr;
-    setLessonRules(lrs);
-  };
-
-  const handleAddLessonRule = () => {
-    const lrs = lessonRules.filter((lr) => true);
-    lrs.push(newLessonRule);
-    setLessonRules(lrs);
-  };
-
-  const handleRemoveLessonRule = (index:number) => {
-    const lrs = lessonRules.filter((lr) => true);
-    // 削除ボタンが押された要素を削除する
-    if (lrs[index]) {
-      lrs.splice(index, 1);
-    }
-    setLessonRules(lrs);
-  };
-
-  const ruleSettings =
-    <div>
-      { lessonRules.map((lr, i) => (
-        <Card key={i}>
-          <CardBody>
-            <div className={classes.ruleSettingTitleContainer}>
-              <p className={classes.ruleSettingTitle}>スケジュール設定</p>
-              {/* 最初のスケジュール設定には削除ボタンを追加しない */}
-              { i != 0 && (
-                <IconButton
-                  color="white"
-                  customClass={classes.ruleSettingCloseButton}
-                  key="Close"
-                  onClick={() => handleRemoveLessonRule(i)}
-                >
-                  <RemoveCircle/>
-                </IconButton>
-              )}
-            </div>
-            <div className={classes.flexMarginBottomContainer}>
-              <CustomDropDown
-                dropdownList={lessonRuleWeekSets}
-                hoverColor="success"
-                buttonText={lr.week == -1 ? '週を選択' : weekCheck(lr.week)}
-                onClick={(value:any) => handleLessonRuleChange(i, value.name)}
-                buttonProps={{color: "success", fullWidth: true}}
-                fullWidth
-                customClass={classes.flexContainerFirst}
-                miniButton
-              />
-              <CustomDropDown
-                dropdownList={lessonRuleDotwSets}
-                hoverColor="success"
-                buttonText={lr.dotw == -1 ? '曜日を選択' : dotwCheck(lr.dotw)}
-                onClick={(value:any) => handleLessonRuleChange(i, undefined, value.name)}
-                buttonProps={{color: "success", fullWidth: true}}
-                fullWidth
-                miniButton
-              />
-            </div>
-            <div className={classes.flexContainer}>
-              <ThemeProvider theme={pickerTheme}>
-                <MuiPickersUtilsProvider utils={MomentUtils}>
-                  <TimePicker
-                    showTodayButton
-                    todayLabel="現在時刻"
-                    okLabel="決定"
-                    cancelLabel="キャンセル"
-                    label="開始時間"
-                    value={lr.start_at}
-                    onChange={(date:moment.Moment|null) => handleLessonRuleChange(i, undefined, undefined, date)}
-                    format="A h:mm"
-                    className={classes.flexContainerFirst}
-                  />
-                  <TimePicker
-                    showTodayButton
-                    todayLabel="現在時刻"
-                    okLabel="決定"
-                    cancelLabel="キャンセル"
-                    label="終了時間"
-                    value={lr.end_at}
-                    onChange={(date:moment.Moment|null) => handleLessonRuleChange(i, undefined, undefined, undefined ,date)}
-                    format="A h:mm"
-                  />
-                </MuiPickersUtilsProvider>
-              </ThemeProvider>
-            </div>
-          </CardBody>
-        </Card>
-      ))}
-      { lessonRules.length < 3 && (
-        <div className={classes.flexContainer}>
-          <IconButton
-          color="white"
-          key="Close"
-          onClick={() => handleAddLessonRule()}
-          >
-            <AddCircle />
-          </IconButton>
-        </div>
-      )}
-    </div>;
+  // const classes = adminModalStyle();
 
   const content =
     <div>
@@ -176,7 +67,10 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
         buttonProps={{color: "success", fullWidth: true}}
         fullWidth
       />
-      {ruleSettings}
+      <AdminLessonRuleSetting
+        lessonRules={lessonRules}
+        setLessonRuleFunc={setLessonRules}
+      />
     </div>;
 
   const handleSubmit = () => {
@@ -205,17 +99,30 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
   }, [setLessonClass]);
 
   React.useEffect(() => {
+    const lessonRulesCheck = () => {
+      // レッスンルールに -1 (選択してください状態が含まれている)場合は false を返す
+      const lrArray = lessonRules.map((lr) => {
+        if (lr.week == -1 || lr.dotw == -1) {
+          return 0
+        } else {
+          return 1
+        }
+      });
+      return !lrArray.includes(0);
+    };
+
     // 全てのバリデーションが正しければボタンを有効にする
     if (
       name.error == undefined &&
       description.error == undefined &&
-      selectedColor.error == undefined
+      selectedColor.error == undefined &&
+      lessonRulesCheck()
       ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
     }
-  }, [name, description, selectedColor])
+  }, [name, description, selectedColor, lessonRules])
 
   return (
     <div>
@@ -238,6 +145,7 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
           type={selectedClass ? "edit" : "add"}
           updateFunc={updateFunc}
           lessonClassID={selectedClass ? selectedClass.id : undefined}
+          momentLessonRules={lessonRules}
         />
       )}
     </div>

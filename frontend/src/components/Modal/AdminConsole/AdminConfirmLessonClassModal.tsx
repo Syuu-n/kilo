@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal, AdminFormInput } from 'components';
+import { Modal, AdminFormInput, AdminLessonRuleSetting } from 'components';
 // import { fetchApp, NetworkError } from 'request/fetcher';
 // import { useSnackbar } from 'notistack';
 import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
@@ -15,10 +15,18 @@ interface Props {
   type: "add" | "edit" | "show";
   updateFunc?: Function;
   lessonClassID?: number;
+  momentLessonRules: MomentLessonRule[];
+};
+
+interface MomentLessonRule {
+  week: number;
+  dotw: number;
+  start_at: moment.Moment;
+  end_at: moment.Moment;
 };
 
 const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
-  const { lessonClass, open, closeFunc, cancelFunc, type, updateFunc } = props;
+  const { lessonClass, open, closeFunc, cancelFunc, type, updateFunc, momentLessonRules } = props;
   // const { enqueueSnackbar } = useSnackbar();
   const classes = adminModalStyle();
 
@@ -119,12 +127,15 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       confirm
       rowsMin={6}
       rowsMax={6}
-      customClass={classes.descriptionContainer}
     />
     <AdminFormInput
       labelText="レッスンカラー"
       inputType="text"
       value={colorCheck(lessonClass?.color).colorName}
+      confirm
+    />
+    <AdminLessonRuleSetting
+      lessonRules={momentLessonRules}
       confirm
     />
   </div>;
