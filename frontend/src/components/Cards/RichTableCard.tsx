@@ -7,7 +7,7 @@ import { Card, CardHeader, CardIcon, CardBody, TooltipButton, RichTable, TableTo
 import { User, LessonClass, Plan, Lesson } from 'responses/responseStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
-import { implementsUser, implementsLessonClass } from 'assets/lib/typeCheck';
+import { implementsUser, implementsLessonClass, implementsPlan } from 'assets/lib/typeCheck';
 import { LessonColor, colorCheck } from 'assets/lib/lessonColors';
 import { convertLessonRulesToMoment } from 'assets/lib/lessonRules';
 
@@ -106,6 +106,15 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
         data.name,
         data.description,
         lessonColorDiv(data.color),
+        buttons(data.id),
+      ]
+    } else if (implementsPlan(data)) {
+      return [
+        data.id,
+        data.name,
+        data.price.toLocaleString() + ' 円',
+        data.monthly_lesson_count + " 回",
+        data.for_children ? "子供コース" : "大人コース",
         buttons(data.id),
       ]
     }
