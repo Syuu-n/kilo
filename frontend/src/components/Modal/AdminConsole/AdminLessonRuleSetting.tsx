@@ -29,12 +29,7 @@ const AdminLessonRuleSetting: React.FC<Props> = (props) => {
       start_at: startAt ? startAt : lrs[count].start_at,
       end_at: endAt ? endAt : lrs[count].end_at,
     };
-    // 毎週(week == 0)が選択された場合はそのルールのみ残し他を削除する
-    if (lr.week == 0) {
-      lrs = [lr];
-    } else {
-      lrs[count] = lr;
-    };
+    lrs[count] = lr;
     if (setLessonRuleFunc) {
       setLessonRuleFunc(lrs);
     };
@@ -169,8 +164,7 @@ const AdminLessonRuleSetting: React.FC<Props> = (props) => {
           </CardBody>
         </Card>
       ))}
-      {/* ルールが3つより少ない and confirm ではない and 週に毎週が選択されていない場合 のみボタンを表示 */}
-      { lessonRules.length < 3 && !confirm && lessonRules[0].week != 0 && (
+      { !confirm && (
         <div className={classes.flexContainer}>
           <IconButton
           color="white"
