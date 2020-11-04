@@ -101,23 +101,23 @@ const ScheduleView: React.FC = () => {
                 headerColor="orange"
                 tabs={[
                   {
-                    tabName: "全てのスケジュール",
-                    tabIcon: Event,
-                    tabContent: (
-                      <Calender
-                        isAdmin={currentUser.is_admin}
-                        lessons={lessons}
-                        updateEventFunc={(event:CEvent) => updateEvent(event)}
-                      />
-                    ),
-                  },
-                  {
                     tabName: "自分のスケジュール",
                     tabIcon: EventAvailable,
                     tabContent: (
                       <Calender
                         isAdmin={currentUser.is_admin}
                         lessons={myLessons}
+                        updateEventFunc={(event:CEvent) => updateEvent(event)}
+                      />
+                    ),
+                  },
+                  {
+                    tabName: "全てのスケジュール",
+                    tabIcon: Event,
+                    tabContent: (
+                      <Calender
+                        isAdmin={currentUser.is_admin}
+                        lessons={lessons}
                         updateEventFunc={(event:CEvent) => updateEvent(event)}
                       />
                     ),
