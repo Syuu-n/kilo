@@ -5,7 +5,7 @@ import { LessonClass } from 'responses/responseStructs';
 import { ValidationReturn, nameValidation } from 'assets/lib/validations';
 import { LessonColor, lessonColorSets, colorCheck } from 'assets/lib/lessonColors';
 import { MomentLessonRule, convertLessonRulesToMoment } from 'assets/lib/lessonRules';
-// import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
+import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 import * as moment from 'moment';
 
 interface Props {
@@ -32,7 +32,23 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
   const newLessonRule = {week: -1, dotw: -1, start_at: moment(), end_at: moment().add(1, 'hour')} as MomentLessonRule;
   const [lessonRules, setLessonRules] = React.useState([newLessonRule]);
-  // const classes = adminModalStyle();
+  const classes = adminModalStyle();
+
+  // レッスンカラー用の div を追加する
+  const lessonColorDiv = (color: LessonColor) => {
+    const colorCode = colorCheck(color).colorCode;
+    const style = {
+      backgroundColor: colorCode,
+      borderRadius: '3px',
+      height: '41px',
+      width: '100px',
+      margin: 'auto 0px auto 10px'
+    }
+
+    return (
+      <div style={style} />
+    );
+  };
 
   const content =
     <div>
@@ -53,14 +69,17 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
         rowsMin={6}
         rowsMax={6}
       />
-      <CustomDropDown
-        dropdownList={lessonColorSets}
-        hoverColor="success"
-        buttonText={selectedColor.display_name}
-        onClick={(value:any) => setSelectedColor({value: value.name, display_name: value.display_name, error: undefined})}
-        buttonProps={{color: "success", fullWidth: true}}
-        fullWidth
-      />
+      <div className={classes.flexContainer}>
+        <CustomDropDown
+          dropdownList={lessonColorSets}
+          hoverColor="success"
+          buttonText={selectedColor.display_name}
+          onClick={(value:any) => setSelectedColor({value: value.name, display_name: value.display_name, error: undefined})}
+          buttonProps={{color: "success", fullWidth: true}}
+          fullWidth
+        />
+        {lessonColorDiv(selectedColor.value)}
+      </div>
       <AdminLessonRuleSetting
         lessonRules={lessonRules}
         setLessonRuleFunc={setLessonRules}
@@ -93,19 +112,19 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
     };
   }, [selectedClass]);
 
-  React.useEffect(() => {
-    const lessonRulesCheck = () => {
-      // レッスンルールに -1 (選択してください状態が含まれている)場合は false を返す
-      const lrArray = lessonRules.map((lr) => {
-        if (lr.week == -1 || lr.dotw == -1) {
-          return 0
-        } else {
-          return 1
-        }
-      });
-      return !lrArray.includes(0);
-    };
+  const lessonRulesCheck = () => {
+    // レッスンルールに -1 (選択してください状態が含まれている)場合は false を返す
+    const lrArray = lessonRules.map((lr) => {
+      if (lr.week == -1 || lr.dotw == -1) {
+        return 0
+      } else {
+        return 1
+      }
+    });
+    return !lrArray.includes(0);
+  };
 
+  React.useEffect(() => {
     // 全てのバリデーションが正しければボタンを有効にする
     if (
       name.error == undefined &&

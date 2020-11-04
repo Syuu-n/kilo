@@ -27,6 +27,9 @@ createStyles({
   disableTextColor: {
     color: '#AAAAAA',
   },
+  fullWidth: {
+    width: '100%',
+  },
 }));
 
 const pickerTheme = createMuiTheme({

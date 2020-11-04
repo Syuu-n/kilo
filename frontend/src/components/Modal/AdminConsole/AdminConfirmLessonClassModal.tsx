@@ -5,7 +5,7 @@ import { useSnackbar } from 'notistack';
 import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 import { CreateLessonClassRequest } from 'request/requestStructs';
 import { LessonClass } from 'responses/responseStructs';
-import { colorCheck } from 'assets/lib/lessonColors';
+import { colorCheck, LessonColor } from 'assets/lib/lessonColors';
 import { MomentLessonRule, convertMomentLessonRulesToRequest } from 'assets/lib/lessonRules';
 
 interface Props {
@@ -138,6 +138,22 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
     if (updateFunc) updateFunc();
   };
 
+  // レッスンカラー用の div を追加する
+  const lessonColorDiv = (color: LessonColor) => {
+    const colorCode = colorCheck(color).colorCode;
+    const style = {
+      backgroundColor: colorCode,
+      borderRadius: '3px',
+      height: '30px',
+      width: '100px',
+      margin: 'auto 10px'
+    }
+
+    return (
+      <div style={style} />
+    );
+  };
+
   const content =
   <div>
     <AdminFormInput
@@ -155,12 +171,16 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       rowsMin={6}
       rowsMax={6}
     />
-    <AdminFormInput
-      labelText="レッスンカラー"
-      inputType="text"
-      value={colorCheck(lessonClass.color).colorName}
-      confirm
-    />
+    <div className={classes.flexContainer}>
+      <AdminFormInput
+        labelText="レッスンカラー"
+        inputType="text"
+        value={colorCheck(lessonClass.color).colorName}
+        confirm
+        customClass={classes.fullWidth}
+      />
+      {lessonColorDiv(lessonClass.color)}
+    </div>
     <AdminLessonRuleSetting
       lessonRules={momentLessonRules}
       confirm
