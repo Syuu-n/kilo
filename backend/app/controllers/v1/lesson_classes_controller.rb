@@ -65,7 +65,16 @@ module V1
             lr.destroy!
           end
           lesson_rule_params[:lesson_rules].each do |lesson_rule|
-            lr = LessonRule.new(lesson_rule.merge(lesson_class: @lesson_class))
+            start_at = Time.zone.parse(lesson_rule[:start_at])
+            end_at = Time.zone.parse(lesson_rule[:end_at])
+            # start_at と end_at の秒以下は切り捨てる
+            lr = LessonRule.new(
+              week: lesson_rule[:week],
+              dotw: lesson_rule[:dotw],
+              start_at: Time.zone.at(start_at.to_i / 60 * 60),
+              end_at: Time.zone.at(end_at.to_i / 60 * 60),
+              lesson_class: @lesson_class,
+            )
             unless lr.save
               raise LessonRuleInvalidError
             end

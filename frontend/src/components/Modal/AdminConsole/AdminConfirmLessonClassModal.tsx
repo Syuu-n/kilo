@@ -20,7 +20,7 @@ interface Props {
 };
 
 const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
-  const { lessonClass, open, closeFunc, cancelFunc, type, updateFunc, momentLessonRules } = props;
+  const { lessonClass, open, closeFunc, cancelFunc, type, updateFunc, lessonClassID, momentLessonRules } = props;
   const { enqueueSnackbar } = useSnackbar();
   const classes = adminModalStyle();
 
@@ -60,10 +60,10 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       case 422:
         switch (json.code) {
           case 'no_lesson_rule_error':
-            enqueueSnackbar('レッスンルールが設定されていません。', { variant: 'error' });
+            enqueueSnackbar('スケジュールが設定されていないためクラスの作成に失敗しました。', { variant: 'error' });
             break;
           case 'lesson_rule_invalid_error':
-            enqueueSnackbar('クラスの作成に失敗しました。内容が正しくありません。', { variant: 'error' });
+            enqueueSnackbar('スケジュールの作成に失敗したためクラスの作成に失敗しました。', { variant: 'error' });
           default:
             enqueueSnackbar('クラスの作成に失敗しました。内容を確かめてください。', { variant: 'error' });
         };
@@ -79,40 +79,58 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
   };
 
   const updateLessonClass = async () => {
-    // const accessToken = localStorage.getItem('kiloToken');
-    // if (!accessToken) {
-    //   return;
-    // }
-    // if (!userID) {
-    //   return;
-    // }
+    const accessToken = localStorage.getItem('kiloToken');
+    if (!accessToken) {
+      return;
+    }
+    if (!lessonClassID) {
+      return;
+    }
 
-    // const res = await fetchApp(
-    //   `/v1/users/${userID}`,
-    //   'PATCH',
-    //   accessToken,
-    //   JSON.stringify({
-    //     user,
-    //   })
-    // )
+    // NOTE: JSON.stringify で key になるため lesson_class という名前になっている
+    const lesson_class = {
+      name: lessonClass.name,
+      description: lessonClass.description,
+      color: lessonClass.color,
+      lesson_rules: convertMomentLessonRulesToRequest(momentLessonRules),
+    };
 
-    // if (res instanceof NetworkError) {
-    //   console.log("ServerError");
-    //   enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    //   return;
-    // }
+    const res = await fetchApp(
+      `/v1/lesson_classes/${lessonClassID}`,
+      'PATCH',
+      accessToken,
+      JSON.stringify({
+        lesson_class,
+      })
+    )
 
-    // switch (res.status) {
-    //   case 200:
-    //     enqueueSnackbar('ユーザー情報の変更に成功しました。', { variant: 'success'});
-    //     break;
-    //   case 404:
-    //     enqueueSnackbar(`ID:${userID}のユーザが存在しないため変更に失敗しました。`, { variant: 'error' });
-    //     break;
-    //   case 422:
-    //     enqueueSnackbar('ユーザー情報の変更に失敗しました。内容を確かめてください。', { variant: 'error' });
-    //     break;
-    // }
+    if (res instanceof NetworkError) {
+      console.log("ServerError");
+      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
+      return;
+    }
+    const json = await res.json();
+    switch (res.status) {
+      case 200:
+        enqueueSnackbar('クラス情報の変更に成功しました。', { variant: 'success'});
+        break;
+      case 404:
+        enqueueSnackbar(`ID:${lessonClassID}}のクラスが存在しないため変更に失敗しました。`, { variant: 'error' });
+        break;
+      case 422:
+        switch (json.code) {
+          case 'no_lesson_rule_error':
+            enqueueSnackbar('スケジュールが設定されていないためクラス情報の変更に失敗しました。', { variant: 'error' });
+            break;
+          case 'lesson_rule_invalid_error':
+            enqueueSnackbar('スケジュールの作成に失敗したためクラス情報の変更に失敗しました。', { variant: 'error' });
+          default:
+            enqueueSnackbar('クラス情報の変更に失敗しました。内容を確かめてください。', { variant: 'error' });
+        };
+        break;
+      default:
+        enqueueSnackbar('クラス情報の変更に失敗しました。', { variant: 'error' });
+    }
   };
 
   const updateLessonClassFunc = async () => {
