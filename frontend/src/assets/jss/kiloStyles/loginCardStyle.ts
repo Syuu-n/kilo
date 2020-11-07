@@ -29,7 +29,7 @@ createStyles({
     margin: '10px 0',
     ...defaultFont,
     color: '#FFFFFF',
-    fontSize: '1.125em',
+    fontSize: '1.3em',
     textAlign: 'center',
     fontFamily: 'cursive'
   },
@@ -65,7 +65,11 @@ createStyles({
   },
   errorMessage: {
     color: dangerColor,
-  }
+  },
+  cardHidden: {
+    transform: 'translate3d(0, -60px, 0) !important',
+    opacity: 0,
+  },
 }));
 
 export default loginCardStyle;

@@ -9,25 +9,23 @@ interface Props {
   plain?: boolean;
   profile?: boolean;
   chart?: boolean;
+  login?: boolean;
   children?: React.ReactNode;
 }
 
 const Card: React.SFC<Props> = (props) => {
   const classes = cardStyle();
-  const { children, plain, profile, chart, ...rest } = props;
-  let { className } = props;
-  if (className === undefined) {
-    className = ''
-  }
+  const { children, plain, profile, chart, login, className, ...rest } = props;
+
   const cardClasses = classNames({
     [classes.card]: true,
     [classes.cardPlain]: plain,
     [classes.cardProfile]: profile,
     [classes.cardChart]: chart,
-    [className]: className !== undefined
+    [classes.cardLogin]: login,
   });
   return (
-    <div className={cardClasses} {...rest}>
+    <div className={cardClasses + (className ? ' ' + className : '')} {...rest}>
       {children}
     </div>
   );

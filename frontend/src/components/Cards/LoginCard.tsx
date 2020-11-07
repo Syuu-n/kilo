@@ -1,7 +1,4 @@
 import {
-  Card,
-  CardContent,
-  CardHeader,
   InputAdornment,
   // TODO: rememberMe を有効にするにはアンコメント
   // Typography
@@ -15,6 +12,9 @@ import loginCardStyle from 'assets/jss/kiloStyles/loginCardStyle';
 import {
   // TODO: rememberMe を有効にするにはアンコメント
   // CustomCheckbox,
+  Card,
+  CardBody,
+  CardHeader,
   CustomInput,
   Button,
 } from 'components';
@@ -36,6 +36,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
   // const [rememberMe, setRememberMe] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
+  const [cardAnimation, setCardAnimation] = React.useState("cardHidden");
   const { enqueueSnackbar } = useSnackbar();
 
   const handleLogin = async (event:React.FormEvent<HTMLFormElement>) => {
@@ -80,21 +81,22 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
     }
   }
 
+  // カードの表示に動きをつける
+  React.useEffect(() => {
+    const timer = setTimeout(() => setCardAnimation(""), 500);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
   return (
-    <Card className={classes.card}>
+    <Card login className={classes[cardAnimation]}>
       <CardHeader
-        classes={{
-          root:
-            classes.cardHeader +
-            ' ' +
-            classes[headerColor + 'CardHeader'],
-          title: classes.cardTitle,
-          subheader: classes.cardSubtitle,
-        }}
-        title={cardTitle}
-        subheader={cardSubtitle}
-      />
-      <CardContent className={classes.cardContent}>
+        color={headerColor}
+      >
+        <h4 className={classes.cardTitle}>{cardTitle}</h4>
+      </CardHeader>
+      <CardBody className={classes.cardContent}>
         <form onSubmit={handleLogin}>
           <CustomInput
             labelText="メールアドレス"
@@ -149,7 +151,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
             </Button>
           </div>
         </form>
-      </CardContent>
+      </CardBody>
     </Card>
   );
 }
