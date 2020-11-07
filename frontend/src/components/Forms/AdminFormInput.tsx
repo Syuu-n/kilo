@@ -4,7 +4,7 @@ import { FormControlProps } from '@material-ui/core/FormControl';
 
 interface Props {
   labelText?: string;
-  inputType?: "email" | "password" | "tel" | "text";
+  inputType?: "email" | "password" | "tel" | "text" | "number";
   onChangeFunc?: Function;
   value?: any;
   placeholder?: string;

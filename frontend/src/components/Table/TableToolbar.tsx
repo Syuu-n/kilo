@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, AdminAddUserModal, AdminAddLessonClassModal } from 'components';
+import { Button, AdminAddUserModal, AdminAddLessonClassModal, AdminAddPlanModal } from 'components';
 import { SvgIcon } from '@material-ui/core';
 // import { Search } from '@material-ui/icons';
 import tableToolbarStyle from 'assets/jss/kiloStyles/tableToolbarStyle';
@@ -58,6 +58,14 @@ const TableToolbar: React.FC<Props> = (props) => {
       )}
       { dataType == "lesson_classes" && (
         <AdminAddLessonClassModal
+          open={openAddModal}
+          closeFunc={() => setOpenAddModal(false)}
+          openFunc={() => setOpenAddModal(true)}
+          updateFunc={updateFunc}
+        />
+      )}
+      { dataType == 'plans' && (
+        <AdminAddPlanModal
           open={openAddModal}
           closeFunc={() => setOpenAddModal(false)}
           openFunc={() => setOpenAddModal(true)}

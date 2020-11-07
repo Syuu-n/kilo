@@ -2,8 +2,11 @@ import * as React from 'react';
 import { SvgIcon } from '@material-ui/core';
 import { Person, Edit, Close } from '@material-ui/icons';
 import richTableCardStyle from 'assets/jss/kiloStyles/richTableCardStyle';
-import { Card, CardHeader, CardIcon, CardBody, TooltipButton, RichTable, TableToolbar,
-  AdminConfirmUserModal, AdminAddUserModal, AdminConfirmLessonClassModal, AdminAddLessonClassModal } from 'components';
+import {
+  Card, CardHeader, CardIcon, CardBody, TooltipButton, RichTable, TableToolbar,
+  AdminConfirmUserModal, AdminAddUserModal, AdminConfirmLessonClassModal, AdminAddLessonClassModal,
+  AdminAddPlanModal, AdminConfirmPlanModal,
+} from 'components';
 import { User, LessonClass, Plan, Lesson } from 'responses/responseStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
@@ -219,6 +222,23 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
             openFunc={() => setOpenEditModal(true)}
             updateFunc={updateFunc}
             selectedClass={selectedData}
+          />
+        </div>
+      )}
+      { implementsPlan(selectedData) && (
+        <div>
+          <AdminConfirmPlanModal
+            plan={selectedData}
+            open={openShowModal}
+            closeFunc={() => setOpenShowModal(false)}
+            type="show"
+          />
+          <AdminAddPlanModal
+            open={openEditModal}
+            closeFunc={() => setOpenEditModal(false)}
+            openFunc={() => setOpenEditModal(true)}
+            updateFunc={updateFunc}
+            selectedPlan={selectedData}
           />
         </div>
       )}

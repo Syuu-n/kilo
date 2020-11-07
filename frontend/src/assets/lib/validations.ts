@@ -1,5 +1,5 @@
 export interface ValidationReturn {
-  value: string;
+  value: string | number;
   error?: string;
 }
 
@@ -41,4 +41,4 @@ export const phoneNumberValidation = (phoneNumber:string) => {
 export const requireValidation = (value:string) => {
   if (!value) return "必須項目です";
   return;
-}
+};

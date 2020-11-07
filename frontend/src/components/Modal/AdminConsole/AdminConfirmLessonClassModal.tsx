@@ -160,7 +160,6 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       labelText="クラス名"
       inputType="text"
       value={lessonClass.name}
-      customClass={classes.flexContainerFirst}
       confirm
     />
     <AdminFormInput
