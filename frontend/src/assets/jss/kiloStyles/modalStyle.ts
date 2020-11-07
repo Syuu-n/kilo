@@ -6,6 +6,7 @@ createStyles({
   modal: {
     padding: '0 15px',
     ...defaultFont,
+    minWidth: '300px',
   },
   modalHeader: {
     display: 'flex',
