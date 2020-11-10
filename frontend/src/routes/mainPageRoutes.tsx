@@ -12,6 +12,7 @@ import ProfileView from 'views/ProfileView';
 import UsersView from 'views/AdminConsoleViews/UsersView';
 import ClassesView from 'views/AdminConsoleViews/ClassesView';
 import PlansView from 'views/AdminConsoleViews/PlansView';
+import LessonsView from 'views/AdminConsoleViews/LessonsView';
 
 export type Route = typeof mainPageRoutes[0];
 const mainPageRoutes = [
@@ -65,7 +66,7 @@ const mainPageRoutes = [
     sidebarName: 'レッスン',
     navbarName: 'レッスン',
     icon: EventNote,
-    component: UsersView,
+    component: LessonsView,
     childRoute: true,
   },
   {

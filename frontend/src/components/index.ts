@@ -116,6 +116,7 @@ import KSpinner from './Spinner/Spinner';
 
 // Calender
 import Calender from './Calender/Calender';
+import AdminCalender from './Calender/AdminCalender';
 
 // Modals
 import Modal from './Modal/Modal';
@@ -197,6 +198,7 @@ export {
   KSpinner,
   // Calender
   Calender,
+  AdminCalender,
   // Modal
   Modal,
   PasswordResetModal,
