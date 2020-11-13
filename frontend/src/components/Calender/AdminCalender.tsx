@@ -55,7 +55,7 @@ const Calender: React.FC<Props> = (props) => {
   };
 
   return(
-    <div>
+    <div className="admin-calender">
       <Calendar
         localizer={localizer}
         events={lessons}
