@@ -32,6 +32,7 @@ import TooltipButton from './CustomButtons/TooltipButton';
 // #############################
 
 import CustomInput from './CustomInput/CustomInput';
+import AdminEventUsersInput from './CustomInput/AdminEventUsersInput';
 
 // ##############################
 // // // CustomCheckBoxRadioSwitch
@@ -129,6 +130,8 @@ import AdminConfirmLessonClassModal from './Modal/AdminConsole/AdminConfirmLesso
 import AdminLessonRuleSetting from './Modal/AdminConsole/AdminLessonRuleSetting';
 import AdminAddPlanModal from './Modal/AdminConsole/AdminAddPlanModal';
 import AdminConfirmPlanModal from './Modal/AdminConsole/AdminConfirmPlanModal';
+import AdminEditLessonModal from './Modal/AdminConsole/AdminEditLessonModal';
+import AdminConfirmLessonModal from './Modal/AdminConsole/AdminConfirmLessonModal';
 
 // Badge
 import Badge from './Badge/Badge';
@@ -157,6 +160,7 @@ export {
   TooltipButton,
   // CustomInput
   CustomInput,
+  AdminEventUsersInput,
   // CustomCheckBoxRadioSwitch
   CustomCheckbox,
   CustomTabs,
@@ -210,6 +214,8 @@ export {
   AdminLessonRuleSetting,
   AdminAddPlanModal,
   AdminConfirmPlanModal,
+  AdminEditLessonModal,
+  AdminConfirmLessonModal,
   // Badge
   Badge,
 };
