@@ -32,7 +32,7 @@ createStyles({
   },
   usersContainer: {
     listStyle: "circle",
-    padding: "0 0 0 30px",
+    padding: "0 0 0 20px",
     margin: 0,
     fontSize: "14px",
     maxHeight: "200px",
