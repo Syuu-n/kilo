@@ -83,7 +83,7 @@ const AdminEventUsersInput: React.FC<Props> = (props) => {
                     <p className={classes.userName}>
                       {`${user.last_name} ${user.first_name}`}
                     </p>
-                    { user.remaining_monthly_count ==  && !checkAlreadyJoinedUser(user) ? (
+                    { user.remaining_monthly_count == 0 && !checkAlreadyJoinedUser(user) ? (
                       <p className={classes.userRemainingCount}>参加不可</p>
                     ) : (
                       <Button
