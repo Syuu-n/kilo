@@ -17,6 +17,8 @@ services:
       - "3001:3000"
     depends_on:
       - db
+    stdin_open: true
+    tty: true
 
   frontend:
     build:
