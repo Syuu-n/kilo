@@ -142,7 +142,7 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
   }, [selectedEvent]);
 
   React.useEffect(() => {
-    // 全てのバリデーションが正しければボタンを有効にする
+    // 開始時刻が終了時刻よりも前ならボタンを有効化
     if (startAt?.isBefore(endAt)) {
       setButtonDisabled(false);
     } else {
