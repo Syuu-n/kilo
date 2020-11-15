@@ -64,6 +64,9 @@ createStyles({
     padding: 0,
     margin: "0 10px 0 0",
   },
+  deleteButton: {
+    margin: 0,
+  },
 }));
 
 const pickerTheme = createMuiTheme({

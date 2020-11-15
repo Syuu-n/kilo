@@ -49,11 +49,6 @@ const Calender: React.FC<Props> = (props) => {
     setOpenModal(true);
   };
 
-  const updateEvent = (event:CEvent) => {
-    // イベント更新があったときに更新する
-    updateEventFunc(event);
-  };
-
   return(
     <div className="admin-calender">
       <Calendar
@@ -70,7 +65,7 @@ const Calender: React.FC<Props> = (props) => {
         open={openModal}
         selectedEvent={selectedEvent}
         closeFunc={() => setOpenModal(false)}
-        updateEventFunc={(event:CEvent) => updateEvent(event)}
+        updateEventFunc={updateEventFunc}
         users={users}
       />
     </div>

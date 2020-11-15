@@ -60,7 +60,7 @@ const LessonsView: React.FC = () => {
     }
   };
 
-  const updateEvent = (event:CEvent) => {
+  const updateEvent = (event:CEvent, isDelete?:boolean) => {
     if (!lessons) {
       console.log('LessonNotFoundError');
       return
@@ -68,8 +68,15 @@ const LessonsView: React.FC = () => {
 
     const newLessons = lessons.slice();
     const selectedIndex = lessons.findIndex(({id}) => id === event.id);
-    newLessons[selectedIndex] = event;
-    setLessons(newLessons);
+    // 削除時の update
+    if (isDelete) {
+      newLessons.splice(selectedIndex, 1);
+      setLessons(newLessons);
+    } else {
+      // 更新時の update
+      newLessons[selectedIndex] = event;
+      setLessons(newLessons);
+    };
   };
 
   React.useEffect(() => {
@@ -107,7 +114,7 @@ const LessonsView: React.FC = () => {
             <CardBody>
               <AdminCalender
                 lessons={lessons}
-                updateEventFunc={(event:CEvent) => updateEvent(event)}
+                updateEventFunc={(event:CEvent, isDelete?:boolean) => updateEvent(event, isDelete)}
                 users={users}
               />
             </CardBody>
