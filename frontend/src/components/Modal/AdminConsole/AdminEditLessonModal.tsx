@@ -21,6 +21,7 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
   const [startAt, setStartAt] = React.useState<moment.Moment|null>(moment(selectedEvent.start));
   const [endAt, setEndAt] = React.useState<moment.Moment|null>(moment(selectedEvent.end));
   const [joinedUsers, setJoinedUsers] = React.useState(selectedEvent.users);
+  const [buttonDisabled, setButtonDisabled] = React.useState(true);
   const classes = adminModalStyle();
 
   const handleSubmit = () => {
@@ -140,6 +141,15 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
     };
   }, [selectedEvent]);
 
+  React.useEffect(() => {
+    // 全てのバリデーションが正しければボタンを有効にする
+    if (startAt?.isBefore(endAt)) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [startAt, endAt])
+
   return (
     <div>
       <Modal
@@ -150,7 +160,7 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
         content={content}
         closeFunc={closeFunc}
         color="success"
-        // disabled={buttonDisabled}
+        disabled={buttonDisabled}
       />
     </div>
   );
