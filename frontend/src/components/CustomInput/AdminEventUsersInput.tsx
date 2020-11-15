@@ -8,10 +8,11 @@ interface Props {
   joinedUsers: User[];
   users: User[];
   addUserFunc: Function;
+  selectedEventUsers: User[] | undefined;
 }
 
 const AdminEventUsersInput: React.FC<Props> = (props) => {
-  const { users, joinedUsers, addUserFunc } = props;
+  const { users, joinedUsers, addUserFunc, selectedEventUsers } = props;
   const classes = adminEventUsersInputStyle();
   const [keyword, setKeyword] = React.useState("");
   const [searchResultUsers, setSearchResultUsers] = React.useState<User[]>([]);
@@ -45,6 +46,13 @@ const AdminEventUsersInput: React.FC<Props> = (props) => {
     addUserFunc(user);
   };
 
+  // イベントにユーザが参加済みかどうか
+  const checkAlreadyJoinedUser = (user:User) => {
+    if (!selectedEventUsers) return false;
+    if (selectedEventUsers.find((u) => u.id == user.id)) return true;
+    return false;
+  };
+
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
       <div className={classes.searchContainer}>
@@ -72,15 +80,21 @@ const AdminEventUsersInput: React.FC<Props> = (props) => {
               { searchResultUsers.map((user:User) => {
                 return (
                   <li  key={user.id} className={classes.user}>
-                    <p className={classes.userName}>{`${user.last_name} ${user.first_name}`}</p>
-                    <Button
-                      color="success"
-                      round
-                      customClass={classes.userSelectButton}
-                      onClick={() => addUser(user)}
-                    >
-                      追加
-                    </Button>
+                    <p className={classes.userName}>
+                      {`${user.last_name} ${user.first_name}`}
+                    </p>
+                    { user.remaining_monthly_count ==  && !checkAlreadyJoinedUser(user) ? (
+                      <p className={classes.userRemainingCount}>参加不可</p>
+                    ) : (
+                      <Button
+                        color="success"
+                        round
+                        customClass={classes.userSelectButton}
+                        onClick={() => addUser(user)}
+                      >
+                        追加
+                      </Button>
+                    )}
                   </li>
                 )
               })}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal, Table, AdminEventUsersInput, ItemGrid, Button } from 'components';
+import { Modal, Table, AdminEventUsersInput, ItemGrid, Button, AdminConfirmLessonModal } from 'components';
 import { CEvent, User } from 'responses/responseStructs';
 import { adminModalStyle, pickerTheme } from 'assets/jss/kiloStyles/adminModalStyle';
 import { ThemeProvider, Grid } from '@material-ui/core';
@@ -9,24 +9,21 @@ import * as moment from 'moment';
 
 interface Props {
   open: boolean;
+  openFunc: Function;
   closeFunc: Function;
-  // openFunc: Function;
-  // updateFunc?: Function;
   selectedEvent: CEvent;
   users: User[];
+  updateFunc?: Function;
 };
 
 const AdminEditLessonModal: React.FC<Props> = (props) => {
-  const { open, closeFunc, selectedEvent, users } = props;
-  const [startAt, setStartAt] = React.useState<moment.Moment|null>(moment(selectedEvent.start));
-  const [endAt, setEndAt] = React.useState<moment.Moment|null>(moment(selectedEvent.end));
-  const [joinedUsers, setJoinedUsers] = React.useState(selectedEvent.users);
+  const { open, openFunc, closeFunc, selectedEvent, users, updateFunc } = props;
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
+  const [openConfirm, setOpenConfirm] = React.useState(false);
+  const [startAt, setStartAt] = React.useState<moment.Moment|null>(moment(selectedEvent?.start));
+  const [endAt, setEndAt] = React.useState<moment.Moment|null>(moment(selectedEvent?.end));
+  const [joinedUsers, setJoinedUsers] = React.useState(selectedEvent?.users);
   const classes = adminModalStyle();
-
-  const handleSubmit = () => {
-    console.log('Submit!');
-  };
 
   const addJoinedUser = (user:User) => {
     if (joinedUsers?.some((jUser) => jUser.id == user.id)) {
@@ -46,6 +43,12 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
     newJoindUsers.splice(userIndex, 1);
 
     setJoinedUsers(newJoindUsers);
+  };
+
+  const doCancel = () => {
+    // confirm で修正を押したときに Confirm を閉じてから Edit を開き直す
+    setOpenConfirm(false);
+    openFunc();
   };
 
   const content =
@@ -104,7 +107,9 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
                   { joinedUsers.map((user:User) => {
                     return (
                       <li  key={user.id} className={classes.user}>
-                        <p className={classes.userName}>{`${user.last_name} ${user.first_name}`}</p>
+                        <p className={classes.userName}>
+                          {`${user.last_name} ${user.first_name}`}
+                        </p>
                         <Button
                           color="danger"
                           round
@@ -126,6 +131,7 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
               joinedUsers={joinedUsers}
               users={users}
               addUserFunc={(user:User) => addJoinedUser(user)}
+              selectedEventUsers={selectedEvent.users}
             />
           </ItemGrid>
         </Grid>
@@ -155,12 +161,22 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
       <Modal
         open={open}
         headerTitle="レッスン情報変更"
-        submitText="確定"
-        submitFunc={async () => {await handleSubmit()}}
+        submitText="確認"
+        submitFunc={() => setOpenConfirm(true)}
         content={content}
         closeFunc={closeFunc}
         color="success"
         disabled={buttonDisabled}
+      />
+      <AdminConfirmLessonModal
+        open={openConfirm}
+        selectedEvent={selectedEvent}
+        updateFunc={updateFunc}
+        closeFunc={() => setOpenConfirm(false)}
+        cancelFunc={() => doCancel()}
+        startAt={startAt}
+        endAt={endAt}
+        joinedUsers={joinedUsers}
       />
     </div>
   );

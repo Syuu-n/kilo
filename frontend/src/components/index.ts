@@ -130,6 +130,7 @@ import AdminConfirmLessonClassModal from './Modal/AdminConsole/AdminConfirmLesso
 import AdminLessonRuleSetting from './Modal/AdminConsole/AdminLessonRuleSetting';
 import AdminAddPlanModal from './Modal/AdminConsole/AdminAddPlanModal';
 import AdminConfirmPlanModal from './Modal/AdminConsole/AdminConfirmPlanModal';
+import AdminShowLessonModal from './Modal/AdminConsole/AdminShowLessonModal';
 import AdminEditLessonModal from './Modal/AdminConsole/AdminEditLessonModal';
 import AdminConfirmLessonModal from './Modal/AdminConsole/AdminConfirmLessonModal';
 
@@ -214,6 +215,7 @@ export {
   AdminLessonRuleSetting,
   AdminAddPlanModal,
   AdminConfirmPlanModal,
+  AdminShowLessonModal,
   AdminEditLessonModal,
   AdminConfirmLessonModal,
   // Badge

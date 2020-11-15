@@ -1,5 +1,5 @@
 import { makeStyles, createStyles } from '@material-ui/core/styles';
-import { successColor } from 'assets/jss/material-dashboard-react';
+import { successColor, dangerColor } from 'assets/jss/material-dashboard-react';
 
 const adminEventUsersInputStyle = makeStyles(() =>
 createStyles({
@@ -51,6 +51,11 @@ createStyles({
   userSelectButton: {
     padding: 0,
     margin: "0 10px 0 0",
+  },
+  userRemainingCount: {
+    color: dangerColor,
+    margin: "0 15px 0 0",
+    fontSize: "13px",
   },
 }));
 

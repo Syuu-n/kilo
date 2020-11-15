@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer, Formats, Messages } from 'react-big-calendar
 import * as moment from 'moment';
 import 'assets/css/kilo-calender.css';
 import { CEvent, User } from 'responses/responseStructs';
-import { AdminConfirmLessonModal } from 'components';
+import { AdminShowLessonModal } from 'components';
 
 interface Props {
   lessons:         CEvent[];
@@ -66,7 +66,7 @@ const Calender: React.FC<Props> = (props) => {
         messages={messages}
         eventPropGetter={eventColors}
       />
-      <AdminConfirmLessonModal
+      <AdminShowLessonModal
         open={openModal}
         selectedEvent={selectedEvent}
         closeFunc={() => setOpenModal(false)}
