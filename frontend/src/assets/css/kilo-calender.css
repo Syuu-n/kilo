@@ -201,6 +201,10 @@
   min-height: 90px;
 }
 
+.admin-calender .rbc-row-content {
+  cursor: pointer;
+}
+
 .rbc-row-segment {
   padding: 2px 6px 1px;
 }
