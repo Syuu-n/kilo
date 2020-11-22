@@ -16,13 +16,30 @@ module V1
 
     # POST /lessons
     def create
-      @lesson = Lesson.new(create_params)
-
-      if @lesson.save
-        render json: @lesson, status: :created
-      else
-        render json: { code: 'lesson_create_error' }, status: :unprocessable_entity
+      begin
+        ActiveRecord::Base.transaction do
+          start_at = Time.zone.parse(create_params[:start_at])
+          end_at = Time.zone.parse(create_params[:end_at])
+          @lesson = Lesson.new(
+            lesson_class_id: create_params[:lesson_class_id],
+            start_at: Time.zone.at(start_at.to_i / 60 * 60),
+            end_at: Time.zone.at(end_at.to_i / 60 * 60),
+          )
+          @lesson.save!
+          users = User.where(id: create_params[:user_ids])
+          users.each do |user|
+            @lesson.join(user, true)
+          end
+        end
+      rescue => e
+        case e
+        when Lesson::NoCountError
+          render json: { code: 'user_monthly_limit_error' }, status: :bad_request and return
+        else
+          render json: { code: 'lesson_create_error' }, status: :unprocessable_entity and return
+        end
       end
+      render json: @lesson, status: :created
     end
 
     # PATCH /lessons/:id
@@ -114,7 +131,7 @@ module V1
     end
 
     def create_params
-      params.require(:lesson).permit(:lesson_class_id, :start_at, :end_at)
+      params.require(:lesson).permit(:lesson_class_id, :start_at, :end_at, user_ids: [])
     end
 
     def update_params
