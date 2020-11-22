@@ -2,19 +2,23 @@ import * as React from 'react';
 import { Calendar, momentLocalizer, Formats, Messages } from 'react-big-calendar';
 import * as moment from 'moment';
 import 'assets/css/kilo-calender.css';
-import { CEvent, User } from 'responses/responseStructs';
-import { AdminShowLessonModal } from 'components';
+import { CEvent, LessonClass, User } from 'responses/responseStructs';
+import { slotInfo } from 'request/requestStructs';
+import { AdminShowLessonModal, AdminAddLessonModal } from 'components';
 
 interface Props {
   lessons:         CEvent[];
   users:           User[];
+  lessonClasses:   LessonClass[];
   updateEventFunc: Function;
 }
 
 const Calender: React.FC<Props> = (props) => {
-  const { lessons, users, updateEventFunc } = props;
-  const [openModal, setOpenModal] = React.useState(false);
+  const { lessons, users, lessonClasses, updateEventFunc } = props;
+  const [openShowModal, setOpenShowModal] = React.useState(false);
+  const [openAddModal, setOpenAddModal] = React.useState(false);
   const [selectedEvent, setSelectedEvent] = React.useState<CEvent|undefined>();
+  const [slot, setSlot] = React.useState<slotInfo|undefined>();
   const localizer = momentLocalizer(moment);
   const formats:Formats = {
     dateFormat: 'D',
@@ -46,27 +50,43 @@ const Calender: React.FC<Props> = (props) => {
 
   const showEventDetail = (event:CEvent) => {
     setSelectedEvent(event);
-    setOpenModal(true);
+    setOpenShowModal(true);
+  };
+
+  const createNewEvent = (slotInfo:slotInfo) => {
+    setSlot(slotInfo);
+    setOpenAddModal(true);
   };
 
   return(
     <div className="admin-calender">
       <Calendar
+        selectable
         localizer={localizer}
         events={lessons}
         timeslots={2}
         views={['month', 'week', 'day']}
         formats={formats}
         onSelectEvent={(event) => showEventDetail(event)}
+        onSelectSlot={(slotInfo) => createNewEvent(slotInfo)}
         messages={messages}
         eventPropGetter={eventColors}
       />
       <AdminShowLessonModal
-        open={openModal}
+        open={openShowModal}
         selectedEvent={selectedEvent}
-        closeFunc={() => setOpenModal(false)}
+        closeFunc={() => setOpenShowModal(false)}
         updateEventFunc={updateEventFunc}
         users={users}
+      />
+      <AdminAddLessonModal
+        open={openAddModal}
+        closeFunc={() => setOpenAddModal(false)}
+        openFunc={() => setOpenAddModal(true)}
+        slot={slot}
+        users={users}
+        lessonClasses={lessonClasses}
+        updateFunc={updateEventFunc}
       />
     </div>
   );

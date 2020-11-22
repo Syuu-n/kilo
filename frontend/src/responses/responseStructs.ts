@@ -45,13 +45,14 @@ export interface Lesson {
 }
 
 export interface CEvent extends Event {
-  id:       number;
-  color:    LessonColor;
-  joined:   boolean;
-  memo:     string;
-  users:    User[] | undefined;
-  start:    Date;
-  end:      Date;
+  id:               number;
+  color:            LessonColor;
+  joined:           boolean;
+  memo:             string;
+  users:            User[] | undefined;
+  start:            Date;
+  end:              Date;
+  lesson_class_id?: number;
 }
 
 export interface LessonClass {

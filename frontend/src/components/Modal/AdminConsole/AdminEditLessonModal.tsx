@@ -16,10 +16,12 @@ interface Props {
   selectedEvent: CEvent;
   users: User[];
   updateFunc?: Function;
+  isAddEvent?: boolean;
+  cancelFunc?: Function;
 };
 
 const AdminEditLessonModal: React.FC<Props> = (props) => {
-  const { open, openFunc, closeFunc, selectedEvent, users, updateFunc } = props;
+  const { open, openFunc, closeFunc, selectedEvent, users, updateFunc, isAddEvent, cancelFunc } = props;
   const { enqueueSnackbar } = useSnackbar();
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
   const [openConfirm, setOpenConfirm] = React.useState(false);
@@ -76,11 +78,11 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
     }
     switch (res.status) {
       case 200:
-        if (updateFunc) updateFunc(selectedEvent, true);
+        if (updateFunc) updateFunc(selectedEvent, "delete");
         enqueueSnackbar('レッスンの削除に成功しました。', { variant: 'success' });
         break;
       case 404:
-        enqueueSnackbar(`ID:${lessonId}}のレッスンが存在しないため削除に失敗しました。`, { variant: 'error' });
+        enqueueSnackbar(`ID:${lessonId}のレッスンが存在しないため削除に失敗しました。`, { variant: 'error' });
         break;
       default:
         enqueueSnackbar('レッスンの削除に失敗しました。', { variant: 'error' });
@@ -96,13 +98,16 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
 
   const content =
     <div>
-      <Button
-        color="danger"
-        className={classes.deleteButton}
-        onClick={() => deleteLessonFunc()}
-      >
-        レッスンを削除
-      </Button>
+      {/* レッスン編集の時のみ削除ボタンを追加する */}
+      { isAddEvent == undefined && (
+        <Button
+          color="danger"
+          className={classes.deleteButton}
+          onClick={() => deleteLessonFunc()}
+        >
+          レッスンを削除
+        </Button>
+      )}
       <ThemeProvider theme={pickerTheme}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <Table
@@ -210,13 +215,15 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
     <div>
       <Modal
         open={open}
-        headerTitle="レッスン情報変更"
+        headerTitle={ isAddEvent ? "レッスン新規作成" : "レッスン情報変更"}
         submitText="確認"
         submitFunc={() => setOpenConfirm(true)}
         content={content}
         closeFunc={closeFunc}
         color="success"
         disabled={buttonDisabled}
+        cancelText={isAddEvent ? "修正" : "キャンセル"}
+        cancelFunc={isAddEvent ? cancelFunc : closeFunc}
       />
       <AdminConfirmLessonModal
         open={openConfirm}
@@ -227,6 +234,7 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
         startAt={startAt}
         endAt={endAt}
         joinedUsers={joinedUsers}
+        isAddEvent={isAddEvent}
       />
     </div>
   );

@@ -9,6 +9,8 @@ import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 
+type eventAction = "update" | "add" | "delete";
+
 interface Props {
   open: boolean;
   selectedEvent: CEvent;
@@ -18,15 +20,17 @@ interface Props {
   startAt: moment.Moment | null;
   endAt: moment.Moment | null;
   joinedUsers: User[] | undefined;
+  isAddEvent?: boolean;
 }
 
 const AdminConfirmLessonModal: React.FC<Props> = (props) => {
-  const { open, selectedEvent,  closeFunc, cancelFunc, updateFunc, startAt, endAt, joinedUsers } = props;
+  const { open, selectedEvent,  closeFunc, cancelFunc, updateFunc, startAt, endAt, joinedUsers, isAddEvent } = props;
   const { enqueueSnackbar } = useSnackbar();
-  const lessonId = selectedEvent?.id;
+  const lessonId = selectedEvent.id;
+  const lessonClassId = selectedEvent.lesson_class_id;
   const classes = adminModalStyle();
 
-  const updateEvent = (lesson:Lesson) => {
+  const updateEvent = (lesson:Lesson, action:eventAction) => {
     const newEvent:CEvent = {
       id: lesson.id,
       title: lesson.class_name,
@@ -38,7 +42,7 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
       users: lesson.users ? lesson.users : undefined,
     }
     if (updateFunc) {
-      updateFunc(newEvent);
+      updateFunc(newEvent, action);
     }
   };
 
@@ -73,11 +77,20 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
     const json = await res.json();
     switch (res.status) {
       case 200:
-        updateEvent(json);
+        updateEvent(json, "update");
         enqueueSnackbar('レッスン情報の変更に成功しました。', { variant: 'success' });
         break;
+      case 400:
+        switch (json.code) {
+          case 'user_monthly_limit_error':
+            enqueueSnackbar('参加可能数を超えているユーザーが含まれているためレッスン情報の変更に失敗しました。', { variant: 'error' });
+            break;
+          default:
+            enqueueSnackbar('レッスン情報の変更に失敗しました。', { variant: 'error' });
+        };
+        break;
       case 404:
-        enqueueSnackbar(`ID:${lessonId}}のレッスンが存在しないため変更に失敗しました。`, { variant: 'error' });
+        enqueueSnackbar(`ID:${lessonId}のレッスンが存在しないため変更に失敗しました。`, { variant: 'error' });
         break;
       case 422:
         enqueueSnackbar('レッスン情報の変更に失敗しました。内容を確かめてください。', { variant: 'error' });
@@ -87,10 +100,56 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
     }
   };
 
+  const addLesson = async () => {
+    const accessToken = localStorage.getItem('kiloToken');
+    if (!accessToken) {
+      return;
+    }
+    if (!lessonClassId) {
+      return;
+    }
+
+    const lesson = {
+      lesson_class_id: lessonClassId,
+      start_at: startAt?.toDate(),
+      end_at: endAt?.toDate(),
+      user_ids: joinedUsers?.map((user) => user.id),
+    };
+
+    const res = await fetchApp(
+      '/v1/lessons',
+      'POST',
+      accessToken,
+      JSON.stringify({
+        lesson,
+      })
+    )
+    if (res instanceof NetworkError) {
+      console.log('ServerError');
+      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
+      return;
+    }
+    const json = await res.json();
+    switch (res.status) {
+      case 201:
+        updateEvent(json, "add");
+        enqueueSnackbar('レッスンの作成に成功しました。', { variant: 'success' });
+        break;
+      case 400:
+        enqueueSnackbar('参加可能数を超えているユーザーが含まれているためレッスンを作成に失敗しました。', { variant: 'error' });
+        break;
+      case 422:
+        enqueueSnackbar('レッスンの作成に失敗しました。内容を確かめてください。', { variant: 'error' });
+        break;
+      default:
+        enqueueSnackbar('レッスンの作成に失敗しました。', { variant: 'error' });
+    }
+  };
+
   return(
     <Modal
       open={open}
-      headerTitle="レッスン情報変更"
+      headerTitle={ isAddEvent ? "レッスン新規作成" : "レッスン情報変更"}
       color="success"
       content={
         <div>
@@ -122,7 +181,7 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
         </div>
       }
       submitText="確定"
-      submitFunc={async () => {await updateLesson()}}
+      submitFunc={async () => { isAddEvent ? await addLesson() : await updateLesson()}}
       closeFunc={() => {closeFunc()}}
       cancelText="修正"
       cancelFunc={cancelFunc}

@@ -18,3 +18,10 @@ export interface CreateLessonClassRequest {
   description: string;
   color:       LessonColor;
 };
+
+export interface slotInfo {
+  start: string | Date;
+  end: string | Date;
+  slots: Date[] | string[];
+  action: 'select' | 'click' | 'doubleClick';
+};

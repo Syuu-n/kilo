@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { KSpinner, AdminCalender, Card, CardBody, CardHeader, CardIcon } from 'components';
 import { fetchApp, NetworkError } from 'request/fetcher';
-import { Lesson, CEvent, User } from 'responses/responseStructs';
+import { Lesson, CEvent, User, LessonClass } from 'responses/responseStructs';
 import lessonsViewStyle from 'assets/jss/kiloStyles/classesViewStyle';
 import { EventNote } from '@material-ui/icons';
+
+type eventAction = "update" | "add" | "delete";
 
 const LessonsView: React.FC = () => {
   const [lessons, setLessons] = React.useState<CEvent[] | null>(null);
   const [users, setUsers] = React.useState<User[] | null>();
+  const [lessonClasses, setLessonClasses] = React.useState<LessonClass[] | null>();
   const classes = lessonsViewStyle();
 
   const getLessons = async () => {
@@ -60,7 +63,32 @@ const LessonsView: React.FC = () => {
     }
   };
 
-  const updateEvent = (event:CEvent, isDelete?:boolean) => {
+  const getLessonClasses = async (): Promise<LessonClass[] | null> => {
+    const accessToken = localStorage.getItem('kiloToken');
+    if (!accessToken) {
+      return null;
+    }
+
+    const res = await fetchApp(
+      '/v1/lesson_classes',
+      'GET',
+      accessToken,
+    )
+
+    if (res instanceof NetworkError) {
+      console.log("ServerError");
+      return null;
+    }
+
+    if (res.ok) {
+      const json = await res.json();
+      return json;
+    } else {
+      return null;
+    }
+  };
+
+  const updateEvent = async (event:CEvent, action:eventAction) => {
     if (!lessons) {
       console.log('LessonNotFoundError');
       return
@@ -68,15 +96,26 @@ const LessonsView: React.FC = () => {
 
     const newLessons = lessons.slice();
     const selectedIndex = lessons.findIndex(({id}) => id === event.id);
-    // 削除時の update
-    if (isDelete) {
-      newLessons.splice(selectedIndex, 1);
-      setLessons(newLessons);
-    } else {
-      // 更新時の update
-      newLessons[selectedIndex] = event;
-      setLessons(newLessons);
+    switch (action) {
+      case "update":
+        // 更新時の update
+        newLessons[selectedIndex] = event;
+        setLessons(newLessons);
+        break;
+      case "add":
+        // 追加時の update
+        newLessons.push(event);
+        setLessons(newLessons);
+        break;
+      case "delete":
+        // 削除時の update
+        newLessons.splice(selectedIndex, 1);
+        setLessons(newLessons);
+        break;
     };
+    // レッスン変更、追加、削除後はユーザの参加可能数が変化するため再取得する
+    const users = await getUsers();
+    if (users) setUsers(users);
   };
 
   React.useEffect(() => {
@@ -96,13 +135,16 @@ const LessonsView: React.FC = () => {
       };
       const users = await getUsers();
       if (users) setUsers(users);
+
+      const lessonClasses = await getLessonClasses();
+      if (lessonClasses) setLessonClasses(lessonClasses);
     };
     f();
   }, []);
 
   return (
     <div>
-      { lessons && users ? (
+      { lessons && users && lessonClasses ? (
         <div>
           <Card>
             <CardHeader color="green" icon>
@@ -114,8 +156,9 @@ const LessonsView: React.FC = () => {
             <CardBody>
               <AdminCalender
                 lessons={lessons}
-                updateEventFunc={(event:CEvent, isDelete?:boolean) => updateEvent(event, isDelete)}
+                updateEventFunc={(event:CEvent, action:eventAction) => updateEvent(event, action)}
                 users={users}
+                lessonClasses={lessonClasses}
               />
             </CardBody>
           </Card>
