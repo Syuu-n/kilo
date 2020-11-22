@@ -115,7 +115,7 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
         enqueueSnackbar('クラス情報の変更に成功しました。', { variant: 'success'});
         break;
       case 404:
-        enqueueSnackbar(`ID:${lessonClassID}}のクラスが存在しないため変更に失敗しました。`, { variant: 'error' });
+        enqueueSnackbar(`ID:${lessonClassID}のクラスが存在しないため変更に失敗しました。`, { variant: 'error' });
         break;
       case 422:
         switch (json.code) {

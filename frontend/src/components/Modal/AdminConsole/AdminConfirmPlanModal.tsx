@@ -85,7 +85,7 @@ const AdminConfirmPlanModal: React.SFC<Props> = (props) => {
         enqueueSnackbar('コース情報の変更に成功しました。', { variant: 'success'});
         break;
       case 404:
-        enqueueSnackbar(`ID:${planID}}のコースが存在しないため変更に失敗しました。`, { variant: 'error' });
+        enqueueSnackbar(`ID:${planID}のコースが存在しないため変更に失敗しました。`, { variant: 'error' });
         break;
       case 422:
         enqueueSnackbar('コース情報の変更に失敗しました。内容を確かめてください。', { variant: 'error' });
