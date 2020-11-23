@@ -24,6 +24,7 @@ Rails.application.routes.draw do
         delete 'leave' => 'lessons#user_leave'
       end
     end
+    post 'lessons/create_lessons' => 'lessons#create_next_month_lessons'
 
     resources :lesson_classes, except: [:new, :edit]
   end

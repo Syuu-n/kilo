@@ -4,7 +4,10 @@ import * as moment from 'moment';
 import 'assets/css/kilo-calender.css';
 import { CEvent, LessonClass, User } from 'responses/responseStructs';
 import { slotInfo } from 'request/requestStructs';
-import { AdminShowLessonModal, AdminAddLessonModal } from 'components';
+import { fetchApp, NetworkError } from 'request/fetcher';
+import { AdminShowLessonModal, AdminAddLessonModal, Button } from 'components';
+import { useSnackbar } from 'notistack';
+import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 
 interface Props {
   lessons:         CEvent[];
@@ -20,6 +23,9 @@ const Calender: React.FC<Props> = (props) => {
   const [selectedEvent, setSelectedEvent] = React.useState<CEvent|undefined>();
   const [slot, setSlot] = React.useState<slotInfo|undefined>();
   const localizer = momentLocalizer(moment);
+  const { enqueueSnackbar } = useSnackbar();
+  const classes = adminModalStyle();
+
   const formats:Formats = {
     dateFormat: 'D',
     dayFormat: 'D (ddd)',
@@ -58,8 +64,49 @@ const Calender: React.FC<Props> = (props) => {
     setOpenAddModal(true);
   };
 
+  const createLessonsFunc = () => {
+    // 来月を取得
+    const nextMonth = moment().add(1, 'month');
+    if (confirm(`現在のクラスをもとに ${nextMonth.format("YYYY 年 MM 月")} のスケジュールを作成します。よろしいですか？`)) {
+      createLessons();
+    };
+  };
+
+  const createLessons = async () => {
+    const accessToken = localStorage.getItem('kiloToken');
+    if (!accessToken) {
+      return;
+    }
+
+    const res = await fetchApp(
+      '/v1/lessons/create_lessons',
+      'POST',
+      accessToken,
+    )
+    if (res instanceof NetworkError) {
+      console.log('ServerError');
+      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
+      return;
+    }
+    switch (res.status) {
+      case 201:
+        enqueueSnackbar('来月のスケジュール作成に成功しました。', { variant: 'success' });
+        break;
+      default:
+        enqueueSnackbar('来月のスケジュール作成に失敗しました。', { variant: 'error' });
+    };
+  };
+
   return(
     <div className="admin-calender">
+      <div className={classes.flexContainerEnd}>
+        <Button
+          color="success"
+          onClick={() => createLessonsFunc()}
+        >
+          来月のスケジュールを作成
+        </Button>
+      </div>
       <Calendar
         selectable
         localizer={localizer}

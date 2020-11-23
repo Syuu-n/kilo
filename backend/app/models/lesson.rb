@@ -9,8 +9,8 @@ class Lesson < ApplicationRecord
   has_many :user_lessons, dependent: :destroy
   has_many :users, through: :user_lessons
 
-  validates :start_at, presence: true
-  validates :end_at, presence: true
+  validates :start_at, presence: true, uniqueness: { scope: [:lesson_class_id] }
+  validates :end_at, presence: true, uniqueness: { scope: [:lesson_class_id] }
 
   def class_name
     if lesson_class
@@ -65,5 +65,23 @@ class Lesson < ApplicationRecord
     if ul
       ul.destroy_all
     end
+  end
+
+  # week(週) と dotw(曜日) から該当する日を求める
+  def self.next_month_date_from_week_and_dotw(week, dotw, current_month=false)
+    # current_month(今月)の場合は next_month を削除する
+    first_day = if current_month
+      Date.current.beginning_of_month
+    else
+      Date.current.beginning_of_month.next_month
+    end
+
+    first_week = 7 - first_day.wday
+    # 日曜始まりにするためにwday+1にする
+    day = first_week + (7 * (week - 2)) + dotw + 1
+
+    # 月の最後の日よりも大きい or 1日より小さい場合は false
+    return false if first_day.end_of_month < day || day < 1
+    Date.new(first_day.year, first_day.month, day)
   end
 end

@@ -12,6 +12,10 @@ createStyles({
   flexContainerFirst: {
     margin: '0 10px 0 0',
   },
+  flexContainerEnd: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
   ruleSettingTitle: {
     margin: 0,
   },

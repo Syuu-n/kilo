@@ -6,7 +6,7 @@ module V1
     class NotJoinedError < StandardError; end
     class CantLeaveError < StandardError; end
 
-    before_action :permission_check, only: [:create, :update, :destroy]
+    before_action :permission_check, only: [:create, :update, :destroy, :create_next_month_lessons]
     before_action :setup_lesson, only: [:update, :show, :destroy, :user_join, :user_leave]
 
     #  GET /lessons
@@ -119,6 +119,43 @@ module V1
       end
       @lesson.reload
       render json: @lesson, status: :ok
+    end
+
+    # POST /lessons/create_lessons
+    # 現在の lesson_rules を元に来月のレッスンを作成する
+    def create_next_month_lessons
+      begin
+        ActiveRecord::Base.transaction do
+          lesson_rules = LessonRule.all
+          lesson_rules.each do |lr|
+            # lesson_rule の week が 0(毎週)だった場合
+            if lr.week == 0
+              weeks = [1, 2, 3, 4]
+              weeks.each do |week|
+                date = Lesson.next_month_date_from_week_and_dotw(week, lr.dotw)
+                if date
+                  new_start_at = Time.zone.local(date.year, date.month, date.day, lr.start_at.hour, lr.start_at.min)
+                  new_end_at = Time.zone.local(date.year, date.month, date.day, lr.end_at.hour, lr.end_at.min)
+                  lesson = Lesson.new(lesson_class_id: lr.lesson_class_id, start_at: new_start_at, end_at: new_end_at)
+                  lesson.save!
+                end
+              end
+            else
+              date = Lesson.next_month_date_from_week_and_dotw(lr.week, lr.dotw)
+              if date
+                new_start_at = Time.zone.local(date.year, date.month, date.day, lr.start_at.hour, lr.start_at.min)
+                new_end_at = Time.zone.local(date.year, date.month, date.day, lr.end_at.hour, lr.end_at.min)
+                lesson = Lesson.new(lesson_class_id: lr.lesson_class_id, start_at: new_start_at, end_at: new_end_at)
+                lesson.save!
+              end
+            end
+          end
+        end
+      rescue => e
+        puts e
+        render json: { code: 'lesson_create_error' }, status: :bad_request and return
+      end
+      render status: :created
     end
 
     private
