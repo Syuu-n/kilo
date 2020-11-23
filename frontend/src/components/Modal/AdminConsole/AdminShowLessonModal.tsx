@@ -36,8 +36,10 @@ const AdminShowLessonModal: React.FC<Props> = (props) => {
                 ["終了時間", moment(selectedEvent?.end).format("YYYY年 MM月 DD日 HH時 mm分")],
               ]}
             />
-            <p>クラス説明</p>
-            <p>{selectedEvent?.memo}</p>
+            <div className={classes.descriptionContainer}>
+              <p>クラス説明</p>
+              <p>{selectedEvent?.memo}</p>
+            </div>
             { selectedEvent?.users ? (
               <div>
                 <p>参加中のユーザ一</p>

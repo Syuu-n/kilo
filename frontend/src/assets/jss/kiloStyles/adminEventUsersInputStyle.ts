@@ -23,7 +23,7 @@ createStyles({
     position: "relative",
   },
   usersContainerWrap: {
-    position: "absolute",
+    position: "relative",
     backgroundColor: "#FFFFFF",
     boxShadow: "1px 2px 5px 2px rgba(0,0,0,0.4)",
     borderRadius: "3px",

@@ -10,6 +10,12 @@ createStyles({
     maxHeight: "120px",
     overflow: "auto",
   },
+  descriptionContainer: {
+    minWidth: "0px",
+    [`@media (min-width: 500px)`]: {
+      minWidth: "500px",
+    },
+  },
 }));
 
 export default showEventModalStyle;

@@ -148,8 +148,10 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
           />
         </MuiPickersUtilsProvider>
       </ThemeProvider>
-      <p>クラス説明</p>
-      <p>{selectedEvent.memo}</p>
+      <div className={classes.descriptionContainer}>
+        <p>クラス説明</p>
+        <p>{selectedEvent.memo}</p>
+      </div>
       { joinedUsers ? (
         <Grid container>
           <ItemGrid xs={12} sm={6}>

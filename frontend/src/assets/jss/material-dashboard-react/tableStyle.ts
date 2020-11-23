@@ -67,7 +67,7 @@ createStyles({
   tableResponsive: {
     width: '100%',
     marginTop: theme.spacing(3),
-    overflowX: 'auto',
+    // overflowX: 'auto',
   },
   tableHeadRow: {
     height: "56px",
