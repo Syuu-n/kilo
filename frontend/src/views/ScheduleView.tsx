@@ -149,7 +149,7 @@ const ScheduleView: React.FC = () => {
                   tableData={
                     recentLesson.length == 0 ?
                     [["なし"]] :
-                    recentLesson.map((lesson) => [lesson.title, moment(lesson.start).format("YYYY年 MM月 DD日 HH時 mm分")])
+                    recentLesson.map((lesson) => [lesson.title, moment(lesson.start).format("YYYY年 MM月 DD日 H時 m分")])
                   }
                 />
             </ItemGrid>

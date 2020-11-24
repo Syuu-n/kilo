@@ -36,7 +36,7 @@ const AdminLessonRuleSetting: React.FC<Props> = (props) => {
   };
 
   const handleAddLessonRule = () => {
-    const lrs = lessonRules.filter((lr) => true);
+    const lrs = lessonRules.filter(() => true);
     lrs.push(newLessonRule);
     if (setLessonRuleFunc) {
       setLessonRuleFunc(lrs);
@@ -44,7 +44,7 @@ const AdminLessonRuleSetting: React.FC<Props> = (props) => {
   };
 
   const handleRemoveLessonRule = (index:number) => {
-    const lrs = lessonRules.filter((lr) => true);
+    const lrs = lessonRules.filter(() => true);
     // 削除ボタンが押された要素を削除する
     if (lrs[index]) {
       lrs.splice(index, 1);
@@ -122,13 +122,13 @@ const AdminLessonRuleSetting: React.FC<Props> = (props) => {
                 <AdminFormInput
                   labelText="開始時間"
                   inputType="text"
-                  value={lr.start_at.format("A h:mm")}
+                  value={lr.start_at.format("H時 m分")}
                   confirm
                 />
                 <AdminFormInput
                   labelText="終了時間"
                   inputType="text"
-                  value={lr.end_at.format("A h:mm")}
+                  value={lr.end_at.format("H時 m分")}
                   confirm
                 />
               </div>
@@ -144,7 +144,8 @@ const AdminLessonRuleSetting: React.FC<Props> = (props) => {
                       label="開始時間"
                       value={lr.start_at}
                       onChange={(date:moment.Moment|null) => handleLessonRuleChange(i, undefined, undefined, date)}
-                      format="A h:mm"
+                      format="H時 m分"
+                      ampm={false}
                       className={classes.flexContainerFirst}
                     />
                     <TimePicker
@@ -155,7 +156,8 @@ const AdminLessonRuleSetting: React.FC<Props> = (props) => {
                       label="終了時間"
                       value={lr.end_at}
                       onChange={(date:moment.Moment|null) => handleLessonRuleChange(i, undefined, undefined, undefined ,date)}
-                      format="A h:mm"
+                      format="H時 m分"
+                      ampm={false}
                     />
                   </MuiPickersUtilsProvider>
                 </ThemeProvider>

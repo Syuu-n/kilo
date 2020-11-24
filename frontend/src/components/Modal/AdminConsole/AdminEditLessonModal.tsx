@@ -124,7 +124,7 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
                   okLabel="決定"
                   cancelLabel="キャンセル"
                   value={startAt}
-                  format="YYYY年 MM月 DD日 HH時 mm分"
+                  format="YYYY年 MM月 DD日 H時 m分"
                   onChange={setStartAt}
                   ampm={false}
                   className={classes.pickerCell}
@@ -138,7 +138,7 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
                   okLabel="決定"
                   cancelLabel="キャンセル"
                   value={endAt}
-                  format="YYYY年 MM月 DD日 HH時 mm分"
+                  format="YYYY年 MM月 DD日 H時 m分"
                   onChange={setEndAt}
                   ampm={false}
                   className={classes.pickerCell}

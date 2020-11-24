@@ -142,8 +142,8 @@ const ShowEventModal: React.SFC<Props> = (props) => {
           <Table
             tableData={[
               ["クラス名", selectedEvent?.title],
-              ["開始時間", moment(selectedEvent?.start).format("YYYY年 MM月 DD日 HH時 mm分")],
-              ["終了時間", moment(selectedEvent?.end).format("YYYY年 MM月 DD日 HH時 mm分")],
+              ["開始時間", moment(selectedEvent?.start).format("YYYY年 MM月 DD日 H時 m分")],
+              ["終了時間", moment(selectedEvent?.end).format("YYYY年 MM月 DD日 H時 m分")],
             ]}
           />
           <div className={classes.descriptionContainer}>
