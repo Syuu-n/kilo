@@ -11,7 +11,6 @@
 ```
 $ git clone https://github.com/NobuhiroKato/kilo.git
 
-$ docker-compose run frontend yarn
 $ docker-compose run backend rake db:create
 ```
 
@@ -20,8 +19,8 @@ $ docker-compose run backend rake db:create
 $ docker-comppose up -d
 ```
 
-# Test
+# Test(Backend)
 ```
 $ docker-compose exec backend bash
-& rspec
+$ rspec
 ```
