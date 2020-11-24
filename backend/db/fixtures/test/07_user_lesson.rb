@@ -1,10 +1,13 @@
 Faker::Config.locale = 'ja'
 
+users = User.all
+lessons = Lesson.all
+
 30.times do |i|
-  user = User.find_by(id: rand(1..30))
-  lesson = Lesson.find_by(id: rand(1..15))
+  user = users.sample
+  lesson = lessons.sample
   unless lesson.joined?(user)
-    if user.remaining_monthly_count >= 1
+    if user.remaining_monthly_count > 0
       UserLesson.seed(:id,
                         {
                           id: i + 1,

@@ -67,14 +67,24 @@ class Lesson < ApplicationRecord
     end
   end
 
-  # week(週) と dotw(曜日) から該当する日を求める
-  def self.next_month_date_from_week_and_dotw(week, dotw, current_month=false)
-    # current_month(今月)の場合は next_month を削除する
-    first_day = if current_month
-      Date.current.beginning_of_month
-    else
-      Date.current.beginning_of_month.next_month
-    end
+  # week(週) と dotw(曜日) から該当する来月の日を求める
+  def self.next_month_date_from_week_and_dotw(week, dotw)
+    first_day = Date.current.beginning_of_month.next_month
+
+    first_week = 7 - first_day.wday
+    # 日曜始まりにするためにwday+1にする
+    day = first_week + (7 * (week - 2)) + dotw + 1
+
+    # 月の最後の日よりも大きい or 1日より小さい場合は false
+    return false if first_day.end_of_month < day || day < 1
+    Date.new(first_day.year, first_day.month, day)
+  end
+
+
+  # NOTE: Seed 用メソッド
+  # week(週) と dotw(曜日) から該当する今月の日を求める
+  def self.current_month_date_from_week_and_dotw(week, dotw)
+    first_day = Date.current.beginning_of_month
 
     first_week = 7 - first_day.wday
     # 日曜始まりにするためにwday+1にする
