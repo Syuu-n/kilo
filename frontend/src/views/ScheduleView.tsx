@@ -22,6 +22,7 @@ const ScheduleView: React.FC = () => {
     );
     setMyLessons(myLessonsArray);
 
+    // NOTE: 現時刻から今月の終わりまでを recentLesson として取得する
     const recentLessonArray:CEvent[] = myLessonsArray.filter((lesson) =>
       moment(lesson.start).isBetween(new Date, moment(new Date).endOf('month'))
     );
