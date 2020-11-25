@@ -13,6 +13,7 @@ import {
   roseColor,
   successColor,
   warningColor,
+  fontColor,
 } from 'assets/jss/material-dashboard-react';
 
 const buttonStyle = makeStyles(() =>
@@ -112,7 +113,7 @@ createStyles({
   white: {
     '&,&:focus,&:hover': {
       backgroundColor: '#FFFFFF',
-      color: grayColor,
+      color: fontColor,
     },
   },
   simple: {

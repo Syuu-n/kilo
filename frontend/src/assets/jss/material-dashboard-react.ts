@@ -76,13 +76,6 @@ const card: CSSProperties = {
   overflow: 'visible',
 };
 
-const defaultFont: CSSProperties = {
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-  fontWeight: 300,
-  lineHeight: '1.5em',
-  color: '#3C4858'
-};
-
 const primaryColor = '#ff9800';
 const warningColor = '#ffc107';
 const dangerColor = '#f44336';
@@ -93,6 +86,15 @@ const grayColor = '#999999';
 
 const blackColor = "#000";
 const whiteColor = "#FFF";
+
+const fontColor = "#3C4858";
+
+const defaultFont: CSSProperties = {
+  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  fontWeight: 300,
+  lineHeight: '1.5em',
+  color: fontColor,
+};
 
 const primaryBoxShadow: CSSProperties = {
   boxShadow:
@@ -185,6 +187,7 @@ export {
   grayColor,
   blackColor,
   whiteColor,
+  fontColor,
   primaryBoxShadow,
   infoBoxShadow,
   successBoxShadow,
