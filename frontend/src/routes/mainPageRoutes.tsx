@@ -46,19 +46,19 @@ const mainPageRoutes = [
     childRoute: true,
   },
   {
-    path: '/classes',
-    sidebarName: 'クラス',
-    navbarName: 'クラス',
-    icon: LibraryBooks,
-    component: ClassesView,
-    childRoute: true,
-  },
-  {
     path: '/courses',
     sidebarName: 'コース',
     navbarName: 'コース',
     icon: LocalAtm,
     component: PlansView,
+    childRoute: true,
+  },
+  {
+    path: '/classes',
+    sidebarName: 'クラス',
+    navbarName: 'クラス',
+    icon: LibraryBooks,
+    component: ClassesView,
     childRoute: true,
   },
   {
