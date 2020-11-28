@@ -1,7 +1,6 @@
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   blueCardHeader,
-  card,
   cardHeader,
   defaultFont,
   greenCardHeader,
@@ -16,7 +15,6 @@ const loginCardStyle = makeStyles(() =>
 createStyles({
   card: {
     maxWidth: '500px',
-    ...card,
   },
   cardHeader: {
     ...cardHeader,

@@ -90,7 +90,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
   }, []);
 
   return (
-    <Card login className={classes[cardAnimation]}>
+    <Card login className={classes.card + ' ' + classes[cardAnimation]}>
       <CardHeader
         color={headerColor}
       >
