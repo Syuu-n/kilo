@@ -9,4 +9,8 @@ class Plan < ApplicationRecord
   def self.default_plan
     self.first
   end
+
+  def self.trial_plan
+    self.find_by(name: '体験コース')
+  end
 end

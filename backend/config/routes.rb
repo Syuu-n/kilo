@@ -14,6 +14,9 @@ Rails.application.routes.draw do
       end
     end
     resource :trials, only: [:create, :update]
+    get 'trials/lesson_classes' => 'trials#lesson_classes_for_trial'
+    get 'trials/lessons' => 'trials#lessons_for_trial'
+
     resource :passwords, only: [:create, :update]
 
     resources :plans, except: [:new, :edit]

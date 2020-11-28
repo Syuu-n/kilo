@@ -55,6 +55,7 @@ import Footer from './Footer/Footer';
 // Form
 
 import AdminFormInput from './Forms/AdminFormInput';
+import FormInput from './Forms/FormInput';
 
 // ##############################
 // // // Grid
@@ -138,6 +139,10 @@ import AdminConfirmLessonModal from './Modal/AdminConsole/AdminConfirmLessonModa
 // Badge
 import Badge from './Badge/Badge';
 
+// Wizard
+import Wizard from './Wizard/Wizard';
+import WizardNavigation from './Wizard/WizardNavigation';
+
 export {
   // Cards
   ChartCard,
@@ -172,6 +177,7 @@ export {
   Footer,
   // Form
   AdminFormInput,
+  FormInput,
   // Grid
   ItemGrid,
   // Header
@@ -222,4 +228,7 @@ export {
   AdminConfirmLessonModal,
   // Badge
   Badge,
+  // Wizard
+  Wizard,
+  WizardNavigation,
 };

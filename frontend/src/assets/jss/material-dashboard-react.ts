@@ -59,23 +59,6 @@ const container: CSSProperties = {
   marginLeft: 'auto',
 };
 
-const boxShadow: CSSProperties = {
-  boxShadow:
-    '0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)',
-};
-
-const card: CSSProperties = {
-  display: 'inline-block',
-  position: 'relative',
-  width: '100%',
-  margin: '25px 0',
-  boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.14)',
-  borderRadius: '3px',
-  color: 'rgba(0, 0, 0, 0.87)',
-  background: '#fff',
-  overflow: 'visible',
-};
-
 const primaryColor = '#ff9800';
 const warningColor = '#ffc107';
 const dangerColor = '#f44336';
@@ -94,6 +77,23 @@ const defaultFont: CSSProperties = {
   fontWeight: 300,
   lineHeight: '1.5em',
   color: fontColor,
+};
+
+const boxShadow: CSSProperties = {
+  boxShadow:
+    '0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)',
+};
+
+const card: CSSProperties = {
+  display: 'inline-block',
+  position: 'relative',
+  width: '100%',
+  margin: '25px 0',
+  boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.14)',
+  borderRadius: '3px',
+  color: fontColor,
+  background: '#fff',
+  overflow: 'visible',
 };
 
 const primaryBoxShadow: CSSProperties = {

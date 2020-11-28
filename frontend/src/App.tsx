@@ -5,6 +5,7 @@ import { AuthProvider } from 'Auth';
 import MainPage from 'layouts/MainPageLayout';
 import LoginView from 'views/LoginView';
 import TopView from 'views/TopView';
+import TrialRegisterView from 'views/TrialRegisterView';
 // moment を日本語に設定
 import 'moment/locale/ja';
 
@@ -14,6 +15,7 @@ const App: React.FC = () => {
     <Router history={hist}>
       <Switch>
         <Route exact path='/' component={TopView} />
+        <Route exact path='/trial_register' component={TrialRegisterView} />
         <Route exact path='/login' component={LoginView} />
         <AuthProvider>
           <Route path='/' component={MainPage} />

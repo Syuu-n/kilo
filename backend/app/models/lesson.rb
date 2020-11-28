@@ -24,6 +24,12 @@ class Lesson < ApplicationRecord
     end
   end
 
+  def lesson_class_id
+    if lesson_class
+      lesson_class.id
+    end
+  end
+
   def color
     if lesson_class
       lesson_class.color

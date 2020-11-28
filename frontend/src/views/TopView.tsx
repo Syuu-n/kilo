@@ -7,11 +7,13 @@ const TopView: React.FC = () => {
   const classes = topViewStyle();
 
   const handleLoginButtonClick = () => {
+    // ログインページへ移動
     history.push('/login');
   };
 
   const handleTrialButtonClick = () => {
-    console.log('Trial!');
+    // 体験申し込みページへ移動
+    history.push('/trial_register');
   };
 
   return(
