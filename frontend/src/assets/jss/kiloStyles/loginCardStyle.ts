@@ -14,7 +14,10 @@ import {
 
 const loginCardStyle = makeStyles(() =>
 createStyles({
-  card,
+  card: {
+    maxWidth: '500px',
+    ...card,
+  },
   cardHeader: {
     ...cardHeader,
     ...defaultFont
