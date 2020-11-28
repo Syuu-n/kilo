@@ -83,6 +83,7 @@ const CustomDropdown: React.FC<Props> = (props) => {
         aria-owns={anchorEl ? "menu-list" : undefined}
         aria-haspopup="true"
         onClick={handleClick}
+        fullWidth
         {...buttonProps}
       >
         {icon}

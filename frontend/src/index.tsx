@@ -12,7 +12,7 @@ ReactDOM.render(
       horizontal: 'right',
     }}
     // Snackbar を自動的に閉じるまでの時間
-    autoHideDuration={7000}
+    autoHideDuration={6000}
   >
     <App/>
   </SnackbarProvider>,

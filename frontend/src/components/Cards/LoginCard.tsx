@@ -72,7 +72,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
         // }
         localStorage.setItem('kiloToken', json.access_token);
         // トップページへ移動
-        history.push('/');
+        history.push('/schedule');
         enqueueSnackbar('ログインしました。', { variant: 'info' })
         break;
       default:

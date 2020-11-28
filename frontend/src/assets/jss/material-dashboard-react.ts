@@ -59,6 +59,26 @@ const container: CSSProperties = {
   marginLeft: 'auto',
 };
 
+const primaryColor = '#ff9800';
+const warningColor = '#ffc107';
+const dangerColor = '#f44336';
+const successColor = '#4caf50';
+const infoColor = '#00acc1';
+const roseColor = '#e91e63';
+const grayColor = '#999999';
+
+const blackColor = "#000";
+const whiteColor = "#FFF";
+
+const fontColor = "#3C4858";
+
+const defaultFont: CSSProperties = {
+  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  fontWeight: 300,
+  lineHeight: '1.5em',
+  color: fontColor,
+};
+
 const boxShadow: CSSProperties = {
   boxShadow:
     '0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)',
@@ -71,28 +91,10 @@ const card: CSSProperties = {
   margin: '25px 0',
   boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.14)',
   borderRadius: '3px',
-  color: 'rgba(0, 0, 0, 0.87)',
+  color: fontColor,
   background: '#fff',
   overflow: 'visible',
 };
-
-const defaultFont: CSSProperties = {
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-  fontWeight: 300,
-  lineHeight: '1.5em',
-  color: '#3C4858'
-};
-
-const primaryColor = '#ff9800';
-const warningColor = '#ffc107';
-const dangerColor = '#f44336';
-const successColor = '#4caf50';
-const infoColor = '#00acc1';
-const roseColor = '#e91e63';
-const grayColor = '#999999';
-
-const blackColor = "#000";
-const whiteColor = "#FFF";
 
 const primaryBoxShadow: CSSProperties = {
   boxShadow:
@@ -185,6 +187,7 @@ export {
   grayColor,
   blackColor,
   whiteColor,
+  fontColor,
   primaryBoxShadow,
   infoBoxShadow,
   successBoxShadow,

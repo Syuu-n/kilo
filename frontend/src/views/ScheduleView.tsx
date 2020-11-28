@@ -73,18 +73,22 @@ const ScheduleView: React.FC = () => {
   };
 
   React.useEffect(() => {
-    getLessons().then((result:Lesson[]) => {
-      setLessons(result.map(lesson => ({
-        id: lesson.id,
-        title: lesson.class_name,
-        start: new Date(lesson.start_at),
-        end:   new Date(lesson.end_at),
-        color: lesson.color,
-        joined: lesson.joined,
-        memo: lesson.class_memo ? lesson.class_memo : '',
-        users: lesson.users ? lesson.users : undefined,
-      } as CEvent)));
-    });
+    const f = async () => {
+      const lessons = await getLessons();
+      if (lessons) {
+        setLessons(lessons.map((lesson:Lesson) => ({
+          id: lesson.id,
+          title: lesson.class_name,
+          start: new Date(lesson.start_at),
+          end:   new Date(lesson.end_at),
+          color: lesson.color,
+          joined: lesson.joined,
+          memo: lesson.class_memo ? lesson.class_memo : '',
+          users: lesson.users ? lesson.users : undefined,
+        } as CEvent)));
+      };
+    };
+    f();
   }, []);
 
   React.useEffect(() => {

@@ -34,14 +34,15 @@ export interface Role {
 }
 
 export interface Lesson {
-  id:         number;
-  class_name: string;
-  class_memo: string;
-  start_at:   Date;
-  end_at:     Date;
-  users:      User[] | undefined;
-  color:      LessonColor;
-  joined:     boolean;
+  id:               number;
+  class_name:       string;
+  class_memo:       string;
+  start_at:         Date;
+  end_at:           Date;
+  users:            User[] | undefined;
+  color:            LessonColor;
+  joined:           boolean;
+  lesson_class_id?: number;
 }
 
 export interface CEvent extends Event {
@@ -53,6 +54,7 @@ export interface CEvent extends Event {
   start:            Date;
   end:              Date;
   lesson_class_id?: number;
+  name?:            string;
 }
 
 export interface LessonClass {

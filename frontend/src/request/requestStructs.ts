@@ -13,6 +13,18 @@ export interface CreateUserRequest {
   plan_id:                 number;
 };
 
+export interface CreateTrialUserRequest {
+  first_name:              string;
+  last_name:               string;
+  first_name_kana:         string;
+  last_name_kana:          string;
+  email:                   string;
+  password:                string;
+  birthday:                string;
+  phone_number:            string;
+  lesson_id:               number;
+};
+
 export interface CreateLessonClassRequest {
   name:        string;
   description: string;
