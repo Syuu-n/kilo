@@ -58,7 +58,9 @@ const Wizard: React.FC<Props> = (props) => {
         { isLoaded ? (
           contents[page - 1]
         ) : (
-          <KSpinner/>
+          <div className={classes.spinnerWrap}>
+            <KSpinner/>
+          </div>
         )}
       </CardBody>
       <CardFooter>

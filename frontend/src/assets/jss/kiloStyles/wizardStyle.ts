@@ -26,6 +26,11 @@ createStyles({
   displayNone: {
     display: "none",
   },
+  spinnerWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }));
 
 export default wizardNavigationStyle;
