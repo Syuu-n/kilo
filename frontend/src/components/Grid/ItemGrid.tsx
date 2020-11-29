@@ -6,15 +6,16 @@ interface Props {
   classes: {
     grid: string;
   };
+  className?: string;
 }
 
 const ItemGrid: React.SFC<
   Props & Pick<GridProps, Exclude<keyof GridProps, keyof Props>>
 > = props => {
-  const { classes, children, ...rest } = props;
+  const { classes, children, className, ...rest } = props;
 
   return (
-    <Grid item {...rest} className={classes.grid}>
+    <Grid item {...rest} className={classes.grid + (className ? ' ' + className : '')}>
       {children}
     </Grid>
   );

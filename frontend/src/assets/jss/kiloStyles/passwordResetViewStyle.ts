@@ -1,8 +1,8 @@
 import { makeStyles, createStyles } from '@material-ui/core/styles';
-import { primaryColor } from 'assets/jss/material-dashboard-react';
 import loginBackgroundImg from 'assets/img/login_img.jpg';
+import { dangerColor, primaryColor } from 'assets/jss/material-dashboard-react';
 
-const completeRegisterViewStyle = makeStyles(() =>
+const passwordResetViewStyle = makeStyles(() => 
 createStyles({
   wrapper: {
     position: 'relative',
@@ -16,7 +16,10 @@ createStyles({
     display: 'flex',
     justifyContent: 'center'
   },
-  completeView: {
+  title: {
+    margin: 0,
+  },
+  resetView: {
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'auto',
@@ -30,23 +33,31 @@ createStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: "200px",
+    minHeight: "300px",
+  },
+  errorMessageContainer: {
+    textAlign: 'center',
+    marginTop: '10px'
+  },
+  errorMessage: {
+    color: dangerColor,
+  },
+  buttonWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '15px'
   },
   messageContainer: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    minHeight: "200px",
   },
   icon: {
     color: primaryColor,
     fontSize: "40px",
     margin: "0 0 10px 0",
   },
-  loginButton: {
-    minWidth: "260px",
-  },
 }));
 
-export default completeRegisterViewStyle;
+export default passwordResetViewStyle;

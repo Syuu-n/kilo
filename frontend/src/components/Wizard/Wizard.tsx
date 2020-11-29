@@ -30,11 +30,13 @@ const Wizard: React.FC<Props> = (props) => {
   const preventButtonDisplayNone = () => {
     if (page == 1) return true
     if (page == contents.length) return true
+    if (isLoaded == false) return true
     return false
   };
 
   const nextButtonDisplayNone = () => {
     if (page == contents.length) return true
+    if (isLoaded == false) return true
     return false
   };
 

@@ -64,8 +64,8 @@ const CompleteRegisterView: React.FC = () => {
   return (
     <div className={classes.wrapper}>
       <Grid container className={classes.completeView}>
-        <ItemGrid xs={12} sm={8} lg={6}>
-          <Card>
+        <ItemGrid xs={12} sm={8} lg={6}  className={classes.gridItem}>
+        <Card className={classes.card}>
             <CardBody>
               { isLoaded ? (
                 // 認証の失敗かどうか

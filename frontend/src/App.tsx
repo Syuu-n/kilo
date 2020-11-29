@@ -7,6 +7,7 @@ import LoginView from 'views/LoginView';
 import TopView from 'views/TopView';
 import TrialRegisterView from 'views/TrialRegisterView';
 import CompleteRegisterView from 'views/CompleteRegisterView';
+import PasswordResetView from 'views/PasswordResetView';
 // moment を日本語に設定
 import 'moment/locale/ja';
 
@@ -18,6 +19,7 @@ const App: React.FC = () => {
         <Route exact path='/' component={TopView} />
         <Route exact path='/trial_register' component={TrialRegisterView} />
         <Route exact path='/complete_register' component={CompleteRegisterView}/>
+        <Route exact path='/password_reset' component={PasswordResetView} />
         <Route exact path='/login' component={LoginView} />
         <AuthProvider>
           <Route path='/' component={MainPage} />
