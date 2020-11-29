@@ -62,6 +62,10 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
         setErrorMessage('入力された情報の組み合わせが正しくありません。');
         setButtonDisabled(false);
         break;
+      case 401:
+        setErrorMessage('メールアドレスの本人確認が必要です。');
+        setButtonDisabled(false);
+        break;
       case 200:
         const json = await res.json();
         // TODO: rememberMe を有効にするにはアンコメント
