@@ -71,6 +71,13 @@ createStyles({
     transform: 'translate3d(0, -60px, 0) !important',
     opacity: 0,
   },
+  passwordResetButton: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    fontSize: '12px',
+    padding: '15px 0 0 0',
+    cursor: 'pointer',
+  },
 }));
 
 export default loginCardStyle;

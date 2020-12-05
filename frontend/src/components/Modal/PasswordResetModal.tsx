@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Modal } from 'components';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { fetchApp } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 
 interface Props {
@@ -18,8 +18,9 @@ const PasswordResetModal: React.FC<Props> = (props) => {
       メールからパスワード変更をおこなうとパスワードが変更できます。
     </p>;
 
-  const handleSubmit = async () => {
-    const res = await fetchApp(
+  const handleSubmit = () => {
+    // NOTE: メール送信はセキュリティの都合で失敗しても通知しない
+    fetchApp(
       '/v1/passwords',
       'POST',
       '',
@@ -29,19 +30,8 @@ const PasswordResetModal: React.FC<Props> = (props) => {
         },
       })
     )
-    if (res instanceof NetworkError) {
-      console.log('NetworkError');
-      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-      return
-    }
-    switch (res.status) {
-      case 200:
-        enqueueSnackbar('パスワード再設定用のメールを送信しました。',  { variant: 'success' });
-        break;
-      default:
-        enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    }
-  }
+    enqueueSnackbar('パスワード再設定用のメールを送信しました。',  { variant: 'success' });
+  };
 
   return (
     <Modal

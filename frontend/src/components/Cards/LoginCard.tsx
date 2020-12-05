@@ -85,6 +85,11 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
     }
   }
 
+  const goToPasswordResetSendPage = () => {
+    // パスワードリセット用メールアドレス入力ページへ移動
+    history.push('/send_password_reset');
+  };
+
   // カードの表示に動きをつける
   React.useEffect(() => {
     const timer = setTimeout(() => setCardAnimation(""), 500);
@@ -147,7 +152,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
           <div className={classes.loginBtnWrap}>
             <Button
               color='primary'
-              width='70%'
+              width='90%'
               type='submit'
               disabled={buttonDisabled}
             >
@@ -155,6 +160,13 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
             </Button>
           </div>
         </form>
+        {/* パスワードリセット */}
+        <a
+          onClick={goToPasswordResetSendPage}
+          className={classes.passwordResetButton}
+        >
+          パスワードを忘れた場合はこちら
+          </a>
       </CardBody>
     </Card>
   );
