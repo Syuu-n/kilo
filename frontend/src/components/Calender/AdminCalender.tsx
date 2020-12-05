@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Calendar, momentLocalizer, Formats, Messages } from 'react-big-calendar';
 import * as moment from 'moment';
 import 'assets/css/kilo-calender.css';
-import { CEvent, LessonClass, User } from 'responses/responseStructs';
+import { CEvent, Lesson, LessonClass, User } from 'responses/responseStructs';
 import { slotInfo } from 'request/requestStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { AdminShowLessonModal, AdminAddLessonModal, Button } from 'components';
@@ -64,6 +64,24 @@ const Calender: React.FC<Props> = (props) => {
     setOpenAddModal(true);
   };
 
+  /**
+   * Lesson の配列を CEvent の配列へ変換する
+   * @param lessons 変換するレッスンの配列
+   */
+  const convertLessonsToCEvents = (lessons: Lesson[]): CEvent[] => {
+    const cEvents = lessons.map((lesson:Lesson) => ({
+      id: lesson.id,
+      title: lesson.class_name,
+      start: new Date(lesson.start_at),
+      end:   new Date(lesson.end_at),
+      color: lesson.color,
+      joined: lesson.joined,
+      memo: lesson.class_memo ? lesson.class_memo : '',
+      users: lesson.users ? lesson.users : undefined,
+    } as CEvent));
+    return cEvents
+  };
+
   const createLessonsFunc = () => {
     // 来月を取得
     const nextMonth = moment().add(1, 'month');
@@ -88,9 +106,11 @@ const Calender: React.FC<Props> = (props) => {
       enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
       return;
     }
+    const json: Lesson[] = await res.json();
     switch (res.status) {
       case 201:
         enqueueSnackbar('来月のスケジュール作成に成功しました。', { variant: 'success' });
+        updateEventFunc(convertLessonsToCEvents(json), "createLessons")
         break;
       default:
         enqueueSnackbar('来月のスケジュール作成に失敗しました。', { variant: 'error' });

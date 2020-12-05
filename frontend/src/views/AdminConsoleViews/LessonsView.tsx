@@ -5,7 +5,7 @@ import { Lesson, CEvent, User, LessonClass } from 'responses/responseStructs';
 import lessonsViewStyle from 'assets/jss/kiloStyles/classesViewStyle';
 import { EventNote } from '@material-ui/icons';
 
-type eventAction = "update" | "add" | "delete";
+type eventAction = "update" | "add" | "delete" | "createLessons";
 
 const LessonsView: React.FC = () => {
   const [lessons, setLessons] = React.useState<CEvent[] | null>(null);
@@ -88,29 +88,33 @@ const LessonsView: React.FC = () => {
     }
   };
 
-  const updateEvent = async (event:CEvent, action:eventAction) => {
+  const updateEvent = async (events:CEvent[], action:eventAction) => {
     if (!lessons) {
       console.log('LessonNotFoundError');
       return
     };
 
     const newLessons = lessons.slice();
-    const selectedIndex = lessons.findIndex(({id}) => id === event.id);
+    const selectedIndex = lessons.findIndex(({id}) => id === events[0].id);
     switch (action) {
       case "update":
         // 更新時の update
-        newLessons[selectedIndex] = event;
+        newLessons[selectedIndex] = events[0];
         setLessons(newLessons);
         break;
       case "add":
         // 追加時の update
-        newLessons.push(event);
+        newLessons.push(events[0]);
         setLessons(newLessons);
         break;
       case "delete":
         // 削除時の update
         newLessons.splice(selectedIndex, 1);
         setLessons(newLessons);
+        break;
+      case "createLessons":
+        // 来月のスケジュール作成時の update
+        setLessons(newLessons.concat(events));
         break;
     };
     // レッスン変更、追加、削除後はユーザの参加可能数が変化するため再取得する
@@ -156,7 +160,7 @@ const LessonsView: React.FC = () => {
             <CardBody>
               <AdminCalender
                 lessons={lessons}
-                updateEventFunc={(event:CEvent, action:eventAction) => updateEvent(event, action)}
+                updateEventFunc={(events:CEvent[], action:eventAction) => updateEvent(events, action)}
                 users={users}
                 lessonClasses={lessonClasses}
               />

@@ -78,7 +78,7 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
     }
     switch (res.status) {
       case 200:
-        if (updateFunc) updateFunc(selectedEvent, "delete");
+        if (updateFunc) updateFunc([selectedEvent], "delete");
         enqueueSnackbar('レッスンの削除に成功しました。', { variant: 'success' });
         break;
       case 404:

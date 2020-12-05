@@ -42,7 +42,7 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
       users: lesson.users ? lesson.users : undefined,
     }
     if (updateFunc) {
-      updateFunc(newEvent, action);
+      updateFunc([newEvent], action);
     }
   };
 

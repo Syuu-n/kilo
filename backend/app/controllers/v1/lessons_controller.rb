@@ -126,6 +126,7 @@ module V1
     def create_next_month_lessons
       begin
         ActiveRecord::Base.transaction do
+          @lessons = []
           lesson_rules = LessonRule.all
           lesson_rules.each do |lr|
             # lesson_rule の week が 0(毎週)だった場合
@@ -138,6 +139,7 @@ module V1
                   new_end_at = Time.zone.local(date.year, date.month, date.day, lr.end_at.hour, lr.end_at.min)
                   lesson = Lesson.new(lesson_class_id: lr.lesson_class_id, start_at: new_start_at, end_at: new_end_at)
                   lesson.save!
+                  @lessons.push(lesson)
                 end
               end
             else
@@ -147,6 +149,7 @@ module V1
                 new_end_at = Time.zone.local(date.year, date.month, date.day, lr.end_at.hour, lr.end_at.min)
                 lesson = Lesson.new(lesson_class_id: lr.lesson_class_id, start_at: new_start_at, end_at: new_end_at)
                 lesson.save!
+                @lessons.push(lesson)
               end
             end
           end
@@ -155,7 +158,7 @@ module V1
         puts e
         render json: { code: 'lesson_create_error' }, status: :bad_request and return
       end
-      render status: :created
+      render json: @lessons, status: :created
     end
 
     private
