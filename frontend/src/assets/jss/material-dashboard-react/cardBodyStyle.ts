@@ -3,7 +3,7 @@ import { makeStyles, createStyles } from '@material-ui/core/styles';
 const cardBodyStyle = makeStyles(() =>
 createStyles({
   cardBody: {
-    padding: "16px",
+    padding: "20px",
     flex: "1 1 auto",
     // WebkitBoxFlex: "1",
     position: "relative"
