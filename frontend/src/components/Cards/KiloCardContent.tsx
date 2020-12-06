@@ -22,12 +22,16 @@ const KiloCardContent: React.FC<Props> = (props) => {
     className = ''
   }
   const cardBodyClasses = classNames({
-    [classes.cardBody]: true,
     [classes.cardBodyPlain]: plain,
     [className]: className !== undefined
   });
   return (
-    <CardContent className={cardBodyClasses} {...rest}>
+    <CardContent
+      className={cardBodyClasses} {...rest}
+      classes={{
+        root: classes.cardBody,
+      }}
+    >
       {children}
     </CardContent>
   );
