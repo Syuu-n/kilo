@@ -15,6 +15,8 @@ const loginCardStyle = makeStyles(() =>
 createStyles({
   card: {
     maxWidth: '500px',
+    transform: 'translate3d(0, 0, 0)',
+    transition: 'all 300ms linear',
   },
   cardHeader: {
     ...cardHeader,

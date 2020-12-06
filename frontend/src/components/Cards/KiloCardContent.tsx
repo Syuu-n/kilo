@@ -1,19 +1,22 @@
 import * as React from "react";
-// nodejs library that concatenates classes
 import classNames from "classnames";
-// core components
 import cardBodyStyle from "assets/jss/material-dashboard-react/cardBodyStyle";
+import { CardContent } from "@material-ui/core"
 
 interface Props {
   className?: string;
   plain?: boolean;
-  profile?: boolean;
   children?: React.ReactNode;
 }
 
-const CardBody: React.SFC<Props> = (props) => {
+/**
+ * Material-UI の CardContent
+ * https://material-ui.com/api/card-content/
+ * @param props.plain 左右の margin を 5px にする
+ */
+const KiloCardContent: React.FC<Props> = (props) => {
   const classes = cardBodyStyle();
-  const { children, plain, profile, ...rest } = props;
+  const { children, plain, ...rest } = props;
   let { className } = props;
   if (className === undefined) {
     className = ''
@@ -21,14 +24,13 @@ const CardBody: React.SFC<Props> = (props) => {
   const cardBodyClasses = classNames({
     [classes.cardBody]: true,
     [classes.cardBodyPlain]: plain,
-    [classes.cardBodyProfile]: profile,
     [className]: className !== undefined
   });
   return (
-    <div className={cardBodyClasses} {...rest}>
+    <CardContent className={cardBodyClasses} {...rest}>
       {children}
-    </div>
+    </CardContent>
   );
 }
 
-export default CardBody;
+export default KiloCardContent;

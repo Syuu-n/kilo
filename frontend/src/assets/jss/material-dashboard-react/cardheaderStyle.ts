@@ -58,14 +58,6 @@ createStyles({
     marginLeft: "0px !important",
     marginRight: "0px !important"
   },
-  cardHeaderStats: {
-    "& $cardHeaderIcon": {
-      textAlign: "right"
-    },
-    "& h1,& h2,& h3,& h4,& h5,& h6": {
-      margin: "0 !important"
-    }
-  },
   cardHeaderIcon: {
     "&$orangeCardHeader,&$greenCardHeader,&$redCardHeader,&$blueCardHeader,&$purpleCardHeader,&$roseCardHeader": {
       background: "transparent",

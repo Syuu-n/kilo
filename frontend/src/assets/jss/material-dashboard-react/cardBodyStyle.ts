@@ -12,9 +12,6 @@ createStyles({
     paddingLeft: "5px",
     paddingRight: "5px"
   },
-  cardBodyProfile: {
-    marginTop: "15px"
-  }
 }));
 
 export default cardBodyStyle;

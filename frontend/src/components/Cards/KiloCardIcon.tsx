@@ -1,7 +1,5 @@
 import * as React from "react";
-// nodejs library that concatenates classes
 import classNames from "classnames";
-// core components
 import cardIconStyles from "assets/jss/material-dashboard-react/cardIconStyle";
 
 interface Props {
@@ -16,7 +14,12 @@ interface Props {
   children?: React.ReactNode;
 }
 
-const CardIcon: React.SFC<Props> = (props) => {
+/**
+ * CardHeader にアイコンを追加
+ * CardHeader の icon を true にしておく必要がある
+ * @param props.color アイコンの背景色
+ */
+const KiloCardIcon: React.FC<Props> = (props) => {
   const classes = cardIconStyles();
   const { children, color, ...rest } = props;
   let { className } = props;
@@ -35,4 +38,4 @@ const CardIcon: React.SFC<Props> = (props) => {
   );
 }
 
-export default CardIcon;
+export default KiloCardIcon;

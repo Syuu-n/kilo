@@ -21,25 +21,8 @@ createStyles({
     flexDirection: "column",
     minWidth: "0",
     wordWrap: "break-word",
-    fontSize: ".875rem"
-  },
-  cardPlain: {
-    background: "transparent",
-    boxShadow: "none"
-  },
-  cardProfile: {
-    marginTop: "30px",
-    textAlign: "center"
-  },
-  cardChart: {
-    "& p": {
-      marginTop: "0px",
-      paddingTop: "0px"
-    }
-  },
-  cardLogin: {
-    transform: 'translate3d(0, 0, 0)',
-    transition: 'all 300ms linear',
+    fontSize: ".875rem",
+    overflow: "inherit",
   },
 }));
 

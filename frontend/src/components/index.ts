@@ -10,12 +10,12 @@ import TasksCard from './Cards/TasksCard';
 import LoginCard from './Cards/LoginCard';
 import MyProfileCard from './Cards/MyProfileCard';
 import CalenderCard from './Cards/CalenderCard';
-import Card from './Cards/Card';
-import CardBody from './Cards/CardBody';
+import Card from './Cards/KiloCard';
+import CardContent from './Cards/KiloCardContent';
 import CardFooter from './Cards/CardFooter';
-import CardIcon from './Cards/CardIcon';
+import CardIcon from './Cards/KiloCardIcon';
 import CardAvatar from './Cards/CardAvatar';
-import CardHeader from './Cards/CardHeader';
+import CardHeader from './Cards/KiloCardHeader';
 import RichTableCard from './Cards/RichTableCard';
 
 // ##############################
@@ -154,7 +154,7 @@ export {
   MyProfileCard,
   CalenderCard,
   Card,
-  CardBody,
+  CardContent,
   CardFooter,
   CardIcon,
   CardAvatar,
