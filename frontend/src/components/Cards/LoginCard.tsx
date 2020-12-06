@@ -25,10 +25,9 @@ import { useSnackbar } from 'notistack';
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
   cardTitle?: React.ReactNode;
-  cardSubtitle?: React.ReactNode;
 }
 
-const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSubtitle }) => {
+const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle }) => {
   const classes = loginCardStyle();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');

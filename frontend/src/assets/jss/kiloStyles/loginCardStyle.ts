@@ -1,7 +1,6 @@
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   blueCardHeader,
-  cardHeader,
   defaultFont,
   greenCardHeader,
   orangeCardHeader,
@@ -18,10 +17,6 @@ createStyles({
     transform: 'translate3d(0, 0, 0)',
     transition: 'all 300ms linear',
   },
-  cardHeader: {
-    ...cardHeader,
-    ...defaultFont
-  },
   orangeCardHeader,
   greenCardHeader,
   redCardHeader,
@@ -32,19 +27,12 @@ createStyles({
     margin: '10px 0',
     ...defaultFont,
     color: '#FFFFFF',
-    fontSize: '1.3em',
+    fontSize: '17px',
     textAlign: 'center',
     fontFamily: 'cursive'
   },
-  cardSubtitle: {
-    ...defaultFont,
-    marginBottom: '0',
-    color: 'rgba(255, 255, 255, 0.62)',
-    margin: '0 0 10px'
-  },
   cardContent: {
     margin: '10px 0 0 0',
-    padding: '20px 35px 25px 35px'
   },
   inputIcon: {
     color: '#555555'
@@ -75,9 +63,9 @@ createStyles({
   },
   passwordResetButton: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     fontSize: '12px',
-    padding: '15px 0 0 0',
+    margin: '20px 0 0 0',
     cursor: 'pointer',
   },
 }));
