@@ -170,7 +170,7 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
           <CardIcon color={headerColor}>
             <Icon/>
           </CardIcon>
-          <h4 className={classes.cardTitle}>{cardTitle}</h4>
+          <h4>{cardTitle}</h4>
         </CardHeader>
         <CardContent>
           <TableToolbar

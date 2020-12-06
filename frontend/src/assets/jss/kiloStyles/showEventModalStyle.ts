@@ -6,7 +6,7 @@ createStyles({
     listStyle: "circle",
     padding: "0 0 0 30px",
     margin: 0,
-    fontSize: "14px",
+    fontSize: "13px",
     maxHeight: "120px",
     overflow: "auto",
   },

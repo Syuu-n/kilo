@@ -35,7 +35,7 @@ createStyles({
   usersContainer: {
     listStyle: "none",
     padding: "0 0 0 10px",
-    fontSize: "14px",
+    fontSize: "13px",
   },
   user: {
     '&:hover': {

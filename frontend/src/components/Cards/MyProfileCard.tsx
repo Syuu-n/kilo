@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SvgIcon } from '@material-ui/core';
-import myProfileCardStyle from 'assets/jss/kiloStyles/myProfileCardStyle';
+// import myProfileCardStyle from 'assets/jss/kiloStyles/myProfileCardStyle';
 import {
   Table,
   Card,
@@ -18,8 +18,8 @@ interface Props {
   tableData?: any[][];
 }
 
-const MyProfileCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, icon, tableHeaderColor = 'primary', tableHead, tableData }) => {
-  const classes = myProfileCardStyle();
+const MyProfileCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, icon, tableHeaderColor = 'primary', tableHead, tableData }) => {
+  // const classes = myProfileCardStyle();
   const Icon = icon;
 
   return (
@@ -28,7 +28,7 @@ const MyProfileCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, ic
         <CardIcon color={headerColor}>
           <Icon/>
         </CardIcon>
-        <h4 className={classes.cardTitle}>{cardTitle}</h4>
+        <h4>{cardTitle}</h4>
       </CardHeader>
       <CardContent>
         <Table

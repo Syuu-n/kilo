@@ -5,11 +5,6 @@ import {
 
 const richTableCardStyle = makeStyles(() =>
 createStyles({
-  cardTitle: {
-    margin: '10px 0 0 0',
-    ...defaultFont,
-    fontFamily: 'cursive',
-  },
   table: {
     marginBottom: '0',
     overflow: 'visible',

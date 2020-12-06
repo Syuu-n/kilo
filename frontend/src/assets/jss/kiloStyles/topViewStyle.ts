@@ -12,9 +12,11 @@ createStyles({
   },
   titleContainer: {
     display: 'flex',
-    fontSize: '10px',
+  },
+  title: {
+    fontSize: '30px',
     [`@media (min-width: 520px)`]: {
-      fontSize: '16px'
+      fontSize: '48px'
     },
   },
   titleHighLight: {

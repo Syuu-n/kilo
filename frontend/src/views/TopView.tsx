@@ -19,8 +19,8 @@ const TopView: React.FC = () => {
   return(
     <div className={classes.wrapContainer}>
       <div className={classes.titleContainer}>
-        <h1 className={classes.titleHighLight}>K</h1>
-        <h1>Dance Classic Studio</h1>
+        <h1 className={classes.title +  " "  + classes.titleHighLight}>K</h1>
+        <h1 className={classes.title}>Dance Classic Studio</h1>
       </div>
       <div className={classes.subTitleContainer}>
         <p className={classes.subtitle}>ダンスを楽しむ事を大切に<br/>カラダ作り+柔軟性、基礎、技術、表現力を身につける</p>

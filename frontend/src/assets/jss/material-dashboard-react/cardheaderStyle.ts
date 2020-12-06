@@ -6,7 +6,8 @@ import {
   blueCardHeader,
   purpleCardHeader,
   roseCardHeader,
-  whiteColor
+  whiteColor,
+  defaultFont,
 } from "assets/jss/material-dashboard-react";
 
 const cardHeaderStyle = makeStyles(() =>
@@ -55,7 +56,11 @@ createStyles({
       textAlign: "center",
       lineHeight: "33px",
       margin: "5px 4px 0px"
-    }
+    },
+    "& h4": {
+      margin: '15px 0 0 0',
+      ...defaultFont,
+    },
   },
   orangeCardHeader: {
     color: whiteColor,
