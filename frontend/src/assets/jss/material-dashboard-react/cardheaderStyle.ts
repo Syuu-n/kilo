@@ -17,7 +17,7 @@ createStyles({
     borderBottom: "none",
     background: "transparent",
     // zIndex: "3 !important",
-    "&$cardHeaderPlain,&$cardHeaderIcon,&$cardHeaderStats,&$orangeCardHeader,&$greenCardHeader,&$redCardHeader,&$blueCardHeader,&$purpleCardHeader,&$roseCardHeader": {
+    "&$cardHeaderPlain,&$cardHeaderIcon,&$orangeCardHeader,&$greenCardHeader,&$redCardHeader,&$blueCardHeader,&$purpleCardHeader,&$roseCardHeader": {
       margin: "0 15px",
       padding: "0",
       position: "relative",
@@ -33,26 +33,6 @@ createStyles({
         padding: "15px"
       }
     },
-    "&$cardHeaderStats svg": {
-      fontSize: "36px",
-      lineHeight: "56px",
-      textAlign: "center",
-      width: "36px",
-      height: "36px",
-      margin: "10px 10px 4px"
-    },
-    "&$cardHeaderStats i,&$cardHeaderStats .material-icons": {
-      fontSize: "36px",
-      lineHeight: "56px",
-      width: "56px",
-      height: "56px",
-      textAlign: "center",
-      overflow: "unset",
-      marginBottom: "1px"
-    },
-    "&$cardHeaderStats$cardHeaderIcon": {
-      textAlign: "right"
-    }
   },
   cardHeaderPlain: {
     marginLeft: "0px !important",
