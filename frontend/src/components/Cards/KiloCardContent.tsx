@@ -1,6 +1,6 @@
 import * as React from "react";
 import classNames from "classnames";
-import cardBodyStyle from "assets/jss/material-dashboard-react/cardBodyStyle";
+import cardBodyStyle from "assets/jss/material-dashboard-react/cardContentStyle";
 import { CardContent } from "@material-ui/core"
 
 interface Props {

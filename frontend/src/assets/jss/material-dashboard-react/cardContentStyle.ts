@@ -1,6 +1,6 @@
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 
-const cardBodyStyle = makeStyles(() =>
+const cardContentStyle = makeStyles(() =>
 createStyles({
   cardBody: {
     padding: "20px",
@@ -14,4 +14,4 @@ createStyles({
   },
 }));
 
-export default cardBodyStyle;
+export default cardContentStyle;

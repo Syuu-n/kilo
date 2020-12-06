@@ -1,6 +1,6 @@
 import * as React from "react";
 import classNames from "classnames";
-import cardFooterStyle from "assets/jss/material-dashboard-react/cardFooterStyle";
+import cardFooterStyle from "assets/jss/material-dashboard-react/cardActionsStyle";
 import { CardActions } from "@material-ui/core";
 
 interface Props {

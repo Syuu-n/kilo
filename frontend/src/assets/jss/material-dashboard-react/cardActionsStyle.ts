@@ -1,6 +1,6 @@
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 
-const cardFooterStyle = makeStyles(() =>
+const cardActionsStyle = makeStyles(() =>
 createStyles({
   cardFooter: {
     padding: "0",
@@ -20,4 +20,4 @@ createStyles({
   },
 }));
 
-export default cardFooterStyle;
+export default cardActionsStyle;
