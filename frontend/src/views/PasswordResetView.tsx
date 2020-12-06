@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ItemGrid, Card, CardBody, CardHeader, FormInput, Button } from 'components';
+import { ItemGrid, Card, CardContent, CardHeader, FormInput, Button } from 'components';
 import { Grid } from '@material-ui/core';
 import passwordResetViewStyle from 'assets/jss/kiloStyles/passwordResetViewStyle';
 import { passwordValidation, ValidationReturn } from 'assets/lib/validations';
@@ -93,7 +93,7 @@ const PasswordResetView: React.FC = () => {
             <CardHeader>
               <h4 className={classes.title}>パスワードの変更</h4>
             </CardHeader>
-            <CardBody>
+            <CardContent>
               <div style={{ display: openCompletePage ? 'none' : '' }}>
                 <p>以下の項目を入力後「変更」ボタンをクリックしてください。</p>
                 <form onSubmit={handleSubmit}>
@@ -141,7 +141,7 @@ const PasswordResetView: React.FC = () => {
                   </Button>
                 </div>
               </div>
-            </CardBody>
+            </CardContent>
           </Card>
         </ItemGrid>
       </Grid>

@@ -3,7 +3,7 @@ import { SvgIcon } from '@material-ui/core';
 import { Person, Edit, Close } from '@material-ui/icons';
 import richTableCardStyle from 'assets/jss/kiloStyles/richTableCardStyle';
 import {
-  Card, CardHeader, CardIcon, CardBody, TooltipButton, RichTable, TableToolbar,
+  Card, CardHeader, CardIcon, CardContent, TooltipButton, RichTable, TableToolbar,
   AdminConfirmUserModal, AdminAddUserModal, AdminConfirmLessonClassModal, AdminAddLessonClassModal,
   AdminAddPlanModal, AdminConfirmPlanModal,
 } from 'components';
@@ -172,7 +172,7 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
           </CardIcon>
           <h4 className={classes.cardTitle}>{cardTitle}</h4>
         </CardHeader>
-        <CardBody>
+        <CardContent>
           <TableToolbar
             buttonTitle={"新規作成"}
             buttonIcon={addIcon ? addIcon : icon}
@@ -186,7 +186,7 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
             selectedFunc={(id:number) => handleSelected(id)}
             selectedId={selectedData?.id}
           />
-        </CardBody>
+        </CardContent>
       </Card>
       { implementsUser(selectedData) && (
         <div>

@@ -5,7 +5,7 @@ import MomentUtils from '@date-io/moment';
 import * as moment from 'moment';
 import { ThemeProvider } from '@material-ui/core';
 import { TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { Card, CardBody, IconButton, CustomDropDown, AdminFormInput } from 'components';
+import { Card, CardContent, IconButton, CustomDropDown, AdminFormInput } from 'components';
 import { AddCircle, RemoveCircle } from '@material-ui/icons';
 import cx from 'classnames';
 
@@ -58,7 +58,7 @@ const AdminLessonRuleSetting: React.FC<Props> = (props) => {
     <div>
       { lessonRules.map((lr, i) => (
         <Card key={i}>
-          <CardBody>
+          <CardContent>
             <div className={classes.ruleSettingTitleContainer}>
               <p className={cx(
                   {[classes.disableTextColor]: confirm},
@@ -163,7 +163,7 @@ const AdminLessonRuleSetting: React.FC<Props> = (props) => {
                 </ThemeProvider>
               </div>
             )}
-          </CardBody>
+          </CardContent>
         </Card>
       ))}
       { !confirm && (

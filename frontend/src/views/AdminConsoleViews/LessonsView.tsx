@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { KSpinner, AdminCalender, Card, CardBody, CardHeader, CardIcon } from 'components';
+import { KSpinner, AdminCalender, Card, CardContent, CardHeader, CardIcon } from 'components';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { Lesson, CEvent, User, LessonClass } from 'responses/responseStructs';
 import lessonsViewStyle from 'assets/jss/kiloStyles/classesViewStyle';
@@ -157,14 +157,14 @@ const LessonsView: React.FC = () => {
               </CardIcon>
               <h4 className={classes.cardTitle}>レッスン</h4>
             </CardHeader>
-            <CardBody>
+            <CardContent>
               <AdminCalender
                 lessons={lessons}
                 updateEventFunc={(events:CEvent[], action:eventAction) => updateEvent(events, action)}
                 users={users}
                 lessonClasses={lessonClasses}
               />
-            </CardBody>
+            </CardContent>
           </Card>
         </div>
       ) : (

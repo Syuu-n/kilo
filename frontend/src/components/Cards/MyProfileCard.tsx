@@ -6,7 +6,7 @@ import {
   Card,
   CardHeader,
   CardIcon,
-  CardBody,
+  CardContent,
 } from 'components';
 
 interface Props {
@@ -30,13 +30,13 @@ const MyProfileCard: React.SFC<Props> = ({ headerColor = 'orange', cardTitle, ic
         </CardIcon>
         <h4 className={classes.cardTitle}>{cardTitle}</h4>
       </CardHeader>
-      <CardBody>
+      <CardContent>
         <Table
           tableHeaderColor={tableHeaderColor}
           tableHead={tableHead}
           tableData={tableData}
         />
-      </CardBody>
+      </CardContent>
     </Card>
   );
 }

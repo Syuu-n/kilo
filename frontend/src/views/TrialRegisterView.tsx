@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { KSpinner, Wizard, ItemGrid, CustomDropDown, Card, CardBody, Table, FormInput } from 'components';
+import { KSpinner, Wizard, ItemGrid, CustomDropDown, Card, CardContent, Table, FormInput } from 'components';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { CEvent, LessonClass, Lesson } from 'responses/responseStructs';
 import { CreateTrialUserRequest } from 'request/requestStructs';
@@ -209,7 +209,7 @@ const TrialRegisterView: React.FC = () => {
                   </div>
                   { selectedLesson && selectedLesson.id != 0 && (
                     <Card>
-                      <CardBody>
+                      <CardContent>
                         <Table
                           tableData={[
                             ["クラス名", selectedLesson.title],
@@ -221,7 +221,7 @@ const TrialRegisterView: React.FC = () => {
                           <p>クラス説明</p>
                           <p>{selectedLesson.memo}</p>
                         </div>
-                      </CardBody>
+                      </CardContent>
                     </Card>
                   )}
                 </div>,

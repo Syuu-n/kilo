@@ -1,7 +1,7 @@
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { fetchApp, NetworkError } from 'request/fetcher';
-import { ItemGrid, KSpinner, Card, CardBody, Button } from 'components';
+import { ItemGrid, KSpinner, Card, CardContent, Button } from 'components';
 import completeRegisterView from 'assets/jss/kiloStyles/completeRegisterViewStyle';
 import { Check, ErrorOutline } from '@material-ui/icons';
 import history from 'RouterHistory';
@@ -66,7 +66,7 @@ const CompleteRegisterView: React.FC = () => {
       <Grid container className={classes.completeView}>
         <ItemGrid xs={12} sm={8} lg={6}  className={classes.gridItem}>
         <Card className={classes.card}>
-            <CardBody>
+            <CardContent>
               { isLoaded ? (
                 // 認証の失敗かどうか
                 submitFailed ? (
@@ -92,7 +92,7 @@ const CompleteRegisterView: React.FC = () => {
                   <KSpinner/>
                 </div>
               )}
-            </CardBody>
+            </CardContent>
           </Card>
         </ItemGrid>
       </Grid>

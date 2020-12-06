@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ItemGrid, Card, CardBody, CardHeader, FormInput, Button } from 'components';
+import { ItemGrid, Card, CardContent, CardHeader, FormInput, Button } from 'components';
 import { Grid } from '@material-ui/core';
 import sendPasswordResetViewStyle from 'assets/jss/kiloStyles/sendPasswordResetViewStyle';
 import { ValidationReturn, emailValidation } from 'assets/lib/validations';
@@ -41,7 +41,7 @@ const SendPasswordResetView: React.FC = () => {
             <CardHeader>
               <h4 className={classes.title}>パスワードの再設定</h4>
             </CardHeader>
-            <CardBody>
+            <CardContent>
               <div style={{ display: openCompletePage ? 'none' : '' }}>
                 <p>以下の項目を入力後「送信」ボタンをクリックしてください。</p>
                 <form onSubmit={handleSubmit}>
@@ -77,7 +77,7 @@ const SendPasswordResetView: React.FC = () => {
                   </Button>
                 </div>
               </div>
-            </CardBody>
+            </CardContent>
           </Card>
         </ItemGrid>
       </Grid>

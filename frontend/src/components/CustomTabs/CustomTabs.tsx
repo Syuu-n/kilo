@@ -6,7 +6,7 @@ import classNames from "classnames";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 // core components
-import { Card, CardBody, CardHeader } from 'components';
+import { Card, CardContent, CardHeader } from 'components';
 
 import customTabStyles from "assets/jss/material-dashboard-react/customTabsStyle";
 
@@ -77,14 +77,14 @@ const CustomTabs: React.FC<Props> = (props) => {
           })}
         </Tabs>
       </CardHeader>
-      <CardBody>
+      <CardContent>
         {tabs.map((prop, key) => {
           if (key === value) {
             return <div key={key}>{prop.tabContent}</div>;
           }
           return null;
         })}
-      </CardBody>
+      </CardContent>
     </Card>
   );
 }

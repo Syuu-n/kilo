@@ -13,7 +13,7 @@ import {
   // TODO: rememberMe を有効にするにはアンコメント
   // CustomCheckbox,
   Card,
-  CardBody,
+  CardContent,
   CardHeader,
   CustomInput,
   Button,
@@ -105,7 +105,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
       >
         <h4 className={classes.cardTitle}>{cardTitle}</h4>
       </CardHeader>
-      <CardBody className={classes.cardContent}>
+      <CardContent className={classes.cardContent}>
         <form onSubmit={handleLogin}>
           <CustomInput
             labelText="メールアドレス"
@@ -167,7 +167,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
         >
           パスワードを忘れた場合はこちら
           </a>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 }
