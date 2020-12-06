@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { WizardNavigation, Button } from 'components';
-import { Card, CardHeader, CardContent, CardFooter, KSpinner } from 'components';
+import { Card, CardHeader, CardContent, CardActions, KSpinner } from 'components';
 import wizardStyle from 'assets/jss/kiloStyles/wizardStyle';
 
 interface Props {
@@ -65,7 +65,7 @@ const Wizard: React.FC<Props> = (props) => {
           </div>
         )}
       </CardContent>
-      <CardFooter>
+      <CardActions>
         <div className={preventButtonDisplayNone() ? classes.buttonContainerEnd : classes.buttonContainer}>
           <Button
             onClick={() => preventPage()}
@@ -82,7 +82,7 @@ const Wizard: React.FC<Props> = (props) => {
             { page == contents.length - 1 ? ("確定") : ("次へ")}
           </Button>
         </div>
-      </CardFooter>
+      </CardActions>
     </Card>
   );
 };

@@ -12,7 +12,7 @@ import MyProfileCard from './Cards/MyProfileCard';
 import CalenderCard from './Cards/CalenderCard';
 import Card from './Cards/KiloCard';
 import CardContent from './Cards/KiloCardContent';
-import CardFooter from './Cards/CardFooter';
+import CardActions from './Cards/KiloCardActions';
 import CardIcon from './Cards/KiloCardIcon';
 import CardAvatar from './Cards/CardAvatar';
 import CardHeader from './Cards/KiloCardHeader';
@@ -155,7 +155,7 @@ export {
   CalenderCard,
   Card,
   CardContent,
-  CardFooter,
+  CardActions,
   CardIcon,
   CardAvatar,
   CardHeader,

@@ -1,5 +1,4 @@
 import { makeStyles, createStyles } from '@material-ui/core/styles';
-import { grayColor } from "assets/jss/material-dashboard-react";
 
 const cardFooterStyle = makeStyles(() =>
 createStyles({
@@ -14,36 +13,11 @@ createStyles({
     backgroundColor: "transparent",
     border: "0"
   },
-  cardFooterProfile: {
-    marginTop: "-15px"
-  },
   cardFooterPlain: {
     paddingLeft: "5px",
     paddingRight: "5px",
     backgroundColor: "transparent"
   },
-  cardFooterStats: {
-    borderTop: "1px solid " + grayColor[10],
-    marginTop: "20px",
-    "& svg": {
-      position: "relative",
-      top: "4px",
-      marginRight: "3px",
-      marginLeft: "3px",
-      width: "16px",
-      height: "16px"
-    },
-    "& .fab,& .fas,& .far,& .fal,& .material-icons": {
-      fontSize: "16px",
-      position: "relative",
-      top: "4px",
-      marginRight: "3px",
-      marginLeft: "3px"
-    }
-  },
-  cardFooterChart: {
-    borderTop: "1px solid " + grayColor[10]
-  }
 }));
 
 export default cardFooterStyle;
