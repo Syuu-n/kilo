@@ -2,11 +2,6 @@
 // // // Cards
 // #############################
 
-import ChartCard from './Cards/ChartCard';
-import ProfileCard from './Cards/ProfileCard';
-import RegularCard from './Cards/RegularCard';
-import StatsCard from './Cards/StatsCard';
-import TasksCard from './Cards/TasksCard';
 import LoginCard from './Cards/LoginCard';
 import MyProfileCard from './Cards/MyProfileCard';
 import Card from './Cards/KiloCard';
@@ -143,11 +138,6 @@ import WizardNavigation from './Wizard/WizardNavigation';
 
 export {
   // Cards
-  ChartCard,
-  ProfileCard,
-  RegularCard,
-  StatsCard,
-  TasksCard,
   LoginCard,
   MyProfileCard,
   Card,

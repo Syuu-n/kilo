@@ -84,18 +84,6 @@ const boxShadow: CSSProperties = {
     '0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)',
 };
 
-const card: CSSProperties = {
-  display: 'inline-block',
-  position: 'relative',
-  width: '100%',
-  margin: '25px 0',
-  boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.14)',
-  borderRadius: '3px',
-  color: fontColor,
-  background: '#fff',
-  overflow: 'visible',
-};
-
 const primaryBoxShadow: CSSProperties = {
   boxShadow:
     '0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2)',
@@ -147,20 +135,6 @@ const roseCardHeader = {
   ...roseBoxShadow
 };
 
-const cardActions: CSSProperties = {
-  margin: '0 20px 10px',
-  paddingTop: '10px',
-  borderTop: '1px solid #eeeeee',
-  height: 'auto',
-  ...defaultFont,
-};
-
-const cardHeader: CSSProperties = {
-  margin: '-20px 15px 0',
-  borderRadius: '3px',
-  padding: '15px',
-};
-
 const defaultBoxShadow: CSSProperties = {
   border: '0',
   borderRadius: '3px',
@@ -176,7 +150,6 @@ export {
   transition,
   container,
   boxShadow,
-  card,
   defaultFont,
   primaryColor,
   warningColor,
@@ -200,7 +173,5 @@ export {
   blueCardHeader,
   purpleCardHeader,
   roseCardHeader,
-  cardActions,
-  cardHeader,
   defaultBoxShadow,
 };
