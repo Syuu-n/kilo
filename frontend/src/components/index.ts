@@ -9,12 +9,10 @@ import StatsCard from './Cards/StatsCard';
 import TasksCard from './Cards/TasksCard';
 import LoginCard from './Cards/LoginCard';
 import MyProfileCard from './Cards/MyProfileCard';
-import CalenderCard from './Cards/CalenderCard';
 import Card from './Cards/KiloCard';
 import CardContent from './Cards/KiloCardContent';
 import CardActions from './Cards/KiloCardActions';
 import CardIcon from './Cards/KiloCardIcon';
-import CardAvatar from './Cards/CardAvatar';
 import CardHeader from './Cards/KiloCardHeader';
 import RichTableCard from './Cards/RichTableCard';
 
@@ -152,12 +150,10 @@ export {
   TasksCard,
   LoginCard,
   MyProfileCard,
-  CalenderCard,
   Card,
   CardContent,
   CardActions,
   CardIcon,
-  CardAvatar,
   CardHeader,
   RichTableCard,
   // CustomButtons
