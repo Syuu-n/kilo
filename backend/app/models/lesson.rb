@@ -11,6 +11,7 @@ class Lesson < ApplicationRecord
 
   validates :start_at, presence: true, uniqueness: { scope: [:lesson_class_id] }
   validates :end_at, presence: true, uniqueness: { scope: [:lesson_class_id] }
+  validates :location, presence: true
 
   def class_name
     if lesson_class

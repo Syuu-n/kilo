@@ -135,6 +135,7 @@ const LessonsView: React.FC = () => {
           joined: lesson.joined,
           memo: lesson.class_memo ? lesson.class_memo : '',
           users: lesson.users ? lesson.users : undefined,
+          location: lesson.location,
         } as CEvent)));
       };
       const users = await getUsers();

@@ -43,6 +43,7 @@ export interface Lesson {
   color:            LessonColor;
   joined:           boolean;
   lesson_class_id?: number;
+  location:         string;
 }
 
 export interface CEvent extends Event {
@@ -55,11 +56,13 @@ export interface CEvent extends Event {
   end:              Date;
   lesson_class_id?: number;
   name?:            string;
+  location:         string;
 }
 
 export interface LessonClass {
   id:           number;
   name:         string;
+  location:     string;
   description:  string;
   color:        LessonColor;
   lesson_rules: LessonRule[];

@@ -32,6 +32,7 @@ const AdminShowLessonModal: React.FC<Props> = (props) => {
             <Table
               tableData={[
                 ["クラス名", selectedEvent?.title],
+                ["開催場所", selectedEvent?.location],
                 ["開始時間", moment(selectedEvent?.start).format("YYYY年 MM月 DD日 H時 m分")],
                 ["終了時間", moment(selectedEvent?.end).format("YYYY年 MM月 DD日 H時 m分")],
               ]}

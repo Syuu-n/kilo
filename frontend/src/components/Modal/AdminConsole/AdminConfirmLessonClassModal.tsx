@@ -33,6 +33,7 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
     // NOTE: JSON.stringify で key になるため lesson_class という名前になっている
     const lesson_class = {
       name: lessonClass.name,
+      location: lessonClass.location,
       description: lessonClass.description,
       color: lessonClass.color,
       lesson_rules: convertMomentLessonRulesToRequest(momentLessonRules),
@@ -90,6 +91,7 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
     // NOTE: JSON.stringify で key になるため lesson_class という名前になっている
     const lesson_class = {
       name: lessonClass.name,
+      location: lessonClass.location,
       description: lessonClass.description,
       color: lessonClass.color,
       lesson_rules: convertMomentLessonRulesToRequest(momentLessonRules),
@@ -160,6 +162,12 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       labelText="クラス名"
       inputType="text"
       value={lessonClass.name}
+      confirm
+    />
+    <AdminFormInput
+      labelText="開催場所"
+      inputType="text"
+      value={lessonClass.location}
       confirm
     />
     <AdminFormInput

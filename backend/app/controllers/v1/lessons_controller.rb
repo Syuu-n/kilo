@@ -24,6 +24,7 @@ module V1
             lesson_class_id: create_params[:lesson_class_id],
             start_at: Time.zone.at(start_at.to_i / 60 * 60),
             end_at: Time.zone.at(end_at.to_i / 60 * 60),
+            location: create_params[:location],
           )
           @lesson.save!
           users = User.where(id: create_params[:user_ids])
@@ -51,6 +52,7 @@ module V1
           @lesson.update!(
             start_at: Time.zone.at(start_at.to_i / 60 * 60),
             end_at: Time.zone.at(end_at.to_i / 60 * 60),
+            location: update_params[:location],
           )
           # NOTE: レッスンに参加している全てのユーザを辞退させてから、改めて参加し直していおる
           # パフォーマンス的にはあまり良くない気がする
@@ -129,6 +131,7 @@ module V1
           @lessons = []
           lesson_rules = LessonRule.all
           lesson_rules.each do |lr|
+            lc = LessonClass.find(lr.lesson_class_id)
             # lesson_rule の week が 0(毎週)だった場合
             if lr.week == 0
               weeks = [1, 2, 3, 4]
@@ -137,7 +140,7 @@ module V1
                 if date
                   new_start_at = Time.zone.local(date.year, date.month, date.day, lr.start_at.hour, lr.start_at.min)
                   new_end_at = Time.zone.local(date.year, date.month, date.day, lr.end_at.hour, lr.end_at.min)
-                  lesson = Lesson.new(lesson_class_id: lr.lesson_class_id, start_at: new_start_at, end_at: new_end_at)
+                  lesson = Lesson.new(lesson_class_id: lr.lesson_class_id, start_at: new_start_at, end_at: new_end_at, location: lc.location)
                   lesson.save!
                   @lessons.push(lesson)
                 end
@@ -147,7 +150,7 @@ module V1
               if date
                 new_start_at = Time.zone.local(date.year, date.month, date.day, lr.start_at.hour, lr.start_at.min)
                 new_end_at = Time.zone.local(date.year, date.month, date.day, lr.end_at.hour, lr.end_at.min)
-                lesson = Lesson.new(lesson_class_id: lr.lesson_class_id, start_at: new_start_at, end_at: new_end_at)
+                lesson = Lesson.new(lesson_class_id: lr.lesson_class_id, start_at: new_start_at, end_at: new_end_at, location: lc.location)
                 lesson.save!
                 @lessons.push(lesson)
               end
@@ -171,11 +174,11 @@ module V1
     end
 
     def create_params
-      params.require(:lesson).permit(:lesson_class_id, :start_at, :end_at, user_ids: [])
+      params.require(:lesson).permit(:lesson_class_id, :start_at, :end_at, :location, user_ids: [])
     end
 
     def update_params
-      params.require(:lesson).permit(:start_at, :end_at, user_ids: [])
+      params.require(:lesson).permit(:start_at, :end_at, :location,  user_ids: [])
     end
   end
 end

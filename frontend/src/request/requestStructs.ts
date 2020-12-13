@@ -27,6 +27,7 @@ export interface CreateTrialUserRequest {
 
 export interface CreateLessonClassRequest {
   name:        string;
+  location:    string;
   description: string;
   color:       LessonColor;
 };

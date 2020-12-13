@@ -77,6 +77,9 @@ createStyles({
       minWidth: "500px",
     },
   },
+  locationForm: {
+    margin: 0,
+  },
 }));
 
 const pickerTheme = createMuiTheme({

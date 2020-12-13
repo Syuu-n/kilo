@@ -32,6 +32,7 @@ const AdminAddLessonModal: React.FC<Props> = (props) => {
         start: slot.start,
         end: slot.end,
         lesson_class_id: selectedLessonClass.id,
+        location: selectedLessonClass.location,
       } as CEvent;
       setCreatedEvent(event);
       setOpenEditModal(true);

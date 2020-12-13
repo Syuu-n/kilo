@@ -58,7 +58,7 @@ const ClassesView: React.FC = () => {
           headerColor="green"
           tableHeaderColor="success"
           cardTitle="クラス"
-          tableHead={["ID", "名前", "説明", "カラー"]}
+          tableHead={["ID", "名前", "開催場所", "説明", "カラー"]}
           tableSources={lessonClasses}
           updateFunc={lessonClassesUpdateFunc}
           dataType="lesson_classes"

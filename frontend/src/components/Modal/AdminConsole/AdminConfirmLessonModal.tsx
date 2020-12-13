@@ -20,11 +20,12 @@ interface Props {
   startAt: moment.Moment | null;
   endAt: moment.Moment | null;
   joinedUsers: User[] | undefined;
+  location: string | number;
   isAddEvent?: boolean;
 }
 
 const AdminConfirmLessonModal: React.FC<Props> = (props) => {
-  const { open, selectedEvent,  closeFunc, cancelFunc, updateFunc, startAt, endAt, joinedUsers, isAddEvent } = props;
+  const { open, selectedEvent,  closeFunc, cancelFunc, updateFunc, startAt, endAt, joinedUsers, location, isAddEvent } = props;
   const { enqueueSnackbar } = useSnackbar();
   const lessonId = selectedEvent.id;
   const lessonClassId = selectedEvent.lesson_class_id;
@@ -40,6 +41,7 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
       joined: lesson.joined,
       memo: lesson.class_memo ? lesson.class_memo : "",
       users: lesson.users ? lesson.users : undefined,
+      location: lesson.location,
     }
     if (updateFunc) {
       updateFunc([newEvent], action);
@@ -59,6 +61,7 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
       start_at: startAt?.toDate(),
       end_at: endAt?.toDate(),
       user_ids: joinedUsers?.map((user) => user.id),
+      location: location,
     };
 
     const res = await fetchApp(
@@ -114,6 +117,7 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
       start_at: startAt?.toDate(),
       end_at: endAt?.toDate(),
       user_ids: joinedUsers?.map((user) => user.id),
+      location: location,
     };
 
     const res = await fetchApp(
@@ -156,6 +160,7 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
           <Table
             tableData={[
               ["クラス名", selectedEvent.title],
+              ["開催場所", location],
               ["開始時間", startAt?.format("YYYY年 MM月 DD日 H時 m分")],
               ["終了時間", endAt?.format("YYYY年 MM月 DD日 H時 m分")],
             ]}

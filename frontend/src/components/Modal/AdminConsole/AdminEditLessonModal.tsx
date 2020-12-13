@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal, Table, AdminEventUsersInput, ItemGrid, Button, AdminConfirmLessonModal } from 'components';
+import { Modal, Table, AdminEventUsersInput, ItemGrid, Button, AdminConfirmLessonModal, AdminFormInput } from 'components';
 import { CEvent, User } from 'responses/responseStructs';
 import { adminModalStyle, pickerTheme } from 'assets/jss/kiloStyles/adminModalStyle';
 import { ThemeProvider, Grid } from '@material-ui/core';
@@ -8,6 +8,7 @@ import MomentUtils from '@date-io/moment';
 import * as moment from 'moment';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
+import { ValidationReturn, requireValidation } from 'assets/lib/validations';
 
 interface Props {
   open: boolean;
@@ -28,6 +29,7 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
   const [startAt, setStartAt] = React.useState<moment.Moment|null>(moment(selectedEvent?.start));
   const [endAt, setEndAt] = React.useState<moment.Moment|null>(moment(selectedEvent?.end));
   const [joinedUsers, setJoinedUsers] = React.useState(selectedEvent?.users);
+  const [location, setLocation] = React.useState<ValidationReturn>({value: selectedEvent?.location, error: undefined})
   const lessonId = selectedEvent.id;
   const classes = adminModalStyle();
 
@@ -117,6 +119,18 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
                 selectedEvent.title,
               ],
               [
+                "開催場所",
+                <AdminFormInput
+                  labelText="開催場所"
+                  inputType="text"
+                  onChangeFunc={(value:string) => {setLocation({value: value, error: requireValidation(value)})}}
+                  value={location.value}
+                  required
+                  errorText={location.error}
+                  formControlProps={{className: classes.locationForm}}
+                />
+              ],
+              [
                 "開始時間",
                 <DateTimePicker
                   showTodayButton
@@ -201,17 +215,18 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
       setStartAt(moment(selectedEvent.start));
       setEndAt(moment(selectedEvent.end));
       setJoinedUsers(selectedEvent.users);
+      setLocation({value: selectedEvent.location, error: undefined})
     };
   }, [selectedEvent]);
 
   React.useEffect(() => {
-    // 開始時刻が終了時刻よりも前ならボタンを有効化
-    if (startAt?.isBefore(endAt)) {
+    // 開始時刻が終了時刻よりも前かつ開催場所のエラーがない場合にボタンを有効化
+    if (startAt?.isBefore(endAt) && location.error == undefined) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
     }
-  }, [startAt, endAt])
+  }, [startAt, endAt, location])
 
   return (
     <div>
@@ -236,6 +251,7 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
         startAt={startAt}
         endAt={endAt}
         joinedUsers={joinedUsers}
+        location={location.value}
         isAddEvent={isAddEvent}
       />
     </div>

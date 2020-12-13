@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AdminFormInput, Modal, AdminConfirmLessonClassModal, CustomDropDown, AdminLessonRuleSetting } from 'components';
 import { CreateLessonClassRequest } from 'request/requestStructs';
 import { LessonClass } from 'responses/responseStructs';
-import { ValidationReturn, nameValidation } from 'assets/lib/validations';
+import { ValidationReturn, nameValidation, requireValidation } from 'assets/lib/validations';
 import { LessonColor, lessonColorSets, colorCheck } from 'assets/lib/lessonColors';
 import { MomentLessonRule, convertLessonRulesToMoment } from 'assets/lib/lessonRules';
 import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
@@ -26,6 +26,7 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
   const { open, closeFunc, openFunc, updateFunc, selectedClass } = props;
   const [name, setName] = React.useState<ValidationReturn>({value: '', error: ''});
   const [description, setDescription] = React.useState<ValidationReturn>({value: '', error: undefined})
+  const [location, setLocation] = React.useState<ValidationReturn>({value: '', error: ''})
   const [selectedColor, setSelectedColor] = React.useState({value: '', display_name: 'レッスンカラーを選択', error: ''} as CustomDropDownColor);
   const [lessonClass, setLessonClass] = React.useState<CreateLessonClassRequest>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
@@ -61,6 +62,14 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
         errorText={name.error}
       />
       <AdminFormInput
+        labelText="開催場所"
+        inputType="text"
+        onChangeFunc={(value:string) => {setLocation({value: value, error: requireValidation(value)})}}
+        value={location.value}
+        required
+        errorText={location.error}
+      />
+      <AdminFormInput
         labelText="クラス説明"
         inputType="text"
         onChangeFunc={(value:string) => {setDescription({value: value, error: undefined})}}
@@ -89,6 +98,7 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
   const handleSubmit = () => {
     const lc = {
       name: name.value,
+      location: location.value,
       description: description.value,
       color: selectedColor.value,
     } as CreateLessonClassRequest;
@@ -106,6 +116,7 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
   React.useEffect(() => {
     if (selectedClass) {
       setName({value: selectedClass.name, error: undefined});
+      setLocation({value: selectedClass.location, error: undefined});
       setDescription({value: selectedClass.description, error: undefined});
       setSelectedColor({value: selectedClass.color, display_name: colorCheck(selectedClass.color).colorName, error: undefined});
       setLessonRules(convertLessonRulesToMoment(selectedClass.lesson_rules))
@@ -128,6 +139,7 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
     // 全てのバリデーションが正しければボタンを有効にする
     if (
       name.error == undefined &&
+      location.error == undefined &&
       description.error == undefined &&
       selectedColor.error == undefined &&
       lessonRulesCheck()
@@ -136,7 +148,7 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
     } else {
       setButtonDisabled(true);
     }
-  }, [name, description, selectedColor, lessonRules])
+  }, [name, location, description, selectedColor, lessonRules])
 
   return (
     <div>

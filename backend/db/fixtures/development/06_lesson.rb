@@ -3,6 +3,7 @@ id_num = 1
 
 lesson_rules = LessonRule.all
 lesson_rules.each do |lr|
+  lc = LessonClass.find(lr.lesson_class_id)
   if lr.week == 0
     weeks.each do |week|
       date = Lesson.current_month_date_from_week_and_dotw(week, lr.dotw)
@@ -15,6 +16,7 @@ lesson_rules.each do |lr|
             lesson_class_id: lr.lesson_class_id,
             start_at: new_start_at,
             end_at: new_end_at,
+            location: lc.location,
           }
         )
         id_num = id_num + 1
@@ -31,6 +33,7 @@ lesson_rules.each do |lr|
           lesson_class_id: lr.lesson_class_id,
           start_at: new_start_at,
           end_at: new_end_at,
+          location: lc.location,
         }
       )
       id_num = id_num + 1

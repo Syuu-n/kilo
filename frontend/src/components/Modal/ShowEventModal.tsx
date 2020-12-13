@@ -19,7 +19,7 @@ interface Props {
   updateEventFunc: Function;
 }
 
-const ShowEventModal: React.SFC<Props> = (props) => {
+const ShowEventModal: React.FC<Props> = (props) => {
   const { open, selectedEvent, isAdmin, closeFunc, updateEventFunc } = props;
   const { enqueueSnackbar } = useSnackbar();
   const lessonId = selectedEvent?.id;
@@ -37,6 +37,7 @@ const ShowEventModal: React.SFC<Props> = (props) => {
       joined: lesson.joined,
       memo: lesson.class_memo ? lesson.class_memo : "",
       users: lesson.users ? lesson.users : undefined,
+      location: lesson.location,
     }
     updateEventFunc(newEvent);
   };
@@ -142,6 +143,7 @@ const ShowEventModal: React.SFC<Props> = (props) => {
           <Table
             tableData={[
               ["クラス名", selectedEvent?.title],
+              ["開催場所", selectedEvent?.location],
               ["開始時間", moment(selectedEvent?.start).format("YYYY年 MM月 DD日 H時 m分")],
               ["終了時間", moment(selectedEvent?.end).format("YYYY年 MM月 DD日 H時 m分")],
             ]}

@@ -121,11 +121,11 @@ module V1
     end
 
     def lesson_class_params
-      params.require(:lesson_class).permit(:name, :description, :color)
+      params.require(:lesson_class).permit(:name, :location, :description, :color)
     end
 
     def lesson_rule_params
-      params.require(:lesson_class).permit(:name, :description, :color,
+      params.require(:lesson_class).permit(:name, :location, :description, :color,
                                            { lesson_rules: [:week, :dotw, :start_at, :end_at]}
       )
     end

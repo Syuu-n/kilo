@@ -7,6 +7,7 @@ lessonColor.each_with_index do |lc, i|
     {
       id: i + 1,
       name: Faker::Address.city,
+      location: Faker::University.name,
       description: Faker::Lorem.paragraph(sentence_count: 20),
       color: lc,
     }
