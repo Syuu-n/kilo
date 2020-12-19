@@ -4,8 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
 
-  belongs_to :plan
   belongs_to :role
+  has_many :user_plans, dependent: :destroy
+  has_many :plans, through: :user_plans
   has_many :user_lessons, dependent: :destroy
   has_many :lessons, through: :user_lessons
 
@@ -26,7 +27,6 @@ class User < ApplicationRecord
   validates :birthday, presence: true
   validates :phone_number, presence: true
   validates :role, presence: true
-  validates :plan, presence: true
 
   def update_access_token!
     # 有効期限 14 日の access_token 作成

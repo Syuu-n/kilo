@@ -10,6 +10,8 @@ lessonColor.each_with_index do |lc, i|
       location: Faker::University.name,
       description: Faker::Lorem.paragraph(sentence_count: 20),
       color: lc,
+      price: rand(1000..5000),
+      for_children: Faker::Boolean.boolean,
     }
   )
 end
@@ -22,5 +24,7 @@ LessonClass.seed(:id,
     location: "",
     description: "",
     color: "",
+    price: rand(0),
+    for_children: Faker::Boolean.boolean,
   }
 )

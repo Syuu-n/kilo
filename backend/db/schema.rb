@@ -10,13 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_19_030204) do
+ActiveRecord::Schema.define(version: 2020_12_19_064055) do
 
   create_table "lesson_classes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.string "color"
     t.string "location"
+    t.integer "price"
+    t.boolean "for_children", default: false, null: false
   end
 
   create_table "lesson_rules", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -38,14 +40,21 @@ ActiveRecord::Schema.define(version: 2020_12_19_030204) do
     t.string "name"
     t.text "description"
     t.string "color"
+    t.integer "price"
+    t.boolean "for_children", default: false, null: false
     t.index ["lesson_class_id"], name: "index_lessons_on_lesson_class_id"
+  end
+
+  create_table "plan_lesson_classes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "plan_id"
+    t.bigint "lesson_class_id"
+    t.index ["lesson_class_id"], name: "index_plan_lesson_classes_on_lesson_class_id"
+    t.index ["plan_id"], name: "index_plan_lesson_classes_on_plan_id"
   end
 
   create_table "plans", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
     t.integer "price"
-    t.integer "monthly_lesson_count", default: 0, null: false
-    t.boolean "for_children", default: false, null: false
   end
 
   create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -60,9 +69,15 @@ ActiveRecord::Schema.define(version: 2020_12_19_030204) do
     t.index ["user_id"], name: "index_user_lessons_on_user_id"
   end
 
+  create_table "user_plans", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "plan_id"
+    t.index ["plan_id"], name: "index_user_plans_on_plan_id"
+    t.index ["user_id"], name: "index_user_plans_on_user_id"
+  end
+
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "school_grade"
-    t.bigint "plan_id"
     t.string "access_token"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -84,13 +99,16 @@ ActiveRecord::Schema.define(version: 2020_12_19_030204) do
     t.string "phone_number"
     t.datetime "access_token_expire"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["plan_id"], name: "index_users_on_plan_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
   add_foreign_key "lesson_rules", "lesson_classes"
+  add_foreign_key "plan_lesson_classes", "lesson_classes"
+  add_foreign_key "plan_lesson_classes", "plans"
   add_foreign_key "user_lessons", "lessons"
   add_foreign_key "user_lessons", "users"
+  add_foreign_key "user_plans", "plans"
+  add_foreign_key "user_plans", "users"
   add_foreign_key "users", "roles"
 end

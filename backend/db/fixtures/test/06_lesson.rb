@@ -20,6 +20,8 @@ lesson_rules.each do |lr|
             end_at: new_end_at,
             color: lc.color,
             location: lc.location,
+            price: lc.price,
+            for_children: lc.for_children,
           }
         )
         id_num = id_num + 1
@@ -40,6 +42,8 @@ lesson_rules.each do |lr|
           end_at: new_end_at,
           color: lc.color,
           location: lc.location,
+          price: lc.price,
+          for_children: lc.for_children,
         }
       )
       id_num = id_num + 1

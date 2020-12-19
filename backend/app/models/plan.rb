@@ -1,10 +1,12 @@
 class Plan < ApplicationRecord
-  has_many :users
+  has_many :user_plans, dependent: :destroy
+  has_many :users, through: :user_plans
+
+  has_many :plan_lesson_classes, dependent: :destroy
+  has_many :lesson_classes, through: :plan_lesson_classes
 
   validates :name, presence: true
   validates :price, presence: true
-  validates :monthly_lesson_count, presence: true
-  validates :for_children, inclusion: { in: [true, false] }
 
   def self.default_plan
     self.first
