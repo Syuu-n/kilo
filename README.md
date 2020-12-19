@@ -9,14 +9,23 @@
 # Setup
 
 ```
-$ git clone https://github.com/NobuhiroKato/kilo.git
+$ git clone https://github.com/Aura-n/kilo.git
 
-$ docker-compose run backend rake db:create
+(Get master.key before build)
+$ docker-compose build
+$ docker-compose run --rm backend rails db:create
+$ docker-compose run --rm backend rails db:migrate
 ```
 
 # Usage
 ```
-$ docker-comppose up -d
+$ docker-compose up -d
+```
+
+# Create seed data
+```
+$ docker-compose exec backend bash
+$ rails db:seed_fu
 ```
 
 # Test(Backend)
