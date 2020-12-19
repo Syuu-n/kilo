@@ -67,8 +67,8 @@ const AdminLessonRuleSetting: React.FC<Props> = (props) => {
               >
                 スケジュール設定
               </p>
-              {/* 最初のスケジュール設定には削除ボタンを追加しない */}
-              { i != 0 && !confirm && (
+              {/* 確認画面の場合には削除ボタンを追加しない */}
+              { !confirm && (
                 <IconButton
                   color="white"
                   customClass={classes.ruleSettingCloseButton}

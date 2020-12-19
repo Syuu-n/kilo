@@ -1,6 +1,5 @@
 module V1
   class LessonClassesController < ApplicationController
-    class NoLessonRuleError < StandardError; end
     class LessonRuleInvalidError < StandardError; end
     before_action :permission_check, only: [:create, :update, :destroy]
     before_action :setup_lesson_class, only: [:update, :show, :destroy]
@@ -14,10 +13,6 @@ module V1
     # POST /lesson_classes
     def create
       begin
-        unless lesson_rule_params[:lesson_rules].present?
-          raise NoLessonRuleError
-        end
-
         ActiveRecord::Base.transaction do
           @lesson_class = LessonClass.create!(lesson_class_params)
           lesson_rule_params[:lesson_rules].each do |lesson_rule|
@@ -38,9 +33,6 @@ module V1
         end
       rescue => e
         case e
-        when NoLessonRuleError
-          render json: { code: 'no_lesson_rule_error' }, status: :unprocessable_entity
-          return
         when LessonRuleInvalidError
           render json: { code: 'lesson_rule_invalid_error' }, status: :unprocessable_entity
           return
@@ -55,10 +47,6 @@ module V1
     # PATCH /lesson_classes/:id
     def update
       begin
-        unless lesson_rule_params[:lesson_rules].present?
-          raise NoLessonRuleError
-        end
-
         ActiveRecord::Base.transaction do
           @lesson_class.update!(lesson_class_params)
           @lesson_class.lesson_rules.each do |lr|
@@ -82,9 +70,6 @@ module V1
         end
       rescue => e
         case e
-        when NoLessonRuleError
-          render json: { code: 'no_lesson_rule_error' }, status: :unprocessable_entity
-          return
         when LessonRuleInvalidError
           render json: { code: 'lesson_rule_invalid_error' }, status: :unprocessable_entity
           return
