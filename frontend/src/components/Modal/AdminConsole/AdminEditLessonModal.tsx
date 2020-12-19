@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal, Table, AdminEventUsersInput, ItemGrid, Button, AdminConfirmLessonModal, AdminFormInput } from 'components';
+import { Modal, Table, AdminEventUsersInput, ItemGrid, Button, AdminConfirmLessonModal, AdminFormInput, CustomDropDown } from 'components';
 import { CEvent, User } from 'responses/responseStructs';
 import { adminModalStyle, pickerTheme } from 'assets/jss/kiloStyles/adminModalStyle';
 import { ThemeProvider, Grid } from '@material-ui/core';
@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 import { ValidationReturn, requireValidation } from 'assets/lib/validations';
+import { LessonColor, lessonColorSets, colorCheck } from 'assets/lib/lessonColors';
 
 interface Props {
   open: boolean;
@@ -21,6 +22,12 @@ interface Props {
   cancelFunc?: Function;
 };
 
+interface CustomDropDownColor {
+  value: LessonColor;
+  display_name: string;
+  error: string | undefined;
+};
+
 const AdminEditLessonModal: React.FC<Props> = (props) => {
   const { open, openFunc, closeFunc, selectedEvent, users, updateFunc, isAddEvent, cancelFunc } = props;
   const { enqueueSnackbar } = useSnackbar();
@@ -29,7 +36,10 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
   const [startAt, setStartAt] = React.useState<moment.Moment|null>(moment(selectedEvent?.start));
   const [endAt, setEndAt] = React.useState<moment.Moment|null>(moment(selectedEvent?.end));
   const [joinedUsers, setJoinedUsers] = React.useState(selectedEvent?.users);
+  const [name, setName] = React.useState<ValidationReturn>({value: selectedEvent?.title, error: undefined})
+  const [description, setDescription] = React.useState<ValidationReturn>({value: selectedEvent?.description, error: undefined})
   const [location, setLocation] = React.useState<ValidationReturn>({value: selectedEvent?.location, error: undefined})
+  const [color, setColor] = React.useState({value: selectedEvent?.color, display_name: colorCheck(selectedEvent?.color).colorName, error: undefined} as CustomDropDownColor);
   const lessonId = selectedEvent.id;
   const classes = adminModalStyle();
 
@@ -98,6 +108,22 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
     };
   };
 
+  // レッスンカラー用の div を追加する
+  const lessonColorDiv = (color: LessonColor) => {
+    const colorCode = colorCheck(color).colorCode;
+    const style = {
+      backgroundColor: colorCode,
+      borderRadius: '3px',
+      height: '41px',
+      width: '100px',
+      margin: 'auto 0px auto 10px'
+    }
+
+    return (
+      <div style={style} />
+    );
+  };
+
   const content =
     <div>
       {/* レッスン編集の時のみ削除ボタンを追加する */}
@@ -116,7 +142,15 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
             tableData={[
               [
                 "クラス名",
-                selectedEvent.title,
+                <AdminFormInput
+                  labelText="クラス名"
+                  inputType="text"
+                  onChangeFunc={(value:string) => {setName({value: value, error: requireValidation(value)})}}
+                  value={name.value}
+                  required
+                  errorText={name.error}
+                  formControlProps={{className: classes.locationForm}}
+                />
               ],
               [
                 "開催場所",
@@ -158,13 +192,36 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
                   className={classes.pickerCell}
                 />
               ],
+              [
+                "レッスンカラー",
+                <div className={classes.flexContainer}>
+                <CustomDropDown
+                  dropdownList={lessonColorSets}
+                  hoverColor="success"
+                  buttonText={color.display_name}
+                  onClick={(value:any) => setColor({value: value.name, display_name: value.display_name, error: undefined})}
+                  buttonProps={{color: "success", fullWidth: true}}
+                  fullWidth
+                />
+                {lessonColorDiv(color.value)}
+              </div>
+              ],
             ]}
           />
         </MuiPickersUtilsProvider>
       </ThemeProvider>
       <div className={classes.descriptionContainer}>
         <p>クラス説明</p>
-        <p>{selectedEvent.memo}</p>
+        <AdminFormInput
+          labelText="クラス説明"
+          inputType="text"
+          onChangeFunc={(value:string) => {setDescription({value: value, error: undefined})}}
+          value={description.value}
+          errorText={description.error}
+          formControlProps={{className: classes.locationForm}}
+          rowsMin={6}
+          rowsMax={6}
+        />
       </div>
       { joinedUsers ? (
         <Grid container>
@@ -215,13 +272,21 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
       setStartAt(moment(selectedEvent.start));
       setEndAt(moment(selectedEvent.end));
       setJoinedUsers(selectedEvent.users);
-      setLocation({value: selectedEvent.location, error: undefined})
+      setLocation({value: selectedEvent.location, error: undefined});
+      setName({value: selectedEvent.title, error: undefined});
+      setDescription({value: selectedEvent.description, error: undefined});
+      setColor({value: selectedEvent.color, display_name: colorCheck(selectedEvent.color).colorName, error: undefined} as CustomDropDownColor);
     };
   }, [selectedEvent]);
 
   React.useEffect(() => {
     // 開始時刻が終了時刻よりも前かつ開催場所のエラーがない場合にボタンを有効化
-    if (startAt?.isBefore(endAt) && location.error == undefined) {
+    if (
+      startAt?.isBefore(endAt) &&
+      location.error == undefined && 
+      name.error == undefined &&
+      description.error == undefined
+    ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
@@ -252,6 +317,9 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
         endAt={endAt}
         joinedUsers={joinedUsers}
         location={location.value}
+        name={name.value}
+        description={description.value}
+        color={color.value}
         isAddEvent={isAddEvent}
       />
     </div>

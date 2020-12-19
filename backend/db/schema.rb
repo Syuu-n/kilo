@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_13_132509) do
+ActiveRecord::Schema.define(version: 2020_12_19_030204) do
 
   create_table "lesson_classes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
@@ -35,6 +35,9 @@ ActiveRecord::Schema.define(version: 2020_12_13_132509) do
     t.datetime "start_at"
     t.datetime "end_at"
     t.string "location"
+    t.string "name"
+    t.text "description"
+    t.string "color"
     t.index ["lesson_class_id"], name: "index_lessons_on_lesson_class_id"
   end
 

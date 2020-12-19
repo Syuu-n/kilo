@@ -7,6 +7,7 @@ import {
 } from 'components';
 import { User, CEvent } from 'responses/responseStructs';
 import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
+import { colorCheck } from 'assets/lib/lessonColors';
 
 interface Props {
   open: boolean;
@@ -35,11 +36,12 @@ const AdminShowLessonModal: React.FC<Props> = (props) => {
                 ["開催場所", selectedEvent?.location],
                 ["開始時間", moment(selectedEvent?.start).format("YYYY年 MM月 DD日 H時 m分")],
                 ["終了時間", moment(selectedEvent?.end).format("YYYY年 MM月 DD日 H時 m分")],
+                ["レッスンカラー", colorCheck(selectedEvent?.color).colorName],
               ]}
             />
             <div className={classes.descriptionContainer}>
               <p>クラス説明</p>
-              <p>{selectedEvent?.memo}</p>
+              <p>{selectedEvent?.description}</p>
             </div>
             { selectedEvent?.users ? (
               <div>

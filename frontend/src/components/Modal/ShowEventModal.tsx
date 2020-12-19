@@ -30,12 +30,12 @@ const ShowEventModal: React.FC<Props> = (props) => {
   const updateEvent = (lesson:Lesson) => {
     const newEvent:CEvent = {
       id: lesson.id,
-      title: lesson.class_name,
+      title: lesson.name,
       start: new Date(lesson.start_at),
       end:   new Date(lesson.end_at),
       color: lesson.color,
       joined: lesson.joined,
-      memo: lesson.class_memo ? lesson.class_memo : "",
+      description: lesson.description ? lesson.description : "",
       users: lesson.users ? lesson.users : undefined,
       location: lesson.location,
     }
@@ -150,7 +150,7 @@ const ShowEventModal: React.FC<Props> = (props) => {
           />
           <div className={classes.descriptionContainer}>
             <p>クラス説明</p>
-            <p>{selectedEvent?.memo}</p>
+            <p>{selectedEvent?.description}</p>
           </div>
           { isAdmin && selectedEvent?.users ? (
             <div>

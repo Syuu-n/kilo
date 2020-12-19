@@ -21,6 +21,9 @@ module V1
           start_at = Time.zone.parse(create_params[:start_at])
           end_at = Time.zone.parse(create_params[:end_at])
           @lesson = Lesson.new(
+            name: create_params[:name],
+            description: create_params[:description],
+            color: create_params[:color],
             lesson_class_id: create_params[:lesson_class_id],
             start_at: Time.zone.at(start_at.to_i / 60 * 60),
             end_at: Time.zone.at(end_at.to_i / 60 * 60),
@@ -50,6 +53,9 @@ module V1
           start_at = Time.zone.parse(update_params[:start_at])
           end_at = Time.zone.parse(update_params[:end_at])
           @lesson.update!(
+            name: update_params[:name],
+            description: update_params[:description],
+            color: create_params[:color],
             start_at: Time.zone.at(start_at.to_i / 60 * 60),
             end_at: Time.zone.at(end_at.to_i / 60 * 60),
             location: update_params[:location],
@@ -140,7 +146,15 @@ module V1
                 if date
                   new_start_at = Time.zone.local(date.year, date.month, date.day, lr.start_at.hour, lr.start_at.min)
                   new_end_at = Time.zone.local(date.year, date.month, date.day, lr.end_at.hour, lr.end_at.min)
-                  lesson = Lesson.new(lesson_class_id: lr.lesson_class_id, start_at: new_start_at, end_at: new_end_at, location: lc.location)
+                  lesson = Lesson.new(
+                    name: lc.name,
+                    description: lc.description,
+                    color: lc.color,
+                    lesson_class_id: lr.lesson_class_id,
+                    start_at: new_start_at,
+                    end_at: new_end_at,
+                    location: lc.location,
+                  )
                   lesson.save!
                   @lessons.push(lesson)
                 end
@@ -150,7 +164,15 @@ module V1
               if date
                 new_start_at = Time.zone.local(date.year, date.month, date.day, lr.start_at.hour, lr.start_at.min)
                 new_end_at = Time.zone.local(date.year, date.month, date.day, lr.end_at.hour, lr.end_at.min)
-                lesson = Lesson.new(lesson_class_id: lr.lesson_class_id, start_at: new_start_at, end_at: new_end_at, location: lc.location)
+                lesson = Lesson.new(
+                  name: lc.name,
+                  description: lc.description,
+                  color: lc.color,
+                  lesson_class_id: lr.lesson_class_id,
+                  start_at: new_start_at,
+                  end_at: new_end_at,
+                  location: lc.location,
+                )
                 lesson.save!
                 @lessons.push(lesson)
               end
@@ -174,11 +196,11 @@ module V1
     end
 
     def create_params
-      params.require(:lesson).permit(:lesson_class_id, :start_at, :end_at, :location, user_ids: [])
+      params.require(:lesson).permit(:name, :description, :color, :lesson_class_id, :start_at, :end_at, :location, user_ids: [])
     end
 
     def update_params
-      params.require(:lesson).permit(:start_at, :end_at, :location,  user_ids: [])
+      params.require(:lesson).permit(:name, :description, :color, :start_at, :end_at, :location,  user_ids: [])
     end
   end
 end

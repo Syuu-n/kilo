@@ -13,3 +13,14 @@ lessonColor.each_with_index do |lc, i|
     }
   )
 end
+
+# LessonRule のない LessonClass の作成
+LessonClass.seed(:id,
+  {
+    id: 6,
+    name: "その他",
+    location: "",
+    description: "",
+    color: "",
+  }
+)

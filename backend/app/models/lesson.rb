@@ -12,6 +12,7 @@ class Lesson < ApplicationRecord
   validates :start_at, presence: true, uniqueness: { scope: [:lesson_class_id] }
   validates :end_at, presence: true, uniqueness: { scope: [:lesson_class_id] }
   validates :location, presence: true
+  validates :name, presence: true
 
   def class_name
     if lesson_class
@@ -19,21 +20,21 @@ class Lesson < ApplicationRecord
     end
   end
 
-  def class_memo
+  def class_description
     if lesson_class
       lesson_class.description
+    end
+  end
+
+  def class_color
+    if lesson_class
+      lesson_class.color
     end
   end
 
   def lesson_class_id
     if lesson_class
       lesson_class.id
-    end
-  end
-
-  def color
-    if lesson_class
-      lesson_class.color
     end
   end
 

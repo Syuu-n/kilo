@@ -13,9 +13,12 @@ lesson_rules.each do |lr|
         Lesson.seed(:id,
           {
             id: id_num,
+            name: lc.name,
+            description: lc.description,
             lesson_class_id: lr.lesson_class_id,
             start_at: new_start_at,
             end_at: new_end_at,
+            color: lc.color,
             location: lc.location,
           }
         )
@@ -30,9 +33,12 @@ lesson_rules.each do |lr|
       Lesson.seed(:id,
         {
           id: id_num,
+          name: lc.name,
+          description: lc.description,
           lesson_class_id: lr.lesson_class_id,
           start_at: new_start_at,
           end_at: new_end_at,
+          color: lc.color,
           location: lc.location,
         }
       )

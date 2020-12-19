@@ -112,10 +112,10 @@ const TrialRegisterView: React.FC = () => {
       const fCEvent = lessons.filter((lesson) => lesson.lesson_class_id == selectedLessonClass.id);
       const fLessons = fCEvent.map((lesson) => ({
         id: lesson.id,
-        title: lesson.title,
+        title: lesson.name,
         color: lesson.color,
         joined: lesson.joined,
-        memo: lesson.memo,
+        description: lesson.description,
         start: lesson.start,
         end: lesson.end,
         lesson_class_id: lesson.lesson_class_id,
@@ -155,12 +155,12 @@ const TrialRegisterView: React.FC = () => {
       if (lessons) {
         setLessons(lessons.map((lesson:Lesson) => ({
           id: lesson.id,
-          title: lesson.class_name,
+          title: lesson.name,
           start: new Date(lesson.start_at),
           end:   new Date(lesson.end_at),
           color: lesson.color,
           joined: lesson.joined,
-          memo: lesson.class_memo ? lesson.class_memo : '',
+          description: lesson.description ? lesson.description : '',
           users: lesson.users ? lesson.users : undefined,
           lesson_class_id: lesson.lesson_class_id ? lesson.lesson_class_id: undefined,
         } as CEvent)));
@@ -219,7 +219,7 @@ const TrialRegisterView: React.FC = () => {
                         />
                         <div>
                           <p>クラス説明</p>
-                          <p>{selectedLesson.memo}</p>
+                          <p>{selectedLesson.description}</p>
                         </div>
                       </CardContent>
                     </Card>

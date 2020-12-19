@@ -27,7 +27,7 @@ const AdminAddLessonModal: React.FC<Props> = (props) => {
         title: selectedLessonClass.name,
         color: selectedLessonClass.color,
         joined: false,
-        memo: selectedLessonClass.description,
+        description: selectedLessonClass.description,
         users: [],
         start: slot.start,
         end: slot.end,

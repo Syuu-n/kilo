@@ -8,6 +8,7 @@ import { User, CEvent, Lesson } from 'responses/responseStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
+import { colorCheck, LessonColor } from 'assets/lib/lessonColors';
 
 type eventAction = "update" | "add" | "delete";
 
@@ -21,11 +22,14 @@ interface Props {
   endAt: moment.Moment | null;
   joinedUsers: User[] | undefined;
   location: string | number;
+  name: string;
+  description: string;
+  color: LessonColor;
   isAddEvent?: boolean;
 }
 
 const AdminConfirmLessonModal: React.FC<Props> = (props) => {
-  const { open, selectedEvent,  closeFunc, cancelFunc, updateFunc, startAt, endAt, joinedUsers, location, isAddEvent } = props;
+  const { open, selectedEvent,  closeFunc, cancelFunc, updateFunc, startAt, endAt, joinedUsers, location, name, description, color, isAddEvent } = props;
   const { enqueueSnackbar } = useSnackbar();
   const lessonId = selectedEvent.id;
   const lessonClassId = selectedEvent.lesson_class_id;
@@ -34,12 +38,12 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
   const updateEvent = (lesson:Lesson, action:eventAction) => {
     const newEvent:CEvent = {
       id: lesson.id,
-      title: lesson.class_name,
+      title: lesson.name,
       start: new Date(lesson.start_at),
       end:   new Date(lesson.end_at),
       color: lesson.color,
       joined: lesson.joined,
-      memo: lesson.class_memo ? lesson.class_memo : "",
+      description: lesson.description ? lesson.description : "",
       users: lesson.users ? lesson.users : undefined,
       location: lesson.location,
     }
@@ -62,6 +66,9 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
       end_at: endAt?.toDate(),
       user_ids: joinedUsers?.map((user) => user.id),
       location: location,
+      name: name,
+      description: description,
+      color: color,
     };
 
     const res = await fetchApp(
@@ -118,6 +125,9 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
       end_at: endAt?.toDate(),
       user_ids: joinedUsers?.map((user) => user.id),
       location: location,
+      name: name,
+      description: description,
+      color: color,
     };
 
     const res = await fetchApp(
@@ -159,15 +169,16 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
         <div>
           <Table
             tableData={[
-              ["クラス名", selectedEvent.title],
+              ["クラス名", name],
               ["開催場所", location],
               ["開始時間", startAt?.format("YYYY年 MM月 DD日 H時 m分")],
               ["終了時間", endAt?.format("YYYY年 MM月 DD日 H時 m分")],
+              ["レッスンカラー", colorCheck(color).colorName],
             ]}
           />
           <div className={classes.descriptionContainer}>
             <p>クラス説明</p>
-            <p>{selectedEvent.memo}</p>
+            <p>{description}</p>
           </div>
           { joinedUsers ? (
             <div>

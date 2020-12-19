@@ -35,8 +35,8 @@ export interface Role {
 
 export interface Lesson {
   id:               number;
-  class_name:       string;
-  class_memo:       string;
+  name:             string;
+  description:      string;
   start_at:         Date;
   end_at:           Date;
   users:            User[] | undefined;
@@ -46,17 +46,18 @@ export interface Lesson {
   location:         string;
 }
 
+// name は体験申し込みの日付表示用
 export interface CEvent extends Event {
   id:               number;
   color:            LessonColor;
   joined:           boolean;
-  memo:             string;
+  description:      string;
   users:            User[] | undefined;
   start:            Date;
   end:              Date;
   lesson_class_id?: number;
-  name?:            string;
   location:         string;
+  name?:            string;
 }
 
 export interface LessonClass {
