@@ -32,6 +32,7 @@ import AdminEventUsersInput from './CustomInput/AdminEventUsersInput';
 // #############################
 
 import CustomCheckbox from './CustomCheckBoxRadioSwitch/CustomCheckbox';
+import CustomCheckBoxList from './CustomCheckBoxRadioSwitch/CustomCheckBoxList';
 
 import CustomTabs from './CustomTabs/CustomTabs';
 
@@ -156,6 +157,7 @@ export {
   AdminEventUsersInput,
   // CustomCheckBoxRadioSwitch
   CustomCheckbox,
+  CustomCheckBoxList,
   CustomTabs,
   // CustomDropDown
   CustomDropDown,

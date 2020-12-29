@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as moment from 'moment';
-import { AdminFormInput, Modal, AdminConfirmUserModal, CustomDropDown } from 'components';
+import { AdminFormInput, Modal, AdminConfirmUserModal, CustomDropDown, CustomCheckBoxList } from 'components';
 import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 import { CreateUserRequest } from 'request/requestStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
@@ -171,14 +171,23 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
         />
       )}
       { plans && (
-        <CustomDropDown
-          dropdownList={plans}
-          hoverColor="success"
-          buttonText={selectedPlan.name}
-          onClick={setSelectedPlan}
-          buttonProps={{color: "success", fullWidth: true}}
-          fullWidth
-        />
+        // <CustomDropDown
+        //   dropdownList={plans}
+        //   hoverColor="success"
+        //   buttonText={selectedPlan.name}
+        //   onClick={setSelectedPlan}
+        //   buttonProps={{color: "success", fullWidth: true}}
+        //   fullWidth
+        // />
+        <div>
+          <p className={classes.marginTop}>コースを選択</p>
+          <div className={classes.listWrap}>
+            <CustomCheckBoxList
+              listItems={plans}
+              color="success"
+            />
+          </div>
+        </div>
       )}
     </div>;
 

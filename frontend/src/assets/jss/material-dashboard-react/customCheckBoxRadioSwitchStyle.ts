@@ -3,7 +3,10 @@ import {
   primaryColor,
   dangerColor,
   roseColor,
-  grayColor
+  grayColor,
+  infoColor,
+  successColor,
+  warningColor,
 } from 'assets/jss/material-dashboard-react';
 
 const customCheckboxRadioSwitchStyle = makeStyles(() =>
@@ -41,8 +44,23 @@ createStyles({
     marginTop: '0',
     marginBottom: '0'
   },
-  checked: {
+  primary: {
     color: primaryColor + '!important'
+  },
+  info: {
+    color: infoColor + '!important'
+  },
+  success: {
+    color: successColor + '!important'
+  },
+  warning: {
+    color: warningColor + '!important'
+  },
+  danger: {
+    color: dangerColor + '!important'
+  },
+  rose: {
+    color: roseColor + '!important'
   },
   checkedIcon: {
     width: '20px',

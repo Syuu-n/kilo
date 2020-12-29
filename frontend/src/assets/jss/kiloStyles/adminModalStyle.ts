@@ -80,6 +80,13 @@ createStyles({
   locationForm: {
     margin: 0,
   },
+  marginTop: {
+    margin: "15px 0 0 0",
+  },
+  listWrap: {
+    maxHeight: "220px",
+    overflow: "auto",
+  }
 }));
 
 const pickerTheme = createMuiTheme({
