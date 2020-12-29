@@ -1,5 +1,5 @@
 module V1
   class PlanSerializer < ActiveModel::Serializer
-    attributes :id, :name, :price, :monthly_lesson_count, :for_children
+    attributes :id, :name, :price, :lesson_classes
   end
 end

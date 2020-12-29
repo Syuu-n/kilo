@@ -114,18 +114,12 @@ const AdminConfirmPlanModal: React.SFC<Props> = (props) => {
       value={plan.price + " 円"}
       confirm
     />
-    <AdminFormInput
-      labelText="毎月の参加可能数"
-      inputType="text"
-      value={plan.monthly_lesson_count + " 回"}
-      confirm
-    />
-    <AdminFormInput
+    {/* <AdminFormInput
       labelText="コースの種類"
       inputType="text"
       value={plan.for_children ? "子供コース" : "大人コース"}
       confirm
-    />
+    /> */}
   </div>;
 
   return (

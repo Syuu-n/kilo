@@ -141,8 +141,6 @@ const ScheduleView: React.FC = () => {
                   icon={ControlPointDuplicate}
                   tableData={[
                     ["参加中のレッスン", `${currentUser.current_monthly_count} 回`],
-                    ["毎月の参加可能数", `${currentUser.plan.monthly_lesson_count} 回`],
-                    ["残り参加可能数", `${currentUser.remaining_monthly_count} 回`],
                   ]}
                 />
             </ItemGrid>

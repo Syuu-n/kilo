@@ -259,7 +259,6 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
               joinedUsers={joinedUsers}
               users={users}
               addUserFunc={(user:User) => addJoinedUser(user)}
-              selectedEventUsers={selectedEvent.users}
             />
           </ItemGrid>
         </Grid>

@@ -37,16 +37,17 @@ const ProfileView: React.SFC = () => {
               />
             </ItemGrid>
             <ItemGrid xs={12} md={6} lg={4}>
-              <MyProfileCard
-                headerColor="orange"
-                cardTitle="マイコース"
-                icon={LocalAtm}
-                tableData={[
-                  ["名前", currentUser.plan.name],
-                  ["毎月の参加可能数", currentUser.plan.monthly_lesson_count + " 回"],
-                  ["種類", `${currentUser.plan.for_children ? "子供" : "大人"}` + "コース"],
-                ]}
-              />
+              { currentUser.plans.map((plan) =>
+                  <MyProfileCard
+                  headerColor="orange"
+                  cardTitle="マイコース"
+                  icon={LocalAtm}
+                  tableData={[
+                    ["名前", plan.name],
+                    ["毎月の料金", `${plan.price.toLocaleString()} 円`],
+                  ]}
+                />
+              )}
             </ItemGrid>
           </Grid>
           <Grid container>

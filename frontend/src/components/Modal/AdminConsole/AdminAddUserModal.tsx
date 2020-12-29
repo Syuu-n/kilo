@@ -226,7 +226,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
       setBirthday({value: moment(selectedUser.birthday).format('YYYYMMDD'), error: undefined});
       setPhoneNumber({value: selectedUser.phone_number, error: undefined});
       setSelectedRole(selectedUser.role);
-      setSelectedPlan(selectedUser.plan);
+      setSelectedPlan(selectedUser.plans[0]);
     };
   }, [selectedUser]);
 
@@ -267,7 +267,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
           open={openConfirm}
           user={user}
           selectedRole={selectedRole}
-          selectedPlan={selectedPlan}
+          selectedPlans={[selectedPlan]}
           closeFunc={() => setOpenConfirm(false)}
           cancelFunc={() => doCancelFunc()}
           type={selectedUser ? "edit" : "add"}

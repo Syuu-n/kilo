@@ -14,13 +14,13 @@ interface Props {
   cancelFunc?: Function;
   type: "add" | "edit" | "show";
   selectedRole?: Role;
-  selectedPlan?: Plan;
+  selectedPlans?: Plan[];
   updateFunc?: Function;
   userID?: number;
 };
 
 const AdminConfirmUserModal: React.SFC<Props> = (props) => {
-  const { user, open, closeFunc, cancelFunc, type, selectedRole, selectedPlan, updateFunc, userID } = props;
+  const { user, open, closeFunc, cancelFunc, type, selectedRole, selectedPlans, updateFunc, userID } = props;
   const { enqueueSnackbar } = useSnackbar();
   const classes = adminModalStyle();
 
@@ -169,12 +169,14 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
       value={selectedRole?.display_name}
       confirm
     />
-    <AdminFormInput
-      labelText="コース"
-      inputType="text"
-      value={selectedPlan?.name}
-      confirm
-    />
+    { selectedPlans?.map((plan) =>
+      <AdminFormInput
+        labelText="コース"
+        inputType="text"
+        value={plan?.name}
+        confirm
+      />
+    )}
   </div>;
 
   return (

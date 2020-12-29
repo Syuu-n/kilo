@@ -1,6 +1,6 @@
 module V1
   class LessonSerializer < ActiveModel::Serializer
-    attributes :id, :name, :start_at, :end_at, :color, :description, :joined, :lesson_class_id, :location
+    attributes :id, :name, :start_at, :end_at, :color, :description, :joined, :lesson_class_id, :location, :price, :for_children
 
     # admin の場合だけ参加者一覧を出力する
     has_many :users, if: -> { is_admin_user? }

@@ -38,6 +38,8 @@ const ShowEventModal: React.FC<Props> = (props) => {
       description: lesson.description ? lesson.description : "",
       users: lesson.users ? lesson.users : undefined,
       location: lesson.location,
+      price: lesson.price,
+      for_children: lesson.for_children,
     }
     updateEventFunc(newEvent);
   };
@@ -50,10 +52,6 @@ const ShowEventModal: React.FC<Props> = (props) => {
     // 過去のイベントに対してのアクションの場合
     if (moment(new Date).isAfter(moment(selectedEvent?.start))) {
       return true;
-    }
-    // 今月の残り参加可能数が 0 の場合に参加しようとした場合
-    if (ctx.currentUser.remaining_monthly_count < 1 && !selectedEvent?.joined) {
-      return  true;
     }
     return false;
   };

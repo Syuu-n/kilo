@@ -58,7 +58,7 @@ const PlansView: React.FC = () => {
           headerColor="green"
           tableHeaderColor="success"
           cardTitle="コース"
-          tableHead={["ID", "名前", "料金", "参加回数", "種類"]}
+          tableHead={["ID", "名前", "毎月の料金"]}
           tableSources={plans}
           updateFunc={plansUpdateFunc}
           dataType="plans"

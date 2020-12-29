@@ -117,8 +117,6 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
         data.id,
         data.name,
         data.price.toLocaleString() + ' 円',
-        data.monthly_lesson_count + " 回",
-        data.for_children ? "子供コース" : "大人コース",
         buttons(data.id),
       ]
     }
@@ -196,7 +194,7 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
             open={openShowModal}
             closeFunc={() => setOpenShowModal(false)}
             type="show"
-            selectedPlan={selectedData?.plan}
+            selectedPlans={selectedData?.plans}
             selectedRole={selectedData?.role}
           />
           <AdminAddUserModal

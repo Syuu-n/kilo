@@ -9,13 +9,15 @@ export function implementsUser(arg: any): arg is User {
 export function implementsLessonClass(arg: any): arg is LessonClass {
   return arg !== null &&
     typeof arg === "object" &&
+    typeof arg.price === "number" &&
     typeof arg.description === "string"
 };
 
 export function implementsPlan(arg: any): arg is Plan {
   return arg !== null &&
     typeof arg === "object" &&
-    typeof arg.monthly_lesson_count === "number"
+    typeof arg.price === "number" &&
+    typeof arg.description === "undefined"
 };
 
 export function implementsLesson(arg: any): arg is Lesson {

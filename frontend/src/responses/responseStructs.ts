@@ -12,9 +12,8 @@ export interface User {
   birthday:                string;
   phone_number:            string;
   role:                    Role;
-  plan:                    Plan;
+  plans:                   Plan[];
   current_monthly_count:   number;
-  remaining_monthly_count: number;
   is_admin:                boolean;
   password?:               string;
 }
@@ -23,8 +22,7 @@ export interface Plan {
   id:                   number;
   name:                 string;
   price:                number;
-  monthly_lesson_count: number;
-  for_children:         boolean;
+  lesson_classes:       LessonClass[];
 }
 
 export interface Role {
@@ -44,6 +42,8 @@ export interface Lesson {
   joined:           boolean;
   lesson_class_id?: number;
   location:         string;
+  price:            number;
+  for_children:     boolean;
 }
 
 // name は体験申し込みの日付表示用
@@ -58,6 +58,8 @@ export interface CEvent extends Event {
   lesson_class_id?: number;
   location:         string;
   name?:            string;
+  price:            number;
+  for_children:     boolean;
 }
 
 export interface LessonClass {
@@ -67,6 +69,8 @@ export interface LessonClass {
   description:  string;
   color:        LessonColor;
   lesson_rules: LessonRule[];
+  price:        number;
+  for_children: boolean;
 }
 
 export interface LessonRule {

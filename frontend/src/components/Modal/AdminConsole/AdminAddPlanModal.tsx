@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AdminFormInput, Modal, AdminConfirmPlanModal, CustomDropDown } from 'components';
+import { AdminFormInput, Modal, AdminConfirmPlanModal } from 'components';
 import { Plan } from 'responses/responseStructs';
 import { ValidationReturn, nameValidation, requireValidation } from 'assets/lib/validations';
 // import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
@@ -16,12 +16,9 @@ const AdminAddPlanModal: React.FC<Props> = (props) => {
   const { open, closeFunc, openFunc, updateFunc, selectedPlan } = props;
   const [name, setName] = React.useState<ValidationReturn>({value: '', error: ''});
   const [price, setPrice] = React.useState<ValidationReturn>({value: 0, error: undefined});
-  const [monthlyLessonCount, setMonthlyLessonCount] = React.useState<ValidationReturn>({value: 0, error: undefined});
-  const [forChildren, setForChildren] = React.useState({value: -1, display_name: 'コースの種類を選択'});
   const [plan, setPlan] = React.useState<Plan>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
-  const forChildrenSets = [{value: 0, display_name: '大人コース'}, {value: 1, display_name: '子供コース'}];
   // const classes = adminModalStyle();
 
   const content =
@@ -42,31 +39,20 @@ const AdminAddPlanModal: React.FC<Props> = (props) => {
         required
         errorText={price.error}
       />
-      <AdminFormInput
-        labelText="毎月の参加可能数"
-        inputType="number"
-        onChangeFunc={(value:string) => {setMonthlyLessonCount({value: value, error: requireValidation(value)})}}
-        value={monthlyLessonCount.value}
-        required
-        errorText={monthlyLessonCount.error}
-      />
-      <CustomDropDown
+      {/* <CustomDropDown
         dropdownList={forChildrenSets}
         hoverColor="success"
         buttonText={forChildren.display_name}
         onClick={setForChildren}
         buttonProps={{color: "success", fullWidth: true}}
         fullWidth
-      />
+      /> */}
     </div>;
 
   const handleSubmit = () => {
-    const forChildrenBool = forChildren.value == 1 ? true : false;
     const pl = {
       name: name.value,
       price: price.value,
-      monthly_lesson_count: monthlyLessonCount.value,
-      for_children: forChildrenBool,
     } as Plan;
     setPlan(pl);
     setOpenConfirm(true);
@@ -83,11 +69,6 @@ const AdminAddPlanModal: React.FC<Props> = (props) => {
     if (selectedPlan) {
       setName({value: selectedPlan.name, error: undefined});
       setPrice({value: selectedPlan.price, error: undefined});
-      setMonthlyLessonCount({value: selectedPlan.monthly_lesson_count, error: undefined});
-      setForChildren({
-        value: selectedPlan.for_children ? 1 : 0,
-        display_name: selectedPlan.for_children ? '子供コース' : '大人コース',
-      });
     };
   }, [selectedPlan]);
 
@@ -95,15 +76,13 @@ const AdminAddPlanModal: React.FC<Props> = (props) => {
     // 全てのバリデーションが正しければボタンを有効にする
     if (
       name.error == undefined &&
-      price.error == undefined &&
-      monthlyLessonCount.error == undefined &&
-      forChildren.value != -1
+      price.error == undefined
       ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
     }
-  }, [name, price, monthlyLessonCount, forChildren])
+  }, [name, price])
 
   return (
     <div>
