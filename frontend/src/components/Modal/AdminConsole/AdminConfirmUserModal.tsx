@@ -19,10 +19,11 @@ interface Props {
   userID?: number;
 };
 
-const AdminConfirmUserModal: React.SFC<Props> = (props) => {
+const AdminConfirmUserModal: React.FC<Props> = (props) => {
   const { user, open, closeFunc, cancelFunc, type, selectedRole, selectedPlans, updateFunc, userID } = props;
   const { enqueueSnackbar } = useSnackbar();
   const classes = adminModalStyle();
+  const selectedPlanNames = selectedPlans?.map((sPlan) => sPlan.name);
 
   const addUser = async () => {
     const accessToken = localStorage.getItem('kiloToken');
@@ -48,6 +49,7 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
     switch (res.status) {
       case 201:
         enqueueSnackbar('ユーザーの作成に成功しました。', { variant: 'success'});
+        if (updateFunc) updateFunc();
         break;
       case 400:
         enqueueSnackbar('既に使用されているメールアドレスです。', { variant: 'error' });
@@ -58,11 +60,6 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
     }
   };
 
-  const addUserFunc = async () => {
-    await addUser();
-    if (updateFunc) updateFunc();
-  };
-
   const updateUser = async () => {
     const accessToken = localStorage.getItem('kiloToken');
     if (!accessToken) {
@@ -71,6 +68,9 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
     if (!userID) {
       return;
     }
+
+    // 更新処理の場合は User オブジェクトから password を削除する
+    delete user?.password
 
     const res = await fetchApp(
       `/v1/users/${userID}`,
@@ -90,6 +90,7 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
     switch (res.status) {
       case 200:
         enqueueSnackbar('ユーザー情報の変更に成功しました。', { variant: 'success'});
+        if (updateFunc) updateFunc();
         break;
       case 404:
         enqueueSnackbar(`ID:${userID}のユーザが存在しないため変更に失敗しました。`, { variant: 'error' });
@@ -98,11 +99,6 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
         enqueueSnackbar('ユーザー情報の変更に失敗しました。内容を確かめてください。', { variant: 'error' });
         break;
     }
-  };
-
-  const updateUserFunc = async () => {
-    await updateUser();
-    if (updateFunc) updateFunc();
   };
 
   const content =
@@ -169,14 +165,12 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
       value={selectedRole?.display_name}
       confirm
     />
-    { selectedPlans?.map((plan) =>
-      <AdminFormInput
-        labelText="コース"
-        inputType="text"
-        value={plan?.name}
-        confirm
-      />
-    )}
+    <AdminFormInput
+      labelText="コース"
+      inputType="text"
+      value={selectedPlanNames?.join("、")}
+      confirm
+    />
   </div>;
 
   return (
@@ -186,7 +180,7 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
           open={open}
           headerTitle="ユーザー新規作成"
           submitText="確定"
-          submitFunc={async () => {await addUserFunc()}}
+          submitFunc={async () => {await addUser()}}
           cancelText="修正"
           cancelFunc={cancelFunc}
           content={content}
@@ -199,7 +193,7 @@ const AdminConfirmUserModal: React.SFC<Props> = (props) => {
           open={open}
           headerTitle="ユーザー情報変更"
           submitText="確定"
-          submitFunc={async () => {await updateUserFunc()}}
+          submitFunc={async () => {await updateUser()}}
           cancelText="修正"
           cancelFunc={cancelFunc}
           content={content}

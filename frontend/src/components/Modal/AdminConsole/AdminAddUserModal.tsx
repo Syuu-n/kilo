@@ -28,7 +28,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
   const [roles, setRoles] = React.useState<Role[]>();
   const [selectedRole, setSelectedRole] = React.useState({id: 0, name: 'none', display_name: 'ステータスを選択', error: ''} as Role);
   const [plans, setPlans] = React.useState<Plan[]>();
-  const [selectedPlan, setSelectedPlan] = React.useState({id: 0, name: 'コースを選択'} as Plan);
+  const [selectedPlans, setSelectedPlans] = React.useState<number[]>([]);
   const [user, setUser] = React.useState<CreateUserRequest>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
@@ -171,19 +171,13 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
         />
       )}
       { plans && (
-        // <CustomDropDown
-        //   dropdownList={plans}
-        //   hoverColor="success"
-        //   buttonText={selectedPlan.name}
-        //   onClick={setSelectedPlan}
-        //   buttonProps={{color: "success", fullWidth: true}}
-        //   fullWidth
-        // />
         <div>
           <p className={classes.marginTop}>コースを選択</p>
           <div className={classes.listWrap}>
             <CustomCheckBoxList
               listItems={plans}
+              checkedItems={selectedPlans}
+              setChecked={setSelectedPlans}
               color="success"
             />
           </div>
@@ -202,7 +196,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
       birthday: birthday.value,
       phone_number: phoneNumber.value,
       role_id: selectedRole.id,
-      plan_id: selectedPlan.id,
+      plan_ids: selectedPlans,
     } as CreateUserRequest;
     setUser(user);
     setOpenConfirm(true);
@@ -235,7 +229,7 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
       setBirthday({value: moment(selectedUser.birthday).format('YYYYMMDD'), error: undefined});
       setPhoneNumber({value: selectedUser.phone_number, error: undefined});
       setSelectedRole(selectedUser.role);
-      setSelectedPlan(selectedUser.plans[0]);
+      setSelectedPlans(selectedUser.plans.map((plan) => plan.id));
     };
   }, [selectedUser]);
 
@@ -250,14 +244,13 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
       password.error == undefined &&
       birthday.error == undefined &&
       phoneNumber.error == undefined &&
-      selectedRole.id != 0 &&
-      selectedPlan.id != 0
+      selectedRole.id != 0
       ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
     }
-  }, [lastName, firstName, firstNameKana, lastNameKana, email, password, birthday, phoneNumber, selectedRole, selectedPlan])
+  }, [lastName, firstName, firstNameKana, lastNameKana, email, password, birthday, phoneNumber, selectedRole])
 
   return (
     <div>
@@ -271,12 +264,12 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
         color="success"
         disabled={buttonDisabled}
       />
-      { user && (
+      { user && plans && (
         <AdminConfirmUserModal
           open={openConfirm}
           user={user}
           selectedRole={selectedRole}
-          selectedPlans={[selectedPlan]}
+          selectedPlans={selectedPlans.map((sPlan) => plans.find((plan) => plan.id === sPlan)) as Plan[]}
           closeFunc={() => setOpenConfirm(false)}
           cancelFunc={() => doCancelFunc()}
           type={selectedUser ? "edit" : "add"}

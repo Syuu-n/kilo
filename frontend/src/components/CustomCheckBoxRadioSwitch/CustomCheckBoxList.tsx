@@ -13,17 +13,18 @@ type ColorType =
 
 interface Props {
   listItems: any[];
+  checkedItems: number[];
+  setChecked: Function;
   color?: ColorType;
 }
 
 const CustomCheckBoxList: React.FC<Props> = (props) => {
-  const { listItems, color } = props;
+  const { listItems, checkedItems, setChecked, color } = props;
   const classes = customCheckBoxListStyle();
-  const [checked, setChecked] = React.useState([0]);
 
   const handleToggle = (id: number) => {
-    const currentIndex = checked.indexOf(id);
-    const newChecked = [...checked];
+    const currentIndex = checkedItems.indexOf(id);
+    const newChecked = [...checkedItems];
     if (currentIndex === -1) {
       newChecked.push(id);
     } else {
@@ -43,7 +44,7 @@ const CustomCheckBoxList: React.FC<Props> = (props) => {
           onClick={() => handleToggle(item.id)}
         >
           <CustomCheckbox
-            checked={checked.indexOf(item.id) !== -1}
+            checked={checkedItems.indexOf(item.id) !== -1}
             color={color}
           />
           <ListItemText
