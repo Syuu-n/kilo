@@ -5,7 +5,7 @@ import {
   Table,
   Badge,
 } from 'components';
-import { User, CEvent, Lesson } from 'responses/responseStructs';
+import { User, CEvent, Lesson, LessonClass } from 'responses/responseStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 import showEventModalStyle from 'assets/jss/kiloStyles/showEventModalStyle';
@@ -26,6 +26,8 @@ const ShowEventModal: React.FC<Props> = (props) => {
   const accessToken = localStorage.getItem('kiloToken');
   const classes = showEventModalStyle();
   const ctx = React.useContext(AuthContext);
+  const [message, setMessage] = React.useState("");
+  const [disabled, setDisabled] = React.useState(false);
 
   const updateEvent = (lesson:Lesson) => {
     const newEvent:CEvent = {
@@ -47,13 +49,27 @@ const ShowEventModal: React.FC<Props> = (props) => {
   const isButtonDisable = () => {
     // 現在のユーザが存在しない場合
     if (!ctx.currentUser) {
-      return true;
+      setDisabled(true);
+      setMessage("不明なエラーが発生しました。この問題はリロードすることで改善する可能性があります。");
+      return;
     }
     // 過去のイベントに対してのアクションの場合
     if (moment(new Date).isAfter(moment(selectedEvent?.start))) {
-      return true;
+      setDisabled(true);
+      setMessage("過去のレッスンの参加/取り消しはできません。");
+      return;
     }
-    return false;
+    // ユーザが参加できないクラスの場合
+    const canJoin = (lessonClass: LessonClass) => {
+      return lessonClass.id === selectedEvent?.lesson_class_id
+    }
+    if (!ctx.currentUser.user_lesson_classes.find(canJoin)) {
+      setDisabled(true);
+      setMessage("現在のコースでは参加できないレッスンです。");
+      return;
+    }
+    setDisabled(false);
+    setMessage("");
   };
 
   const handleSubmitJoin = async () => {
@@ -135,6 +151,10 @@ const ShowEventModal: React.FC<Props> = (props) => {
     }
   };
 
+  React.useEffect(() => {
+    isButtonDisable();
+  }, [selectedEvent]);
+
   return(
     <Modal
       open={open}
@@ -181,6 +201,10 @@ const ShowEventModal: React.FC<Props> = (props) => {
               </ul>
             </div>
           ) : (null) }
+          {/* 参加/取り消しボタンが押せない場合のメッセージ */}
+          <div>
+            <p className={classes.joinMessage}>{message}</p>
+          </div>
         </div>
       }
       submitText={selectedEvent?.joined ? "参加取り消し" : "参加"}
@@ -190,7 +214,7 @@ const ShowEventModal: React.FC<Props> = (props) => {
       }
       closeFunc={() => {closeFunc()}}
       // 選択したレッスンが過去の場合はボタンを無効に
-      disabled={isButtonDisable()}
+      disabled={disabled}
     />
   );
 };

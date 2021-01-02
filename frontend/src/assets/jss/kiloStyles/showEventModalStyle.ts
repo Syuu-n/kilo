@@ -1,4 +1,5 @@
 import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { dangerColor } from 'assets/jss/material-dashboard-react';
 
 const showEventModalStyle = makeStyles(() =>
 createStyles({
@@ -15,6 +16,11 @@ createStyles({
     [`@media (min-width: 500px)`]: {
       minWidth: "500px",
     },
+  },
+  joinMessage: {
+    margin: "20px 0 0 0",
+    textAlign: "center",
+    color: dangerColor,
   },
 }));
 

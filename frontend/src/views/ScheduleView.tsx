@@ -83,6 +83,7 @@ const ScheduleView: React.FC = () => {
           end:   new Date(lesson.end_at),
           color: lesson.color,
           joined: lesson.joined,
+          lesson_class_id: lesson.lesson_class_id,
           description: lesson.description ? lesson.description : '',
           users: lesson.users ? lesson.users : undefined,
           location: lesson.location,

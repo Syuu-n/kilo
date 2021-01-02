@@ -16,6 +16,7 @@ export interface User {
   current_monthly_count:   number;
   is_admin:                boolean;
   password?:               string;
+  user_lesson_classes:     LessonClass[];
 }
 
 export interface Plan {

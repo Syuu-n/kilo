@@ -86,7 +86,7 @@ createStyles({
   listWrap: {
     maxHeight: "220px",
     overflow: "auto",
-  }
+  },
 }));
 
 const pickerTheme = createMuiTheme({
