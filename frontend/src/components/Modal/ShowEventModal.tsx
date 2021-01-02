@@ -135,9 +135,18 @@ const ShowEventModal: React.FC<Props> = (props) => {
       headerTitle="レッスン詳細"
       content={
         <div>
-          { selectedEvent?.joined ? (
+          <div>
+            {/* 種類のバッジ */}
+            <Badge color="info">{selectedEvent?.for_children ? "子供コース" : "大人コース"}</Badge>
+            {/* 無料のバッジ */}
+            { selectedEvent?.price == 0 ? (
+              <Badge color="success">無料</Badge>
+            ) : (null)}
+            {/* 参加中のバッジ */}
+            { selectedEvent?.joined ? (
               <Badge color="primary">参加中のレッスン</Badge>
-          ) : (null)}
+            ) : (null)}
+          </div>
           <Table
             tableData={[
               ["クラス名", selectedEvent?.title],

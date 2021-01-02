@@ -11,7 +11,7 @@ import {
 const badgeStyle = makeStyles(() =>
 createStyles({
   badge: {
-    marginRight: "3px",
+    marginRight: "5px",
     borderRadius: "12px",
     padding: "5px 12px",
     textTransform: "uppercase",
