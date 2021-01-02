@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { AdminFormInput, Modal, AdminConfirmPlanModal } from 'components';
-import { Plan } from 'responses/responseStructs';
+import { AdminFormInput, Modal, AdminConfirmPlanModal, CustomCheckBoxList } from 'components';
+import { Plan, LessonClass } from 'responses/responseStructs';
+import { CreatePlanRequest } from 'request/requestStructs';
+import { fetchApp, NetworkError } from 'request/fetcher';
 import { ValidationReturn, nameValidation, requireValidation } from 'assets/lib/validations';
-// import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
+import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 
 interface Props {
   open: boolean;
@@ -16,10 +18,37 @@ const AdminAddPlanModal: React.FC<Props> = (props) => {
   const { open, closeFunc, openFunc, updateFunc, selectedPlan } = props;
   const [name, setName] = React.useState<ValidationReturn>({value: '', error: ''});
   const [price, setPrice] = React.useState<ValidationReturn>({value: 0, error: undefined});
-  const [plan, setPlan] = React.useState<Plan>();
+  const [lessonClasses, setLessonClasses] = React.useState<LessonClass[]>();
+  const [plan, setPlan] = React.useState<CreatePlanRequest>();
+  const [selectedLessonClasses, setSelectedLessonClasses] = React.useState<number[]>([]);
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
-  // const classes = adminModalStyle();
+  const classes = adminModalStyle();
+
+  const getLessonClasses = async (): Promise<LessonClass[] | undefined> => {
+    const accessToken = localStorage.getItem('kiloToken');
+    if (!accessToken) {
+      return;
+    }
+
+    const res = await fetchApp(
+      '/v1/lesson_classes',
+      'GET',
+      accessToken,
+    )
+
+    if (res instanceof NetworkError) {
+      console.log("ServerError");
+      return;
+    }
+
+    if (res.ok) {
+      const json = await res.json();
+      return json;
+    } else {
+      return;
+    }
+  };
 
   const content =
     <div>
@@ -39,6 +68,19 @@ const AdminAddPlanModal: React.FC<Props> = (props) => {
         required
         errorText={price.error}
       />
+      { lessonClasses && (
+        <div>
+          <p className={classes.marginTop}>このコースで参加できるクラス</p>
+          <div className={classes.listWrap}>
+            <CustomCheckBoxList
+              listItems={lessonClasses}
+              checkedItems={selectedLessonClasses}
+              setChecked={setSelectedLessonClasses}
+              color="success"
+            />
+          </div>
+        </div>
+      )}
       {/* <CustomDropDown
         dropdownList={forChildrenSets}
         hoverColor="success"
@@ -53,7 +95,8 @@ const AdminAddPlanModal: React.FC<Props> = (props) => {
     const pl = {
       name: name.value,
       price: price.value,
-    } as Plan;
+      lesson_class_ids: selectedLessonClasses,
+    } as CreatePlanRequest;
     setPlan(pl);
     setOpenConfirm(true);
   };
@@ -64,11 +107,19 @@ const AdminAddPlanModal: React.FC<Props> = (props) => {
     openFunc();
   };
 
+  React.useEffect(() => {
+    const f = async () => {
+      setLessonClasses(await getLessonClasses())
+    };
+    f();
+  }, [])
+
   // 編集の場合は selectedPlan が prop で渡される
   React.useEffect(() => {
     if (selectedPlan) {
       setName({value: selectedPlan.name, error: undefined});
       setPrice({value: selectedPlan.price, error: undefined});
+      setSelectedLessonClasses(selectedPlan.lesson_classes.map((sClass) => sClass.id));
     };
   }, [selectedPlan]);
 
@@ -96,10 +147,11 @@ const AdminAddPlanModal: React.FC<Props> = (props) => {
         color="success"
         disabled={buttonDisabled}
       />
-      { plan && (
+      { plan && lessonClasses && (
         <AdminConfirmPlanModal
           open={openConfirm}
           plan={plan}
+          selectedLessonClasses={selectedLessonClasses.map((sClass) => lessonClasses.find((klass) => klass.id === sClass)) as LessonClass[]}
           closeFunc={() => setOpenConfirm(false)}
           cancelFunc={() => doCancelFunc()}
           type={selectedPlan ? "edit" : "add"}

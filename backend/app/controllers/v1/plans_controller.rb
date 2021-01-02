@@ -10,22 +10,49 @@ module V1
 
     # POST /plans
     def create
-      @plan = Plan.new(plan_params)
-
-      if @plan.save
-        render json: @plan, status: :created
-      else
+      begin
+        ActiveRecord::Base.transaction do
+          @plan = Plan.new(
+            name: plan_params[:name],
+            price: plan_params[:price],
+          )
+          @plan.save!
+          # クラスの設定
+          lesson_classes = LessonClass.where(id: plan_params[:lesson_class_ids])
+          lesson_classes.each do |lc|
+            @plan.lesson_classes << lc
+          end
+        end
+      rescue => e
+        puts e
         render json: { code: 'plan_create_error' }, status: :unprocessable_entity
+        return
       end
+      render json: @plan, status: :created
     end
 
     # PATCH /plans/:id
     def update
-      if @plan.update(plan_params)
-        render json: @plan, status: :ok
-      else
+      begin
+        ActiveRecord::Base.transaction do
+          @plan.update!(
+            name: plan_params[:name],
+            price: plan_params[:price],
+          )
+          @plan.save!
+          # クラスの設定
+          lesson_classes = LessonClass.where(id: plan_params[:lesson_class_ids])
+          @plan.lesson_classes.destroy_all
+          lesson_classes.each do |lc|
+            @plan.lesson_classes << lc
+          end
+        end
+      rescue => e
+        puts e
         render json: { code: 'plan_update_error' }, status: :unprocessable_entity
+        return
       end
+      render json: @plan, status: :ok
     end
 
     # GET /plans/:id
@@ -52,7 +79,7 @@ module V1
     end
 
     def plan_params
-      params.require(:plan).permit(:name, :price, :monthly_lesson_count, :for_children)
+      params.require(:plan).permit(:name, :price, lesson_class_ids: [])
     end
   end
 end

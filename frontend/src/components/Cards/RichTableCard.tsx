@@ -231,6 +231,7 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
             open={openShowModal}
             closeFunc={() => setOpenShowModal(false)}
             type="show"
+            selectedLessonClasses={selectedData?.lesson_classes}
           />
           <AdminAddPlanModal
             open={openEditModal}

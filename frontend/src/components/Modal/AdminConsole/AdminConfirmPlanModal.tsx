@@ -3,21 +3,24 @@ import { Modal, AdminFormInput } from 'components';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 // import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
-import { Plan } from 'responses/responseStructs';
+import { LessonClass, Plan } from 'responses/responseStructs';
+import { CreatePlanRequest } from 'request/requestStructs';
 
 interface Props {
-  plan: Plan;
+  plan: Plan | CreatePlanRequest;
   open: boolean;
   closeFunc: Function;
   cancelFunc?: Function;
   type: "add" | "edit" | "show";
+  selectedLessonClasses?: LessonClass[];
   updateFunc?: Function;
   planID?: number;
 };
 
 const AdminConfirmPlanModal: React.SFC<Props> = (props) => {
-  const { plan, open, closeFunc, cancelFunc, type, updateFunc, planID } = props;
+  const { plan, open, closeFunc, cancelFunc, type, selectedLessonClasses, updateFunc, planID } = props;
   const { enqueueSnackbar } = useSnackbar();
+  const selectedLessonClassNames = selectedLessonClasses?.map((sClass) => sClass.name);
   // const classes = adminModalStyle();
 
   const addPlan = async () => {
@@ -43,6 +46,7 @@ const AdminConfirmPlanModal: React.SFC<Props> = (props) => {
     switch (res.status) {
       case 201:
         enqueueSnackbar('コースの作成に成功しました。', { variant: 'success'});
+        if (updateFunc) updateFunc();
         break;
       case 422:
         enqueueSnackbar('コースの作成に失敗しました。内容を確かめてください。', { variant: 'error' });
@@ -50,11 +54,6 @@ const AdminConfirmPlanModal: React.SFC<Props> = (props) => {
       default:
         enqueueSnackbar('コースの作成に失敗しました。', { variant: 'error' });
     }
-  };
-
-  const addPlanFunc = async () => {
-    await addPlan();
-    if (updateFunc) updateFunc();
   };
 
   const updatePlan = async () => {
@@ -83,6 +82,7 @@ const AdminConfirmPlanModal: React.SFC<Props> = (props) => {
     switch (res.status) {
       case 200:
         enqueueSnackbar('コース情報の変更に成功しました。', { variant: 'success'});
+        if (updateFunc) updateFunc();
         break;
       case 404:
         enqueueSnackbar(`ID:${planID}のコースが存在しないため変更に失敗しました。`, { variant: 'error' });
@@ -93,11 +93,6 @@ const AdminConfirmPlanModal: React.SFC<Props> = (props) => {
       default:
         enqueueSnackbar('コース情報の変更に失敗しました。', { variant: 'error' });
     }
-  };
-
-  const updatePlanFunc = async () => {
-    await updatePlan();
-    if (updateFunc) updateFunc();
   };
 
   const content =
@@ -112,6 +107,12 @@ const AdminConfirmPlanModal: React.SFC<Props> = (props) => {
       labelText="毎月の料金"
       inputType="text"
       value={plan.price + " 円"}
+      confirm
+    />
+    <AdminFormInput
+      labelText="このコースで参加できるクラス"
+      inputType="text"
+      value={selectedLessonClassNames?.join("、")}
       confirm
     />
     {/* <AdminFormInput
@@ -129,7 +130,7 @@ const AdminConfirmPlanModal: React.SFC<Props> = (props) => {
           open={open}
           headerTitle="コース新規作成"
           submitText="確定"
-          submitFunc={async () => {await addPlanFunc()}}
+          submitFunc={async () => {await addPlan()}}
           cancelText="修正"
           cancelFunc={cancelFunc}
           content={content}
@@ -142,7 +143,7 @@ const AdminConfirmPlanModal: React.SFC<Props> = (props) => {
           open={open}
           headerTitle="コース情報変更"
           submitText="確定"
-          submitFunc={async () => {await updatePlanFunc()}}
+          submitFunc={async () => {await updatePlan()}}
           cancelText="修正"
           cancelFunc={cancelFunc}
           content={content}

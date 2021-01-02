@@ -32,6 +32,12 @@ export interface CreateLessonClassRequest {
   color:       LessonColor;
 };
 
+export interface CreatePlanRequest {
+  name:                 string;
+  price:                number;
+  lesson_class_ids:     number[];
+}
+
 export interface slotInfo {
   start: string | Date;
   end: string | Date;
