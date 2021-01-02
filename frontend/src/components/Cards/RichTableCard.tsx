@@ -107,8 +107,8 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
       return [
         data.id,
         data.name,
-        data.location,
         data.description,
+        data.for_children ? "子供コース" : "大人コース",
         lessonColorDiv(data.color),
         buttons(data.id),
       ]

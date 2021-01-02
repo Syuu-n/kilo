@@ -35,7 +35,9 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       name: lessonClass.name,
       location: lessonClass.location,
       description: lessonClass.description,
+      price: lessonClass.price,
       color: lessonClass.color,
+      for_children: lessonClass.for_children,
       lesson_rules: convertMomentLessonRulesToRequest(momentLessonRules),
     };
 
@@ -57,14 +59,13 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
     switch (res.status) {
       case 201:
         enqueueSnackbar('クラスの作成に成功しました。', { variant: 'success'});
+        if (updateFunc) updateFunc();
         break;
       case 422:
         switch (json.code) {
-          case 'no_lesson_rule_error':
-            enqueueSnackbar('スケジュールが設定されていないためクラスの作成に失敗しました。', { variant: 'error' });
-            break;
           case 'lesson_rule_invalid_error':
             enqueueSnackbar('スケジュールの作成に失敗したためクラスの作成に失敗しました。', { variant: 'error' });
+            break;
           default:
             enqueueSnackbar('クラスの作成に失敗しました。内容を確かめてください。', { variant: 'error' });
         };
@@ -72,11 +73,6 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       default:
         enqueueSnackbar('クラスの作成に失敗しました。', { variant: 'error' });
     }
-  };
-
-  const addLessonClassFunc = async () => {
-    await addLessonClass();
-    if (updateFunc) updateFunc();
   };
 
   const updateLessonClass = async () => {
@@ -93,7 +89,9 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       name: lessonClass.name,
       location: lessonClass.location,
       description: lessonClass.description,
+      price: lessonClass.price,
       color: lessonClass.color,
+      for_children: lessonClass.for_children,
       lesson_rules: convertMomentLessonRulesToRequest(momentLessonRules),
     };
 
@@ -115,17 +113,16 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
     switch (res.status) {
       case 200:
         enqueueSnackbar('クラス情報の変更に成功しました。', { variant: 'success'});
+        if (updateFunc) updateFunc();
         break;
       case 404:
         enqueueSnackbar(`ID:${lessonClassID}のクラスが存在しないため変更に失敗しました。`, { variant: 'error' });
         break;
       case 422:
         switch (json.code) {
-          case 'no_lesson_rule_error':
-            enqueueSnackbar('スケジュールが設定されていないためクラス情報の変更に失敗しました。', { variant: 'error' });
-            break;
           case 'lesson_rule_invalid_error':
             enqueueSnackbar('スケジュールの作成に失敗したためクラス情報の変更に失敗しました。', { variant: 'error' });
+            break;
           default:
             enqueueSnackbar('クラス情報の変更に失敗しました。内容を確かめてください。', { variant: 'error' });
         };
@@ -133,11 +130,6 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       default:
         enqueueSnackbar('クラス情報の変更に失敗しました。', { variant: 'error' });
     }
-  };
-
-  const updateLessonClassFunc = async () => {
-    await updateLessonClass();
-    if (updateFunc) updateFunc();
   };
 
   // レッスンカラー用の div を追加する
@@ -178,6 +170,18 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       rowsMin={6}
       rowsMax={6}
     />
+    <AdminFormInput
+      labelText="毎月の料金"
+      inputType="text"
+      value={lessonClass.price + " 円"}
+      confirm
+    />
+    <AdminFormInput
+      labelText="コースの種類"
+      inputType="text"
+      value={lessonClass.for_children ? "子供コース" : "大人コース"}
+      confirm
+    />
     <div className={classes.flexContainer}>
       <AdminFormInput
         labelText="レッスンカラー"
@@ -201,7 +205,7 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
           open={open}
           headerTitle="クラス新規作成"
           submitText="確定"
-          submitFunc={async () => {await addLessonClassFunc()}}
+          submitFunc={async () => {await addLessonClass()}}
           cancelText="修正"
           cancelFunc={cancelFunc}
           content={content}
@@ -214,7 +218,7 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
           open={open}
           headerTitle="クラス情報変更"
           submitText="確定"
-          submitFunc={async () => {await updateLessonClassFunc()}}
+          submitFunc={async () => {await updateLessonClass()}}
           cancelText="修正"
           cancelFunc={cancelFunc}
           content={content}

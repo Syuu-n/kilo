@@ -26,10 +26,12 @@ export interface CreateTrialUserRequest {
 };
 
 export interface CreateLessonClassRequest {
-  name:        string;
-  location:    string;
-  description: string;
-  color:       LessonColor;
+  name:         string;
+  location:     string;
+  description:  string;
+  for_children: boolean;
+  color:        LessonColor;
+  price:        number;
 };
 
 export interface CreatePlanRequest {

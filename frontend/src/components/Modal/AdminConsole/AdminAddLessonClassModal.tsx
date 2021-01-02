@@ -28,11 +28,14 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
   const [description, setDescription] = React.useState<ValidationReturn>({value: '', error: undefined})
   const [location, setLocation] = React.useState<ValidationReturn>({value: '', error: ''})
   const [selectedColor, setSelectedColor] = React.useState({value: '', display_name: 'レッスンカラーを選択', error: ''} as CustomDropDownColor);
+  const [forChildren, setForChildren] = React.useState({value: -1, display_name: 'コースの種類を選択'});
+  const [price, setPrice] = React.useState<ValidationReturn>({value: 0, error: undefined});
   const [lessonClass, setLessonClass] = React.useState<CreateLessonClassRequest>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
   const newLessonRule = {week: -1, dotw: -1, start_at: moment(), end_at: moment().add(1, 'hour')} as MomentLessonRule;
   const [lessonRules, setLessonRules] = React.useState([newLessonRule]);
+  const forChildrenSets = [{value: 0, display_name: '大人コース'}, {value: 1, display_name: '子供コース'}];
   const classes = adminModalStyle();
 
   // レッスンカラー用の div を追加する
@@ -78,6 +81,22 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
         rowsMin={6}
         rowsMax={6}
       />
+      <AdminFormInput
+        labelText="毎月の料金"
+        inputType="number"
+        onChangeFunc={(value:string) => {setPrice({value: value, error: requireValidation(value)})}}
+        value={price.value}
+        required
+        errorText={price.error}
+      />
+      <CustomDropDown
+        dropdownList={forChildrenSets}
+        hoverColor="success"
+        buttonText={forChildren.display_name}
+        onClick={setForChildren}
+        buttonProps={{color: "success", fullWidth: true}}
+        fullWidth
+      />
       <div className={classes.flexContainer}>
         <CustomDropDown
           dropdownList={lessonColorSets}
@@ -96,11 +115,14 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
     </div>;
 
   const handleSubmit = () => {
+    const forChildrenBool = forChildren.value == 1 ? true : false;
     const lc = {
       name: name.value,
       location: location.value,
       description: description.value,
       color: selectedColor.value,
+      for_children: forChildrenBool,
+      price: price.value,
     } as CreateLessonClassRequest;
     setLessonClass(lc);
     setOpenConfirm(true);
@@ -120,6 +142,11 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
       setDescription({value: selectedClass.description, error: undefined});
       setSelectedColor({value: selectedClass.color, display_name: colorCheck(selectedClass.color).colorName, error: undefined});
       setLessonRules(convertLessonRulesToMoment(selectedClass.lesson_rules))
+      setForChildren({
+        value: selectedClass.for_children ? 1 : 0,
+        display_name: selectedClass.for_children ? '子供コース' : '大人コース',
+      });
+      setPrice({value: selectedClass.price, error: undefined});
     };
   }, [selectedClass]);
 
@@ -142,13 +169,15 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
       location.error == undefined &&
       description.error == undefined &&
       selectedColor.error == undefined &&
+      forChildren.value != -1 &&
+      price.error == undefined &&
       lessonRulesCheck()
       ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
     }
-  }, [name, location, description, selectedColor, lessonRules])
+  }, [name, location, description, selectedColor, forChildren, price, lessonRules])
 
   return (
     <div>

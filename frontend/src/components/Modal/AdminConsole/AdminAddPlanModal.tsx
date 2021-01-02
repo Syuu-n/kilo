@@ -81,14 +81,6 @@ const AdminAddPlanModal: React.FC<Props> = (props) => {
           </div>
         </div>
       )}
-      {/* <CustomDropDown
-        dropdownList={forChildrenSets}
-        hoverColor="success"
-        buttonText={forChildren.display_name}
-        onClick={setForChildren}
-        buttonProps={{color: "success", fullWidth: true}}
-        fullWidth
-      /> */}
     </div>;
 
   const handleSubmit = () => {
