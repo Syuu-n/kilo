@@ -1,7 +1,7 @@
 class Lesson < ApplicationRecord
   class AlreadyJoinedError < StandardError; end
-  class CantJoinedError < StandardError; end
-  class NoCountError < StandardError; end
+  class CantJoinError < StandardError; end
+  class CantJoinLessonClassError < StandardError; end
   class NotJoinedError < StandardError; end
   class CantLeaveError < StandardError; end
 
@@ -45,12 +45,12 @@ class Lesson < ApplicationRecord
   def join(user, admin=false)
     # 参加済みのレッスンへ再度参加した場合
     if joined?(user) then raise AlreadyJoinedError end
-    # 今月の参加可能数が 0 である場合
-    if user.remaining_monthly_count < 1 then raise NoCountError end
+    # ユーザが参加できないレッスンの場合(現在のプランでは参加できない)
+    if !user.user_lesson_classes.include?(self.lesson_class) then raise CantJoinLessonClassError end
 
     if !admin
-      # 参加しようとしているレッスンの開始時刻が過去である場合
-      if Time.current > start_at then raise CantJoinedError end
+      # 参加しようとしているレッスンの開始時刻が過去である場合(管理者の操作の場合は可能)
+      if Time.current > start_at then raise CantJoinError end
     end
 
     users << user
@@ -61,7 +61,7 @@ class Lesson < ApplicationRecord
     unless joined?(user) then raise NotJoinedError end
 
     if !admin
-      # 参加取り消ししようとしているレッスンの開始時刻が過去である場合
+      # 参加取り消ししようとしているレッスンの開始時刻が過去である場合(管理者の操作の場合は可能)
       if Time.current > start_at then raise CantLeaveError end
     end
 

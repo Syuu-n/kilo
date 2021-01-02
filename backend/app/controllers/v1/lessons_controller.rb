@@ -1,8 +1,8 @@
 module V1
   class LessonsController < ApplicationController
     class AlreadyJoinedError < StandardError; end
-    class CantJoinedError < StandardError; end
-    class NoCountError < StandardError; end
+    class CantJoinError < StandardError; end
+    class CantJoinLessonClassError < StandardError; end
     class NotJoinedError < StandardError; end
     class CantLeaveError < StandardError; end
 
@@ -105,10 +105,10 @@ module V1
         @lesson.join(current_user)
         rescue Lesson::AlreadyJoinedError => e
           render json: { code: 'user_already_joined' }, status: :bad_request and return
-        rescue Lesson::CantJoinedError => e
+        rescue Lesson::CantJoinError => e
           render json: { code: 'cant_join_to_past_lesson' }, status: :bad_request and return
-        rescue Lesson::NoCountError => e
-          render json: { code: 'user_monthly_limit_error' }, status: :bad_request and return
+        rescue Lesson::CantJoinLessonClassError => e
+          render json: { code: 'cant_join_to_this_lesson' }, status: :bad_request and return
         rescue => e
           render json: { code: 'user_join_failed' }, status: :bad_request and return
       end

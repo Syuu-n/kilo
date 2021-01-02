@@ -82,8 +82,11 @@ const ShowEventModal: React.FC<Props> = (props) => {
           case 'user_already_joined':
             enqueueSnackbar('既に参加済みのレッスンへは参加できません。', { variant: 'error' });
             break;
-          case 'user_monthly_limit_error':
-            enqueueSnackbar('今月の参加可能数を超えているため参加できませんでした。', { variant: 'error' });
+          case 'cant_join_to_past_lesson':
+            enqueueSnackbar('過去のレッスンへは参加できません。', { variant: 'error' });
+            break;
+          case 'cant_join_to_this_lesson':
+            enqueueSnackbar('現在のコースではこのレッスンへ参加できません。', { variant: 'error' });
             break;
           default:
             enqueueSnackbar('レッスンへの参加に失敗しました。', { variant: 'error' });
@@ -119,6 +122,9 @@ const ShowEventModal: React.FC<Props> = (props) => {
         switch (json.code) {
           case 'user_not_joined':
             enqueueSnackbar('参加していないレッスンを取り消すことはできません。', { variant: 'error' });
+            break;
+          case 'cant_leave_to_past_lesson':
+            enqueueSnackbar('過去のレッスンへの参加を取り消すことはできません。', { variant: 'error' });
             break;
           default:
             enqueueSnackbar('レッスンへの参加取り消しに失敗しました。', { variant: 'error' });

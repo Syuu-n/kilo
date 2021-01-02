@@ -48,11 +48,6 @@ module V1
 
     # PATCH /users/:id
     def update
-      if User.find_by(email: create_params[:email])
-        render json: { code: 'email_already_exists_error' }, status: :bad_request
-        return
-      end
-
       begin
         ActiveRecord::Base.transaction do
           @user.skip_reconfirmation!

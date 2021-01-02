@@ -65,7 +65,13 @@ class User < ApplicationRecord
     self.lessons.where(start_at: Time.current.all_month).count
   end
 
-  def remaining_monthly_count
-    self.plan.monthly_lesson_count - self.current_monthly_count
+  def user_lesson_classes
+    # ユーザが参加できるクラス一覧を取得する
+    raw_lesson_classes = self.plans.map {|plan| plan.lesson_classes}
+    if (raw_lesson_classes)
+      formatted_lesson_classes = raw_lesson_classes.flatten.uniq
+      return formatted_lesson_classes
+    end
+    return
   end
 end
