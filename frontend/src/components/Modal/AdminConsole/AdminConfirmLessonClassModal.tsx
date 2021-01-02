@@ -177,7 +177,7 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       confirm
     />
     <AdminFormInput
-      labelText="コースの種類"
+      labelText="種類"
       inputType="text"
       value={lessonClass.for_children ? "子供コース" : "大人コース"}
       confirm

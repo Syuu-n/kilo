@@ -79,6 +79,8 @@ const Calender: React.FC<Props> = (props) => {
       description: lesson.description ? lesson.description : '',
       users: lesson.users ? lesson.users : undefined,
       location: lesson.location,
+      price: lesson.price,
+      for_children: lesson.for_children,
     } as CEvent));
     return cEvents
   };

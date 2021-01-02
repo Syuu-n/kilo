@@ -36,10 +36,13 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
   const [startAt, setStartAt] = React.useState<moment.Moment|null>(moment(selectedEvent?.start));
   const [endAt, setEndAt] = React.useState<moment.Moment|null>(moment(selectedEvent?.end));
   const [joinedUsers, setJoinedUsers] = React.useState(selectedEvent?.users);
-  const [name, setName] = React.useState<ValidationReturn>({value: selectedEvent?.title, error: undefined})
-  const [description, setDescription] = React.useState<ValidationReturn>({value: selectedEvent?.description, error: undefined})
+  const [name, setName] = React.useState<ValidationReturn>({value: selectedEvent?.title, error: undefined});
+  const [description, setDescription] = React.useState<ValidationReturn>({value: selectedEvent?.description, error: undefined});
+  const [price, setPrice] = React.useState<ValidationReturn>({value: 0, error: undefined});
   const [location, setLocation] = React.useState<ValidationReturn>({value: selectedEvent?.location, error: undefined})
   const [color, setColor] = React.useState({value: selectedEvent?.color, display_name: colorCheck(selectedEvent?.color).colorName, error: undefined} as CustomDropDownColor);
+  const [forChildren, setForChildren] = React.useState({value: -1, display_name: '種類を選択'});
+  const forChildrenSets = [{value: 0, display_name: '大人コース'}, {value: 1, display_name: '子供コース'}];
   const lessonId = selectedEvent.id;
   const classes = adminModalStyle();
 
@@ -193,6 +196,29 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
                 />
               ],
               [
+                "料金",
+                <AdminFormInput
+                  labelText="料金"
+                  inputType="number"
+                  onChangeFunc={(value:string) => {setPrice({value: value, error: requireValidation(value)})}}
+                  value={price.value}
+                  required
+                  errorText={price.error}
+                  formControlProps={{className: classes.locationForm}}
+                />
+              ],
+              [
+                "種類",
+                <CustomDropDown
+                  dropdownList={forChildrenSets}
+                  hoverColor="success"
+                  buttonText={forChildren.display_name}
+                  onClick={setForChildren}
+                  buttonProps={{color: "success", fullWidth: true}}
+                  fullWidth
+                />
+              ],
+              [
                 "レッスンカラー",
                 <div className={classes.flexContainer}>
                 <CustomDropDown
@@ -275,6 +301,11 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
       setName({value: selectedEvent.title, error: undefined});
       setDescription({value: selectedEvent.description, error: undefined});
       setColor({value: selectedEvent.color, display_name: colorCheck(selectedEvent.color).colorName, error: undefined} as CustomDropDownColor);
+      setForChildren({
+        value: selectedEvent.for_children ? 1 : 0,
+        display_name: selectedEvent.for_children ? '子供コース' : '大人コース',
+      });
+      setPrice({value: selectedEvent.price, error: undefined});
     };
   }, [selectedEvent]);
 
@@ -284,7 +315,9 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
       startAt?.isBefore(endAt) &&
       location.error == undefined && 
       name.error == undefined &&
-      description.error == undefined
+      description.error == undefined &&
+      forChildren.value != -1 &&
+      price.error == undefined
     ) {
       setButtonDisabled(false);
     } else {
@@ -318,7 +351,9 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
         location={location.value}
         name={name.value}
         description={description.value}
+        price={price.value}
         color={color.value}
+        forChildren={forChildren.value == 1 ? true : false}
         isAddEvent={isAddEvent}
       />
     </div>

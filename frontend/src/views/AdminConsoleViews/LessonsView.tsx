@@ -136,6 +136,8 @@ const LessonsView: React.FC = () => {
           description: lesson.description ? lesson.description : '',
           users: lesson.users ? lesson.users : undefined,
           location: lesson.location,
+          price: lesson.price,
+          for_children: lesson.for_children,
         } as CEvent)));
       };
       const users = await getUsers();

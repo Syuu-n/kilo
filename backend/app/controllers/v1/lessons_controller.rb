@@ -28,6 +28,8 @@ module V1
             start_at: Time.zone.at(start_at.to_i / 60 * 60),
             end_at: Time.zone.at(end_at.to_i / 60 * 60),
             location: create_params[:location],
+            price: create_params[:price],
+            for_children: create_params[:for_children],
           )
           @lesson.save!
           users = User.where(id: create_params[:user_ids])
@@ -55,10 +57,12 @@ module V1
           @lesson.update!(
             name: update_params[:name],
             description: update_params[:description],
-            color: create_params[:color],
+            color: update_params[:color],
             start_at: Time.zone.at(start_at.to_i / 60 * 60),
             end_at: Time.zone.at(end_at.to_i / 60 * 60),
             location: update_params[:location],
+            price: update_params[:price],
+            for_children: update_params[:for_children],
           )
           # NOTE: レッスンに参加している全てのユーザを辞退させてから、改めて参加し直していおる
           # パフォーマンス的にはあまり良くない気がする
@@ -154,6 +158,8 @@ module V1
                     start_at: new_start_at,
                     end_at: new_end_at,
                     location: lc.location,
+                    price: lc.price,
+                    for_children: lc.for_children,
                   )
                   lesson.save!
                   @lessons.push(lesson)
@@ -172,6 +178,8 @@ module V1
                   start_at: new_start_at,
                   end_at: new_end_at,
                   location: lc.location,
+                  price: lc.price,
+                  for_children: lc.for_children,
                 )
                 lesson.save!
                 @lessons.push(lesson)
@@ -196,11 +204,11 @@ module V1
     end
 
     def create_params
-      params.require(:lesson).permit(:name, :description, :color, :lesson_class_id, :start_at, :end_at, :location, user_ids: [])
+      params.require(:lesson).permit(:name, :description, :color, :lesson_class_id, :start_at, :end_at, :location, :price, :for_children, user_ids: [])
     end
 
     def update_params
-      params.require(:lesson).permit(:name, :description, :color, :start_at, :end_at, :location,  user_ids: [])
+      params.require(:lesson).permit(:name, :description, :color, :start_at, :end_at, :location, :price, :for_children, user_ids: [])
     end
   end
 end

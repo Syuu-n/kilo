@@ -36,6 +36,8 @@ const AdminShowLessonModal: React.FC<Props> = (props) => {
                 ["開催場所", selectedEvent?.location],
                 ["開始時間", moment(selectedEvent?.start).format("YYYY年 MM月 DD日 H時 m分")],
                 ["終了時間", moment(selectedEvent?.end).format("YYYY年 MM月 DD日 H時 m分")],
+                ["料金", selectedEvent?.price + " 円"],
+                ["種類", selectedEvent?.for_children ? "子供コース" : "大人コース"],
                 ["レッスンカラー", colorCheck(selectedEvent?.color).colorName],
               ]}
             />

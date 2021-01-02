@@ -28,7 +28,7 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
   const [description, setDescription] = React.useState<ValidationReturn>({value: '', error: undefined})
   const [location, setLocation] = React.useState<ValidationReturn>({value: '', error: ''})
   const [selectedColor, setSelectedColor] = React.useState({value: '', display_name: 'レッスンカラーを選択', error: ''} as CustomDropDownColor);
-  const [forChildren, setForChildren] = React.useState({value: -1, display_name: 'コースの種類を選択'});
+  const [forChildren, setForChildren] = React.useState({value: -1, display_name: '種類を選択'});
   const [price, setPrice] = React.useState<ValidationReturn>({value: 0, error: undefined});
   const [lessonClass, setLessonClass] = React.useState<CreateLessonClassRequest>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
