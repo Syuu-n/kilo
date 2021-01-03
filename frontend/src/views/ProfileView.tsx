@@ -13,7 +13,7 @@ import {
 import { Grid } from '@material-ui/core';
 import * as moment from 'moment';
 
-const ProfileView: React.SFC = () => {
+const ProfileView: React.FC = () => {
   const { currentUser } = React.useContext(AuthContext);
 
   return (
@@ -37,17 +37,12 @@ const ProfileView: React.SFC = () => {
               />
             </ItemGrid>
             <ItemGrid xs={12} md={6} lg={4}>
-              { currentUser.plans.map((plan) =>
-                  <MyProfileCard
-                  headerColor="orange"
-                  cardTitle="マイコース"
-                  icon={LocalAtm}
-                  tableData={[
-                    ["名前", plan.name],
-                    ["毎月の料金", `${plan.price.toLocaleString()} 円`],
-                  ]}
-                />
-              )}
+              <MyProfileCard
+                headerColor="orange"
+                cardTitle="マイコース"
+                icon={LocalAtm}
+                tableData={currentUser.plans.map((plan) => [plan.name, `${plan.price.toLocaleString()} 円`])}
+              />
             </ItemGrid>
           </Grid>
           <Grid container>
