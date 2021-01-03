@@ -174,12 +174,25 @@ const ShowEventModal: React.FC<Props> = (props) => {
             ) : (null)}
           </div>
           <Table
-            tableData={[
-              ["クラス名", selectedEvent?.title],
-              ["開催場所", selectedEvent?.location],
-              ["開始時間", moment(selectedEvent?.start).format("YYYY年 MM月 DD日 H時 m分")],
-              ["終了時間", moment(selectedEvent?.end).format("YYYY年 MM月 DD日 H時 m分")],
-            ]}
+            tableData={
+              // 大人コースの場合のみ料金を表示
+              selectedEvent?.for_children ? (
+                [
+                  ["クラス名", selectedEvent?.title],
+                  ["開催場所", selectedEvent?.location],
+                  ["開始時間", moment(selectedEvent?.start).format("YYYY年 MM月 DD日 H時 m分")],
+                  ["終了時間", moment(selectedEvent?.end).format("YYYY年 MM月 DD日 H時 m分")],
+                ]
+              ) : (
+                [
+                  ["クラス名", selectedEvent?.title],
+                  ["開催場所", selectedEvent?.location],
+                  ["開始時間", moment(selectedEvent?.start).format("YYYY年 MM月 DD日 H時 m分")],
+                  ["終了時間", moment(selectedEvent?.end).format("YYYY年 MM月 DD日 H時 m分")],
+                  ["料金", selectedEvent?.price === 0 ? "無料" : `${selectedEvent?.price.toLocaleString()} 円`]
+                ]
+              )
+            }
           />
           <div className={classes.descriptionContainer}>
             <p>クラス説明</p>
