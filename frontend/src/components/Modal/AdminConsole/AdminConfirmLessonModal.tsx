@@ -45,6 +45,7 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
       title: lesson.name,
       start: new Date(lesson.start_at),
       end:   new Date(lesson.end_at),
+      lesson_class_id: lesson.lesson_class_id,
       color: lesson.color,
       joined: lesson.joined,
       description: lesson.description ? lesson.description : "",
