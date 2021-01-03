@@ -89,6 +89,7 @@ const ScheduleView: React.FC = () => {
           location: lesson.location,
           price: lesson.price,
           for_children: lesson.for_children,
+          user_limit_count: lesson.user_limit_count,
         } as CEvent)));
       };
     };

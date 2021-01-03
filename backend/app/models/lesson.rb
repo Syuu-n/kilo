@@ -2,6 +2,7 @@ class Lesson < ApplicationRecord
   class AlreadyJoinedError < StandardError; end
   class CantJoinError < StandardError; end
   class CantJoinLessonClassError < StandardError; end
+  class UserLimitCountError < StandardError; end
   class NotJoinedError < StandardError; end
   class CantLeaveError < StandardError; end
 
@@ -47,6 +48,8 @@ class Lesson < ApplicationRecord
     if joined?(user) then raise AlreadyJoinedError end
     # ユーザが参加できないレッスンの場合(現在のプランでは参加できない)
     if !user.user_lesson_classes.include?(self.lesson_class) then raise CantJoinLessonClassError end
+    # レッスンに参加できる人数を超えている場合
+    if self.users.count >= self.user_limit_count then raise UserLimitCountError end
 
     if !admin
       # 参加しようとしているレッスンの開始時刻が過去である場合(管理者の操作の場合は可能)

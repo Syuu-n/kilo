@@ -22,6 +22,7 @@ lesson_rules.each do |lr|
             location: lc.location,
             price: lc.price,
             for_children: lc.for_children,
+            user_limit_count: lc.user_limit_count,
           }
         )
         id_num = id_num + 1
@@ -44,6 +45,7 @@ lesson_rules.each do |lr|
           location: lc.location,
           price: lc.price,
           for_children: lc.for_children,
+          user_limit_count: lc.user_limit_count,
         }
       )
       id_num = id_num + 1

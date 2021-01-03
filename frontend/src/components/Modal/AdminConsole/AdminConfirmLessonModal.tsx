@@ -25,13 +25,15 @@ interface Props {
   name: string;
   description: string;
   price: number;
+  userLimitCount: number;
   color: LessonColor;
   forChildren: boolean;
   isAddEvent?: boolean;
 }
 
 const AdminConfirmLessonModal: React.FC<Props> = (props) => {
-  const { open, selectedEvent,  closeFunc, cancelFunc, updateFunc, startAt, endAt, joinedUsers, location, name, description, price, color, forChildren, isAddEvent } = props;
+  const { open, selectedEvent,  closeFunc, cancelFunc, updateFunc, startAt, endAt, joinedUsers, location, name,
+    description, price, userLimitCount, color, forChildren, isAddEvent } = props;
   const { enqueueSnackbar } = useSnackbar();
   const lessonId = selectedEvent.id;
   const lessonClassId = selectedEvent.lesson_class_id;
@@ -50,6 +52,7 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
       location: lesson.location,
       price: lesson.price,
       for_children: lesson.for_children,
+      user_limit_count: lesson.user_limit_count,
     }
     if (updateFunc) {
       updateFunc([newEvent], action);
@@ -75,6 +78,7 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
       price: price,
       color: color,
       for_children: forChildren,
+      user_limit_count: userLimitCount,
     };
 
     const res = await fetchApp(
@@ -136,6 +140,7 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
       price: price,
       color: color,
       for_children: forChildren,
+      user_limit_count: userLimitCount,
     };
 
     const res = await fetchApp(
@@ -181,7 +186,8 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
               ["開催場所", location],
               ["開始時間", startAt?.format("YYYY年 MM月 DD日 H時 m分")],
               ["終了時間", endAt?.format("YYYY年 MM月 DD日 H時 m分")],
-              ["料金", price + " 円"],
+              ["料金", `${price} 円`],
+              ["参加できる人数", `${userLimitCount} 人`],
               ["種類", forChildren ? "子供コース" : "大人コース"],
               ["レッスンカラー", colorCheck(color).colorName],
             ]}
@@ -192,7 +198,7 @@ const AdminConfirmLessonModal: React.FC<Props> = (props) => {
           </div>
           { joinedUsers ? (
             <div>
-              <p>参加中のユーザ一</p>
+              <p>参加中のユーザ一 ({joinedUsers.length})</p>
               <ul className={classes.usersContainer}>
                 { joinedUsers.length == 0 ? (
                   <li>なし</li>

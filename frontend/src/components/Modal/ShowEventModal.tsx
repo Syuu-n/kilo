@@ -42,30 +42,39 @@ const ShowEventModal: React.FC<Props> = (props) => {
       location: lesson.location,
       price: lesson.price,
       for_children: lesson.for_children,
+      user_limit_count: lesson.user_limit_count,
     }
     updateEventFunc(newEvent);
   };
 
+  // 参加ボタンが押せない条件
   const isButtonDisable = () => {
     // 現在のユーザが存在しない場合
-    if (!ctx.currentUser) {
+    if (!ctx.currentUser || !selectedEvent) {
       setDisabled(true);
       setMessage("不明なエラーが発生しました。この問題はリロードすることで改善する可能性があります。");
       return;
     }
     // 過去のイベントに対してのアクションの場合
-    if (moment(new Date).isAfter(moment(selectedEvent?.start))) {
+    if (moment(new Date).isAfter(moment(selectedEvent.start))) {
       setDisabled(true);
       setMessage("過去のレッスンの参加/取り消しはできません。");
       return;
     }
     // ユーザが参加できないクラスの場合
     const canJoin = (lessonClass: LessonClass) => {
-      return lessonClass.id === selectedEvent?.lesson_class_id
+      return lessonClass.id === selectedEvent.lesson_class_id
     }
     if (!ctx.currentUser.user_lesson_classes.find(canJoin)) {
       setDisabled(true);
       setMessage("現在のコースでは参加できないレッスンです。");
+      return;
+    }
+    // レッスンの参加できる人数を超えている場合
+    const userCount = selectedEvent.users ? selectedEvent.users.length : 0
+    if (userCount >= selectedEvent.user_limit_count) {
+      setDisabled(true);
+      setMessage("定員を超えているため参加できません。");
       return;
     }
     setDisabled(false);
@@ -200,7 +209,7 @@ const ShowEventModal: React.FC<Props> = (props) => {
           </div>
           { isAdmin && selectedEvent?.users ? (
             <div>
-              <p>参加中のユーザ一</p>
+              <p>参加中のユーザ一 ({selectedEvent?.users.length})</p>
               <ul className={classes.usersContainer}>
                 { selectedEvent.users.length == 0 ? (
                   <li>なし</li>

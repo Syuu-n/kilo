@@ -12,6 +12,7 @@ lessonColor.each_with_index do |lc, i|
       color: lc,
       price: rand(1000..5000),
       for_children: Faker::Boolean.boolean,
+      user_limit_count: rand(1..100),
     }
   )
 end
@@ -26,5 +27,6 @@ LessonClass.seed(:id,
     color: "",
     price: rand(0),
     for_children: Faker::Boolean.boolean,
+    user_limit_count: rand(1..100),
   }
 )

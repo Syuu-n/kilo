@@ -42,6 +42,8 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
   const [location, setLocation] = React.useState<ValidationReturn>({value: selectedEvent?.location, error: undefined})
   const [color, setColor] = React.useState({value: selectedEvent?.color, display_name: colorCheck(selectedEvent?.color).colorName, error: undefined} as CustomDropDownColor);
   const [forChildren, setForChildren] = React.useState({value: -1, display_name: '種類を選択'});
+  const [userLimitCount, setUserLimitCount] = React.useState<ValidationReturn>({value: 100, error: undefined});
+  const [lessonClassId, setLessonClassId] = React.useState(selectedEvent?.lesson_class_id);
   const forChildrenSets = [{value: 0, display_name: '大人コース'}, {value: 1, display_name: '子供コース'}];
   const lessonId = selectedEvent.id;
   const classes = adminModalStyle();
@@ -208,6 +210,18 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
                 />
               ],
               [
+                "参加できる人数",
+                <AdminFormInput
+                  labelText="参加できる人数"
+                  inputType="number"
+                  onChangeFunc={(value:string) => {setUserLimitCount({value: value, error: requireValidation(value)})}}
+                  value={userLimitCount.value}
+                  required
+                  errorText={userLimitCount.error}
+                  formControlProps={{className: classes.locationForm}}
+                />
+              ],
+              [
                 "種類",
                 <CustomDropDown
                   dropdownList={forChildrenSets}
@@ -252,7 +266,7 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
       { joinedUsers ? (
         <Grid container>
           <ItemGrid xs={12} sm={6}>
-            <p>参加中のユーザ一</p>
+            <p>参加中のユーザ一 ({joinedUsers.length})</p>
             <ul className={classes.usersContainer}>
               { joinedUsers.length == 0 ? (
                 <li>なし</li>
@@ -285,6 +299,7 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
               joinedUsers={joinedUsers}
               users={users}
               addUserFunc={(user:User) => addJoinedUser(user)}
+              lessonClassId={lessonClassId}
             />
           </ItemGrid>
         </Grid>
@@ -306,10 +321,13 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
         display_name: selectedEvent.for_children ? '子供コース' : '大人コース',
       });
       setPrice({value: selectedEvent.price, error: undefined});
+      setUserLimitCount({value: selectedEvent.user_limit_count, error: undefined});
+      setLessonClassId(selectedEvent.lesson_class_id);
     };
   }, [selectedEvent]);
 
   React.useEffect(() => {
+    const userCount = joinedUsers ? joinedUsers.length : 0
     // 開始時刻が終了時刻よりも前かつ開催場所のエラーがない場合にボタンを有効化
     if (
       startAt?.isBefore(endAt) &&
@@ -317,13 +335,14 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
       name.error == undefined &&
       description.error == undefined &&
       forChildren.value != -1 &&
-      price.error == undefined
+      price.error == undefined &&
+      userCount <= userLimitCount.value
     ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
     }
-  }, [startAt, endAt, location])
+  }, [startAt, endAt, location, name, forChildren, price, userLimitCount, joinedUsers])
 
   return (
     <div>
@@ -352,6 +371,7 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
         name={name.value}
         description={description.value}
         price={price.value}
+        userLimitCount={userLimitCount.value}
         color={color.value}
         forChildren={forChildren.value == 1 ? true : false}
         isAddEvent={isAddEvent}

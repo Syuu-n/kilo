@@ -30,6 +30,7 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
   const [selectedColor, setSelectedColor] = React.useState({value: '', display_name: 'レッスンカラーを選択', error: ''} as CustomDropDownColor);
   const [forChildren, setForChildren] = React.useState({value: -1, display_name: '種類を選択'});
   const [price, setPrice] = React.useState<ValidationReturn>({value: 0, error: undefined});
+  const [userLimitCount, setUserLimitCount] = React.useState<ValidationReturn>({value: 100, error: undefined});
   const [lessonClass, setLessonClass] = React.useState<CreateLessonClassRequest>();
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
@@ -89,6 +90,14 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
         required
         errorText={price.error}
       />
+      <AdminFormInput
+        labelText="レッスンに参加できる人数"
+        inputType="number"
+        onChangeFunc={(value:string) => {setUserLimitCount({value: value, error: requireValidation(value)})}}
+        value={userLimitCount.value}
+        required
+        errorText={userLimitCount.error}
+      />
       <CustomDropDown
         dropdownList={forChildrenSets}
         hoverColor="success"
@@ -123,6 +132,7 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
       color: selectedColor.value,
       for_children: forChildrenBool,
       price: price.value,
+      user_limit_count: userLimitCount.value,
     } as CreateLessonClassRequest;
     setLessonClass(lc);
     setOpenConfirm(true);
@@ -147,6 +157,7 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
         display_name: selectedClass.for_children ? '子供コース' : '大人コース',
       });
       setPrice({value: selectedClass.price, error: undefined});
+      setUserLimitCount({value: selectedClass.user_limit_count, error: undefined})
     };
   }, [selectedClass]);
 
@@ -171,13 +182,14 @@ const AdminAddLessonClassModal: React.FC<Props> = (props) => {
       selectedColor.error == undefined &&
       forChildren.value != -1 &&
       price.error == undefined &&
+      userLimitCount.error == undefined &&
       lessonRulesCheck()
       ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
     }
-  }, [name, location, description, selectedColor, forChildren, price, lessonRules])
+  }, [name, location, description, selectedColor, forChildren, price, userLimitCount, lessonRules])
 
   return (
     <div>

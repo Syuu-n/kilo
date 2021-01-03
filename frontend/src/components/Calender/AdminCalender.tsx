@@ -74,6 +74,7 @@ const Calender: React.FC<Props> = (props) => {
       title: lesson.name,
       start: new Date(lesson.start_at),
       end:   new Date(lesson.end_at),
+      lesson_class_id: lesson.lesson_class_id,
       color: lesson.color,
       joined: lesson.joined,
       description: lesson.description ? lesson.description : '',
@@ -81,6 +82,7 @@ const Calender: React.FC<Props> = (props) => {
       location: lesson.location,
       price: lesson.price,
       for_children: lesson.for_children,
+      user_limit_count: lesson.user_limit_count,
     } as CEvent));
     return cEvents
   };

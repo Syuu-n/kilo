@@ -36,7 +36,8 @@ const AdminShowLessonModal: React.FC<Props> = (props) => {
                 ["開催場所", selectedEvent?.location],
                 ["開始時間", moment(selectedEvent?.start).format("YYYY年 MM月 DD日 H時 m分")],
                 ["終了時間", moment(selectedEvent?.end).format("YYYY年 MM月 DD日 H時 m分")],
-                ["料金", selectedEvent?.price + " 円"],
+                ["料金", `${selectedEvent?.price} 円`],
+                ["参加できる人数", `${selectedEvent?.user_limit_count} 人`],
                 ["種類", selectedEvent?.for_children ? "子供コース" : "大人コース"],
                 ["レッスンカラー", colorCheck(selectedEvent?.color).colorName],
               ]}
@@ -47,7 +48,7 @@ const AdminShowLessonModal: React.FC<Props> = (props) => {
             </div>
             { selectedEvent?.users ? (
               <div>
-                <p>参加中のユーザ一</p>
+                <p>参加中のユーザ一 ({selectedEvent?.users.length})</p>
                 <ul className={classes.usersContainer}>
                   { selectedEvent.users.length == 0 ? (
                     <li>なし</li>

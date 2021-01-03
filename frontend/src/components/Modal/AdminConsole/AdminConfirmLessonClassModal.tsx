@@ -39,6 +39,7 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       color: lessonClass.color,
       for_children: lessonClass.for_children,
       lesson_rules: convertMomentLessonRulesToRequest(momentLessonRules),
+      user_limit_count: lessonClass.user_limit_count,
     };
 
     const res = await fetchApp(
@@ -93,6 +94,7 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       color: lessonClass.color,
       for_children: lessonClass.for_children,
       lesson_rules: convertMomentLessonRulesToRequest(momentLessonRules),
+      user_limit_count: lessonClass.user_limit_count,
     };
 
     const res = await fetchApp(
@@ -174,6 +176,12 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
       labelText="毎月の料金"
       inputType="text"
       value={lessonClass.price + " 円"}
+      confirm
+    />
+    <AdminFormInput
+      labelText="レッスンに参加できる人数"
+      inputType="text"
+      value={lessonClass.user_limit_count + " 人"}
       confirm
     />
     <AdminFormInput

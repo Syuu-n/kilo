@@ -117,9 +117,6 @@ const LessonsView: React.FC = () => {
         setLessons(newLessons.concat(events));
         break;
     };
-    // レッスン変更、追加、削除後はユーザの参加可能数が変化するため再取得する
-    const users = await getUsers();
-    if (users) setUsers(users);
   };
 
   React.useEffect(() => {
@@ -131,6 +128,7 @@ const LessonsView: React.FC = () => {
           title: lesson.name,
           start: new Date(lesson.start_at),
           end:   new Date(lesson.end_at),
+          lesson_class_id: lesson.lesson_class_id,
           color: lesson.color,
           joined: lesson.joined,
           description: lesson.description ? lesson.description : '',
@@ -138,6 +136,7 @@ const LessonsView: React.FC = () => {
           location: lesson.location,
           price: lesson.price,
           for_children: lesson.for_children,
+          user_limit_count: lesson.user_limit_count,
         } as CEvent)));
       };
       const users = await getUsers();

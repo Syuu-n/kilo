@@ -3,6 +3,7 @@ module V1
     class AlreadyJoinedError < StandardError; end
     class CantJoinError < StandardError; end
     class CantJoinLessonClassError < StandardError; end
+    class UserLimitCountError < StandardError; end
     class NotJoinedError < StandardError; end
     class CantLeaveError < StandardError; end
 
@@ -30,6 +31,7 @@ module V1
             location: create_params[:location],
             price: create_params[:price],
             for_children: create_params[:for_children],
+            user_limit_count: create_params[:user_limit_count],
           )
           @lesson.save!
           users = User.where(id: create_params[:user_ids])
@@ -38,12 +40,8 @@ module V1
           end
         end
       rescue => e
-        case e
-        when Lesson::NoCountError
-          render json: { code: 'user_monthly_limit_error' }, status: :bad_request and return
-        else
-          render json: { code: 'lesson_create_error' }, status: :unprocessable_entity and return
-        end
+        puts e
+        render json: { code: 'lesson_create_error' }, status: :unprocessable_entity and return
       end
       render json: @lesson, status: :created
     end
@@ -63,6 +61,7 @@ module V1
             location: update_params[:location],
             price: update_params[:price],
             for_children: update_params[:for_children],
+            user_limit_count: update_params[:user_limit_count],
           )
           # NOTE: レッスンに参加している全てのユーザを辞退させてから、改めて参加し直していおる
           # パフォーマンス的にはあまり良くない気がする
@@ -73,11 +72,10 @@ module V1
           end
         end
       rescue => e
+        puts e
         case e
         when Lesson::AlreadyJoinedError
           render json: { code: 'user_already_joined' }, status: :bad_request and return
-        when Lesson::NoCountError
-          render json: { code: 'user_monthly_limit_error' }, status: :bad_request and return
         else
           render json: { code: 'lesson_update_error' }, status: :unprocessable_entity and return
         end
@@ -109,6 +107,8 @@ module V1
           render json: { code: 'cant_join_to_past_lesson' }, status: :bad_request and return
         rescue Lesson::CantJoinLessonClassError => e
           render json: { code: 'cant_join_to_this_lesson' }, status: :bad_request and return
+        rescue Lesson::UserLimitCountError => e
+          render json: { code: 'user_limit_count_error' }, status: :bad_request and return
         rescue => e
           render json: { code: 'user_join_failed' }, status: :bad_request and return
       end
@@ -160,6 +160,7 @@ module V1
                     location: lc.location,
                     price: lc.price,
                     for_children: lc.for_children,
+                    user_limit_count: lc.user_limit_count,
                   )
                   lesson.save!
                   @lessons.push(lesson)
@@ -180,6 +181,7 @@ module V1
                   location: lc.location,
                   price: lc.price,
                   for_children: lc.for_children,
+                  user_limit_count: lc.user_limit_count,
                 )
                 lesson.save!
                 @lessons.push(lesson)
@@ -204,11 +206,11 @@ module V1
     end
 
     def create_params
-      params.require(:lesson).permit(:name, :description, :color, :lesson_class_id, :start_at, :end_at, :location, :price, :for_children, user_ids: [])
+      params.require(:lesson).permit(:name, :description, :color, :lesson_class_id, :start_at, :end_at, :location, :price, :user_limit_count, :for_children, user_ids: [])
     end
 
     def update_params
-      params.require(:lesson).permit(:name, :description, :color, :start_at, :end_at, :location, :price, :for_children, user_ids: [])
+      params.require(:lesson).permit(:name, :description, :color, :start_at, :end_at, :location, :price, :user_limit_count, :for_children, user_ids: [])
     end
   end
 end

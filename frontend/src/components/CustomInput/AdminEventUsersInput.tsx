@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { User } from 'responses/responseStructs';
+import { User, LessonClass } from 'responses/responseStructs';
 import { Input, ClickAwayListener } from '@material-ui/core';
 import { Button } from 'components';
 import adminEventUsersInputStyle from 'assets/jss/kiloStyles/adminEventUsersInputStyle';
@@ -8,10 +8,11 @@ interface Props {
   joinedUsers: User[];
   users: User[];
   addUserFunc: Function;
+  lessonClassId?: number;
 }
 
 const AdminEventUsersInput: React.FC<Props> = (props) => {
-  const { users, joinedUsers, addUserFunc } = props;
+  const { users, joinedUsers, addUserFunc, lessonClassId } = props;
   const classes = adminEventUsersInputStyle();
   const [keyword, setKeyword] = React.useState("");
   const [searchResultUsers, setSearchResultUsers] = React.useState<User[]>([]);
@@ -45,6 +46,11 @@ const AdminEventUsersInput: React.FC<Props> = (props) => {
     addUserFunc(user);
   };
 
+  // 参加できるレッスンか判断
+  const canJoin = (lessonClass: LessonClass) => {
+    return lessonClass.id === lessonClassId
+  }
+
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
       <div className={classes.searchContainer}>
@@ -75,14 +81,24 @@ const AdminEventUsersInput: React.FC<Props> = (props) => {
                     <p className={classes.userName}>
                       {`${user.last_name} ${user.first_name}`}
                     </p>
-                    <Button
-                      color="success"
-                      round
-                      customClass={classes.userSelectButton}
-                      onClick={() => addUser(user)}
-                    >
-                      追加
-                    </Button>
+                    { user.user_lesson_classes.find(canJoin) ? (
+                      <Button
+                        color="success"
+                        round
+                        customClass={classes.userSelectButton}
+                        onClick={() => addUser(user)}
+                      >
+                        追加
+                      </Button>
+                    ) : (
+                      <Button
+                        color="danger"
+                        round
+                        customClass={classes.userSelectButton}
+                      >
+                        追加不可
+                      </Button>
+                    )}
                   </li>
                 )
               })}

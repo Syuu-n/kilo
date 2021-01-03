@@ -106,11 +106,11 @@ module V1
     end
 
     def lesson_class_params
-      params.require(:lesson_class).permit(:name, :location, :description, :price, :for_children, :color)
+      params.require(:lesson_class).permit(:name, :location, :description, :price, :user_limit_count, :for_children, :color)
     end
 
     def lesson_rule_params
-      params.require(:lesson_class).permit(:name, :location, :description, :price, :for_children, :color,
+      params.require(:lesson_class).permit(:name, :location, :description, :price, :user_limit_count, :for_children, :color,
                                            { lesson_rules: [:week, :dotw, :start_at, :end_at]}
       )
     end
