@@ -56,10 +56,10 @@ const ShowEventModal: React.FC<Props> = (props) => {
       setMessage("不明なエラーが発生しました。この問題はリロードすることで改善する可能性があります。");
       return;
     }
-    // 過去のイベントに対してのアクションの場合
-    if (moment(new Date).isAfter(moment(selectedEvent.start))) {
+    // 過去もしくは当日ののイベントに対してのアクションの場合
+    if (moment().isAfter(moment(selectedEvent.start).startOf('day'))) {
       setDisabled(true);
-      setMessage("過去のレッスンの参加/取り消しはできません。");
+      setMessage("過去または当日のレッスンへ参加/取り消しはできません。");
       return;
     }
     // ユーザが参加できないクラスの場合
@@ -109,7 +109,7 @@ const ShowEventModal: React.FC<Props> = (props) => {
             enqueueSnackbar('既に参加済みのレッスンへは参加できません。', { variant: 'error' });
             break;
           case 'cant_join_to_past_lesson':
-            enqueueSnackbar('過去のレッスンへは参加できません。', { variant: 'error' });
+            enqueueSnackbar('過去または当日のレッスンへは参加できません。', { variant: 'error' });
             break;
           case 'cant_join_to_this_lesson':
             enqueueSnackbar('現在のコースではこのレッスンへ参加できません。', { variant: 'error' });
@@ -150,7 +150,7 @@ const ShowEventModal: React.FC<Props> = (props) => {
             enqueueSnackbar('参加していないレッスンを取り消すことはできません。', { variant: 'error' });
             break;
           case 'cant_leave_to_past_lesson':
-            enqueueSnackbar('過去のレッスンへの参加を取り消すことはできません。', { variant: 'error' });
+            enqueueSnackbar('過去または当日のレッスンへの参加を取り消すことはできません。', { variant: 'error' });
             break;
           default:
             enqueueSnackbar('レッスンへの参加取り消しに失敗しました。', { variant: 'error' });

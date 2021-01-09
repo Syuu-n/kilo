@@ -52,8 +52,8 @@ class Lesson < ApplicationRecord
     if self.users.count >= self.user_limit_count then raise UserLimitCountError end
 
     if !admin
-      # 参加しようとしているレッスンの開始時刻が過去である場合(管理者の操作の場合は可能)
-      if Time.current > start_at then raise CantJoinError end
+      # 参加しようとしているレッスンの開始時刻が過去もしくは当日である場合(管理者の操作の場合は可能)
+      if Time.current > start_at.beginning_of_day then raise CantJoinError end
     end
 
     users << user
@@ -64,8 +64,8 @@ class Lesson < ApplicationRecord
     unless joined?(user) then raise NotJoinedError end
 
     if !admin
-      # 参加取り消ししようとしているレッスンの開始時刻が過去である場合(管理者の操作の場合は可能)
-      if Time.current > start_at then raise CantLeaveError end
+      # 参加取り消ししようとしているレッスンの開始時刻が過去もしくは当日である場合(管理者の操作の場合は可能)
+      if Time.current > start_at.beginning_of_day then raise CantLeaveError end
     end
 
     user_lessons.find_by(user_id: user.id).destroy
