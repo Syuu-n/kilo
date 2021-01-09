@@ -406,7 +406,7 @@ const TrialRegisterView: React.FC = () => {
                   ) : (
                     <div className={classes.messageContainer}>
                       <div><MailOutline className={classes.icon}/></div>
-                      <p>体験申し込みが完了しました。<br/>登録メールをご入力いただいたメールアドレスに送信しましたので、ご確認ください。</p>
+                      <p>体験申し込みが完了しました。<br/>登録メールをご入力いただいたメールアドレスに送信しましたのでご確認ください。</p>
                     </div>
                   )}
                 </div>
