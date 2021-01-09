@@ -25,6 +25,8 @@ const TrialRegisterView: React.FC = () => {
   const [submitFailed, setSubmitFailed] = React.useState(false);
   const classes = trialRegisterViewStyle();
   const navs = ["体験日の選択", "情報の入力", "情報の確認", "完了"];
+  // 子供クラスの体験料
+  const childTrialPrice: number = 1000;
 
   const getLessonClasses = async (): Promise<LessonClass[] | null> => {
     const res = await fetchApp(
@@ -112,15 +114,18 @@ const TrialRegisterView: React.FC = () => {
       const fCEvent = lessons.filter((lesson) => lesson.lesson_class_id == selectedLessonClass.id);
       const fLessons = fCEvent.map((lesson) => ({
         id: lesson.id,
-        title: lesson.name,
-        color: lesson.color,
-        joined: lesson.joined,
+        title: lesson.title,
         description: lesson.description,
         start: lesson.start,
         end: lesson.end,
         lesson_class_id: lesson.lesson_class_id,
+        location: lesson.location,
+        price: lesson.price,
+        for_children: lesson.for_children,
         name: moment(lesson.start).format("YYYY年 MM月 DD日 H時 m分"),
       } as CEvent))
+      // 開始時刻で昇順に並び替え
+      fLessons.sort((previous, next) => previous.start.getTime() - next.start.getTime());
       return fLessons
     }
     return []
@@ -158,11 +163,12 @@ const TrialRegisterView: React.FC = () => {
           title: lesson.name,
           start: new Date(lesson.start_at),
           end:   new Date(lesson.end_at),
-          color: lesson.color,
-          joined: lesson.joined,
+          lesson_class_id: lesson.lesson_class_id,
           description: lesson.description ? lesson.description : '',
-          users: lesson.users ? lesson.users : undefined,
-          lesson_class_id: lesson.lesson_class_id ? lesson.lesson_class_id: undefined,
+          location: lesson.location,
+          price: lesson.price,
+          for_children: lesson.for_children,
+          user_limit_count: lesson.user_limit_count,
         } as CEvent)));
       };
     };
@@ -213,8 +219,14 @@ const TrialRegisterView: React.FC = () => {
                         <Table
                           tableData={[
                             ["クラス名", selectedLesson.title],
+                            ["開催場所", selectedLesson.location],
                             ["開始時間", moment(selectedLesson.start).format("YYYY年 MM月 DD日 H時 m分")],
                             ["終了時間", moment(selectedLesson.end).format("YYYY年 MM月 DD日 H時 m分")],
+                            ["種類", selectedLesson.for_children ? "子供コース" : "大人コース"],
+                            ["体験料金", selectedLesson.for_children ?
+                              `${childTrialPrice.toLocaleString()} 円` :
+                              `${selectedLesson.price.toLocaleString()} 円`
+                            ]
                           ]}
                         />
                         <div>

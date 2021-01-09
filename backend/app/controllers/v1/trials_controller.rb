@@ -68,15 +68,16 @@ module V1
 
     # GET /trials/lesson_classes
     def lesson_classes_for_trial
-      classes = LessonClass.all
+      # 体験コースで参加できるクラスのみを表示
+      classes = Plan.trial_plan.lesson_classes
       render json: classes, each_serializer: LessonClassSerializer
     end
 
     # GET /trials/lessons
     def lessons_for_trial
-      # 今月と来月のレッスンを取得
-      range = Time.current..Time.current.next_month.end_of_month
-      lessons = Lesson.where(start_at: range)
+      # 翌日から来月までの体験コースで参加できるレッスンを表示
+      range = Time.current.next_day.beginning_of_day..Time.current.next_month.end_of_month
+      lessons = Lesson.where(start_at: range, lesson_class: Plan.trial_plan.lesson_classes)
       render json: lessons, each_serializer: LessonSerializer
     end
 
