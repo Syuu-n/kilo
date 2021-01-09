@@ -57,6 +57,12 @@ const ShowEventModal: React.FC<Props> = (props) => {
       setMessage("不明なエラーが発生しました。この問題はリロードすることで改善する可能性があります。");
       return;
     }
+    // 体験ユーザの場合
+    if (ctx.currentUser.role.name === "trial") {
+      setDisabled(true);
+      setMessage("体験中は他のレッスンへの参加/取り消しはできません。");
+      return;
+    }
     // 過去もしくは当日ののイベントに対してのアクションの場合
     if (moment().isAfter(moment(selectedEvent.start).startOf('day'))) {
       setDisabled(true);
@@ -105,6 +111,9 @@ const ShowEventModal: React.FC<Props> = (props) => {
         break;
       case 400:
         switch (json.code) {
+          case 'trial_user_cant_join_to_lesson':
+            enqueueSnackbar('体験中は他のレッスンへの参加/取り消しはできません。', { variant: 'error' });
+            break;
           case 'user_already_joined':
             enqueueSnackbar('既に参加済みのレッスンへは参加できません。', { variant: 'error' });
             break;
@@ -146,6 +155,9 @@ const ShowEventModal: React.FC<Props> = (props) => {
         break;
       case 400:
         switch (json.code) {
+          case 'trial_user_cant_leave_to_lesson':
+            enqueueSnackbar('体験中は他のレッスンへの参加/取り消しはできません。', { variant: 'error' });
+            break;
           case 'user_not_joined':
             enqueueSnackbar('参加していないレッスンを取り消すことはできません。', { variant: 'error' });
             break;

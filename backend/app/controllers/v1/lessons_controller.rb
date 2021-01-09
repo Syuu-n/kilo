@@ -4,6 +4,7 @@ module V1
     class CantJoinError < StandardError; end
     class CantJoinLessonClassError < StandardError; end
     class UserLimitCountError < StandardError; end
+    class CantJoinOrLeaveTrialUserError < StandardError; end
     class NotJoinedError < StandardError; end
     class CantLeaveError < StandardError; end
 
@@ -101,16 +102,21 @@ module V1
     def user_join
       begin
         @lesson.join(current_user)
-        rescue Lesson::AlreadyJoinedError => e
+      rescue => e
+        case e
+        when Lesson::CantJoinOrLeaveTrialUserError
+          render json: { code: 'trial_user_cant_join_to_lesson' }, status: :bad_request and return
+        when Lesson::AlreadyJoinedError
           render json: { code: 'user_already_joined' }, status: :bad_request and return
-        rescue Lesson::CantJoinError => e
+        when Lesson::CantJoinError
           render json: { code: 'cant_join_to_past_lesson' }, status: :bad_request and return
-        rescue Lesson::CantJoinLessonClassError => e
+        when Lesson::CantJoinLessonClassError
           render json: { code: 'cant_join_to_this_lesson' }, status: :bad_request and return
-        rescue Lesson::UserLimitCountError => e
+        when Lesson::UserLimitCountError
           render json: { code: 'user_limit_count_error' }, status: :bad_request and return
-        rescue => e
+        else
           render json: { code: 'user_join_failed' }, status: :bad_request and return
+        end
       end
       render json: @lesson, status: :ok
     end
@@ -121,6 +127,8 @@ module V1
         @lesson.leave(current_user)
       rescue => e
         case e
+        when Lesson::CantJoinOrLeaveTrialUserError
+          render json: { code: 'trial_user_cant_leave_to_lesson' }, status: :bad_request and return
         when Lesson::NotJoinedError
           render json: { code: 'user_not_joined' }, status: :bad_request and return
         when Lesson::CantLeaveError

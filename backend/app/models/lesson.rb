@@ -3,6 +3,7 @@ class Lesson < ApplicationRecord
   class CantJoinError < StandardError; end
   class CantJoinLessonClassError < StandardError; end
   class UserLimitCountError < StandardError; end
+  class CantJoinOrLeaveTrialUserError < StandardError; end
   class NotJoinedError < StandardError; end
   class CantLeaveError < StandardError; end
 
@@ -52,6 +53,8 @@ class Lesson < ApplicationRecord
   end
 
   def join(user, admin=false)
+    # 体験中のユーザの場合かつ参加しているレッスンがすでにある場合
+    if user.is_trial? && user.lessons.count > 0 then raise CantJoinOrLeaveTrialUserError end
     # 参加済みのレッスンへ再度参加した場合
     if joined?(user) then raise AlreadyJoinedError end
     # ユーザが参加できないレッスンの場合(現在のプランでは参加できない)
@@ -68,6 +71,8 @@ class Lesson < ApplicationRecord
   end
 
   def leave(user, admin=false)
+    # 体験中のユーザの場合かつ参加しているレッスンがすでにある場合
+    if user.is_trial? && user.lessons.count > 0 then raise CantJoinOrLeaveTrialUserError end
     # 参加取り消し済みのレッスンへ再度参加取り消しをした場合
     unless joined?(user) then raise NotJoinedError end
 
