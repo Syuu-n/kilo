@@ -44,6 +44,7 @@ const ShowEventModal: React.FC<Props> = (props) => {
       price: lesson.price,
       for_children: lesson.for_children,
       user_limit_count: lesson.user_limit_count,
+      remaining_user_count: lesson.remaining_user_count,
     }
     updateEventFunc(newEvent);
   };
@@ -71,9 +72,8 @@ const ShowEventModal: React.FC<Props> = (props) => {
       setMessage("現在のコースでは参加できないレッスンです。");
       return;
     }
-    // レッスンの参加できる人数を超えている場合
-    const userCount = selectedEvent.users ? selectedEvent.users.length : 0
-    if (userCount >= selectedEvent.user_limit_count) {
+    // レッスンの参加できる人数を超えている場合かつ自身が参加していない場合
+    if (selectedEvent.remaining_user_count <= 0 && !selectedEvent.joined) {
       setDisabled(true);
       setMessage("定員を超えているため参加できません。");
       return;

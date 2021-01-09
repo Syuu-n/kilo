@@ -39,6 +39,14 @@ class Lesson < ApplicationRecord
     end
   end
 
+  def remaining_user_count
+    if user_limit_count
+      user_limit_count - users.count
+    else
+      0
+    end
+  end
+
   def joined?(user)
     users.include? user
   end
@@ -49,7 +57,7 @@ class Lesson < ApplicationRecord
     # ユーザが参加できないレッスンの場合(現在のプランでは参加できない)
     if !user.user_lesson_classes.include?(self.lesson_class) then raise CantJoinLessonClassError end
     # レッスンに参加できる人数を超えている場合
-    if self.users.count >= self.user_limit_count then raise UserLimitCountError end
+    if remaining_user_count <= 0 then raise UserLimitCountError end
 
     if !admin
       # 参加しようとしているレッスンの開始時刻が過去もしくは当日である場合(管理者の操作の場合は可能)

@@ -46,6 +46,7 @@ export interface Lesson {
   price:            number;
   for_children:     boolean;
   user_limit_count: number;
+  remaining_user_count: number;
 }
 
 // name は体験申し込みの日付表示用
@@ -63,6 +64,7 @@ export interface CEvent extends Event {
   price:            number;
   for_children:     boolean;
   user_limit_count: number;
+  remaining_user_count: number;
 }
 
 export interface LessonClass {

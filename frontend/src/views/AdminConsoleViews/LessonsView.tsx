@@ -137,6 +137,7 @@ const LessonsView: React.FC = () => {
           price: lesson.price,
           for_children: lesson.for_children,
           user_limit_count: lesson.user_limit_count,
+          remaining_user_count: lesson.remaining_user_count,
         } as CEvent)));
       };
       const users = await getUsers();

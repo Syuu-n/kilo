@@ -18,7 +18,7 @@ module V1
             birthday: create_params[:birthday],
             phone_number: create_params[:phone_number],
           )
-          @user.plan = Plan.trial_plan
+          @user.plans << Plan.trial_plan
           @user.role = Role.trial
 
           if User.find_by(email: @user.email)
@@ -77,7 +77,9 @@ module V1
     def lessons_for_trial
       # 翌日から来月までの体験コースで参加できるレッスンを表示
       range = Time.current.next_day.beginning_of_day..Time.current.next_month.end_of_month
-      lessons = Lesson.where(start_at: range, lesson_class: Plan.trial_plan.lesson_classes)
+      raw_lessons = Lesson.where(start_at: range, lesson_class: Plan.trial_plan.lesson_classes)
+      # 参加可能数が 0 より大きいレッスンのみを表示
+      lessons = raw_lessons.filter{|lesson| lesson.remaining_user_count > 0}
       render json: lessons, each_serializer: LessonSerializer
     end
 
