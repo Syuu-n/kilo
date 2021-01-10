@@ -19,6 +19,8 @@ services:
       - db
     stdin_open: true
     tty: true
+    environment:
+      - EDITOR=vim
 
   frontend:
     build:

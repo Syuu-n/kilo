@@ -4,6 +4,7 @@ RUN apt-get update -qq && apt-get install -y build-essential libpq-dev node.js \
   echo "ja_JP.UTF-8 UTF-8" > /etc/locale.gen && \
   locale-gen && \
   update-locale LANG=ja_JP.UTF-8
+RUN apt-get install -y vim
 RUN mkdir -p /myapp/backend
 WORKDIR /myapp/backend
 COPY Gemfile /myapp/backend/Gemfile

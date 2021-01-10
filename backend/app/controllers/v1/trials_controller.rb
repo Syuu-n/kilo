@@ -60,6 +60,8 @@ module V1
       user.confirm
 
       if user.confirmed?
+        # 体験申し込み通知
+        Notify::LineNotify.new.trial_start(user)
         render json: user, status: :ok
       else
         render json: { code: 'user_confirmation_error' }, status: :unprocessable_entity
