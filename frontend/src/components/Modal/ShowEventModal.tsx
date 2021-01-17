@@ -5,7 +5,7 @@ import {
   Table,
   Badge,
 } from 'components';
-import { User, CEvent, Lesson, LessonClass } from 'responses/responseStructs';
+import { CEvent, Lesson, LessonClass } from 'responses/responseStructs';
 import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 import showEventModalStyle from 'assets/jss/kiloStyles/showEventModalStyle';
@@ -14,13 +14,12 @@ import { fetchCurrentUser, AuthContext } from 'Auth';
 interface Props {
   open: boolean;
   selectedEvent: CEvent|undefined;
-  isAdmin: boolean;
   closeFunc: Function;
   updateEventFunc: Function;
 }
 
 const ShowEventModal: React.FC<Props> = (props) => {
-  const { open, selectedEvent, isAdmin, closeFunc, updateEventFunc } = props;
+  const { open, selectedEvent, closeFunc, updateEventFunc } = props;
   const { enqueueSnackbar } = useSnackbar();
   const lessonId = selectedEvent?.id;
   const accessToken = localStorage.getItem('kiloToken');
@@ -220,22 +219,6 @@ const ShowEventModal: React.FC<Props> = (props) => {
             <p>クラス説明</p>
             <p>{selectedEvent?.description}</p>
           </div>
-          { isAdmin && selectedEvent?.users ? (
-            <div>
-              <p>参加中のユーザ一 ({selectedEvent?.users.length})</p>
-              <ul className={classes.usersContainer}>
-                { selectedEvent.users.length == 0 ? (
-                  <li>なし</li>
-                ) : (
-                  <div>
-                    { selectedEvent.users.map((user:User) => {
-                      return <li key={user.id}>{user.last_name + " " + user.first_name}</li>
-                    })}
-                  </div>
-                )}
-              </ul>
-            </div>
-          ) : (null) }
           {/* 参加/取り消しボタンが押せない場合のメッセージ */}
           <div>
             <p className={classes.joinMessage}>{message}</p>

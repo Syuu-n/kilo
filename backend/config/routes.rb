@@ -16,13 +16,14 @@ Rails.application.routes.draw do
 
     resources :plans, except: [:new, :edit]
 
+    get 'lessons/lessons_for_admin' => 'lessons#index_for_admin'
+    post 'lessons/create_lessons' => 'lessons#create_next_month_lessons'
     resources :lessons, except: [:new, :edit] do
       member do
         post 'join' => 'lessons#user_join'
         delete 'leave' => 'lessons#user_leave'
       end
     end
-    post 'lessons/create_lessons' => 'lessons#create_next_month_lessons'
 
     resources :lesson_classes, except: [:new, :edit]
   end

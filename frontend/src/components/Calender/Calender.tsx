@@ -6,13 +6,12 @@ import { CEvent } from 'responses/responseStructs';
 import { ShowEventModal } from 'components';
 
 interface Props {
-  isAdmin:         boolean;
   lessons:         CEvent[];
   updateEventFunc: Function;
 }
 
 const Calender: React.FC<Props> = (props) => {
-  const { isAdmin, lessons, updateEventFunc } = props;
+  const { lessons, updateEventFunc } = props;
   const [openModal, setOpenModal] = React.useState(false);
   const [selectedEvent, setSelectedEvent] = React.useState<CEvent|undefined>();
   const localizer = momentLocalizer(moment);
@@ -69,7 +68,6 @@ const Calender: React.FC<Props> = (props) => {
       <ShowEventModal
         open={openModal}
         selectedEvent={selectedEvent}
-        isAdmin={isAdmin}
         closeFunc={() => setOpenModal(false)}
         updateEventFunc={(event:CEvent) => updateEvent(event)}
       />

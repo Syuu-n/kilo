@@ -20,7 +20,7 @@ const LessonsView: React.FC = () => {
     }
 
     const res = await fetchApp(
-      '/v1/lessons',
+      '/v1/lessons/lessons_for_admin',
       'GET',
       accessToken
     )

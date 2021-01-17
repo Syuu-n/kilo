@@ -9,12 +9,22 @@ module V1
     class CantLeaveError < StandardError; end
     class AlreadyCreatedLessonsError < StandardError; end
 
-    before_action :permission_check, only: [:create, :update, :destroy, :create_next_month_lessons]
+    before_action :permission_check, only: [:index_for_admin, :create, :update, :destroy, :create_next_month_lessons]
     before_action :setup_lesson, only: [:update, :show, :destroy, :user_join, :user_leave]
 
     #  GET /lessons
     def index
-      render json: Lesson.all, each_serializer: LessonSerializer
+      now = Time.current
+      lessons = Lesson.where(start_at: now.beginning_of_year..now.end_of_year)
+      render json: lessons, each_serializer: LessonSerializer
+    end
+
+    # GET /lessons/lessons_for_admin
+    # 管理者用はレッスンへ参加しているユーザ一覧を取得できる
+    def index_for_admin
+      now = Time.current
+      lessons = Lesson.where(start_at: now.beginning_of_year..now.end_of_year)
+      render json: lessons, each_serializer: AdminLessonSerializer
     end
 
     # POST /lessons
