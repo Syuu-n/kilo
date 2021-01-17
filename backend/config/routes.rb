@@ -5,14 +5,9 @@ Rails.application.routes.draw do
   namespace :v1, defaults: { format: :json } do
     resource :login, only: [:create], controller: :sessions
     get 'me' => 'sessions#me'
-    get 'my_lessons' => 'sessions#my_lessons'
     get 'roles' => 'sessions#roles'
 
-    resources :users, except: [:new, :edit] do
-      member do
-        get 'lessons' => 'users#my_lessons'
-      end
-    end
+    resources :users, except: [:new, :edit]
     resource :trials, only: [:create, :update]
     get 'trials/lesson_classes' => 'trials#lesson_classes_for_trial'
     get 'trials/lessons' => 'trials#lessons_for_trial'

@@ -24,11 +24,6 @@ module V1
       render json: current_user, status: :ok
     end
 
-    # GET /v1/my_lessons
-    def my_lessons
-      render json: current_user.lessons, status: :ok
-    end
-
     # GET /v1/roles
     def roles
       roles = Role.all

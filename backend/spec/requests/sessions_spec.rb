@@ -100,43 +100,6 @@ describe 'Sessions API', type: :request do
     end
   end
 
-  describe 'GET /v1/my_lessons' do
-    subject { get "/v1/my_lessons", headers: { Authorization: access_token }  }
-    let(:user){ create(:user) }
-    let(:access_token){ user.access_token }
-    context 'アクセストークンが正しくかつ期限が切れていない場合' do
-      it '自身のレッスンを取得できる' do
-        subject
-
-        last_user_lessons = user.lessons.last
-        expect(response.status).to eq 200
-        expect(json).to eq []
-      end
-    end
-
-    context 'アクセストークンが正しくない場合' do
-      let(:access_token){ 'hogehogehoge' }
-      it '401 Unauthorized を返す' do
-        subject
-
-        expect(response.status).to eq 401
-        expect(json['code']).to eq 'unauthenticated'
-      end
-    end
-
-    context 'アクセストークンの期限が切れている場合' do
-      it '403 Forbidden を返す' do
-        user
-        travel_to(Time.current + 15.days) do
-          subject
-
-          expect(response.status).to eq 403
-          expect(json['code']).to eq 'access_token_expired'
-        end
-      end
-    end
-  end
-
   describe 'Auth API' do
     subject { get "/v1/users/#{user.id}", headers: { Authorization: access_token } }
     let(:user){ create(:user) }
