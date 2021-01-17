@@ -1,4 +1,5 @@
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { fetchApp } from 'request/fetcher';
+import { checkErrors } from 'request/methods/common';
 
 // POST /v1/passwords
 export const sendPasswordReset = (email: string, snackBar?: Function) => {
@@ -32,14 +33,15 @@ export const confirmPasswordReset = async (newPassword: string, newPasswordConfi
       }
     })
   )
-  if (res instanceof NetworkError) {
+  const response = checkErrors(res);
+  if (!response) {
     setErrorMessage('予期せぬエラーが発生しました。時間をおいて再度お試しください。');
     setButtonDisabled(false);
-    return
-  }
+    return;
+  };
 
-  const json = await res.json();
-  switch (res.status) {
+  const json = await response.json();
+  switch (response.status) {
     case 200:
       setOpenCompletePage(true);
       break

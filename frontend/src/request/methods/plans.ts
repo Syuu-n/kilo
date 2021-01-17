@@ -1,13 +1,12 @@
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { fetchApp } from 'request/fetcher';
 import { Plan } from 'responses/responseStructs';
 import { CreatePlanRequest } from 'request/requestStructs';
+import { getAccessToken, checkErrors } from 'request/methods/common';
 
 // GET /v1/plans
 export const getPlans = async (): Promise<Plan[] | undefined> => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
 
   const res = await fetchApp(
     '/v1/plans',
@@ -15,13 +14,11 @@ export const getPlans = async (): Promise<Plan[] | undefined> => {
     accessToken,
   )
 
-  if (res instanceof NetworkError) {
-    console.log("ServerError");
-    return;
-  }
+  const response = checkErrors(res);
+  if (!response) return;
 
-  if (res.ok) {
-    const json = await res.json();
+  if (response.ok) {
+    const json = await response.json();
     return json;
   } else {
     return;
@@ -30,10 +27,8 @@ export const getPlans = async (): Promise<Plan[] | undefined> => {
 
 // POST /v1/plans
 export const createPlan = async (plan: Plan | CreatePlanRequest, snackBar: Function, updateFunc?: Function) => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
 
   const res = await fetchApp(
     '/v1/plans',
@@ -44,12 +39,10 @@ export const createPlan = async (plan: Plan | CreatePlanRequest, snackBar: Funct
     })
   )
 
-  if (res instanceof NetworkError) {
-    console.log("ServerError");
-    snackBar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    return;
-  }
-  switch (res.status) {
+  const response = checkErrors(res, snackBar);
+  if (!response) return;
+
+  switch (response.status) {
     case 201:
       snackBar('コースの作成に成功しました。', { variant: 'success'});
       if (updateFunc) updateFunc();
@@ -64,13 +57,9 @@ export const createPlan = async (plan: Plan | CreatePlanRequest, snackBar: Funct
 
 // PATCH /v1/plans
 export const updatePlan = async (plan: Plan | CreatePlanRequest, snackBar: Function, planID?: number, updateFunc?: Function) => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
-  if (!planID) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
+  if (!planID) return;
 
   const res = await fetchApp(
     `/v1/plans/${planID}`,
@@ -81,12 +70,10 @@ export const updatePlan = async (plan: Plan | CreatePlanRequest, snackBar: Funct
     })
   )
 
-  if (res instanceof NetworkError) {
-    console.log("ServerError");
-    snackBar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    return;
-  }
-  switch (res.status) {
+  const response = checkErrors(res, snackBar);
+  if (!response) return;
+
+  switch (response.status) {
     case 200:
       snackBar('コース情報の変更に成功しました。', { variant: 'success'});
       if (updateFunc) updateFunc();

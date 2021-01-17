@@ -1,14 +1,13 @@
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { fetchApp } from 'request/fetcher';
 import { Lesson, User, CEvent } from 'responses/responseStructs';
 import { LessonColor } from 'assets/lib/lessonColors';
 import { fetchCurrentUser, IAuthContext } from 'Auth';
+import { getAccessToken, checkErrors } from 'request/methods/common';
 
 // GET /v1/lessons
 export const getLessons = async (): Promise<Lesson[] | undefined> => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
 
   const res = await fetchApp(
     '/v1/lessons',
@@ -16,13 +15,11 @@ export const getLessons = async (): Promise<Lesson[] | undefined> => {
     accessToken
   )
 
-  if (res instanceof NetworkError) {
-    console.log('ServerError')
-    return;
-  }
+  const response = checkErrors(res);
+  if (!response) return;
 
-  if (res.ok) {
-    const json = await res.json();
+  if (response.ok) {
+    const json = await response.json();
     return json;
   } else {
     return;
@@ -31,10 +28,8 @@ export const getLessons = async (): Promise<Lesson[] | undefined> => {
 
 // GET /v1/lessons/lessons_for_admin
 export const getLessonsForAdmin = async (): Promise<Lesson[] | undefined> => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
 
   const res = await fetchApp(
     '/v1/lessons/lessons_for_admin',
@@ -42,13 +37,11 @@ export const getLessonsForAdmin = async (): Promise<Lesson[] | undefined> => {
     accessToken
   )
 
-  if (res instanceof NetworkError) {
-    console.log('ServerError')
-    return;
-  }
+  const response = checkErrors(res);
+  if (!response) return;
 
-  if (res.ok) {
-    const json = await res.json();
+  if (response.ok) {
+    const json = await response.json();
     return json;
   } else {
     return;
@@ -61,13 +54,9 @@ export const createLesson = async (
   color: LessonColor, forChildren: boolean, userLimitCount: number, location: string,
   snackBar: Function, updateFunc: Function, lessonClassId?: number, joinedUsers?: User[]
   ) => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
-  if (!lessonClassId) {
-    return;
-  }
+    const accessToken = getAccessToken();
+    if (!accessToken) return;
+  if (!lessonClassId) return;
 
   const lesson = {
     lesson_class_id: lessonClassId,
@@ -91,13 +80,12 @@ export const createLesson = async (
       lesson,
     })
   )
-  if (res instanceof NetworkError) {
-    console.log('ServerError');
-    snackBar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    return;
-  }
-  const json = await res.json();
-  switch (res.status) {
+
+  const response = checkErrors(res, snackBar);
+  if (!response) return;
+
+  const json = await response.json();
+  switch (response.status) {
     case 201:
       updateFunc(json, "add");
       snackBar('レッスンの作成に成功しました。', { variant: 'success' });
@@ -119,13 +107,9 @@ export const updateLesson = async (
   color: LessonColor, forChildren: boolean, userLimitCount: number, location: string,
   snackBar: Function, updateFunc: Function, lessonId?: number, joinedUsers?: User[]
 ) => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
-  if (!lessonId) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
+  if (!lessonId) return;
 
   const lesson = {
     start_at: startAt?.toDate(),
@@ -148,13 +132,12 @@ export const updateLesson = async (
       lesson,
     })
   )
-  if (res instanceof NetworkError) {
-    console.log('ServerError');
-    snackBar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    return;
-  }
-  const json = await res.json();
-  switch (res.status) {
+
+  const response = checkErrors(res, snackBar);
+  if (!response) return;
+
+  const json = await response.json();
+  switch (response.status) {
     case 200:
       updateFunc(json, "update");
       snackBar('レッスン情報の変更に成功しました。', { variant: 'success' });
@@ -181,25 +164,20 @@ export const updateLesson = async (
 
 // DELETE /v1/lessons/:id
 export const deleteLesson = async (lessonId: number, selectedEvent: CEvent, snackBar: Function, updateFunc?: Function) => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
-  if (!lessonId) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
+  if (!lessonId) return;
 
   const res = await fetchApp(
     `/v1/lessons/${lessonId}`,
     'DELETE',
     accessToken,
   )
-  if (res instanceof NetworkError) {
-    console.log('ServerError');
-    snackBar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    return;
-  }
-  switch (res.status) {
+
+  const response = checkErrors(res, snackBar);
+  if (!response) return;
+
+  switch (response.status) {
     case 200:
       if (updateFunc) updateFunc([selectedEvent], "delete");
       snackBar('レッスンの削除に成功しました。', { variant: 'success' });
@@ -214,22 +192,20 @@ export const deleteLesson = async (lessonId: number, selectedEvent: CEvent, snac
 
 // POST /v1/lessons/:id/join
 export const joinLesson = async (snackBar: Function, updateFunc: Function, ctx: IAuthContext, lessonId?: number) => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
+
   const res = await fetchApp(
     `/v1/lessons/${lessonId}/join`,
     'POST',
     accessToken,
   )
-  if (res instanceof NetworkError) {
-    console.log('ServerError');
-    snackBar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    return;
-  }
-  const json = await res.json();
-  switch (res.status) {
+
+  const response = checkErrors(res, snackBar);
+  if (!response) return;
+
+  const json = await response.json();
+  switch (response.status) {
     case 200:
       await fetchCurrentUser(ctx);
       updateFunc(json);
@@ -260,22 +236,20 @@ export const joinLesson = async (snackBar: Function, updateFunc: Function, ctx: 
 
 // DELETE /v1/lessons/leave
 export const leaveLesson = async (snackBar: Function, updateFunc: Function, ctx: IAuthContext, lessonId?: number) => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
+
   const res = await fetchApp(
     `/v1/lessons/${lessonId}/leave`,
     'DELETE',
     accessToken,
   )
-  if (res instanceof NetworkError) {
-    console.log('ServerError');
-    snackBar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    return;
-  }
-  const json = await res.json();
-  switch (res.status) {
+
+  const response = checkErrors(res, snackBar);
+  if (!response) return;
+
+  const json = await response.json();
+  switch (response.status) {
     case 200:
       await fetchCurrentUser(ctx);
       updateFunc(json);
@@ -327,23 +301,20 @@ const convertLessonsToCEvents = (lessons: Lesson[]): CEvent[] => {
 
 // POST /v1/lessons/create_lessons
 export const createLessons = async (snackBar: Function, updateFunc: Function) => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
 
   const res = await fetchApp(
     '/v1/lessons/create_lessons',
     'POST',
     accessToken,
   )
-  if (res instanceof NetworkError) {
-    console.log('ServerError');
-    snackBar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    return;
-  }
-  const json: Lesson[] = await res.json();
-  switch (res.status) {
+
+  const response = checkErrors(res, snackBar);
+  if (!response) return;
+
+  const json: Lesson[] = await response.json();
+  switch (response.status) {
     case 201:
       snackBar('来月のスケジュール作成に成功しました。', { variant: 'success' });
       updateFunc(convertLessonsToCEvents(json), "createLessons")

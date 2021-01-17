@@ -1,13 +1,12 @@
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { fetchApp } from 'request/fetcher';
 import { CreateUserRequest } from 'request/requestStructs';
 import { User } from 'responses/responseStructs';
+import { getAccessToken, checkErrors } from 'request/methods/common';
 
 // GET /v1/users
 export const getUsers = async (): Promise<User[] | undefined> => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
 
   const res = await fetchApp(
     '/v1/users',
@@ -15,13 +14,11 @@ export const getUsers = async (): Promise<User[] | undefined> => {
     accessToken,
   )
 
-  if (res instanceof NetworkError) {
-    console.log("ServerError");
-    return;
-  }
+  const response = checkErrors(res);
+  if (!response) return;
 
-  if (res.ok) {
-    const json = await res.json();
+  if (response.ok) {
+    const json = await response.json();
     return json;
   } else {
     return;
@@ -30,10 +27,8 @@ export const getUsers = async (): Promise<User[] | undefined> => {
 
 // POST /v1/users
 export const createUser = async (user: CreateUserRequest | User, snackBar: Function, updateFunc?: Function) => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
 
   const res = await fetchApp(
     '/v1/users',
@@ -44,13 +39,10 @@ export const createUser = async (user: CreateUserRequest | User, snackBar: Funct
     })
   )
 
-  if (res instanceof NetworkError) {
-    console.log("ServerError");
-    snackBar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    return;
-  }
+  const response = checkErrors(res, snackBar);
+  if (!response) return;
 
-  switch (res.status) {
+  switch (response.status) {
     case 201:
       snackBar('ユーザーの作成に成功しました。', { variant: 'success'});
       if (updateFunc) updateFunc();
@@ -66,13 +58,9 @@ export const createUser = async (user: CreateUserRequest | User, snackBar: Funct
 
 // PATCH /v1/users/:id
 export const updateUser = async (user: CreateUserRequest | User, snackBar: Function, userID?: number, updateFunc?: Function) => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
-  if (!userID) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
+  if (!userID) return;
 
   // 更新処理の場合は User オブジェクトから password を削除する
   delete user?.password
@@ -86,13 +74,10 @@ export const updateUser = async (user: CreateUserRequest | User, snackBar: Funct
     })
   )
 
-  if (res instanceof NetworkError) {
-    console.log("ServerError");
-    snackBar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    return;
-  }
+  const response = checkErrors(res, snackBar);
+  if (!response) return;
 
-  switch (res.status) {
+  switch (response.status) {
     case 200:
       snackBar('ユーザー情報の変更に成功しました。', { variant: 'success'});
       if (updateFunc) updateFunc();

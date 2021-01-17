@@ -1,14 +1,13 @@
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { fetchApp } from 'request/fetcher';
 import { LessonClass } from 'responses/responseStructs';
 import { CreateLessonClassRequest } from 'request/requestStructs';
 import { MomentLessonRule, convertMomentLessonRulesToRequest } from 'assets/lib/lessonRules';
+import { getAccessToken, checkErrors } from 'request/methods/common';
 
 // GET /v1/lesson_classes
 export const getLessonClasses = async (): Promise<LessonClass[] | undefined> => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
 
   const res = await fetchApp(
     '/v1/lesson_classes',
@@ -16,13 +15,11 @@ export const getLessonClasses = async (): Promise<LessonClass[] | undefined> => 
     accessToken,
   )
 
-  if (res instanceof NetworkError) {
-    console.log("ServerError");
-    return;
-  }
+  const response = checkErrors(res);
+  if (!response) return;
 
-  if (res.ok) {
-    const json = await res.json();
+  if (response.ok) {
+    const json = await response.json();
     return json;
   } else {
     return;
@@ -31,10 +28,8 @@ export const getLessonClasses = async (): Promise<LessonClass[] | undefined> => 
 
 // POST /v1/lesson_classes
 export const createLessonClass = async (lessonClass: CreateLessonClassRequest | LessonClass, momentLessonRules: MomentLessonRule[], snackBar: Function, updateFunc?: Function) => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
 
   // NOTE: JSON.stringify で key になるため lesson_class という名前になっている
   const lesson_class = {
@@ -57,13 +52,11 @@ export const createLessonClass = async (lessonClass: CreateLessonClassRequest | 
     })
   )
 
-  if (res instanceof NetworkError) {
-    console.log("ServerError");
-    snackBar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    return;
-  }
-  const json = await res.json();
-  switch (res.status) {
+  const response = checkErrors(res, snackBar);
+  if (!response) return;
+
+  const json = await response.json();
+  switch (response.status) {
     case 201:
       snackBar('クラスの作成に成功しました。', { variant: 'success'});
       if (updateFunc) updateFunc();
@@ -84,13 +77,9 @@ export const createLessonClass = async (lessonClass: CreateLessonClassRequest | 
 
 // PATCH /v1/lesson_classes/:id
 export const updateLessonClass = async (lessonClass: CreateLessonClassRequest | LessonClass, momentLessonRules: MomentLessonRule[], snackBar: Function, lessonClassID?: number, updateFunc?: Function) => {
-  const accessToken = localStorage.getItem('kiloToken');
-  if (!accessToken) {
-    return;
-  }
-  if (!lessonClassID) {
-    return;
-  }
+  const accessToken = getAccessToken();
+  if (!accessToken) return;
+  if (!lessonClassID) return;
 
   // NOTE: JSON.stringify で key になるため lesson_class という名前になっている
   const lesson_class = {
@@ -113,13 +102,11 @@ export const updateLessonClass = async (lessonClass: CreateLessonClassRequest | 
     })
   )
 
-  if (res instanceof NetworkError) {
-    console.log("ServerError");
-    snackBar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-    return;
-  }
-  const json = await res.json();
-  switch (res.status) {
+  const response = checkErrors(res, snackBar);
+  if (!response) return;
+
+  const json = await response.json();
+  switch (response.status) {
     case 200:
       snackBar('クラス情報の変更に成功しました。', { variant: 'success'});
       if (updateFunc) updateFunc();

@@ -1,6 +1,7 @@
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { fetchApp } from 'request/fetcher';
 import { LessonClass, Lesson } from 'responses/responseStructs';
 import { CreateTrialUserRequest } from 'request/requestStructs';
+import { checkErrors } from 'request/methods/common';
 
 // GET /v1/trials/lesson_classes
 export const getTrialLessonClasses = async (): Promise<LessonClass[] | undefined> => {
@@ -9,13 +10,11 @@ export const getTrialLessonClasses = async (): Promise<LessonClass[] | undefined
     'GET',
   )
 
-  if (res instanceof NetworkError) {
-    console.log("ServerError");
-    return;
-  }
+  const response = checkErrors(res);
+  if (!response) return;
 
-  if (res.ok) {
-    const json = await res.json();
+  if (response.ok) {
+    const json = await response.json();
     return json;
   } else {
     return;
@@ -29,13 +28,11 @@ export const getTrialLessons = async (): Promise<Lesson[] | undefined>  => {
     'GET',
   )
 
-  if (res instanceof NetworkError) {
-    console.log('ServerError')
-    return;
-  }
+  const response = checkErrors(res);
+  if (!response) return;
 
-  if (res.ok) {
-    const json = await res.json();
+  if (response.ok) {
+    const json = await response.json();
     return json;
   } else {
     return;
@@ -53,13 +50,10 @@ export const sendTrial = async (user: CreateTrialUserRequest, setSubmitFailed: F
     })
   )
 
-  if (res instanceof NetworkError) {
-    console.log("ServerError");
-    setSubmitFailed(true);
-    return;
-  }
+  const response = checkErrors(res);
+  if (!response) return;
 
-  switch (res.status) {
+  switch (response.status) {
     case 201:
       setSubmitFailed(false);
       break;
@@ -89,13 +83,13 @@ export const confirmTrial = async (token: string | null, setSubmitFailed: Functi
     })
   )
 
-  if (res instanceof NetworkError) {
-    console.log("ServerError");
+  const response = checkErrors(res);
+  if (!response) {
     setSubmitFailed(true);
-    return;
-  }
+    return
+  };
 
-  switch (res.status) {
+  switch (response.status) {
     case 200:
       setSubmitFailed(false);
       break;
