@@ -3,7 +3,7 @@ import { ItemGrid, Card, CardContent, CardHeader, FormInput, Button } from 'comp
 import { Grid } from '@material-ui/core';
 import passwordResetViewStyle from 'assets/jss/kiloStyles/passwordResetViewStyle';
 import { passwordValidation, ValidationReturn } from 'assets/lib/validations';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { confirmPasswordReset } from 'request/methods/passwords';
 import { Check } from '@material-ui/icons';
 import history from 'RouterHistory';
 
@@ -35,54 +35,7 @@ const PasswordResetView: React.FC = () => {
     }
 
     setButtonDisabled(true);
-    
-    const res = await fetchApp(
-      '/v1/passwords',
-      'PUT',
-      '',
-      JSON.stringify({
-        user: {
-          password: newPassword.value,
-          password_confirmation: passwordConfirm.value,
-          reset_password_token: token
-        }
-      })
-    )
-    if (res instanceof NetworkError) {
-      setErrorMessage('予期せぬエラーが発生しました。時間をおいて再度お試しください。');
-      setButtonDisabled(false);
-      return
-    }
-
-    const json = await res.json();
-    switch (res.status) {
-      case 200:
-        setOpenCompletePage(true);
-        break
-      case 400:
-        switch (json.code) {
-          case 'reset_password_token_expired_error':
-            setErrorMessage('既にパスワードが変更されているため無効な操作です。');
-            setButtonDisabled(false);
-            break
-          case 'password_reset_error':
-            setErrorMessage('パスワードの変更に失敗しました。');
-            setButtonDisabled(false);
-            break
-          default:
-            setErrorMessage('予期せぬエラーが発生しました。時間をおいて再度お試しください。');
-            setButtonDisabled(false);
-        }
-        break
-      case 422:
-        setErrorMessage('パスワードが一致しません。');
-        setButtonDisabled(false);
-        break
-      default:
-        setErrorMessage('予期せぬエラーが発生しました。時間をおいて再度お試しください。');
-        setButtonDisabled(false);
-        break
-    }
+    await confirmPasswordReset(newPassword.value, passwordConfirm.value, token, setErrorMessage, setButtonDisabled, setOpenCompletePage);
   };
 
   return (

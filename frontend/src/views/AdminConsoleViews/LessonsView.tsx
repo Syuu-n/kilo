@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { KSpinner, AdminCalender, Card, CardContent, CardHeader, CardIcon } from 'components';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { getUsers } from 'request/methods/users';
+import { getLessonsForAdmin } from 'request/methods/lessons';
+import { getLessonClasses } from 'request/methods/lessonClasses';
 import { Lesson, CEvent, User, LessonClass } from 'responses/responseStructs';
 import lessonsViewStyle from 'assets/jss/kiloStyles/classesViewStyle';
 import { EventNote } from '@material-ui/icons';
@@ -12,81 +14,6 @@ const LessonsView: React.FC = () => {
   const [users, setUsers] = React.useState<User[] | null>();
   const [lessonClasses, setLessonClasses] = React.useState<LessonClass[] | null>();
   const classes = lessonsViewStyle();
-
-  const getLessons = async () => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return null;
-    }
-
-    const res = await fetchApp(
-      '/v1/lessons/lessons_for_admin',
-      'GET',
-      accessToken
-    )
-
-    if (res instanceof NetworkError) {
-      console.log('ServerError')
-      return null;
-    }
-
-    if (res.ok) {
-      const json = await res.json();
-      return json;
-    } else {
-      return null;
-    }
-  };
-
-  const getUsers = async (): Promise<User[] | null> => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return null;
-    }
-
-    const res = await fetchApp(
-      '/v1/users',
-      'GET',
-      accessToken,
-    )
-
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      return null;
-    }
-
-    if (res.ok) {
-      const json = await res.json();
-      return json;
-    } else {
-      return null;
-    }
-  };
-
-  const getLessonClasses = async (): Promise<LessonClass[] | null> => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return null;
-    }
-
-    const res = await fetchApp(
-      '/v1/lesson_classes',
-      'GET',
-      accessToken,
-    )
-
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      return null;
-    }
-
-    if (res.ok) {
-      const json = await res.json();
-      return json;
-    } else {
-      return null;
-    }
-  };
 
   const updateEvent = async (events:CEvent[], action:eventAction) => {
     if (!lessons) {
@@ -121,7 +48,7 @@ const LessonsView: React.FC = () => {
 
   React.useEffect(() => {
     const f = async () => {
-      const lessons = await getLessons();
+      const lessons = await getLessonsForAdmin();
       if (lessons) {
         setLessons(lessons.map((lesson:Lesson) => ({
           id: lesson.id,

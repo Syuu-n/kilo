@@ -6,10 +6,10 @@ import { ThemeProvider, Grid } from '@material-ui/core';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import * as moment from 'moment';
-import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 import { ValidationReturn, requireValidation } from 'assets/lib/validations';
 import { LessonColor, lessonColorSets, colorCheck } from 'assets/lib/lessonColors';
+import { deleteLesson } from 'request/methods/lessons';
 
 interface Props {
   open: boolean;
@@ -74,41 +74,10 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
     openFunc();
   };
 
-  const deleteLesson = async () => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return;
-    }
-    if (!lessonId) {
-      return;
-    }
 
-    const res = await fetchApp(
-      `/v1/lessons/${lessonId}`,
-      'DELETE',
-      accessToken,
-    )
-    if (res instanceof NetworkError) {
-      console.log('ServerError');
-      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-      return;
-    }
-    switch (res.status) {
-      case 200:
-        if (updateFunc) updateFunc([selectedEvent], "delete");
-        enqueueSnackbar('レッスンの削除に成功しました。', { variant: 'success' });
-        break;
-      case 404:
-        enqueueSnackbar(`ID:${lessonId}のレッスンが存在しないため削除に失敗しました。`, { variant: 'error' });
-        break;
-      default:
-        enqueueSnackbar('レッスンの削除に失敗しました。', { variant: 'error' });
-    }
-  };
-
-  const deleteLessonFunc = () => {
+  const deleteLessonFunc = async () => {
     if (confirm(`選択中のレッスン ID:${lessonId}）を本当に削除しますか？`)) {
-      deleteLesson();
+      await deleteLesson(lessonId, selectedEvent, enqueueSnackbar, updateFunc);
       closeFunc();
     };
   };
@@ -136,7 +105,7 @@ const AdminEditLessonModal: React.FC<Props> = (props) => {
         <Button
           color="danger"
           className={classes.deleteButton}
-          onClick={() => deleteLessonFunc()}
+          onClick={async () => await deleteLessonFunc()}
         >
           レッスンを削除
         </Button>

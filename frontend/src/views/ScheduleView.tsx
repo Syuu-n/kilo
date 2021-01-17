@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ItemGrid, KSpinner, CustomTabs, Calender, MyProfileCard } from 'components';
 import { Grid,} from '@material-ui/core';
 import { AuthContext } from 'Auth';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { getLessons } from 'request/methods/lessons';
 import { Lesson, CEvent } from 'responses/responseStructs';
 import scheduleViewStyle from 'assets/jss/kiloStyles/scheduleViewStyle';
 import { Event, EventAvailable, ControlPointDuplicate, FormatListBulletedRounded } from '@material-ui/icons';
@@ -34,31 +34,6 @@ const ScheduleView: React.FC = () => {
     recentLessonArray.splice(4);
     setRecentLesson(recentLessonArray);
   };
-
-  const getLessons = async () => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return null;
-    }
-
-    const res = await fetchApp(
-      '/v1/lessons',
-      'GET',
-      accessToken
-    )
-
-    if (res instanceof NetworkError) {
-      console.log('ServerError')
-      return null;
-    }
-
-    if (res.ok) {
-      const json = await res.json();
-      return json;
-    } else {
-      return null;
-    }
-  }
 
   const updateEvent = (event:CEvent) => {
     if (!lessons) {

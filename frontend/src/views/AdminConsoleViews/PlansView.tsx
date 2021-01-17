@@ -7,38 +7,13 @@ import {
   RichTableCard,
   KSpinner,
 } from 'components';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { getPlans } from 'request/methods/plans';
 import { Plan } from 'responses/responseStructs';
 import viewStyle from 'assets/jss/kiloStyles/classesViewStyle';
 
 const PlansView: React.FC = () => {
   const [plans, setPlans] = React.useState<Plan[]>();
   const styleClasses = viewStyle();
-
-  const getPlans = async (): Promise<Plan[] | null> => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return null;
-    }
-
-    const res = await fetchApp(
-      '/v1/plans',
-      'GET',
-      accessToken,
-    )
-
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      return null;
-    }
-
-    if (res.ok) {
-      const json = await res.json();
-      return json;
-    } else {
-      return null;
-    }
-  };
 
   const plansUpdateFunc = async () => {
     const p = await getPlans();

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Modal } from 'components';
-import { fetchApp } from 'request/fetcher';
+import { sendPasswordReset } from 'request/methods/passwords';
 import { useSnackbar } from 'notistack';
 
 interface Props {
@@ -18,28 +18,13 @@ const PasswordResetModal: React.FC<Props> = (props) => {
       メールからパスワード変更をおこなうとパスワードが変更できます。
     </p>;
 
-  const handleSubmit = () => {
-    // NOTE: メール送信はセキュリティの都合で失敗しても通知しない
-    fetchApp(
-      '/v1/passwords',
-      'POST',
-      '',
-      JSON.stringify({
-        user: {
-          email: email,
-        },
-      })
-    )
-    enqueueSnackbar('パスワード再設定用のメールを送信しました。',  { variant: 'success' });
-  };
-
   return (
     <Modal
       open={open}
       headerTitle="パスワード変更"
       content={content}
       submitText="変更"
-      submitFunc={async () => {await handleSubmit()}}
+      submitFunc={() => {sendPasswordReset(email, enqueueSnackbar)}}
       closeFunc={closeFunc}
     />
   );

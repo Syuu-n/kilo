@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Modal, AdminFormInput, AdminLessonRuleSetting } from 'components';
-import { fetchApp, NetworkError } from 'request/fetcher';
 import { useSnackbar } from 'notistack';
 import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 import { CreateLessonClassRequest } from 'request/requestStructs';
+import { createLessonClass, updateLessonClass } from 'request/methods/lessonClasses';
 import { LessonClass } from 'responses/responseStructs';
 import { colorCheck, LessonColor } from 'assets/lib/lessonColors';
-import { MomentLessonRule, convertMomentLessonRulesToRequest } from 'assets/lib/lessonRules';
+import { MomentLessonRule } from 'assets/lib/lessonRules';
 
 interface Props {
   lessonClass: CreateLessonClassRequest | LessonClass;
@@ -19,120 +19,10 @@ interface Props {
   momentLessonRules: MomentLessonRule[];
 };
 
-const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
+const AdminConfirmLessonClassModal: React.FC<Props> = (props) => {
   const { lessonClass, open, closeFunc, cancelFunc, type, updateFunc, lessonClassID, momentLessonRules } = props;
   const { enqueueSnackbar } = useSnackbar();
   const classes = adminModalStyle();
-
-  const addLessonClass = async () => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return;
-    }
-
-    // NOTE: JSON.stringify で key になるため lesson_class という名前になっている
-    const lesson_class = {
-      name: lessonClass.name,
-      location: lessonClass.location,
-      description: lessonClass.description,
-      price: lessonClass.price,
-      color: lessonClass.color,
-      for_children: lessonClass.for_children,
-      lesson_rules: convertMomentLessonRulesToRequest(momentLessonRules),
-      user_limit_count: lessonClass.user_limit_count,
-    };
-
-    const res = await fetchApp(
-      '/v1/lesson_classes',
-      'POST',
-      accessToken,
-      JSON.stringify({
-        lesson_class,
-      })
-    )
-
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-      return;
-    }
-    const json = await res.json();
-    switch (res.status) {
-      case 201:
-        enqueueSnackbar('クラスの作成に成功しました。', { variant: 'success'});
-        if (updateFunc) updateFunc();
-        break;
-      case 422:
-        switch (json.code) {
-          case 'lesson_rule_invalid_error':
-            enqueueSnackbar('スケジュールの作成に失敗したためクラスの作成に失敗しました。', { variant: 'error' });
-            break;
-          default:
-            enqueueSnackbar('クラスの作成に失敗しました。内容を確かめてください。', { variant: 'error' });
-        };
-        break;
-      default:
-        enqueueSnackbar('クラスの作成に失敗しました。', { variant: 'error' });
-    }
-  };
-
-  const updateLessonClass = async () => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return;
-    }
-    if (!lessonClassID) {
-      return;
-    }
-
-    // NOTE: JSON.stringify で key になるため lesson_class という名前になっている
-    const lesson_class = {
-      name: lessonClass.name,
-      location: lessonClass.location,
-      description: lessonClass.description,
-      price: lessonClass.price,
-      color: lessonClass.color,
-      for_children: lessonClass.for_children,
-      lesson_rules: convertMomentLessonRulesToRequest(momentLessonRules),
-      user_limit_count: lessonClass.user_limit_count,
-    };
-
-    const res = await fetchApp(
-      `/v1/lesson_classes/${lessonClassID}`,
-      'PATCH',
-      accessToken,
-      JSON.stringify({
-        lesson_class,
-      })
-    )
-
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-      return;
-    }
-    const json = await res.json();
-    switch (res.status) {
-      case 200:
-        enqueueSnackbar('クラス情報の変更に成功しました。', { variant: 'success'});
-        if (updateFunc) updateFunc();
-        break;
-      case 404:
-        enqueueSnackbar(`ID:${lessonClassID}のクラスが存在しないため変更に失敗しました。`, { variant: 'error' });
-        break;
-      case 422:
-        switch (json.code) {
-          case 'lesson_rule_invalid_error':
-            enqueueSnackbar('スケジュールの作成に失敗したためクラス情報の変更に失敗しました。', { variant: 'error' });
-            break;
-          default:
-            enqueueSnackbar('クラス情報の変更に失敗しました。内容を確かめてください。', { variant: 'error' });
-        };
-        break;
-      default:
-        enqueueSnackbar('クラス情報の変更に失敗しました。', { variant: 'error' });
-    }
-  };
 
   // レッスンカラー用の div を追加する
   const lessonColorDiv = (color: LessonColor) => {
@@ -213,7 +103,7 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
           open={open}
           headerTitle="クラス新規作成"
           submitText="確定"
-          submitFunc={async () => {await addLessonClass()}}
+          submitFunc={async () => {await createLessonClass(lessonClass, momentLessonRules, enqueueSnackbar, updateFunc)}}
           cancelText="修正"
           cancelFunc={cancelFunc}
           content={content}
@@ -226,7 +116,7 @@ const AdminConfirmLessonClassModal: React.SFC<Props> = (props) => {
           open={open}
           headerTitle="クラス情報変更"
           submitText="確定"
-          submitFunc={async () => {await updateLessonClass()}}
+          submitFunc={async () => {await updateLessonClass(lessonClass, momentLessonRules, enqueueSnackbar, lessonClassID, updateFunc)}}
           cancelText="修正"
           cancelFunc={cancelFunc}
           content={content}

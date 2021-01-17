@@ -6,10 +6,10 @@ import {
   Badge,
 } from 'components';
 import { CEvent, Lesson, LessonClass } from 'responses/responseStructs';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { joinLesson, leaveLesson } from 'request/methods/lessons';
 import { useSnackbar } from 'notistack';
 import showEventModalStyle from 'assets/jss/kiloStyles/showEventModalStyle';
-import { fetchCurrentUser, AuthContext } from 'Auth';
+import { AuthContext } from 'Auth';
 
 interface Props {
   open: boolean;
@@ -22,7 +22,6 @@ const ShowEventModal: React.FC<Props> = (props) => {
   const { open, selectedEvent, closeFunc, updateEventFunc } = props;
   const { enqueueSnackbar } = useSnackbar();
   const lessonId = selectedEvent?.id;
-  const accessToken = localStorage.getItem('kiloToken');
   const classes = showEventModalStyle();
   const ctx = React.useContext(AuthContext);
   const [message, setMessage] = React.useState("");
@@ -87,91 +86,6 @@ const ShowEventModal: React.FC<Props> = (props) => {
     setMessage("");
   };
 
-  const handleSubmitJoin = async () => {
-    if (!accessToken) {
-      return;
-    }
-    const res = await fetchApp(
-      `/v1/lessons/${lessonId}/join`,
-      'POST',
-      accessToken,
-    )
-    if (res instanceof NetworkError) {
-      console.log('ServerError');
-      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-      return;
-    }
-    const json = await res.json();
-    switch (res.status) {
-      case 200:
-        await fetchCurrentUser(ctx);
-        updateEvent(json);
-        enqueueSnackbar('レッスンへの参加が成功しました。', { variant: 'success' });
-        break;
-      case 400:
-        switch (json.code) {
-          case 'trial_user_cant_join_to_lesson':
-            enqueueSnackbar('体験中は他のレッスンへの参加/取り消しはできません。', { variant: 'error' });
-            break;
-          case 'user_already_joined':
-            enqueueSnackbar('既に参加済みのレッスンへは参加できません。', { variant: 'error' });
-            break;
-          case 'cant_join_to_past_lesson':
-            enqueueSnackbar('過去または当日のレッスンへは参加できません。', { variant: 'error' });
-            break;
-          case 'cant_join_to_this_lesson':
-            enqueueSnackbar('現在のコースではこのレッスンへ参加できません。', { variant: 'error' });
-            break;
-          default:
-            enqueueSnackbar('レッスンへの参加に失敗しました。', { variant: 'error' });
-        };
-        break;
-      default:
-        enqueueSnackbar('レッスンへの参加に失敗しました。', { variant: 'error' });
-    }
-  };
-
-  const handleSubmitLeave = async () => {
-    if (!accessToken) {
-      return;
-    }
-    const res = await fetchApp(
-      `/v1/lessons/${lessonId}/leave`,
-      'DELETE',
-      accessToken,
-    )
-    if (res instanceof NetworkError) {
-      console.log('ServerError');
-      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-      return;
-    }
-    const json = await res.json();
-    switch (res.status) {
-      case 200:
-        await fetchCurrentUser(ctx);
-        updateEvent(json);
-        enqueueSnackbar('レッスンへの参加取り消しが成功しました。', { variant: 'success' });
-        break;
-      case 400:
-        switch (json.code) {
-          case 'trial_user_cant_leave_to_lesson':
-            enqueueSnackbar('体験中は他のレッスンへの参加/取り消しはできません。', { variant: 'error' });
-            break;
-          case 'user_not_joined':
-            enqueueSnackbar('参加していないレッスンを取り消すことはできません。', { variant: 'error' });
-            break;
-          case 'cant_leave_to_past_lesson':
-            enqueueSnackbar('過去または当日のレッスンへの参加を取り消すことはできません。', { variant: 'error' });
-            break;
-          default:
-            enqueueSnackbar('レッスンへの参加取り消しに失敗しました。', { variant: 'error' });
-        };
-        break;
-      default:
-        enqueueSnackbar('レッスンへの参加取り消しに失敗しました。', { variant: 'error' });
-    }
-  };
-
   React.useEffect(() => {
     isButtonDisable();
   }, [selectedEvent]);
@@ -227,8 +141,8 @@ const ShowEventModal: React.FC<Props> = (props) => {
       }
       submitText={selectedEvent?.joined ? "参加取り消し" : "参加"}
       submitFunc={selectedEvent?.joined ?
-        async () => {await handleSubmitLeave()} :
-        async () => {await handleSubmitJoin()}
+        async () => {await leaveLesson(enqueueSnackbar, updateEvent, ctx, lessonId)} :
+        async () => {await joinLesson(enqueueSnackbar, updateEvent, ctx, lessonId)}
       }
       closeFunc={() => {closeFunc()}}
       // 選択したレッスンが過去の場合はボタンを無効に

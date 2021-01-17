@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AdminFormInput, Modal, AdminConfirmPlanModal, CustomCheckBoxList } from 'components';
 import { Plan, LessonClass } from 'responses/responseStructs';
 import { CreatePlanRequest } from 'request/requestStructs';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { getLessonClasses } from 'request/methods/lessonClasses';
 import { ValidationReturn, nameValidation, requireValidation } from 'assets/lib/validations';
 import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 
@@ -24,31 +24,6 @@ const AdminAddPlanModal: React.FC<Props> = (props) => {
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
   const classes = adminModalStyle();
-
-  const getLessonClasses = async (): Promise<LessonClass[] | undefined> => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return;
-    }
-
-    const res = await fetchApp(
-      '/v1/lesson_classes',
-      'GET',
-      accessToken,
-    )
-
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      return;
-    }
-
-    if (res.ok) {
-      const json = await res.json();
-      return json;
-    } else {
-      return;
-    }
-  };
 
   const content =
     <div>

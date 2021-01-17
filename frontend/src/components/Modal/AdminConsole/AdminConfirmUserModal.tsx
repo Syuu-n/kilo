@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import { Modal, AdminFormInput } from 'components';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { createUser, updateUser } from 'request/methods/users';
 import { useSnackbar } from 'notistack';
 import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 import { CreateUserRequest } from 'request/requestStructs';
 import { Role, Plan, User } from 'responses/responseStructs';
 
 interface Props {
-  user?: CreateUserRequest | User;
+  user: CreateUserRequest | User;
   open: boolean;
   closeFunc: Function;
   cancelFunc?: Function;
@@ -24,82 +24,6 @@ const AdminConfirmUserModal: React.FC<Props> = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const classes = adminModalStyle();
   const selectedPlanNames = selectedPlans?.map((sPlan) => sPlan.name);
-
-  const addUser = async () => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return;
-    }
-
-    const res = await fetchApp(
-      '/v1/users',
-      'POST',
-      accessToken,
-      JSON.stringify({
-        user,
-      })
-    )
-
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-      return;
-    }
-
-    switch (res.status) {
-      case 201:
-        enqueueSnackbar('ユーザーの作成に成功しました。', { variant: 'success'});
-        if (updateFunc) updateFunc();
-        break;
-      case 400:
-        enqueueSnackbar('既に使用されているメールアドレスです。', { variant: 'error' });
-        break; 
-      case 422:
-        enqueueSnackbar('ユーザーの作成に失敗しました。内容を確かめてください。', { variant: 'error' });
-        break;
-    }
-  };
-
-  const updateUser = async () => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return;
-    }
-    if (!userID) {
-      return;
-    }
-
-    // 更新処理の場合は User オブジェクトから password を削除する
-    delete user?.password
-
-    const res = await fetchApp(
-      `/v1/users/${userID}`,
-      'PATCH',
-      accessToken,
-      JSON.stringify({
-        user,
-      })
-    )
-
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-      return;
-    }
-
-    switch (res.status) {
-      case 200:
-        enqueueSnackbar('ユーザー情報の変更に成功しました。', { variant: 'success'});
-        if (updateFunc) updateFunc();
-        break;
-      case 404:
-        enqueueSnackbar(`ID:${userID}のユーザが存在しないため変更に失敗しました。`, { variant: 'error' });
-        break;
-      case 422:
-        enqueueSnackbar('ユーザー情報の変更に失敗しました。内容を確かめてください。', { variant: 'error' });
-        break;
-    }
-  };
 
   const content =
   <div>
@@ -180,7 +104,7 @@ const AdminConfirmUserModal: React.FC<Props> = (props) => {
           open={open}
           headerTitle="ユーザー新規作成"
           submitText="確定"
-          submitFunc={async () => {await addUser()}}
+          submitFunc={async () => {await createUser(user, enqueueSnackbar, updateFunc)}}
           cancelText="修正"
           cancelFunc={cancelFunc}
           content={content}
@@ -193,7 +117,7 @@ const AdminConfirmUserModal: React.FC<Props> = (props) => {
           open={open}
           headerTitle="ユーザー情報変更"
           submitText="確定"
-          submitFunc={async () => {await updateUser()}}
+          submitFunc={async () => {await updateUser(user, enqueueSnackbar, userID, updateFunc)}}
           cancelText="修正"
           cancelFunc={cancelFunc}
           content={content}

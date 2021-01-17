@@ -1,40 +1,12 @@
 import * as React from 'react';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { getMe } from 'request/methods/sessions';
 import { User } from 'responses/responseStructs';
 import { Redirect } from 'react-router-dom';
 import { KSpinner } from 'components';
 import authStyle from 'assets/jss/kiloStyles/authStyle';
 
-// アクセストークンのチェック
-// localStorage に既に保存されている場合はアクセストークンの有効性を確かめる
-const getMe = async () => {
-  const accessToken = localStorage.getItem('kiloToken');
-
-  if (!accessToken) {
-    return null;
-  }
-
-  const res = await fetchApp(
-    '/v1/me',
-    'GET',
-    accessToken
-  )
-
-  if (res instanceof NetworkError) {
-    console.log('ServerError')
-    return null;
-  }
-
-  if (res.ok) {
-    const json = await res.json();
-    return json;
-  } else {
-    return null;
-  }
-};
-
 // Context の型
-interface IAuthContext {
+export interface IAuthContext {
   currentUser: User | null;
   setUser: (user:User) => void;
 }

@@ -3,7 +3,8 @@ import * as moment from 'moment';
 import { AdminFormInput, Modal, AdminConfirmUserModal, CustomDropDown, CustomCheckBoxList } from 'components';
 import { adminModalStyle } from 'assets/jss/kiloStyles/adminModalStyle';
 import { CreateUserRequest } from 'request/requestStructs';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { getPlans } from 'request/methods/plans';
+import { getRoles } from 'request/methods/sessions';
 import { Role, Plan, User } from 'responses/responseStructs';
 import { ValidationReturn, nameValidation, emailValidation, passwordValidation, birthdayValidation, phoneNumberValidation } from 'assets/lib/validations';
 
@@ -33,56 +34,6 @@ const AdminAddUserModal: React.FC<Props> = (props) => {
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
   const classes = adminModalStyle();
-
-  const getRoles = async () => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return;
-    }
-  
-    const res = await fetchApp(
-      '/v1/roles',
-      'GET',
-      accessToken,
-    )
-  
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      return;
-    }
-  
-    if (res.ok) {
-      const json = await res.json();
-      return json;
-    } else {
-      return;
-    }
-  };
-
-  const getPlans = async () => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return;
-    }
-  
-    const res = await fetchApp(
-      '/v1/plans',
-      'GET',
-      accessToken,
-    )
-  
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      return;
-    }
-  
-    if (res.ok) {
-      const json = await res.json();
-      return json;
-    } else {
-      return;
-    }
-  };
 
   const content =
     <div>

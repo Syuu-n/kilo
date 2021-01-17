@@ -18,7 +18,7 @@ import {
   CustomInput,
   Button,
 } from 'components';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { login } from 'request/methods/sessions';
 import history from 'RouterHistory';
 import { useSnackbar } from 'notistack';
 
@@ -41,47 +41,7 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle }) => {
   const handleLogin = async (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setButtonDisabled(true);
-    const res = await fetchApp(
-      '/v1/login',
-      'POST',
-      '',
-      JSON.stringify({
-        email: email,
-        password: password
-      })
-    )
-    if (res instanceof NetworkError) {
-      setErrorMessage('予期せぬエラーが発生しました。時間をおいて再度お試しください。');
-      setButtonDisabled(false);
-      return
-    }
-
-    switch (res.status) {
-      case 400:
-        setErrorMessage('入力された情報の組み合わせが正しくありません。');
-        setButtonDisabled(false);
-        break;
-      case 401:
-        setErrorMessage('メールアドレスの本人確認が必要です。');
-        setButtonDisabled(false);
-        break;
-      case 200:
-        const json = await res.json();
-        // TODO: rememberMe を有効にするにはアンコメント
-        // if (rememberMe === true) {
-        //   localStorage.setItem('kiloToken', json.access_token);
-        // } else {
-        //   localStorage.removeItem('kiloToken');
-        // }
-        localStorage.setItem('kiloToken', json.access_token);
-        // トップページへ移動
-        history.push('/schedule');
-        enqueueSnackbar('ログインしました。', { variant: 'info' })
-        break;
-      default:
-        setErrorMessage('予期せぬエラーが発生しました。時間をおいて再度お試しください。');
-        setButtonDisabled(false);
-    }
+    await login(email, password, setErrorMessage, setButtonDisabled, enqueueSnackbar);
   }
 
   const goToPasswordResetSendPage = () => {

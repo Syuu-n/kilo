@@ -8,7 +8,7 @@ import {
   AdminAddPlanModal, AdminConfirmPlanModal,
 } from 'components';
 import { User, LessonClass, Plan, Lesson } from 'responses/responseStructs';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { deleteResource } from 'request/methods/common';
 import { useSnackbar } from 'notistack';
 import { implementsUser, implementsLessonClass, implementsPlan } from 'assets/lib/typeCheck';
 import { LessonColor, colorCheck } from 'assets/lib/lessonColors';
@@ -68,7 +68,7 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
         break;
       case "削除":
         if (confirm(`選択中の（種類:${dataType} ID:${dataId}）を本当に削除しますか？`)) {
-          deleteData(dataId);
+          deleteResource(dataId, dataType, enqueueSnackbar, updateFunc);
         };
         break;
     }
@@ -127,39 +127,6 @@ const RichTableCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, ico
   const handleSelected = (id:number) => {
     const data = tableSources.find((d) => d.id == id);
     data && setSelectedData(data);
-  };
-
-  // 選択した id の項目を削除する
-  const deleteData = async (dataId:number) => {
-    const accessToken = localStorage.getItem('kiloToken');
-    if (!accessToken) {
-      return;
-    }
-
-    const res = await fetchApp(
-      `/v1/${dataType}/${dataId}`,
-      'DELETE',
-      accessToken
-    )
-
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      enqueueSnackbar('予期せぬエラーが発生しました。時間をおいて再度お試しください。', { variant: 'error' });
-      return;
-    }
-
-    switch (res.status) {
-      case 200:
-        enqueueSnackbar(`種類:${dataType} ID:${dataId}の削除に成功しました。`, { variant: 'success' });
-        if (updateFunc) updateFunc();
-        break;
-      case 404:
-        enqueueSnackbar(`種類:${dataType} ID:${dataId}が存在しないため削除に失敗しました。`, { variant: 'error' });
-        break;
-      case 400:
-        enqueueSnackbar(`種類:${dataType} ID:${dataId}の削除に失敗しました。`, { variant: 'error' });
-        break;
-    }
   };
 
   return (

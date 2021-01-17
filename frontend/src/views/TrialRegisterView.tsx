@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { KSpinner, Wizard, ItemGrid, CustomDropDown, Card, CardContent, Table, FormInput } from 'components';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { getTrialLessonClasses, getTrialLessons, sendTrial } from 'request/methods/trials';
 import { CEvent, LessonClass, Lesson } from 'responses/responseStructs';
 import { CreateTrialUserRequest } from 'request/requestStructs';
 import trialRegisterViewStyle from 'assets/jss/kiloStyles/trialRegisterViewStyle';
@@ -28,45 +28,7 @@ const TrialRegisterView: React.FC = () => {
   // 子供クラスの体験料
   const childTrialPrice: number = 1000;
 
-  const getLessonClasses = async (): Promise<LessonClass[] | null> => {
-    const res = await fetchApp(
-      '/v1/trials/lesson_classes',
-      'GET',
-    )
-
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      return null;
-    }
-
-    if (res.ok) {
-      const json = await res.json();
-      return json;
-    } else {
-      return null;
-    }
-  };
-
-  const getLessons = async () => {
-    const res = await fetchApp(
-      '/v1/trials/lessons',
-      'GET',
-    )
-
-    if (res instanceof NetworkError) {
-      console.log('ServerError')
-      return null;
-    }
-
-    if (res.ok) {
-      const json = await res.json();
-      return json;
-    } else {
-      return null;
-    }
-  };
-
-  const sendTrialEmail = async () => {
+  const sendTrialEmailFunc = async () => {
     const user = {
       last_name: lastName.value,
       first_name: firstName.value,
@@ -79,33 +41,7 @@ const TrialRegisterView: React.FC = () => {
       lesson_id: selectedLesson.id,
     } as CreateTrialUserRequest;
 
-
-    const res = await fetchApp(
-      '/v1/trials',
-      'POST',
-      '',
-      JSON.stringify({
-        user,
-      })
-    )
-
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      setSubmitFailed(true);
-      return;
-    }
-
-    switch (res.status) {
-      case 201:
-        setSubmitFailed(false);
-        break;
-      case 400:
-        setSubmitFailed(true);
-        break;
-      case 422:
-        setSubmitFailed(true);
-        break;
-    }
+    await sendTrial(user, setSubmitFailed);
   };
 
   // 選択されたクラスからそのクラスのレッスンを絞り込む
@@ -154,9 +90,9 @@ const TrialRegisterView: React.FC = () => {
 
   React.useEffect(() => {
     const f = async () => {
-      const lessonClasses = await getLessonClasses();
+      const lessonClasses = await getTrialLessonClasses();
       if (lessonClasses) setLessonClasses(lessonClasses);
-      const lessons = await getLessons();
+      const lessons = await getTrialLessons();
       if (lessons) {
         setLessons(lessons.map((lesson:Lesson) => ({
           id: lesson.id,
@@ -412,7 +348,7 @@ const TrialRegisterView: React.FC = () => {
                 </div>
               ]}
               confirmRules={[true, lessonSelectValidation(), dataInputValidation(), true]}
-              submitFunc={async () => await sendTrialEmail()}
+              submitFunc={() => sendTrialEmailFunc()}
             />
           ) : (
             <div className={classes.spinnerWrap}>

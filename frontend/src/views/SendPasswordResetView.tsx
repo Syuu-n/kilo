@@ -5,7 +5,7 @@ import sendPasswordResetViewStyle from 'assets/jss/kiloStyles/sendPasswordResetV
 import { ValidationReturn, emailValidation } from 'assets/lib/validations';
 import { MailOutline } from '@material-ui/icons';
 import history from 'RouterHistory';
-import { fetchApp } from 'request/fetcher';
+import { sendPasswordReset } from 'request/methods/passwords';
 
 const SendPasswordResetView: React.FC = () => {
   const classes = sendPasswordResetViewStyle();
@@ -19,17 +19,7 @@ const SendPasswordResetView: React.FC = () => {
 
   const handleSubmit = (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // NOTE: メール送信はセキュリティの都合で失敗しても通知しない
-    fetchApp(
-      '/v1/passwords',
-      'POST',
-      '',
-      JSON.stringify({
-        user: {
-          email: email.value,
-        },
-      })
-    )
+    sendPasswordReset(email.value);
     setOpenCompletePage(true);
   };
 

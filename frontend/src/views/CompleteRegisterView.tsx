@@ -1,6 +1,6 @@
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { confirmTrial } from 'request/methods/trials';
 import { ItemGrid, KSpinner, Card, CardContent, Button } from 'components';
 import completeRegisterView from 'assets/jss/kiloStyles/completeRegisterViewStyle';
 import { Check, ErrorOutline } from '@material-ui/icons';
@@ -18,44 +18,9 @@ const CompleteRegisterView: React.FC = () => {
     history.push('/login');
   };
 
-  const confirmUser = async () => {
-    if (!token) {
-      return;
-    }
-
-    const res = await fetchApp(
-      '/v1/trials',
-      'PUT',
-      '',
-      JSON.stringify({
-        user: {
-          confirmation_token: token,
-        },
-      })
-    )
-
-    if (res instanceof NetworkError) {
-      console.log("ServerError");
-      setSubmitFailed(true);
-      return;
-    }
-
-    switch (res.status) {
-      case 200:
-        setSubmitFailed(false);
-        break;
-      case 400:
-        setSubmitFailed(true);
-        break;
-      case 422:
-        setSubmitFailed(true);
-        break;
-    }
-  };
-
   React.useEffect(() => {
     const f = async () => {
-      await confirmUser();
+      await confirmTrial(token, setSubmitFailed);
       setIsLoaded(true);
     };
     f();
