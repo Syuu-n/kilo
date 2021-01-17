@@ -118,4 +118,38 @@ class Lesson < ApplicationRecord
     return false if first_day.end_of_month < day || day < 1
     Date.new(first_day.year, first_day.month, day)
   end
+
+  # 引数で渡したレッスンの配列へ参加可能なユーザを全て参加させる
+  # 子供コース自動参加用メソッド
+  def self.join_lessons(lessons)
+    plan_lessons_classes = PlanLessonClass.all
+    user_plans = UserPlan.all
+    trial_plan = Plan.trial_plan
+    normal_role = Role.normal
+    lessons.each do |lesson|
+      # レッスンのクラスへ参加できるコース一覧を取得
+      filtered_plan_lesson_classes = plan_lessons_classes.filter do |plan_lessons_class|
+        plan_lessons_class.lesson_class_id == lesson.lesson_class_id
+      end
+      raw_plans = filtered_plan_lesson_classes.map{|fplc| fplc.plan}
+      raw_plans.uniq!
+      # 体験コースを除外する
+      plans = raw_plans.reject{|plan| plan == trial_plan}
+      # 該当するコースを持っているユーザ一覧を取得
+      raw_users = []
+      plans.each do |plan|
+        selected_user_plans = user_plans.filter{|user_plan| user_plan.plan_id == plan.id}
+        raw_users << selected_user_plans.map{|selected_user_plan| selected_user_plan.user}
+      end
+      formatted_users = raw_users.flatten.uniq
+      # 会員のユーザのみを取得
+      users = formatted_users.filter{|raw_user| raw_user.role == normal_role}
+      # 取得したユーザ一覧を該当するレッスンへ参加させる
+      users.each do |user|
+        if lesson.remaining_user_count > 0
+          lesson.join(user)
+        end
+      end
+    end
+  end
 end

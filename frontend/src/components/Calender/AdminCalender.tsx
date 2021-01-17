@@ -91,7 +91,7 @@ const Calender: React.FC<Props> = (props) => {
   const createLessonsFunc = () => {
     // 来月を取得
     const nextMonth = moment().add(1, 'month');
-    if (confirm(`現在のクラスをもとに ${nextMonth.format("YYYY 年 MM 月")} のスケジュールを作成します。よろしいですか？`)) {
+    if (confirm(`現在のクラスをもとに ${nextMonth.format("YYYY 年 MM 月")} のスケジュールを作成します。よろしいですか？\nまた、作成された子供コースのレッスンへ該当するユーザーが自動的に参加されます。`)) {
       createLessons();
     };
   };
@@ -117,6 +117,12 @@ const Calender: React.FC<Props> = (props) => {
       case 201:
         enqueueSnackbar('来月のスケジュール作成に成功しました。', { variant: 'success' });
         updateEventFunc(convertLessonsToCEvents(json), "createLessons")
+        break;
+      case 400:
+        enqueueSnackbar('既に来月のスケジュールが作成済みのため失敗しました。', { variant: 'error' });
+        break;
+      case 422:
+        enqueueSnackbar('来月のスケジュール作成に失敗しました。', { variant: 'error' });
         break;
       default:
         enqueueSnackbar('来月のスケジュール作成に失敗しました。', { variant: 'error' });

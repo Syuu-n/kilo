@@ -7,6 +7,7 @@ module V1
     class CantJoinOrLeaveTrialUserError < StandardError; end
     class NotJoinedError < StandardError; end
     class CantLeaveError < StandardError; end
+    class AlreadyCreatedLessonsError < StandardError; end
 
     before_action :permission_check, only: [:create, :update, :destroy, :create_next_month_lessons]
     before_action :setup_lesson, only: [:update, :show, :destroy, :user_join, :user_leave]
@@ -145,6 +146,9 @@ module V1
     # 現在の lesson_rules を元に来月のレッスンを作成する
     def create_next_month_lessons
       begin
+        # 既に来月のレッスンが 15 個以上存在する場合は作成済みとみなし処理を中断する
+        next_month = Time.current.next_month
+        raise AlreadyCreatedLessonsError if Lesson.where(start_at: next_month.beginning_of_month..next_month.end_of_month).count > 15
         ActiveRecord::Base.transaction do
           @lessons = []
           lesson_rules = LessonRule.all
@@ -196,10 +200,17 @@ module V1
               end
             end
           end
+          # 作成した翌月のレッスンのうち、子供コースのレッスンのみ会員ユーザを自動参加させる
+          Lesson.join_lessons(@lessons.filter{|lesson| lesson.for_children == true})
         end
       rescue => e
-        puts e
-        render json: { code: 'lesson_create_error' }, status: :bad_request and return
+        case e
+        when AlreadyCreatedLessonsError
+          render json: { code: 'already_created_lessons_error' }, status: :bad_request and return
+        else
+          puts e
+          render json: { code: 'lesson_create_error' }, status: :unprocessable_entity and return
+        end
       end
       render json: @lessons, status: :created
     end
