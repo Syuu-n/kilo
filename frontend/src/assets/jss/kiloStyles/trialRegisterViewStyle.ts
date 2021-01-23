@@ -1,6 +1,6 @@
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { primaryColor } from 'assets/jss/material-dashboard-react';
-import loginBackgroundImg from 'assets/img/login_img.jpg';
+import trialBackgroundImg from 'assets/img/trial_img.jpg';
 
 const topViewStyle = makeStyles(() =>
 createStyles({
@@ -15,7 +15,7 @@ createStyles({
     overflow: 'auto',
     height: '100%',
     maxHeight: '100%',
-    backgroundImage: `url(${loginBackgroundImg})`,
+    backgroundImage: `url(${trialBackgroundImg})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center'
   },
