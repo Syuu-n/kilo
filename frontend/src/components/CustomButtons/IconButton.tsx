@@ -17,7 +17,7 @@ interface Props {
   disabled?: boolean;
 }
 
-const IconCustomButton: React.SFC<
+const IconCustomButton: React.FC<
   Props & Pick<IconButtonProps, Exclude<keyof IconButtonProps, keyof Props>>
 > = props => {
   const { color, children, customClass, ...rest } = props;

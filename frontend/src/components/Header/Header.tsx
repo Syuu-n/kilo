@@ -24,7 +24,7 @@ interface Props {
   routes: Route[];
 }
 
-const Header: React.SFC<Props & RouteProps> = (props) => {
+const Header: React.FC<Props & RouteProps> = (props) => {
   const [hrWidth, setHrWidth] = React.useState(0);
   const { color, handleDrawerToggle } = props;
   const classes = headerStyle();

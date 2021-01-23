@@ -63,6 +63,7 @@ import ItemGrid from './Grid/ItemGrid';
 
 import Header from './Header/Header';
 import HeaderLinks from './Header/HeaderLinks';
+import PublicHeader from './Header/PublicHeader';
 
 // ##############################
 // // // Sidebar
@@ -171,6 +172,7 @@ export {
   // Header
   Header,
   HeaderLinks,
+  PublicHeader,
   // Sidebar
   Sidebar,
   // Snackbar
