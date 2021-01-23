@@ -3,12 +3,12 @@ import * as React from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 import { AuthProvider } from 'Auth';
 import MainPage from 'layouts/MainPageLayout';
-import LoginView from 'views/LoginView';
-import TopView from 'views/TopView';
-import TrialRegisterView from 'views/TrialRegisterView';
-import CompleteRegisterView from 'views/CompleteRegisterView';
-import PasswordResetView from 'views/PasswordResetView';
-import SendPasswordResetView from 'views/SendPasswordResetView';
+import LoginView from 'views/Public/LoginView';
+import TopView from 'views/Public/TopView';
+import TrialRegisterView from 'views/Public/TrialRegisterView';
+import CompleteRegisterView from 'views/Public/CompleteRegisterView';
+import PasswordResetView from 'views/Public/PasswordResetView';
+import SendPasswordResetView from 'views/Public/SendPasswordResetView';
 // moment を日本語に設定
 import 'moment/locale/ja';
 
