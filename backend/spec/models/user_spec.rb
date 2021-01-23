@@ -120,15 +120,15 @@ describe User, type: :model do
 
       context '#current_monthly_count' do
         let(:count){ user.lessons.count }
-        it 'ユーザの現在のレッスン参加数を取得できる' do
+        it 'ユーザの今月のレッスン参加数を取得できる' do
           expect(user.current_monthly_count).to eq count
         end
       end
 
-      context '#remaining_monthly_count' do
-        let(:count){ user.plan.monthly_lesson_count - user.current_monthly_count }
-        it 'ユーザの残りレッスン参加数を取得できる' do
-          expect(user.remaining_monthly_count).to eq count
+      context '#user_lesson_classes' do
+        let(:user_classes){ user.plans.first.lesson_classes }
+        it 'ユーザが参加できるクラス一覧を取得できる' do
+          expect(user.user_lesson_classes).to eq user_classes
         end
       end
     end

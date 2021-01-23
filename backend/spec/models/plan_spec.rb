@@ -6,8 +6,6 @@ describe Plan, type: :model do
       {
         name: Faker::Address.city,
         price: rand(1..5000),
-        monthly_lesson_count: rand(1..4),
-        for_children: Faker::Boolean.boolean
       }
     }
     context '正常系' do
@@ -28,16 +26,6 @@ describe Plan, type: :model do
         plan.price = nil
         expect(plan.valid?).to eq false
       end
-
-      it '月の参加回数が空欄の場合エラーする' do
-        plan.monthly_lesson_count = nil
-        expect(plan.valid?).to eq false
-      end
-
-      it '子供用フラグが空欄の場合エラーする' do
-        plan.for_children = nil
-        expect(plan.valid?).to eq false
-      end
     end
   end
 
@@ -46,6 +34,12 @@ describe Plan, type: :model do
       context '#default_plan' do
         it 'デフォルトプランを取得できる' do
           expect(Plan.default_plan).to eq Plan.first
+        end
+      end
+
+      context '#trial_plan' do
+        it '体験プランを取得できる' do
+          expect(Plan.trial_plan).to eq Plan.find_by(name: '体験コース')
         end
       end
     end

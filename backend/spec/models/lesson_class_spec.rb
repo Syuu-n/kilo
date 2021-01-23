@@ -5,7 +5,8 @@ describe LessonClass, type: :model do
     let(:lesson_class_params){
       {
         name: Faker::Address.city,
-        description: Faker::Lorem.word
+        description: Faker::Lorem.word,
+        location: Faker::University.name,
       }
     }
     context '正常系' do
@@ -19,6 +20,11 @@ describe LessonClass, type: :model do
       let(:lesson_class){ LessonClass.new(lesson_class_params) }
       it '名前が空欄の場合エラーする' do
         lesson_class.name = nil
+        expect(lesson_class.valid?).to eq false
+      end
+
+      it '開催場所が空欄の場合エラーする' do
+        lesson_class.location = nil
         expect(lesson_class.valid?).to eq false
       end
     end

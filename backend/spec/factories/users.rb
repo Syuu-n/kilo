@@ -8,12 +8,12 @@ FactoryBot.define do
     last_name_kana { Faker::Creature::Animal.name }
     birthday { Time.current - rand(1..100).year }
     phone_number { Faker::PhoneNumber.cell_phone }
-    plan { Plan.default_plan }
+    plans { [Plan.all] }
     role { Role.admin }
     confirmed_at { Time.current }
   end
 
-  factory :user do
+  factory :user, class: User do
     email { Faker::Internet.email }
     password { 'password' }
     first_name { Faker::Name.first_name }
@@ -22,7 +22,7 @@ FactoryBot.define do
     last_name_kana { Faker::Creature::Animal.name }
     birthday { Time.current - rand(1..100).year }
     phone_number { Faker::PhoneNumber.cell_phone }
-    plan { Plan.default_plan }
+    plans { [] }
     role { Role.normal }
     confirmed_at { Time.current }
   end
@@ -36,7 +36,7 @@ FactoryBot.define do
     last_name_kana { Faker::Creature::Animal.name }
     birthday { Time.current - rand(1..100).year }
     phone_number { Faker::PhoneNumber.cell_phone }
-    plan { Plan.default_plan }
+    plans { [Plan.trial_plan] }
     role { Role.trial }
   end
 end

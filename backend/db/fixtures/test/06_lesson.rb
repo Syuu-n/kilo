@@ -6,7 +6,7 @@ lesson_rules.each do |lr|
   lc = LessonClass.find(lr.lesson_class_id)
   if lr.week == 0
     weeks.each do |week|
-      date = Lesson.current_month_date_from_week_and_dotw(week, lr.dotw)
+      date = Lesson.next_month_date_from_week_and_dotw(week, lr.dotw)
       if date
         new_start_at = Time.zone.local(date.year, date.month, date.day, lr.start_at.hour, lr.start_at.min)
         new_end_at = Time.zone.local(date.year, date.month, date.day, lr.end_at.hour, lr.end_at.min)
@@ -29,7 +29,7 @@ lesson_rules.each do |lr|
       end
     end
   else
-    date = Lesson.current_month_date_from_week_and_dotw(lr.week, lr.dotw)
+    date = Lesson.next_month_date_from_week_and_dotw(lr.week, lr.dotw)
     if date
       new_start_at = Time.zone.local(date.year, date.month, date.day, lr.start_at.hour, lr.start_at.min)
       new_end_at = Time.zone.local(date.year, date.month, date.day, lr.end_at.hour, lr.end_at.min)
