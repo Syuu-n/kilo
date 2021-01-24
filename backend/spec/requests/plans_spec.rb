@@ -16,8 +16,6 @@ describe 'Plans API', type: :request do
         expect(json.last['id']).to eq last_plan.id
         expect(json.last['name']).to eq last_plan.name
         expect(json.last['price']).to eq last_plan.price
-        expect(json.last['monthly_lesson_count']).to eq last_plan.monthly_lesson_count
-        expect(json.last['for_children']).to eq last_plan.for_children
       end
     end
 
@@ -39,9 +37,9 @@ describe 'Plans API', type: :request do
     let(:plan_params){ {
       name: Faker::Space.galaxy,
       price: rand(100..5000),
-      monthly_lesson_count: rand(1..8),
-      for_children: Faker::Boolean.boolean
+      lesson_class_ids: [LessonClass.first.id, last_lesson_class.id]
     } }
+    let(:last_lesson_class) { LessonClass.last }
     context '管理者がプランを作成した場合' do
       login_admin
       let(:access_token){ admin.access_token }
@@ -51,8 +49,8 @@ describe 'Plans API', type: :request do
         new_plan = Plan.last
         expect(json['name']).to eq new_plan.name
         expect(json['price']).to eq new_plan.price
-        expect(json['monthly_lesson_count']).to eq new_plan.monthly_lesson_count
-        expect(json['for_children']).to eq new_plan.for_children
+        json_last_lesson_class = json['lesson_classes'].last
+        expect(json_last_lesson_class['id']).to eq last_lesson_class.id
       end
     end
 
@@ -78,6 +76,16 @@ describe 'Plans API', type: :request do
         expect(json['code']).to eq 'not_permitted'
       end
     end
+
+    context '体験ユーザがプランを作成した場合' do
+      login_trial_user
+      let(:access_token){ trial_user.access_token }
+      it '403 Forbidden を返す' do
+        expect{subject}.to change{ Plan.count }.by(0)
+        expect(response.status).to eq 403
+        expect(json['code']).to eq 'not_permitted'
+      end
+    end
   end
 
   describe 'PATCH /v1/plans/:id' do
@@ -86,9 +94,9 @@ describe 'Plans API', type: :request do
     let(:plan_params){ {
       name: Faker::Space.galaxy,
       price: rand(100..5000),
-      monthly_lesson_count: rand(1..8),
-      for_children: Faker::Boolean.boolean
+      lesson_class_ids: [LessonClass.first.id, last_lesson_class.id]
     } }
+    let(:last_lesson_class) { LessonClass.last }
     context '管理者がプラン情報を変更した場合' do
       login_admin
       let(:access_token){ admin.access_token }
@@ -100,8 +108,8 @@ describe 'Plans API', type: :request do
         plan = Plan.last
         expect(json['name']).to eq plan.name
         expect(json['price']).to eq plan.price
-        expect(json['monthly_lesson_count']).to eq plan.monthly_lesson_count
-        expect(json['for_children']).to eq plan.for_children
+        json_last_lesson_class = json['lesson_classes'].last
+        expect(json_last_lesson_class['id']).to eq last_lesson_class.id
       end
     end
 
@@ -143,6 +151,18 @@ describe 'Plans API', type: :request do
         expect(json['code']).to eq 'not_permitted'
       end
     end
+
+    context '体験ユーザがプラン情報を変更した場合' do
+      login_trial_user
+      let(:access_token){ trial_user.access_token }
+      let(:plan_id){ Plan.last.id }
+      it '403 Forbidden を返す' do
+        subject
+
+        expect(response.status).to eq 403
+        expect(json['code']).to eq 'not_permitted'
+      end
+    end
   end
 
   describe 'GET /plans/:id' do
@@ -158,24 +178,10 @@ describe 'Plans API', type: :request do
         plan = Plan.last
         expect(json['name']).to eq plan.name
         expect(json['price']).to eq plan.price
-        expect(json['monthly_lesson_count']).to eq plan.monthly_lesson_count
-        expect(json['for_children']).to eq plan.for_children
-      end
-    end
-
-    context 'ユーザが指定したプラン情報を取得した場合' do
-      login_user
-      let(:access_token){ user.access_token }
-      let(:plan_id){ Plan.last.id }
-      it '200 OK を返す' do
-        subject
-
-        expect(response.status).to eq 200
-        plan = Plan.last
-        expect(json['name']).to eq plan.name
-        expect(json['price']).to eq plan.price
-        expect(json['monthly_lesson_count']).to eq plan.monthly_lesson_count
-        expect(json['for_children']).to eq plan.for_children
+        json_last_lesson_class = json['lesson_classes'].last
+        if json_last_lesson_class
+          expect(json_last_lesson_class['id']).to eq plan.lesson_classes.last.id
+        end
       end
     end
 
@@ -188,6 +194,40 @@ describe 'Plans API', type: :request do
 
         expect(response.status).to eq 404
         expect(json['code']).to eq 'plan_not_found'
+      end
+    end
+
+    context 'ユーザが指定したプラン情報を取得した場合' do
+      login_user
+      let(:access_token){ user.access_token }
+      let(:plan_id){ Plan.last.id }
+      it '200 OK を返す' do
+        subject
+        expect(response.status).to eq 200
+        plan = Plan.last
+        expect(json['name']).to eq plan.name
+        expect(json['price']).to eq plan.price
+        json_last_lesson_class = json['lesson_classes'].last
+        if json_last_lesson_class
+          expect(json_last_lesson_class['id']).to eq plan.lesson_classes.last.id
+        end
+      end
+    end
+
+    context '体験ユーザが指定したプラン情報を取得した場合' do
+      login_trial_user
+      let(:access_token){ trial_user.access_token }
+      let(:plan_id){ Plan.last.id }
+      it '200 OK を返す' do
+        subject
+        expect(response.status).to eq 200
+        plan = Plan.last
+        expect(json['name']).to eq plan.name
+        expect(json['price']).to eq plan.price
+        json_last_lesson_class = json['lesson_classes'].last
+        if json_last_lesson_class
+          expect(json_last_lesson_class['id']).to eq plan.lesson_classes.last.id
+        end
       end
     end
   end
@@ -219,6 +259,17 @@ describe 'Plans API', type: :request do
     context 'ユーザが指定したプランを削除した場合' do
       login_user
       let(:access_token){ user.access_token }
+      let(:plan_id){ Plan.last.id }
+      it '403 Forbidden を返す' do
+        expect{subject}.to change{Plan.count}.by(0)
+        expect(response.status).to eq 403
+        expect(json['code']).to eq 'not_permitted'
+      end
+    end
+
+    context '体験ユーザが指定したプランを削除した場合' do
+      login_trial_user
+      let(:access_token){ trial_user.access_token }
       let(:plan_id){ Plan.last.id }
       it '403 Forbidden を返す' do
         expect{subject}.to change{Plan.count}.by(0)

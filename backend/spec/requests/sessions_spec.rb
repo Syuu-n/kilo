@@ -60,20 +60,19 @@ describe 'Sessions API', type: :request do
       it '自身の情報を取得できる' do
         subject
 
-        expect(response.status).to eq 200
-        expect(json['id']).to eq user.id
-        expect(json['email']).to eq user.email
-        expect(json['name']).to eq user.name
-        expect(json['name_kana']).to eq user.name_kana
-        expect(json['birthday']).to eq user.birthday.to_s
-        expect(json['phone_number']).to eq user.phone_number
-        expect(json['role']).to eq user.role.name
-        user_plan = user.plan
-        expect(json['plan']['id']).to eq user_plan.id
-        expect(json['plan']['name']).to eq user_plan.name
-        expect(json['plan']['price']).to eq user_plan.price
-        expect(json['plan']['monthly_lesson_count']).to eq user_plan.monthly_lesson_count
-        expect(json['plan']['for_children']).to eq user_plan.for_children
+        last_user = user
+        expect(json['id']).to eq last_user.id
+        expect(json['email']).to eq last_user.email
+        expect(json['first_name']).to eq last_user.first_name
+        expect(json['last_name']).to eq last_user.last_name
+        expect(json['first_name_kana']).to eq last_user.first_name_kana
+        expect(json['last_name_kana']).to eq last_user.last_name_kana
+        expect(json['age']).to eq last_user.age
+        expect(json['birthday']).to eq last_user.birthday.to_s
+        expect(json['phone_number']).to eq last_user.phone_number
+        expect(json['role']['id']).to eq last_user.role.id
+        expect(json['is_admin']).to eq last_user.is_admin?
+        expect(json['current_monthly_count']).to eq last_user.current_monthly_count
       end
     end
 
@@ -96,6 +95,36 @@ describe 'Sessions API', type: :request do
           expect(response.status).to eq 403
           expect(json['code']).to eq 'access_token_expired'
         end
+      end
+    end
+  end
+
+  describe 'GET /v1/roles' do
+    subject { get "/v1/roles", headers: { Authorization: access_token }  }
+    context '管理者がユーザ権限一覧を取得する場合' do
+      let(:admin){ create(:admin) }
+      let(:access_token){ admin.access_token }
+
+      it '200 OK を返す' do
+        subject
+
+        trial = Role.trial
+        expect(response.status).to eq 200
+        expect(json.last['id']).to eq trial.id
+        expect(json.last['name']).to eq trial.name
+        expect(json.last['display_name']).to eq trial.display_name
+      end
+    end
+
+    context 'ユーザ権限一覧を取得する場合' do
+      let(:user){ create(:user) }
+      let(:access_token){ user.access_token }
+
+      it '403 Forbidden を返す' do
+        subject
+
+        expect(response.status).to eq 403
+        expect(json['code']).to eq 'not_permitted'
       end
     end
   end
