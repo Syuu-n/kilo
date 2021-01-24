@@ -88,12 +88,6 @@ import RichTableActions from './Table/RichTableActions';
 import TableToolbar from './Table/TableToolbar';
 
 // ##############################
-// // // Tasks
-// #############################
-
-import Tasks from './Tasks/Tasks';
-
-// ##############################
 // // // Typography
 // #############################
 
@@ -183,8 +177,6 @@ export {
   RichTable,
   RichTableActions,
   TableToolbar,
-  // Tasks
-  Tasks,
   // Typography
   P,
   Quote,
