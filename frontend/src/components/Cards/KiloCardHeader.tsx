@@ -25,20 +25,15 @@ interface Props {
  */
 const KiloCardHeader: React.FC<Props> = (props) => {
   const classes = cardHeaderStyles();
-  const { children, color, plain, icon, ...rest } = props;
-  let { className } = props;
-  if (className === undefined) {
-    className = ''
-  }
+  const { children, color, plain, icon, className, ...rest } = props;
   const cardHeaderClasses = classNames({
     [classes.cardHeader]: true,
     [classes[color + "CardHeader"]]: color,
     [classes.cardHeaderPlain]: plain,
     [classes.cardHeaderIcon]: icon,
-    [className]: className !== undefined
   });
   return (
-    <div className={cardHeaderClasses} {...rest}>
+    <div className={className ? cardHeaderClasses + " " + className : cardHeaderClasses} {...rest}>
       {children}
     </div>
   );
