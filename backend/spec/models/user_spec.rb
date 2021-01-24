@@ -126,9 +126,9 @@ describe User, type: :model do
       end
 
       context '#user_lesson_classes' do
-        let(:user_classes){ user.plans.first.lesson_classes }
+        let(:user_class_first){ admin.plans.first.lesson_classes.first }
         it 'ユーザが参加できるクラス一覧を取得できる' do
-          expect(user.user_lesson_classes).to eq user_classes
+          expect(admin.user_lesson_classes).to include user_class_first
         end
       end
     end
