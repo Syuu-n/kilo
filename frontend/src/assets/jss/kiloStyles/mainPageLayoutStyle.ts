@@ -19,13 +19,14 @@ createStyles({
   mainPanel: {
     [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
+      margin: `0 0 0 ${drawerWidth}px`,
     },
     overflow: 'auto',
     position: 'relative',
-    float: 'right',
     ...transition,
     maxHeight: '100%',
     width: '100%',
+    maxWidth: '1200px',
     overflowScrolling: 'touch',
   },
   content: {
