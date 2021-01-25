@@ -6,7 +6,9 @@ import {
 import {
   RichTableCard,
   KSpinner,
+  ItemGrid,
 } from 'components';
+import { Grid,} from '@material-ui/core';
 import { getUsers } from 'request/methods/users';
 import { User } from 'responses/responseStructs';
 import usersViewStyle from 'assets/jss/kiloStyles/usersViewStyle';
@@ -25,27 +27,28 @@ const UsersView: React.FC = () => {
   }, []);
 
   return(
-    <div>
-      { users ? (
-        <RichTableCard
-          icon={People}
-          addIcon={PersonAdd}
-          headerColor="green"
-          tableHeaderColor="success"
-          cardTitle="ユーザー"
-          tableHead={["ID", "名前", "名前（カナ）", "メールアドレス", "ステータス"]}
-          tableSources={users}
-          updateFunc={usersUpdateFunc}
-          dataType="users"
-        >
-        </RichTableCard>
-      ) : (
-        <div className={classes.spinnerWrap}>
-          <KSpinner color="success"/>
-        </div>
-      )}
-    </div>
-
+    <Grid container>
+      <ItemGrid xs={12}>
+        { users ? (
+          <RichTableCard
+            icon={People}
+            addIcon={PersonAdd}
+            headerColor="green"
+            tableHeaderColor="success"
+            cardTitle="ユーザー"
+            tableHead={["ID", "名前", "名前（カナ）", "メールアドレス", "ステータス"]}
+            tableSources={users}
+            updateFunc={usersUpdateFunc}
+            dataType="users"
+          >
+          </RichTableCard>
+        ) : (
+          <div className={classes.spinnerWrap}>
+            <KSpinner color="success"/>
+          </div>
+        )}
+      </ItemGrid>
+    </Grid>
   );
 };
 

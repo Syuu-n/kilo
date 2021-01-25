@@ -74,7 +74,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   padding: 0 3px;
-  text-align: right;
+  text-align: center;
   vertical-align: middle;
   font-weight: 700;
   font-size: 1em;
@@ -323,8 +323,8 @@
 .rbc-month-view .rbc-date-cell {
   flex: 1 1;
   min-width: 0;
-  padding-right: 5px;
-  text-align: right;
+  padding-left: 5px;
+  text-align: left;
 }
 
 .rbc-month-view .rbc-off-range {
@@ -374,5 +374,11 @@
 @media (max-width: 600px) {
   .rbc-toolbar {
     flex-direction: column;
+  }
+  .rbc-event .rbc-event-content {
+    font-size: 0.65em;
+  }
+  .rbc-row-segment {
+    padding: 2px 1px 1px;
   }
 }

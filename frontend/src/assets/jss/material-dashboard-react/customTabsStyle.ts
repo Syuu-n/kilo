@@ -79,6 +79,11 @@ createStyles({
       display: 'block',
     },
   },
+  noPadding: {
+    [`@media (max-width: 600px)`]: {
+      padding: '20px 0',
+    },
+  },
 }));
 
 export default customTabsStyle;

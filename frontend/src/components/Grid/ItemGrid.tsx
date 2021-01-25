@@ -1,28 +1,24 @@
-import { Grid, withStyles } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { GridProps } from '@material-ui/core/Grid';
+import itemGridStyle from 'assets/jss/kiloStyles/itemGridStyle';
 import * as React from 'react';
 
 interface Props {
-  classes: {
-    grid: string;
-  };
   className?: string;
+  noPadding?: boolean;
 }
 
-const ItemGrid: React.SFC<
+const ItemGrid: React.FC<
   Props & Pick<GridProps, Exclude<keyof GridProps, keyof Props>>
 > = props => {
-  const { classes, children, className, ...rest } = props;
+  const { children, className, noPadding, ...rest } = props;
+  const classes = itemGridStyle();
 
   return (
-    <Grid item {...rest} className={classes.grid + (className ? ' ' + className : '')}>
+    <Grid item {...rest} className={classes.grid + (noPadding ? ' ' + classes.noPadding : '') + (className ? ' ' + className : '')}>
       {children}
     </Grid>
   );
 };
 
-export default withStyles({
-  grid: {
-    padding: '0 15px !important',
-  },
-})(ItemGrid);
+export default ItemGrid;

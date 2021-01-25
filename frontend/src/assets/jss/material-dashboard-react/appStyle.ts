@@ -31,8 +31,11 @@ createStyles({
   },
   content: {
     marginTop: '70px',
-    padding: '30px 15px',
-    minHeight: 'calc(100% - 123px)',
+    padding: '10px 15px',
+    minHeight: 'calc(100vh - 123px)',
+    [`@media (max-width: 600px)`]: {
+      padding: '10px 0',
+    },
   },
   container,
   map: {

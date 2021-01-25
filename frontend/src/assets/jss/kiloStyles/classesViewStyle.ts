@@ -14,6 +14,11 @@ createStyles({
     ...defaultFont,
     fontFamily: 'cursive',
   },
+  noPadding: {
+    [`@media (max-width: 600px)`]: {
+      padding: '20px 0',
+    },
+  },
 }));
 
 export default classesViewStyle;

@@ -81,10 +81,11 @@ const ScheduleView: React.FC = () => {
       { lessons && myLessons && recentLesson && currentUser ? (
         <div>
           <Grid container>
-            <ItemGrid xs={12}>
+            <ItemGrid xs={12} noPadding>
               <CustomTabs
                 title="表示:"
                 headerColor="orange"
+                noPadding
                 tabs={[
                   {
                     tabName: "自分のスケジュール",

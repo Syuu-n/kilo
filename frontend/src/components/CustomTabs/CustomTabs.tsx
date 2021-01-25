@@ -28,6 +28,7 @@ interface Props {
   title?: string;
   tabs: tabContent[];
   rtlActive?: boolean;
+  noPadding?: boolean;
 }
 
 const CustomTabs: React.FC<Props> = (props) => {
@@ -36,7 +37,7 @@ const CustomTabs: React.FC<Props> = (props) => {
     setValue(value);
   };
   const classes = customTabStyles();
-  const { headerColor, tabs, title, rtlActive } = props;
+  const { headerColor, tabs, title, rtlActive, noPadding } = props;
   const cardTitle = classNames({
     [classes.cardTitle]: true,
     [classes.cardTitleRTL]: rtlActive
@@ -77,7 +78,7 @@ const CustomTabs: React.FC<Props> = (props) => {
           })}
         </Tabs>
       </CardHeader>
-      <CardContent>
+      <CardContent className={noPadding ? classes.noPadding : undefined}>
         {tabs.map((prop, key) => {
           if (key === value) {
             return <div key={key}>{prop.tabContent}</div>;

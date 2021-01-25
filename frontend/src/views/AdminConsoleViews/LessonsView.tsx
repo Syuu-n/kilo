@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { KSpinner, AdminCalender, Card, CardContent, CardHeader, CardIcon } from 'components';
+import { KSpinner, AdminCalender, Card, CardContent, CardHeader, CardIcon, ItemGrid } from 'components';
+import { Grid,} from '@material-ui/core';
 import { getUsers } from 'request/methods/users';
 import { getLessonsForAdmin } from 'request/methods/lessons';
 import { getLessonClasses } from 'request/methods/lessonClasses';
@@ -77,32 +78,34 @@ const LessonsView: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      { lessons && users && lessonClasses ? (
-        <div>
-          <Card>
-            <CardHeader color="green" icon>
-              <CardIcon color="green">
-                <EventNote />
-              </CardIcon>
-              <h4 className={classes.cardTitle}>レッスン</h4>
-            </CardHeader>
-            <CardContent>
-              <AdminCalender
-                lessons={lessons}
-                updateEventFunc={(events:CEvent[], action:eventAction) => updateEvent(events, action)}
-                users={users}
-                lessonClasses={lessonClasses}
-              />
-            </CardContent>
-          </Card>
-        </div>
-      ) : (
-        <div className={classes.spinnerWrap}>
-          <KSpinner color="success"/>
-        </div>
-      )}
-    </div>
+    <Grid container>
+      <ItemGrid xs={12} noPadding>
+        { lessons && users && lessonClasses ? (
+          <div>
+            <Card>
+              <CardHeader color="green" icon>
+                <CardIcon color="green">
+                  <EventNote />
+                </CardIcon>
+                <h4 className={classes.cardTitle}>レッスン</h4>
+              </CardHeader>
+              <CardContent className={classes.noPadding}>
+                <AdminCalender
+                  lessons={lessons}
+                  updateEventFunc={(events:CEvent[], action:eventAction) => updateEvent(events, action)}
+                  users={users}
+                  lessonClasses={lessonClasses}
+                />
+              </CardContent>
+            </Card>
+          </div>
+        ) : (
+          <div className={classes.spinnerWrap}>
+            <KSpinner color="success"/>
+          </div>
+        )}
+      </ItemGrid>
+    </Grid>
   );
 };
 
