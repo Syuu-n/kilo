@@ -4,9 +4,9 @@ describe 'Lessons API', type: :request do
   let(:json){ JSON.parse response.body }
   describe 'GET /v1/lessons' do
     subject { get '/v1/lessons', headers: { Authorization: access_token }  }
+    let(:last_lesson){ Lesson.where(start_at: Time.current.last_month.beginning_of_month..Time.current.next_month.end_of_month).last }
     context '管理者がレッスン一覧を取得した場合' do
       login_admin
-      let(:last_lesson){ Lesson.where(start_at: Time.current.beginning_of_year..Time.current.end_of_year).last }
       let(:access_token){ admin.access_token }
       it '200 OK を返す' do
         subject
@@ -30,7 +30,6 @@ describe 'Lessons API', type: :request do
 
     context 'ユーザがレッスン一覧を取得した場合' do
       login_user
-      let(:last_lesson){ Lesson.where(start_at: Time.current.beginning_of_year..Time.current.end_of_year).last }
       let(:access_token){ user.access_token }
       it '200 OK を返す' do
         subject
@@ -54,7 +53,6 @@ describe 'Lessons API', type: :request do
 
     context '体験ユーザがレッスン一覧を取得した場合' do
       login_trial_user
-      let(:last_lesson){ Lesson.where(start_at: Time.current.beginning_of_year..Time.current.end_of_year).last }
       let(:access_token){ trial_user.access_token }
       it '200 OK を返す' do
         subject
@@ -79,9 +77,9 @@ describe 'Lessons API', type: :request do
 
   describe 'GET /v1/lessons/lessons_for_admin' do
     subject { get '/v1/lessons/lessons_for_admin', headers: { Authorization: access_token }  }
+    let(:last_lesson){ Lesson.where(start_at: Time.current.last_month.beginning_of_month..Time.current.next_month.end_of_month).last }
     context '管理者が管理者用レッスン一覧を取得した場合' do
       login_admin
-      let(:last_lesson){ Lesson.where(start_at: Time.current.beginning_of_year..Time.current.end_of_year).last }
       let(:access_token){ admin.access_token }
       it '200 OK を返す' do
         subject
@@ -111,7 +109,6 @@ describe 'Lessons API', type: :request do
 
     context 'ユーザが管理者用レッスン一覧を取得した場合' do
       login_user
-      let(:last_lesson){ Lesson.where(start_at: now.beginning_of_year..now.end_of_year).last }
       let(:access_token){ user.access_token }
       it '403 Forbidden を返す' do
         subject
@@ -123,7 +120,6 @@ describe 'Lessons API', type: :request do
 
     context '体験ユーザが管理者用レッスン一覧を取得した場合' do
       login_trial_user
-      let(:last_lesson){ Lesson.where(start_at: now.beginning_of_year..now.end_of_year).last }
       let(:access_token){ trial_user.access_token }
       it '403 Forbidden を返す' do
         subject
