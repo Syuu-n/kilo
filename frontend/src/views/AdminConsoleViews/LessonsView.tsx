@@ -80,7 +80,7 @@ const LessonsView: React.FC = () => {
   return (
     <Grid container>
       <ItemGrid xs={12} noPadding>
-        { lessons && users && lessonClasses ? (
+        { lessons ? (
           <div>
             <Card>
               <CardHeader color="green" icon>
@@ -93,8 +93,8 @@ const LessonsView: React.FC = () => {
                 <AdminCalender
                   lessons={lessons}
                   updateEventFunc={(events:CEvent[], action:eventAction) => updateEvent(events, action)}
-                  users={users}
-                  lessonClasses={lessonClasses}
+                  users={users ? users : []}
+                  lessonClasses={lessonClasses ? lessonClasses : []}
                 />
               </CardContent>
             </Card>
