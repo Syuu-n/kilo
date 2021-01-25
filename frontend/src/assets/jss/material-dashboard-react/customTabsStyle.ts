@@ -3,6 +3,10 @@ import { hexToRgb, whiteColor } from "assets/jss/material-dashboard-react";
 
 const customTabsStyle = makeStyles(() =>
 createStyles({
+  cardHeader: {
+    display: 'flex',
+    alignItems: 'center',
+  },
   cardTitle: {
     float: "left",
     padding: "10px 10px 10px 0px",
@@ -44,7 +48,8 @@ createStyles({
     transition: "0.2s background-color 0.1s"
   },
   tabWrapper: {
-    display: "inline-block",
+    display: 'flex',
+    flexDirection: 'row',
     minHeight: "unset !important",
     minWidth: "unset !important",
     width: "unset !important",
@@ -57,8 +62,23 @@ createStyles({
     "& > svg,& > .material-icons": {
       verticalAlign: "middle",
       margin: "-1px 5px 0 0 !important"
-    }
-  }
+    },
+    [`@media (max-width: 600px)`]: {
+      flexDirection: 'column',
+    },
+  },
+  tabName: {
+    display: 'block',
+    [`@media (max-width: 600px)`]: {
+      display: 'none',
+    },
+  },
+  tabShortName: {
+    display: 'none',
+    [`@media (max-width: 600px)`]: {
+      display: 'block',
+    },
+  },
 }));
 
 export default customTabsStyle;

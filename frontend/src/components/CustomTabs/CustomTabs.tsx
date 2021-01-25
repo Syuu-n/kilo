@@ -12,6 +12,7 @@ import customTabStyles from "assets/jss/material-dashboard-react/customTabsStyle
 
 interface tabContent {
   tabName: string;
+  tabShortName?: string;
   tabIcon?: any;
   tabContent: React.ReactNode;
 }
@@ -42,7 +43,7 @@ const CustomTabs: React.FC<Props> = (props) => {
   });
   return (
     <Card>
-      <CardHeader color={headerColor}>
+      <CardHeader color={headerColor} className={classes.cardHeader}>
         {title !== undefined ? <div className={cardTitle}>{title}</div> : null}
         <Tabs
           value={value}
@@ -56,12 +57,6 @@ const CustomTabs: React.FC<Props> = (props) => {
           scrollButtons="auto"
         >
           {tabs.map((prop, key) => {
-            var icon = {};
-            if (prop.tabIcon) {
-              icon = {
-                icon: <prop.tabIcon />
-              };
-            }
             return (
               <Tab
                 classes={{
@@ -70,8 +65,13 @@ const CustomTabs: React.FC<Props> = (props) => {
                   wrapper: classes.tabWrapper
                 }}
                 key={key}
-                label={prop.tabName}
-                {...icon}
+                label={
+                  <React.Fragment>
+                    <span className={classes.tabName}>{prop.tabName}</span>
+                    <span className={classes.tabShortName}>{prop.tabShortName}</span>
+                  </React.Fragment>
+                }
+                icon={prop.tabIcon ? <prop.tabIcon /> : undefined}
               />
             );
           })}

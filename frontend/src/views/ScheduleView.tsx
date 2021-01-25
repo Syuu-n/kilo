@@ -88,6 +88,7 @@ const ScheduleView: React.FC = () => {
                 tabs={[
                   {
                     tabName: "自分のスケジュール",
+                    tabShortName: "参加中",
                     tabIcon: EventAvailable,
                     tabContent: (
                       <Calender
@@ -97,7 +98,8 @@ const ScheduleView: React.FC = () => {
                     ),
                   },
                   {
-                    tabName: "全てのスケジュール",
+                    tabName: "すべてのスケジュール",
+                    tabShortName: "すべて",
                     tabIcon: Event,
                     tabContent: (
                       <Calender
