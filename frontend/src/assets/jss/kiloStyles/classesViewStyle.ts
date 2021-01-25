@@ -19,6 +19,12 @@ createStyles({
       padding: '20px 0',
     },
   },
+  nextMonthButton: {
+    margin: 0,
+    position: 'absolute',
+    top: '10px',
+    right: 0,
+  },
 }));
 
 export default classesViewStyle;

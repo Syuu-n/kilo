@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { KSpinner, AdminCalender, Card, CardContent, CardHeader, CardIcon, ItemGrid } from 'components';
+import * as moment from 'moment';
+import {
+  KSpinner, AdminCalender, Card, Button,
+  CardContent, CardHeader, CardIcon, ItemGrid,
+} from 'components';
 import { Grid,} from '@material-ui/core';
 import { getUsers } from 'request/methods/users';
 import { getLessonsForAdmin } from 'request/methods/lessons';
@@ -7,6 +11,8 @@ import { getLessonClasses } from 'request/methods/lessonClasses';
 import { Lesson, CEvent, User, LessonClass } from 'responses/responseStructs';
 import lessonsViewStyle from 'assets/jss/kiloStyles/classesViewStyle';
 import { EventNote } from '@material-ui/icons';
+import { createLessons } from 'request/methods/lessons';
+import { useSnackbar } from 'notistack';
 
 type eventAction = "update" | "add" | "delete" | "createLessons";
 
@@ -15,6 +21,7 @@ const LessonsView: React.FC = () => {
   const [users, setUsers] = React.useState<User[] | null>();
   const [lessonClasses, setLessonClasses] = React.useState<LessonClass[] | null>();
   const classes = lessonsViewStyle();
+  const { enqueueSnackbar } = useSnackbar();
 
   const updateEvent = async (events:CEvent[], action:eventAction) => {
     if (!lessons) {
@@ -44,6 +51,14 @@ const LessonsView: React.FC = () => {
         // 来月のスケジュール作成時の update
         setLessons(newLessons.concat(events));
         break;
+    };
+  };
+
+  const createLessonsFunc = () => {
+    // 来月をスケジュールを作成し、子供コースのユーザを参加させる
+    const nextMonth = moment().add(1, 'month');
+    if (confirm(`現在のクラスをもとに ${nextMonth.format("YYYY 年 MM 月")} のスケジュールを作成します。よろしいですか？\nまた、作成された子供コースのレッスンへ該当するユーザーが自動的に参加されます。`)) {
+      createLessons(enqueueSnackbar, updateEvent);
     };
   };
 
@@ -88,6 +103,13 @@ const LessonsView: React.FC = () => {
                   <EventNote />
                 </CardIcon>
                 <h4 className={classes.cardTitle}>レッスン</h4>
+                <Button
+                  color="success"
+                  customClass={classes.nextMonthButton}
+                  onClick={() => createLessonsFunc()}
+                >
+                  来月の予定を作成
+                </Button>
               </CardHeader>
               <CardContent className={classes.noPadding}>
                 <AdminCalender
