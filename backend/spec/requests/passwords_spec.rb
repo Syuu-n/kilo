@@ -21,12 +21,6 @@ describe 'Passwords API', type: :request do
         expect(last_email.subject).to eq I18n.t('devise.mailer.reset_password_instructions.subject')
         expect(last_email.to).to eq [user.email]
         expect(last_email.from).to eq [Rails.application.credentials.gmail[:user_name]]
-        encoded_body = last_email.body.encoded
-        expect(encoded_body.include? I18n.t('devise.mailer.reset_password_instructions.title', name: user.email)).to eq true
-        expect(encoded_body.include? I18n.t('devise.mailer.reset_password_instructions.reset_password_explanation')).to eq true
-        expect(encoded_body.include? I18n.t('devise.mailer.reset_password_instructions.reset_password_link')).to eq true
-        expect(encoded_body.include? I18n.t('devise.mailer.reset_password_instructions.please_ignore')).to eq true
-        expect(encoded_body.include? I18n.t('devise.mailer.reset_password_instructions.wont_change')).to eq true
       end
     end
 
@@ -68,14 +62,19 @@ describe 'Passwords API', type: :request do
       it '200 OK を返す' do
         subject
 
-        expect(response.status).to eq 200
-        expect(json['id']).to eq user.id
-        expect(json['email']).to eq user.email
-        expect(json['name']).to eq user.name
-        expect(json['name_kana']).to eq user.name_kana
-        expect(json['birthday']).to eq user.birthday.to_s
-        expect(json['phone_number']).to eq user.phone_number
-        expect(json['plan_name']).to eq user.plan_name
+        last_user = user
+        expect(json['id']).to eq last_user.id
+        expect(json['email']).to eq last_user.email
+        expect(json['first_name']).to eq last_user.first_name
+        expect(json['last_name']).to eq last_user.last_name
+        expect(json['first_name_kana']).to eq last_user.first_name_kana
+        expect(json['last_name_kana']).to eq last_user.last_name_kana
+        expect(json['age']).to eq last_user.age
+        expect(json['birthday']).to eq last_user.birthday.to_s
+        expect(json['phone_number']).to eq last_user.phone_number
+        expect(json['role']['id']).to eq last_user.role.id
+        expect(json['is_admin']).to eq last_user.is_admin?
+        expect(json['current_monthly_count']).to eq last_user.current_monthly_count
         user.reload
         expect(user.valid_password?(new_password)).to eq true
       end
@@ -96,10 +95,10 @@ describe 'Passwords API', type: :request do
         password_confirmation: new_password + 'hoge',
         reset_password_token: @raw
       }}
-      it '400 Bad Request を返す' do
+      it '422 Unprocessable Entity を返す' do
         subject
 
-        expect(response.status).to eq 400
+        expect(response.status).to eq 422
         expect(json['code']).to eq 'password_not_match_error'
         user.reload
         expect(user.valid_password?(new_password)).to eq false

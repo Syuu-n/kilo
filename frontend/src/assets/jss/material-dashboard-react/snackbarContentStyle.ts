@@ -20,6 +20,7 @@ createStyles({
     ...defaultFont,
     position: 'relative',
     padding: '20px 15px',
+    width: '480px',
     lineHeight: '20px',
     marginBottom: '20px',
     fontSize: '14px',

@@ -1,37 +1,34 @@
 import {
-  ClickAwayListener,
   Grow,
   Hidden,
   IconButton,
   MenuItem,
   MenuList,
   Paper,
+  ClickAwayListener,
 } from '@material-ui/core';
+import Popper from '@material-ui/core/Popper';
 import { Person } from '@material-ui/icons';
 import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
 import * as cx from 'classnames';
 import * as React from 'react';
-import { Manager, Popper, Target } from 'react-popper';
 import { AuthContext } from 'Auth';
 import history from 'RouterHistory';
 
 const HeaderLinks: React.FC = () => {
   const classes = headerLinksStyle();
-  const [open, setOpen] = React.useState(false);
+  const [openProfile, setOpenProfile] = React.useState<null | HTMLElement>(null);
   const { currentUser } = React.useContext(AuthContext);
-
-  function handleClick() {
-    setOpen(!open);
-  }
-
-  function handleClose() {
-    setOpen(false);
-  }
-
-  function logout() {
+  const handleClickProfile = (event: React.MouseEvent<HTMLElement>) => {
+    setOpenProfile(openProfile ? null : event.currentTarget);
+  };
+  const handleCloseProfile = () => {
+    setOpenProfile(null);
+  };
+  const logout = () => {
     localStorage.removeItem('kiloToken');
-    history.push('/login');
-  }
+    history.push('/');
+  };
 
   return (
     <div>
@@ -49,47 +46,46 @@ const HeaderLinks: React.FC = () => {
           </p>
         </Hidden>
       </IconButton> */}
-      <ClickAwayListener onClickAway={handleClose}>
-        <Manager style={{ display: 'inline-block' }}>
-          <Target>
-            <div onClick={handleClick} className={classes.currentUserContainer}>
-              <IconButton
-                color="inherit"
-                aria-label="Person"
-                aria-owns={open ? 'menu-list' : undefined}
-                aria-haspopup="true"
-                className={classes.buttonLink}
-              >
-                <Person className={classes.links} />
-                <Hidden mdUp>
-                  { currentUser ? (
-                    <p className={classes.linkText}>{currentUser.name} 様</p>
-                  ) : (
-                    <p className={classes.linkText}>ロード中...</p>
-                  )
-                  }
-                </Hidden>
-              </IconButton>
-              <Hidden smDown>
-                { currentUser ? (
-                  <span>{currentUser.name} 様</span>
-                ) : (
-                  <span>ロード中...</span>
-                )
-                }
-              </Hidden>
-            </div>
-          </Target>
-          <Popper
-            placement="bottom-start"
-            eventsEnabled={open}
-            className={cx(
-              { [classes.popperClose]: !open },
-              classes.popperResponsive,
-            )}
+      <div style={{ display: 'inline-block' }}>
+        <div onClick={handleClickProfile} className={classes.currentUserContainer}>
+          <IconButton
+            color="inherit"
+            aria-label="Person"
+            aria-owns={openProfile ? 'menu-list' : undefined}
+            aria-haspopup="true"
+            className={classes.buttonLink}
           >
-            <Grow in={open} style={{ transformOrigin: '0 0 0' }}>
-              <Paper className={classes.dropdown}>
+            <Person className={classes.links} />
+            <Hidden mdUp>
+              { currentUser ? (
+                <p className={classes.linkText}>{currentUser.last_name + " " + currentUser.first_name} 様</p>
+              ) : (
+                <p className={classes.linkText}>ロード中...</p>
+              )
+              }
+            </Hidden>
+          </IconButton>
+          <Hidden smDown>
+            { currentUser ? (
+              <span>{currentUser.last_name + " " + currentUser.first_name} 様</span>
+            ) : (
+              <span>ロード中...</span>
+            )
+            }
+          </Hidden>
+        </div>
+        <Popper
+          open={Boolean(openProfile)}
+          anchorEl={openProfile}
+          placement="bottom-start"
+          className={cx(
+            { [classes.popperClose]: !open },
+            classes.popperResponsive,
+          )}
+        >
+          <Grow in={Boolean(openProfile)} style={{ transformOrigin: '0 0 0' }}>
+            <Paper className={classes.dropdown}>
+              <ClickAwayListener onClickAway={handleCloseProfile}>
                 <MenuList role="menu">
                   <MenuItem
                     onClick={logout}
@@ -98,11 +94,11 @@ const HeaderLinks: React.FC = () => {
                     ログアウト
                   </MenuItem>
                 </MenuList>
-              </Paper>
-            </Grow>
-          </Popper>
-        </Manager>
-      </ClickAwayListener>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        </Popper>
+      </div>
     </div>
   );
 }

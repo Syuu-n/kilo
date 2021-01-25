@@ -1,8 +1,6 @@
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   blueCardHeader,
-  card,
-  cardHeader,
   defaultFont,
   greenCardHeader,
   orangeCardHeader,
@@ -14,10 +12,10 @@ import {
 
 const loginCardStyle = makeStyles(() =>
 createStyles({
-  card,
-  cardHeader: {
-    ...cardHeader,
-    ...defaultFont
+  card: {
+    maxWidth: '500px',
+    transform: 'translate3d(0, 0, 0)',
+    transition: 'all 300ms linear',
   },
   orangeCardHeader,
   greenCardHeader,
@@ -26,22 +24,15 @@ createStyles({
   purpleCardHeader,
   roseCardHeader,
   cardTitle: {
-    color: '#FFFFFF',
     margin: '10px 0',
     ...defaultFont,
-    fontSize: '1.125em',
+    color: '#FFFFFF',
+    fontSize: '17px',
     textAlign: 'center',
     fontFamily: 'cursive'
   },
-  cardSubtitle: {
-    ...defaultFont,
-    marginBottom: '0',
-    color: 'rgba(255, 255, 255, 0.62)',
-    margin: '0 0 10px'
-  },
   cardContent: {
     margin: '10px 0 0 0',
-    padding: '20px 35px 25px 35px'
   },
   inputIcon: {
     color: '#555555'
@@ -60,10 +51,23 @@ createStyles({
     marginTop: '15px'
   },
   errorMessageContainer: {
-    color: dangerColor,
     textAlign: 'center',
     marginTop: '10px'
-  }
+  },
+  errorMessage: {
+    color: dangerColor,
+  },
+  cardHidden: {
+    transform: 'translate3d(0, -60px, 0) !important',
+    opacity: 0,
+  },
+  passwordResetButton: {
+    display: 'flex',
+    justifyContent: 'center',
+    fontSize: '12px',
+    margin: '20px 0 0 0',
+    cursor: 'pointer',
+  },
 }));
 
 export default loginCardStyle;

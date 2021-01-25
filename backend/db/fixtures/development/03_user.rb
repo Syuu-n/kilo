@@ -9,30 +9,30 @@ User.seed(:id,
             first_name_kana: Faker::Ancient.god,
             last_name_kana: Faker::Creature::Animal.name,
             birthday: Time.current - rand(1..100).year,
-            phone_number: Faker::PhoneNumber.cell_phone,
-            plan: Plan.default_plan,
+            phone_number: Faker::Number.number(digits: 10),
             role: Role.admin,
             password: 'password',
-            confirmed_at: Time.current
+            confirmed_at: Time.current,
           }
 )
 
 roles = ['normal', 'trial']
-roles.each_with_index do |role, i|
+
+30.times do |i|
+  role = roles.sample
   User.seed(:id,
             {
               id: i + 2,
-              email: "#{role}@example.com",
+              email: "#{role}_#{i}@example.com",
               first_name: Faker::Name.first_name,
               last_name: Faker::Name.last_name,
               first_name_kana: Faker::Ancient.god,
               last_name_kana: Faker::Creature::Animal.name,
               birthday: Time.current - rand(1..100).year,
-              phone_number: Faker::PhoneNumber.cell_phone,
-              plan: Plan.default_plan,
+              phone_number: Faker::Number.number(digits: 10),
               role: Role.send(role),
               password: 'password',
-              confirmed_at: Time.current
+              confirmed_at: Time.current,
             }
   )
 end

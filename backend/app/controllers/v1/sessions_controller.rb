@@ -1,6 +1,7 @@
 module V1
   class SessionsController < ApplicationController
     skip_before_action :authenticate_user_from_token!, only: [:create]
+    before_action :permission_check, only: [:roles]
 
     # POST /v1/login
     def create
@@ -21,6 +22,12 @@ module V1
     # GET /v1/me
     def me
       render json: current_user, status: :ok
+    end
+
+    # GET /v1/roles
+    def roles
+      roles = Role.all
+      render json: roles, status: :ok
     end
 
     private

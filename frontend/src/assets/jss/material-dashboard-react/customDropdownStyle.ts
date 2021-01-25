@@ -39,7 +39,7 @@ createStyles({
     padding: "0"
   },
   popperResponsive: {
-    zIndex: 1200,
+    zIndex: 1400,
     [theme.breakpoints.down("sm")]: {
       zIndex: "1640",
       position: "static",
@@ -136,11 +136,11 @@ createStyles({
     display: "inline-block",
     width: "0",
     height: "0",
-    marginLeft: "4px",
     verticalAlign: "middle",
     borderTop: "4px solid",
     borderRight: "4px solid transparent",
-    borderLeft: "4px solid transparent"
+    borderLeft: "4px solid transparent",
+    margin: '0 0 0 10px',
   },
   caretActive: {
     transform: "rotate(180deg)"
@@ -165,7 +165,13 @@ createStyles({
   },
   noLiPadding: {
     padding: "0"
-  }
+  },
+  fullWidth: {
+    width: '100%',
+  },
+  buttonPadding: {
+    padding: '12px 9px',
+  },
 }),
 );
 

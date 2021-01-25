@@ -12,7 +12,7 @@ module V1
     # PUT /v1/passwords
     def update
       unless update_params[:password] == update_params[:password_confirmation]
-        render json: { code: 'password_not_match_error' }, status: :bad_request
+        render json: { code: 'password_not_match_error' }, status: :unprocessable_entity
         return
       end
 

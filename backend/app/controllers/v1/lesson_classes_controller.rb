@@ -1,26 +1,31 @@
 module V1
   class LessonClassesController < ApplicationController
-    class NoLessonRuleError < StandardError; end
     class LessonRuleInvalidError < StandardError; end
     before_action :permission_check, only: [:create, :update, :destroy]
     before_action :setup_lesson_class, only: [:update, :show, :destroy]
 
     # GET /lesson_classes
     def index
-      render json: LessonClass.all, each_serializer: LessonClassSerializer
+      classes = LessonClass.all
+      render json: classes, each_serializer: LessonClassSerializer
     end
 
     # POST /lesson_classes
     def create
       begin
-        unless lesson_rule_params[:lesson_rules].present?
-          raise NoLessonRuleError
-        end
-
         ActiveRecord::Base.transaction do
           @lesson_class = LessonClass.create!(lesson_class_params)
           lesson_rule_params[:lesson_rules].each do |lesson_rule|
-            lr = LessonRule.new(lesson_rule.merge(lesson_class: @lesson_class))
+            start_at = Time.zone.parse(lesson_rule[:start_at])
+            end_at = Time.zone.parse(lesson_rule[:end_at])
+            # start_at と end_at の秒以下は切り捨てる
+            lr = LessonRule.new(
+              week: lesson_rule[:week],
+              dotw: lesson_rule[:dotw],
+              start_at: Time.zone.at(start_at.to_i / 60 * 60),
+              end_at: Time.zone.at(end_at.to_i / 60 * 60),
+              lesson_class: @lesson_class,
+            )
             unless lr.save
               raise LessonRuleInvalidError
             end
@@ -28,9 +33,6 @@ module V1
         end
       rescue => e
         case e
-        when NoLessonRuleError
-          render json: { code: 'no_lesson_rule_error' }, status: :unprocessable_entity
-          return
         when LessonRuleInvalidError
           render json: { code: 'lesson_rule_invalid_error' }, status: :unprocessable_entity
           return
@@ -45,17 +47,22 @@ module V1
     # PATCH /lesson_classes/:id
     def update
       begin
-        unless lesson_rule_params[:lesson_rules].present?
-          raise NoLessonRuleError
-        end
-
         ActiveRecord::Base.transaction do
           @lesson_class.update!(lesson_class_params)
           @lesson_class.lesson_rules.each do |lr|
             lr.destroy!
           end
           lesson_rule_params[:lesson_rules].each do |lesson_rule|
-            lr = LessonRule.new(lesson_rule.merge(lesson_class: @lesson_class))
+            start_at = Time.zone.parse(lesson_rule[:start_at])
+            end_at = Time.zone.parse(lesson_rule[:end_at])
+            # start_at と end_at の秒以下は切り捨てる
+            lr = LessonRule.new(
+              week: lesson_rule[:week],
+              dotw: lesson_rule[:dotw],
+              start_at: Time.zone.at(start_at.to_i / 60 * 60),
+              end_at: Time.zone.at(end_at.to_i / 60 * 60),
+              lesson_class: @lesson_class,
+            )
             unless lr.save
               raise LessonRuleInvalidError
             end
@@ -63,9 +70,6 @@ module V1
         end
       rescue => e
         case e
-        when NoLessonRuleError
-          render json: { code: 'no_lesson_rule_error' }, status: :unprocessable_entity
-          return
         when LessonRuleInvalidError
           render json: { code: 'lesson_rule_invalid_error' }, status: :unprocessable_entity
           return
@@ -102,12 +106,12 @@ module V1
     end
 
     def lesson_class_params
-      params.require(:lesson_class).permit(:name, :description)
+      params.require(:lesson_class).permit(:name, :location, :description, :price, :user_limit_count, :for_children, :color)
     end
 
     def lesson_rule_params
-      params.require(:lesson_class).permit(:name, :description,
-                                           { lesson_rules: [:dotw, :start_at, :end_at]}
+      params.require(:lesson_class).permit(:name, :location, :description, :price, :user_limit_count, :for_children, :color,
+                                           { lesson_rules: [:week, :dotw, :start_at, :end_at]}
       )
     end
   end

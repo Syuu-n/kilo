@@ -1,0 +1,3 @@
+frontend:
+  # TODO: ドメインが決定したら変更する
+  base_url: 'http://localhost:3000'

@@ -27,6 +27,7 @@ en:
         subject: "Reset password instructions"
         title: "Hello %{name}"
         reset_password_explanation: "Someone has requested a link to change your password. You can do this through the link below."
+        reset_password_explanation_2: ""
         reset_password_link: "Change my password"
         please_ignore: "If you didn't request this, please ignore this email."
         wont_change: "Your password won't change until you access the link above and create a new one."

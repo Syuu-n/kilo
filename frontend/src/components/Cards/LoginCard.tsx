@@ -1,9 +1,7 @@
 import {
-  Card,
-  CardContent,
-  CardHeader,
   InputAdornment,
-  Typography
+  // TODO: rememberMe を有効にするにはアンコメント
+  // Typography
 } from '@material-ui/core';
 import {
   Email,
@@ -12,83 +10,60 @@ import {
 import * as React from 'react';
 import loginCardStyle from 'assets/jss/kiloStyles/loginCardStyle';
 import {
-  CustomCheckbox,
+  // TODO: rememberMe を有効にするにはアンコメント
+  // CustomCheckbox,
+  Card,
+  CardContent,
+  CardHeader,
   CustomInput,
   Button,
-  P
 } from 'components';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { login } from 'request/methods/sessions';
 import history from 'RouterHistory';
+import { useSnackbar } from 'notistack';
 
 interface Props {
   headerColor?: 'orange' | 'green' | 'red' | 'blue' | 'purple' | 'rose';
   cardTitle?: React.ReactNode;
-  cardSubtitle?: React.ReactNode;
 }
 
-const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSubtitle }) => {
+const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle }) => {
   const classes = loginCardStyle();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [rememberMe, setRememberMe] = React.useState(false);
+  // TODO: rememberMe を有効にするにはアンコメント
+  // const [rememberMe, setRememberMe] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
+  const [cardAnimation, setCardAnimation] = React.useState("cardHidden");
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleLogin = async (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setButtonDisabled(true);
-    console.log('Email:' + email, 'Password:' + password, 'RememberMe:' + rememberMe)
-    const res = await fetchApp(
-      '/v1/login',
-      'POST',
-      '',
-      JSON.stringify({
-        email: email,
-        password: password
-      })
-    )
-    if (res instanceof NetworkError) {
-      setErrorMessage('予期せぬエラーが発生しました。時間をおいて再度お試しください。');
-      setButtonDisabled(false);
-      return
-    }
-
-    switch (res.status) {
-      case 400:
-        setErrorMessage('入力された情報の組み合わせが正しくありません。');
-        setButtonDisabled(false);
-        break;
-      case 200:
-        const json = await res.json();
-        if (rememberMe === true) {
-          localStorage.setItem('kiloToken', json.access_token);
-        } else {
-          localStorage.removeItem('kiloToken');
-        }
-        console.log('ログインしました。');
-        // トップページへ移動
-        history.push('/');
-        break;
-      default:
-        setErrorMessage('予期せぬエラーが発生しました。時間をおいて再度お試しください。');
-        setButtonDisabled(false);
-    }
+    await login(email, password, setErrorMessage, setButtonDisabled, enqueueSnackbar);
   }
 
+  const goToPasswordResetSendPage = () => {
+    // パスワードリセット用メールアドレス入力ページへ移動
+    history.push('/send_password_reset');
+  };
+
+  // カードの表示に動きをつける
+  React.useEffect(() => {
+    const timer = setTimeout(() => setCardAnimation(""), 500);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card + ' ' + classes[cardAnimation]}>
       <CardHeader
-        classes={{
-          root:
-            classes.cardHeader +
-            ' ' +
-            classes[headerColor + 'CardHeader'],
-          title: classes.cardTitle,
-          subheader: classes.cardSubtitle,
-        }}
-        title={cardTitle}
-        subheader={cardSubtitle}
-      />
+        color={headerColor}
+      >
+        <h4 className={classes.cardTitle}>{cardTitle}</h4>
+      </CardHeader>
       <CardContent className={classes.cardContent}>
         <form onSubmit={handleLogin}>
           <CustomInput
@@ -117,7 +92,8 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
               value: password
             }}
           />
-          <div className={classes.rememberMeContainer}>
+          {/* TODO: rememberMe を有効にするにはアンコメント */}
+          {/* <div className={classes.rememberMeContainer}>
             <CustomCheckbox
               checked={rememberMe}
               onClick={() => setRememberMe(!rememberMe)}
@@ -128,14 +104,14 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
             >
               ログインしたままにする
             </Typography>
-          </div>
+          </div> */}
           <div className={classes.errorMessageContainer}>
-            <P>{errorMessage}</P>
+            <p className={classes.errorMessage}>{errorMessage}</p>
           </div>
           <div className={classes.loginBtnWrap}>
             <Button
               color='primary'
-              width='70%'
+              width='90%'
               type='submit'
               disabled={buttonDisabled}
             >
@@ -143,6 +119,13 @@ const LoginCard: React.FC<Props> = ({ headerColor = 'orange', cardTitle, cardSub
             </Button>
           </div>
         </form>
+        {/* パスワードリセット */}
+        <a
+          onClick={goToPasswordResetSendPage}
+          className={classes.passwordResetButton}
+        >
+          パスワードを忘れた場合はこちら
+          </a>
       </CardContent>
     </Card>
   );

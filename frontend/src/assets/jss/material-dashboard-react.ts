@@ -20,6 +20,31 @@ import { CSSProperties } from '@material-ui/core/styles/withStyles';
 // ##############################
 // // // Variables - Styles that are used on more than one component
 // #############################
+const hexToRgb = (input:any) => {
+  input = input + "";
+  input = input.replace("#", "");
+  let hexRegex = /[0-9A-Fa-f]/g;
+  if (!hexRegex.test(input) || (input.length !== 3 && input.length !== 6)) {
+    throw new Error("input is not a valid hex color.");
+  }
+  if (input.length === 3) {
+    let first = input[0];
+    let second = input[1];
+    let last = input[2];
+    input = first + first + second + second + last + last;
+  }
+  input = input.toUpperCase();
+  let first = input[0] + input[1];
+  let second = input[2] + input[3];
+  let last = input[4] + input[5];
+  return (
+    parseInt(first, 16) +
+    ", " +
+    parseInt(second, 16) +
+    ", " +
+    parseInt(last, 16)
+  );
+};
 
 const drawerWidth = 260;
 
@@ -28,33 +53,10 @@ const transition: CSSProperties = {
 };
 
 const container: CSSProperties = {
-  paddingRight: '15px',
-  paddingLeft: '15px',
+  // paddingRight: '15px',
+  // paddingLeft: '15px',
   marginRight: 'auto',
   marginLeft: 'auto',
-};
-
-const boxShadow: CSSProperties = {
-  boxShadow:
-    '0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)',
-};
-
-const card: CSSProperties = {
-  display: 'inline-block',
-  position: 'relative',
-  width: '100%',
-  margin: '25px 0',
-  boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.14)',
-  borderRadius: '3px',
-  color: 'rgba(0, 0, 0, 0.87)',
-  background: '#fff',
-  overflow: 'visible',
-};
-
-const defaultFont: CSSProperties = {
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-  fontWeight: 300,
-  lineHeight: '1.5em',
 };
 
 const primaryColor = '#ff9800';
@@ -64,6 +66,23 @@ const successColor = '#4caf50';
 const infoColor = '#00acc1';
 const roseColor = '#e91e63';
 const grayColor = '#999999';
+
+const blackColor = "#000";
+const whiteColor = "#FFF";
+
+const fontColor = "#3C4858";
+
+const defaultFont: CSSProperties = {
+  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  fontWeight: 300,
+  lineHeight: '1.5em',
+  color: fontColor,
+};
+
+const boxShadow: CSSProperties = {
+  boxShadow:
+    '0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)',
+};
 
 const primaryBoxShadow: CSSProperties = {
   boxShadow:
@@ -116,20 +135,6 @@ const roseCardHeader = {
   ...roseBoxShadow
 };
 
-const cardActions: CSSProperties = {
-  margin: '0 20px 10px',
-  paddingTop: '10px',
-  borderTop: '1px solid #eeeeee',
-  height: 'auto',
-  ...defaultFont,
-};
-
-const cardHeader: CSSProperties = {
-  margin: '-20px 15px 0',
-  borderRadius: '3px',
-  padding: '15px',
-};
-
 const defaultBoxShadow: CSSProperties = {
   border: '0',
   borderRadius: '3px',
@@ -140,11 +145,11 @@ const defaultBoxShadow: CSSProperties = {
 };
 
 export {
+  hexToRgb,
   drawerWidth,
   transition,
   container,
   boxShadow,
-  card,
   defaultFont,
   primaryColor,
   warningColor,
@@ -153,6 +158,9 @@ export {
   infoColor,
   roseColor,
   grayColor,
+  blackColor,
+  whiteColor,
+  fontColor,
   primaryBoxShadow,
   infoBoxShadow,
   successBoxShadow,
@@ -165,7 +173,5 @@ export {
   blueCardHeader,
   purpleCardHeader,
   roseCardHeader,
-  cardActions,
-  cardHeader,
   defaultBoxShadow,
 };

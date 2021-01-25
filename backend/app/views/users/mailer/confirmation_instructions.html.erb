@@ -1,6 +1,4 @@
-<p><%= t("devise.mailer.confirmation_instructions.title", name: @email) %></p>
-
 <p><%= t("devise.mailer.confirmation_instructions.confirm_description") %></p>
 <p><%= t("devise.mailer.confirmation_instructions.confirm_explanation") %></p>
 
-<p><%= link_to t("devise.mailer.confirmation_instructions.confirm_link"), "https://yourfrontend.com?token=#{@token}" %></p>
+<p><%= link_to "#{Settings.frontend[:base_url]}/complete_register?token=#{@token}", "#{Settings.frontend[:base_url]}/complete_register?token=#{@token}" %></p>

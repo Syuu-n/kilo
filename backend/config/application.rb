@@ -23,6 +23,8 @@ module Backend
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
+    # lib 配下をロードするように
+    config.autoload_paths += %W(#{config.root}/lib)
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -46,6 +48,7 @@ module Backend
     end
 
     config.time_zone = 'Tokyo'
+    config.active_record.default_timezone = :local
     config.active_record.time_zone_aware_types = [:datetime, :time]
 
     config.i18n.default_locale = :ja

@@ -18,18 +18,19 @@ ja:
       unconfirmed: 'メールアドレスの本人確認が必要です。'
     mailer:
       confirmation_instructions:
-        subject: 'アカウントの有効化について'
+        subject: 'K Dance Classic Studio 体験申し込みのご案内'
         title: "%{name} 様"
-        confirm_description: "体験レッスンにお申し込みいただきありがとうございます。"
-        confirm_explanation: "本人確認のため、アカウントを有効にするには以下のリンクをクリックしてください。"
+        confirm_description: "この度は K Dance Classic Studio へ体験申し込みいただき、ありがとうございます。"
+        confirm_explanation: "以下のURLをクリックし、本人確認をおこなってください。"
         confirm_link: "アカウントを有効にする"
       reset_password_instructions:
-        subject: 'パスワードの再設定について'
+        subject: 'K Dance Classic Studio パスワードの変更'
         title: "%{name} 様"
-        reset_password_explanation: "パスワードリセットのリクエストが行われました。以下のリンクをクリックしてパスワードを変更できます。"
+        reset_password_explanation: "K Dance Classic Studio をご利用いただきありがとうございます。お客様のリクエストに基づき、パスワード再設定のリクエストがおこなわれました。"
+        reset_password_explanation_2: "以下のURLをクリックし、パスワードの再設定をおこなってください。"
         reset_password_link: "パスワードを変更する"
-        please_ignore: "もしあなたがパスワードリセットをリクエストしていない場合は、このメールを無視して下さい。"
-        wont_change: "上記リンクをクリックして新しいパスワードを作成しない限り、パスワードは変更されません。"
+        please_ignore: "万一、お心当たりのない場合はこのメールを無視して下さい。"
+        wont_change: "上記URLをクリックしパスワードを再設定しない限り、お客様のパスワードは変更されません。"
       unlock_instructions:
         subject: 'アカウントのロック解除について'
         title: "%{name} 様"

@@ -95,13 +95,6 @@ describe User, type: :model do
         end
       end
 
-      context '#plan_name' do
-        subject { user.plan_name }
-        it 'プランの名前を取得できる' do
-          expect(subject).to eq user.plan.name
-        end
-      end
-
       context '#is_admin?' do
         it 'ユーザが管理者か確認できる' do
           expect(admin.is_admin?).to eq true
@@ -115,6 +108,27 @@ describe User, type: :model do
           expect(admin.is_trial?).to eq false
           expect(user.is_trial?).to eq false
           expect(trial.is_trial?).to eq true
+        end
+      end
+
+      context '#age' do
+        let(:userAge){ (Date.today.strftime('%Y%m%d').to_i - user.birthday.strftime('%Y%m%d').to_i) / 10000 }
+        it 'ユーザの年齢を取得できる' do
+          expect(user.age).to eq userAge
+        end
+      end
+
+      context '#current_monthly_count' do
+        let(:count){ user.lessons.count }
+        it 'ユーザの今月のレッスン参加数を取得できる' do
+          expect(user.current_monthly_count).to eq count
+        end
+      end
+
+      context '#user_lesson_classes' do
+        let(:user_class_first){ admin.plans.first.lesson_classes.first }
+        it 'ユーザが参加できるクラス一覧を取得できる' do
+          expect(admin.user_lesson_classes).to include user_class_first
         end
       end
     end

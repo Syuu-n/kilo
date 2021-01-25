@@ -13,6 +13,7 @@ import {
   roseColor,
   successColor,
   warningColor,
+  whiteColor,
 } from 'assets/jss/material-dashboard-react';
 
 const iconButtonStyle = makeStyles(() =>
@@ -54,6 +55,7 @@ createStyles({
   },
   primary: {
     backgroundColor: primaryColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12)',
     '&:hover': {
@@ -64,6 +66,7 @@ createStyles({
   },
   info: {
     backgroundColor: infoColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(0, 188, 212, 0.14), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12)',
     '&:hover': {
@@ -74,6 +77,7 @@ createStyles({
   },
   success: {
     backgroundColor: successColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(76, 175, 80, 0.14), 0 3px 1px -2px rgba(76, 175, 80, 0.2), 0 1px 5px 0 rgba(76, 175, 80, 0.12)',
     '&:hover': {
@@ -84,6 +88,7 @@ createStyles({
   },
   warning: {
     backgroundColor: warningColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(255, 152, 0, 0.14), 0 3px 1px -2px rgba(255, 152, 0, 0.2), 0 1px 5px 0 rgba(255, 152, 0, 0.12)',
     '&:hover': {
@@ -94,6 +99,7 @@ createStyles({
   },
   danger: {
     backgroundColor: dangerColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12)',
     '&:hover': {
@@ -104,6 +110,7 @@ createStyles({
   },
   rose: {
     backgroundColor: roseColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12)',
     '&:hover': {

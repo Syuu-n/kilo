@@ -1,60 +1,47 @@
 import * as React from 'react';
-import { fetchApp, NetworkError } from 'request/fetcher';
+import { getMe } from 'request/methods/sessions';
 import { User } from 'responses/responseStructs';
 import { Redirect } from 'react-router-dom';
 import { KSpinner } from 'components';
 import authStyle from 'assets/jss/kiloStyles/authStyle';
 
 // Context の型
-interface IAuthContext {
+export interface IAuthContext {
   currentUser: User | null;
+  setUser: (user:User) => void;
 }
 
 // Context の宣言
 // null: 未ログインの場合
 // JSON: ユーザが存在する場合
-const AuthContext = React.createContext<IAuthContext>({ currentUser: null });
+const AuthContext = React.createContext<IAuthContext>({ currentUser: null, setUser: () => {} });
 
 const AuthProvider = (props: any) => {
   const classes = authStyle();
-  const [currentUser, setCurrentUser] = React.useState<User | null>(
-    null
-  );
   const [isLoaded, setIsLoaded] = React.useState(false);
 
-  // アクセストークンのチェック
-  // localStorage に既に保存されている場合はアクセストークンの有効性を確かめる
-  const checkAccessToken = async () => {
-    const accessToken = localStorage.getItem('kiloToken');
-
-    if (!accessToken) {
-      return null;
-    }
-
-    const res = await fetchApp(
-      '/v1/me',
-      'GET',
-      accessToken
-    )
-
-    if (res instanceof NetworkError) {
-      console.log('ServerError')
-      return null;
-    }
-
-    if (res.ok) {
-      const json = await res.json();
-      return json;
-    } else {
-      return null;
-    }
-  }
+  const useCurrentUser = (): IAuthContext => {
+    const [currentUser, setCurrentUser] = React.useState<User | null>(null);
+    const setUser = React.useCallback((current: User): void => {
+      setCurrentUser(current);
+    }, []);
+    return {
+      currentUser,
+      setUser,
+    };
+  };
+  const ctx = useCurrentUser();
 
   React.useEffect(() => {
-    checkAccessToken().then((result) => {
-      setCurrentUser(result);
+    const f = async () => {
+      const getMeFunc = async () => {
+        ctx.setUser(await getMe());
+      };
+
+      await getMeFunc();
       setIsLoaded(true);
-    });
+    };
+    f();
   }, []);
 
   // トークンから自身の情報を取得し以下の状態によって分岐させる
@@ -65,11 +52,9 @@ const AuthProvider = (props: any) => {
   return (
     <div>
       { isLoaded ? (
-        currentUser ? (
+        ctx.currentUser ? (
           <AuthContext.Provider
-            value={{
-              currentUser: currentUser
-            }}
+            value={ctx}
           >
             {props.children}
           </AuthContext.Provider>
@@ -85,4 +70,10 @@ const AuthProvider = (props: any) => {
   );
 };
 
-export { AuthContext, AuthProvider };
+// currentUser の再取得
+const fetchCurrentUser = async (ctx:IAuthContext) => {
+  const result = await getMe();
+  ctx.setUser(result);
+}
+
+export { AuthContext, AuthProvider, fetchCurrentUser };

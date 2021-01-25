@@ -6,7 +6,8 @@ describe LessonRule, type: :model do
       start_time = Time.current + rand(0..12).hours
       params = { dotw: rand(0..6), start_at: start_time,
                  end_at: start_time + rand(1..12).hours,
-                 lesson_class_id: rand(1..3)}
+                 lesson_class_id: rand(1..3),
+                 week: rand(0..4) }
       if LessonRule.find_by(params)
         create_params
       else
@@ -27,8 +28,14 @@ describe LessonRule, type: :model do
       let(:dup_end_at){ LessonRule.first.end_at }
       let(:dup_lesson_class_id){ LessonRule.first.lesson_class_id }
       let(:dup_dotw){ LessonRule.first.dotw }
+      let(:dup_week){ LessonRule.first.week }
       it '曜日が空欄の場合エラーする' do
         lesson_rule.dotw = nil
+        expect(lesson_rule.valid?).to eq false
+      end
+
+      it '週が空欄の場合エラーする' do
+        lesson_rule.week = nil
         expect(lesson_rule.valid?).to eq false
       end
 
@@ -46,6 +53,7 @@ describe LessonRule, type: :model do
         lesson_rule.dotw = dup_dotw
         lesson_rule.lesson_class_id = dup_lesson_class_id
         lesson_rule.start_at = dup_stat_at
+        lesson_rule.week = dup_week
         expect(lesson_rule.valid?).to eq false
       end
 
@@ -53,6 +61,7 @@ describe LessonRule, type: :model do
         lesson_rule.dotw = dup_dotw
         lesson_rule.lesson_class_id = dup_lesson_class_id
         lesson_rule.end_at = dup_end_at
+        lesson_rule.week = dup_week
         expect(lesson_rule.valid?).to eq false
       end
     end
