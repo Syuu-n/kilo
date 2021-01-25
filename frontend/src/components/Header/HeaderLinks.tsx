@@ -14,13 +14,11 @@ import * as cx from 'classnames';
 import * as React from 'react';
 import { AuthContext } from 'Auth';
 import history from 'RouterHistory';
-import { useSnackbar } from 'notistack';
 
 const HeaderLinks: React.FC = () => {
   const classes = headerLinksStyle();
   const [openProfile, setOpenProfile] = React.useState<null | HTMLElement>(null);
   const { currentUser } = React.useContext(AuthContext);
-  const { enqueueSnackbar } = useSnackbar();
   const handleClickProfile = (event: React.MouseEvent<HTMLElement>) => {
     setOpenProfile(openProfile ? null : event.currentTarget);
   };
@@ -29,8 +27,7 @@ const HeaderLinks: React.FC = () => {
   };
   const logout = () => {
     localStorage.removeItem('kiloToken');
-    history.push('/login');
-    enqueueSnackbar('ログアウトしました。', { variant: 'info' })
+    history.push('/');
   };
 
   return (
