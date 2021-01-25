@@ -17,7 +17,7 @@ module V1
       # 先月、今月、来月のみを取得
       now = Time.current
       lessons = Lesson.where(start_at: now.last_month.beginning_of_month..now.next_month.end_of_month)
-      render json: lessons, each_serializer: LessonSerializer
+      render json: lessons, each_serializer: LessonSerializer, status: :ok
     end
 
     # GET /lessons/lessons_for_admin
@@ -26,7 +26,7 @@ module V1
     def index_for_admin
       now = Time.current
       lessons = Lesson.where(start_at: now.last_month.beginning_of_month..now.next_month.end_of_month)
-      render json: lessons, each_serializer: AdminLessonSerializer
+      render json: lessons, each_serializer: AdminLessonSerializer, status: :ok
     end
 
     # POST /lessons
@@ -224,7 +224,7 @@ module V1
           render json: { code: 'lesson_create_error' }, status: :unprocessable_entity and return
         end
       end
-      render json: @lessons, status: :created
+      render json: @lessons, each_serializer: AdminLessonSerializer, status: :created
     end
 
     private
