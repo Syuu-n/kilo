@@ -41,7 +41,12 @@ const ProfileView: React.FC = () => {
                 headerColor="orange"
                 cardTitle="マイコース"
                 icon={LocalAtm}
-                tableData={currentUser.plans.map((plan) => [plan.name, `${plan.price.toLocaleString()} 円`])}
+                tableData={
+                  currentUser.plans.map((plan) => [
+                    plan.name,
+                    plan.price == 0 ?  "" : `${plan.price.toLocaleString()} 円`
+                  ])
+                }
               />
             </ItemGrid>
           </Grid>
