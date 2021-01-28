@@ -1,5 +1,6 @@
 // API のベース URL
-const APP_BASE_URL = 'http://localhost:3001'
+// const APP_BASE_URL = 'http://localhost:3001'
+const APP_BASE_URL = '/api';
 
 // ネットワークエラー
 export class NetworkError {

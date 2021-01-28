@@ -2,11 +2,10 @@
 const path = require('path');
 
 module.exports = {
-  entry: [path.resolve(__dirname, "src/index.tsx")],
+  entry: path.resolve(__dirname, "src/index.tsx"),
   output: {
-    path: path.resolve(__dirname, "./public"),
+    path: path.resolve(__dirname, "public"),
     filename: 'bundle.js',
-    publicPath: '/'
   },
   module: {
     rules: [
@@ -35,5 +34,6 @@ module.exports = {
     port: 3000,
     host: '0.0.0.0',
     historyApiFallback: true
-  }
+  },
+  mode: "development"
 };
