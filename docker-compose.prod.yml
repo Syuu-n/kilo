@@ -39,13 +39,12 @@ services:
       - backend
 
   nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
+    image: nginx:stable
     ports: 
       - 80:80
     volumes:
       - ./frontend/public:/var/www
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - backend
 
