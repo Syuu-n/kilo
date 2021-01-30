@@ -30,7 +30,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    image: "node:14-alpine"
     volumes:
       - ./frontend:/usr/src/app
     ports:
