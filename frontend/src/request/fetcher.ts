@@ -1,6 +1,5 @@
 // API のベース URL
-// const APP_BASE_URL = 'http://localhost:3001'
-const APP_BASE_URL = '/api';
+const APP_BASE_URL = process.env.NODE_ENV === "development" ? "http://localhost:3001" : "/api";
 
 // ネットワークエラー
 export class NetworkError {

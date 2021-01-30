@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --hot --config webpack.config.ts",
+    "start": "webpack-dev-server --hot --config webpack.dev.config.ts",
     "build": "webpack --config webpack.prod.config.ts"
   },
   "dependencies": {

@@ -1,10 +1,10 @@
-// import * as path from 'path';
-const path = require('path');
+// webpack.prod.config.ts の path と名前がかぶってしまいエラーするため変更している
+const pathDev = require('path');
 
 module.exports = {
-  entry: path.resolve(__dirname, "src/index.tsx"),
+  entry: pathDev.resolve(__dirname, "src/index.tsx"),
   output: {
-    path: path.resolve(__dirname, "public"),
+    path: pathDev.resolve(__dirname, "public"),
     filename: 'bundle.js',
   },
   module: {
@@ -26,7 +26,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
-    modules: [path.resolve(__dirname, "src"), "node_modules"]
+    modules: [pathDev.resolve(__dirname, "src"), "node_modules"]
   },
   devtool: "source-map",
   devServer: {
