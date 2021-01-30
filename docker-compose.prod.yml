@@ -22,7 +22,7 @@ services:
     stdin_open: true
     tty: true
     environment:
-      - EDITOR=vim
+      - RAILS_ENV: production
 
   frontend:
     build:
