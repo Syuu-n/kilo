@@ -37,6 +37,8 @@ services:
     tty: true
     depends_on:
       - backend
+    environment:
+      NODE_OPTIONS: "--max-old-space-size=1024"
 
   nginx:
     image: nginx:stable
