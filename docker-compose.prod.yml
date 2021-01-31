@@ -30,7 +30,7 @@ services:
       dockerfile: Dockerfile
     command: yarn build
     volumes:
-      - public:/frontend/public
+      - public:/public
     ports:
       - "3000:3000"
     stdin_open: true
@@ -45,7 +45,7 @@ services:
     ports: 
       - 80:80
     volumes:
-      - public:/frontend/public
+      - public:/public
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - backend
