@@ -30,7 +30,7 @@ services:
       dockerfile: Dockerfile
     command: yarn build
     volumes:
-      - public:/usr/src/app:z
+      - public:/usr/src/app/public:z
     ports:
       - "3000:3000"
     stdin_open: true
