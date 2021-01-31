@@ -30,6 +30,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    command: yarn start
     volumes:
       - ./frontend:/usr/src/app
     ports:

@@ -32,7 +32,7 @@ eval $(docker-machine env $DEPLOY_DOCKER_MACHINE)
 
 # Build
 docker-compose build --no-cache
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --force-recreate -d --no-deps --remove-orphans
+docker-compose -f docker-compose.prod.yml up --force-recreate -d --no-deps --remove-orphans
 
 # Reset docker context
 eval $(docker-machine env -u)

@@ -13,5 +13,3 @@ RUN yarn cache clean
 COPY . $APP_ROOT
 
 EXPOSE 3000
-
-CMD yarn build
