@@ -113,6 +113,4 @@ Rails.application.configure do
     :password => Rails.application.credentials.gmail[:password],
     :authentication => 'login',
   }
-
-  config.hosts << "host.docker.internal"
 end
