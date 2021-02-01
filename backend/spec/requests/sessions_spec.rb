@@ -3,10 +3,10 @@ require 'rails_helper'
 describe 'Sessions API', type: :request do
   let(:admin) { create(:admin) }
   let(:json){ JSON.parse response.body }
-  describe 'POST /v1/login' do
+  describe 'POST /api/v1/login' do
     let(:email){ admin.email }
     let(:password){ 'password' }
-    subject { post '/v1/login', params: { email: email, password: password } }
+    subject { post '/api/v1/login', params: { email: email, password: password } }
     context '正しいメールアドレスとパスワードでログインした場合' do
       it '200 OK を返す' do
         subject
@@ -52,8 +52,8 @@ describe 'Sessions API', type: :request do
     end
   end
 
-  describe 'GET /v1/me' do
-    subject { get "/v1/me", headers: { Authorization: access_token }  }
+  describe 'GET /api/v1/me' do
+    subject { get "/api/v1/me", headers: { Authorization: access_token }  }
     let(:user){ create(:user) }
     let(:access_token){ user.access_token }
     context 'アクセストークンが正しくかつ期限が切れていない場合' do
@@ -99,8 +99,8 @@ describe 'Sessions API', type: :request do
     end
   end
 
-  describe 'GET /v1/roles' do
-    subject { get "/v1/roles", headers: { Authorization: access_token }  }
+  describe 'GET /api/v1/roles' do
+    subject { get "/api/v1/roles", headers: { Authorization: access_token }  }
     context '管理者がユーザ権限一覧を取得する場合' do
       let(:admin){ create(:admin) }
       let(:access_token){ admin.access_token }
@@ -130,7 +130,7 @@ describe 'Sessions API', type: :request do
   end
 
   describe 'Auth API' do
-    subject { get "/v1/users/#{user.id}", headers: { Authorization: access_token } }
+    subject { get "/api/v1/users/#{user.id}", headers: { Authorization: access_token } }
     let(:user){ create(:user) }
     let(:access_token){ user.access_token }
     context 'アクセストークンが正しくかつ期限が切れていない場合' do

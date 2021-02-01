@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'Passwords API', type: :request do
   let(:json){ JSON.parse response.body }
-  describe 'POST /v1/passwords' do
-    subject { post '/v1/passwords', params: { user: { email: user_email } },
+  describe 'POST /api/v1/passwords' do
+    subject { post '/api/v1/passwords', params: { user: { email: user_email } },
                    headers: { Authorization: access_token }  }
     before(:each) do
       # メールリストを空にしておく
@@ -38,8 +38,8 @@ describe 'Passwords API', type: :request do
     end
   end
 
-  describe 'PUT /v1/passwords' do
-    subject { put '/v1/passwords', params: { user: update_params },
+  describe 'PUT /api/v1/passwords' do
+    subject { put '/api/v1/passwords', params: { user: update_params },
                    headers: { Authorization: access_token }  }
     before(:each) do
       reset_email

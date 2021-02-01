@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'Lessons API', type: :request do
   let(:json){ JSON.parse response.body }
-  describe 'GET /v1/lessons' do
-    subject { get '/v1/lessons', headers: { Authorization: access_token }  }
+  describe 'GET /api/v1/lessons' do
+    subject { get '/api/v1/lessons', headers: { Authorization: access_token }  }
     let(:last_lesson){ Lesson.where(start_at: Time.current.last_month.beginning_of_month..Time.current.next_month.end_of_month).last }
     context '管理者がレッスン一覧を取得した場合' do
       login_admin
@@ -75,8 +75,8 @@ describe 'Lessons API', type: :request do
     end
   end
 
-  describe 'GET /v1/lessons/lessons_for_admin' do
-    subject { get '/v1/lessons/lessons_for_admin', headers: { Authorization: access_token }  }
+  describe 'GET /api/v1/lessons/lessons_for_admin' do
+    subject { get '/api/v1/lessons/lessons_for_admin', headers: { Authorization: access_token }  }
     let(:last_lesson){ Lesson.where(start_at: Time.current.last_month.beginning_of_month..Time.current.next_month.end_of_month).last }
     context '管理者が管理者用レッスン一覧を取得した場合' do
       login_admin
@@ -130,8 +130,8 @@ describe 'Lessons API', type: :request do
     end
   end
 
-  describe 'POST /v1/lessons' do
-    subject { post '/v1/lessons', params: { lesson: lesson_params }, headers: { Authorization: access_token } }
+  describe 'POST /api/v1/lessons' do
+    subject { post '/api/v1/lessons', params: { lesson: lesson_params }, headers: { Authorization: access_token } }
     let(:lesson_params){ {
       lesson_class_id: lesson_class.id,
       start_at: Time.current,
@@ -200,8 +200,8 @@ describe 'Lessons API', type: :request do
     end
   end
 
-  describe 'PATCH /v1/lessons/:id' do
-    subject { patch "/v1/lessons/#{lesson_id}", params: { lesson: lesson_params }, headers: { Authorization: access_token } }
+  describe 'PATCH /api/v1/lessons/:id' do
+    subject { patch "/api/v1/lessons/#{lesson_id}", params: { lesson: lesson_params }, headers: { Authorization: access_token } }
     let(:lesson_params){ {
       lesson_class_id: lesson_class.id,
       start_at: Time.current,
@@ -278,8 +278,8 @@ describe 'Lessons API', type: :request do
     end
   end
 
-  describe 'GET /v1/lessons/:id' do
-    subject { get "/v1/lessons/#{lesson_id}", headers: { Authorization: access_token } }
+  describe 'GET /api/v1/lessons/:id' do
+    subject { get "/api/v1/lessons/#{lesson_id}", headers: { Authorization: access_token } }
     context '管理者が指定したレッスンを取得した場合' do
       login_admin
       let(:access_token){ admin.access_token }
@@ -365,8 +365,8 @@ describe 'Lessons API', type: :request do
     end
   end
 
-  describe 'DELETE /v1/lessons/:id' do
-    subject { delete "/v1/lessons/#{lesson_id}", headers: { Authorization: access_token } }
+  describe 'DELETE /api/v1/lessons/:id' do
+    subject { delete "/api/v1/lessons/#{lesson_id}", headers: { Authorization: access_token } }
     context '管理者が指定したレッスンを削除した場合' do
       login_admin
       let(:access_token){ admin.access_token }
@@ -413,7 +413,7 @@ describe 'Lessons API', type: :request do
   end
 
   describe 'POST /users/:id/join' do
-    subject { post "/v1/lessons/#{lesson_id}/join", headers: { Authorization: access_token } }
+    subject { post "/api/v1/lessons/#{lesson_id}/join", headers: { Authorization: access_token } }
     before do
       Lesson.last.user_lessons.each do |ul|
         ul.destroy
@@ -501,8 +501,8 @@ describe 'Lessons API', type: :request do
       before do
         user.plans = Plan.all
         last_lesson = Lesson.last
-        last_lesson.start_at = last_lesson.start_at - 1.month
-        last_lesson.end_at = last_lesson.end_at - 1.month
+        last_lesson.start_at = last_lesson.start_at - 3.month
+        last_lesson.end_at = last_lesson.end_at - 3.month
         last_lesson.save!
       end
       let(:access_token){ user.access_token }
@@ -558,7 +558,7 @@ describe 'Lessons API', type: :request do
   end
 
   describe 'POST /users/:id/leave' do
-    subject { delete "/v1/lessons/#{lesson_id}/leave", headers: { Authorization: access_token } }
+    subject { delete "/api/v1/lessons/#{lesson_id}/leave", headers: { Authorization: access_token } }
     before do
       Lesson.last.user_lessons.each do |ul|
         ul.destroy
@@ -648,8 +648,8 @@ describe 'Lessons API', type: :request do
         user.plans = Plan.all
         last_lesson = Lesson.last
         last_lesson.join(user)
-        last_lesson.start_at = last_lesson.start_at - 1.month
-        last_lesson.end_at = last_lesson.end_at - 1.month
+        last_lesson.start_at = last_lesson.start_at - 3.month
+        last_lesson.end_at = last_lesson.end_at - 3.month
         last_lesson.save!
       end
       let(:access_token){ user.access_token }
