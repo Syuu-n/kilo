@@ -14,18 +14,14 @@ module V1
 
     #  GET /lessons
     def index
-      # 先月、今月、来月のみを取得
-      now = Time.current
-      lessons = Lesson.where(start_at: now.last_month.beginning_of_month..now.next_month.end_of_month)
+      lessons = Lesson.preload(:lesson_class).all
       render json: lessons, each_serializer: LessonSerializer, status: :ok
     end
 
     # GET /lessons/lessons_for_admin
     # 管理者用はレッスンへ参加しているユーザ一覧を取得できる
-    # 先月、今月、来月のみを取得
     def index_for_admin
-      now = Time.current
-      lessons = Lesson.where(start_at: now.last_month.beginning_of_month..now.next_month.end_of_month)
+      lessons = Lesson.preload(:users, :lesson_class).all
       render json: lessons, each_serializer: AdminLessonSerializer, status: :ok
     end
 

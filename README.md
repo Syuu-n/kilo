@@ -1,5 +1,5 @@
 # Project Kilo
-![kilo](https://user-images.githubusercontent.com/60782728/114390186-e573b380-9bd0-11eb-8769-20a065084e72.png)
+![kilo](https://user-images.githubusercontent.com/60782728/114390704-8ebaa980-9bd1-11eb-8c1a-f1bb954dcb5a.png)
 
 # System
 - Ruby 2.7.0
