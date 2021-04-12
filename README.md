@@ -1,5 +1,7 @@
 # Project Kilo
+![kilo](https://user-images.githubusercontent.com/60782728/114390186-e573b380-9bd0-11eb-8769-20a065084e72.png)
 
+# System
 - Ruby 2.7.0
 - Rails 6.0.2.2
 - MySQL 5.7
@@ -7,7 +9,6 @@
 - Typescript 3.9.3
 
 # Setup
-
 ```
 $ git clone https://github.com/Aura-n/kilo.git
 
