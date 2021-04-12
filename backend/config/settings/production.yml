@@ -1,3 +1,2 @@
 frontend:
-  # TODO: ドメインが決定したら変更する
-  base_url: 'http://localhost:3000'
+  base_url: "http://k-studio.top"

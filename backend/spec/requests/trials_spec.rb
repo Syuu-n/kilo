@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'Trials API', type: :request do
   let(:json){ JSON.parse response.body }
-  describe 'POST /v1/trials' do
-    subject { post '/v1/trials', params: { user: user_params } }
+  describe 'POST /api/v1/trials' do
+    subject { post '/api/v1/trials', params: { user: user_params } }
     before(:each) do
       # メールリストを空にしておく
       reset_email
@@ -60,8 +60,8 @@ describe 'Trials API', type: :request do
     end
   end
 
-  describe 'PUT /v1/trials' do
-    subject { put '/v1/trials', params: { user: { confirmation_token: confirmation_token } } }
+  describe 'PUT /api/v1/trials' do
+    subject { put '/api/v1/trials', params: { user: { confirmation_token: confirmation_token } } }
     before(:each) do
       reset_email
     end
@@ -152,8 +152,8 @@ describe 'Trials API', type: :request do
     end
   end
 
-  describe 'GET /v1/trials/lesson_classes' do
-    subject { get '/v1/trials/lesson_classes' }
+  describe 'GET /api/v1/trials/lesson_classes' do
+    subject { get '/api/v1/trials/lesson_classes' }
     let(:lesson_classes){ Plan.trial_plan.lesson_classes }
     context '体験コースで参加できるクラス一覧を取得した場合' do
       it '200 OK を返す' do
@@ -165,8 +165,8 @@ describe 'Trials API', type: :request do
     end
   end
 
-  describe 'GET /v1/trials/lessons' do
-    subject { get '/v1/trials/lessons' }
+  describe 'GET /api/v1/trials/lessons' do
+    subject { get '/api/v1/trials/lessons' }
     let(:range){ Time.current.next_day.beginning_of_day..Time.current.next_month.end_of_month }
     let(:raw_lessons){ Lesson.where(start_at: range, lesson_class: Plan.trial_plan.lesson_classes) }
     let(:lessons){ raw_lessons.filter{|lesson| lesson.remaining_user_count > 0} }

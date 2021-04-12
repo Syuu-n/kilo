@@ -1,5 +1,5 @@
 module V1
-  class RolesSerializer < ActiveModel::Serializer
-    attributes :id, :name
+  class RoleSerializer < ActiveModel::Serializer
+    attributes :id, :name, :display_name
   end
 end

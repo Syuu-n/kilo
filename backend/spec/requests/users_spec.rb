@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'Users API', type: :request do
   let(:json){ JSON.parse response.body }
-  describe 'GET /v1/users' do
-    subject { get '/v1/users', headers: { Authorization: access_token }  }
+  describe 'GET /api/v1/users' do
+    subject { get '/api/v1/users', headers: { Authorization: access_token }  }
     context '管理者がユーザ一覧を取得した場合' do
       login_admin
       let(:last_user){ User.last }
@@ -70,8 +70,8 @@ describe 'Users API', type: :request do
     end
   end
 
-  describe 'POST /v1/users' do
-    subject { post '/v1/users', params: { user: target_user }, headers: { Authorization: access_token } }
+  describe 'POST /api/v1/users' do
+    subject { post '/api/v1/users', params: { user: target_user }, headers: { Authorization: access_token } }
     let(:target_user){ {
       email: Faker::Internet.email,
       password: 'password',
@@ -144,7 +144,7 @@ describe 'Users API', type: :request do
   end
 
   describe 'PATCH /users/:id' do
-    subject { patch "/v1/users/#{target_user_id}", params: { user: user_params }, headers: { Authorization: access_token }  }
+    subject { patch "/api/v1/users/#{target_user_id}", params: { user: user_params }, headers: { Authorization: access_token }  }
     let(:user_params){ {
       email: Faker::Internet.email,
       first_name: Faker::Name.first_name,
@@ -239,7 +239,7 @@ describe 'Users API', type: :request do
   
 
   describe 'GET /users/:id' do
-    subject { get "/v1/users/#{target_user_id}", headers: { Authorization: access_token }  }
+    subject { get "/api/v1/users/#{target_user_id}", headers: { Authorization: access_token }  }
     context '管理者が他のユーザの情報を取得した場合' do
       login_admin
       let(:access_token){ admin.access_token }
@@ -395,7 +395,7 @@ describe 'Users API', type: :request do
   end
 
   describe 'DELETE /users/:id' do
-    subject { delete "/v1/users/#{target_user_id}", headers: { Authorization: access_token }  }
+    subject { delete "/api/v1/users/#{target_user_id}", headers: { Authorization: access_token }  }
     context '管理者が他のユーザを削除した場合' do
       login_admin
       let(:access_token){ admin.access_token }

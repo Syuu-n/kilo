@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'Plans API', type: :request do
   let(:json){ JSON.parse response.body }
-  describe 'GET /v1/plans' do
-    subject { get '/v1/plans', headers: { Authorization: access_token }  }
+  describe 'GET /api/v1/plans' do
+    subject { get '/api/v1/plans', headers: { Authorization: access_token }  }
     context '管理者がプラン一覧を取得した場合' do
       login_admin
       let(:access_token){ admin.access_token }
@@ -31,8 +31,8 @@ describe 'Plans API', type: :request do
     end
   end
 
-  describe 'POST /v1/plans' do
-    subject { post '/v1/plans', params: { plan: plan_params },
+  describe 'POST /api/v1/plans' do
+    subject { post '/api/v1/plans', params: { plan: plan_params },
                    headers: { Authorization: access_token } }
     let(:plan_params){ {
       name: Faker::Space.galaxy,
@@ -88,8 +88,8 @@ describe 'Plans API', type: :request do
     end
   end
 
-  describe 'PATCH /v1/plans/:id' do
-    subject { patch "/v1/plans/#{plan_id}", params: { plan: plan_params },
+  describe 'PATCH /api/v1/plans/:id' do
+    subject { patch "/api/v1/plans/#{plan_id}", params: { plan: plan_params },
                     headers: { Authorization: access_token } }
     let(:plan_params){ {
       name: Faker::Space.galaxy,
@@ -166,7 +166,7 @@ describe 'Plans API', type: :request do
   end
 
   describe 'GET /plans/:id' do
-    subject { get "/v1/plans/#{plan_id}", headers: { Authorization: access_token }  }
+    subject { get "/api/v1/plans/#{plan_id}", headers: { Authorization: access_token }  }
     context '管理者が指定したプラン情報を取得した場合' do
       login_admin
       let(:access_token){ admin.access_token }
@@ -233,7 +233,7 @@ describe 'Plans API', type: :request do
   end
 
   describe 'DELETE /plans/:id' do
-    subject { delete "/v1/plans/#{plan_id}", headers: { Authorization: access_token }  }
+    subject { delete "/api/v1/plans/#{plan_id}", headers: { Authorization: access_token }  }
     context '管理者が指定したプランを削除した場合' do
       login_admin
       let(:access_token){ admin.access_token }

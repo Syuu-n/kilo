@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'LessonClasses API', type: :request do
   let(:json){ JSON.parse response.body }
-  describe 'GET /v1/lesson_classes' do
-    subject { get '/v1/lesson_classes', headers: { Authorization: access_token }  }
+  describe 'GET /api/v1/lesson_classes' do
+    subject { get '/api/v1/lesson_classes', headers: { Authorization: access_token }  }
     context '管理者がクラス一覧を取得した場合' do
       login_admin
       let(:access_token){ admin.access_token }
@@ -89,8 +89,8 @@ describe 'LessonClasses API', type: :request do
     end
   end
 
-  describe 'POST /v1/lesson_classes' do
-    subject { post '/v1/lesson_classes', params: { lesson_class: lesson_class_params },
+  describe 'POST /api/v1/lesson_classes' do
+    subject { post '/api/v1/lesson_classes', params: { lesson_class: lesson_class_params },
                    headers: { Authorization: access_token } }
     let(:lesson_class_params){ {
       name: Faker::Address.city,
@@ -219,8 +219,8 @@ describe 'LessonClasses API', type: :request do
     end
   end
 
-  describe 'PATCH /v1/lesson_classes/:id' do
-    subject { patch "/v1/lesson_classes/#{lesson_class_id}", params: { lesson_class: lesson_class_params },
+  describe 'PATCH /api/v1/lesson_classes/:id' do
+    subject { patch "/api/v1/lesson_classes/#{lesson_class_id}", params: { lesson_class: lesson_class_params },
                    headers: { Authorization: access_token } }
     let(:lesson_class_params){ {
       name: Faker::Address.city,
@@ -373,7 +373,7 @@ describe 'LessonClasses API', type: :request do
   end
 
   describe 'GET /lesson_classes/:id' do
-    subject { get "/v1/lesson_classes/#{lesson_classes_id}", headers: { Authorization: access_token }  }
+    subject { get "/api/v1/lesson_classes/#{lesson_classes_id}", headers: { Authorization: access_token }  }
     context '管理者が指定したクラス情報を取得した場合' do
       login_admin
       let(:access_token){ admin.access_token }
@@ -472,7 +472,7 @@ describe 'LessonClasses API', type: :request do
   end
 
   describe 'DELETE /lesson_classes/:id' do
-    subject { delete "/v1/lesson_classes/#{lesson_classes_id}", headers: { Authorization: access_token }  }
+    subject { delete "/api/v1/lesson_classes/#{lesson_classes_id}", headers: { Authorization: access_token }  }
     context '管理者が指定したクラスを削除した場合' do
       login_admin
       let(:access_token){ admin.access_token }
